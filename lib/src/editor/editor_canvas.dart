@@ -12,8 +12,22 @@ import '../geometry/geometry.dart';
 import '../viewport/camera.dart';
 import 'board_session.dart';
 import 'editor_scene.dart';
+import 'stroke_eraser.dart';
+import 'editor_text.dart';
 
-enum EditorTool { select, pan, pen, rectangle, ellipse, triangle, line }
+enum EditorTool {
+  select,
+  pan,
+  pen,
+  rectangle,
+  ellipse,
+  triangle,
+  line,
+  eraser,
+  segmentEraser,
+  text,
+  sticky,
+}
 
 /// Flutter interaction state; only completed gestures enter the pure session.
 final class EditorCanvasController extends ChangeNotifier {
@@ -46,11 +60,130 @@ final class EditorCanvasController extends ChangeNotifier {
   final toolbarChanges = ValueNotifier<int>(0);
   late EditorScene scene;
   final paths = <ElementId, Path>{};
+  final textLayouts = <ElementId, TextPainter>{};
+  void Function(Point2 world, ElementId? id, bool sticky)? onEditText;
+
+  void saveText(ElementContent content, Point2 world, {ElementId? id}) {
+    if (_disposed || readOnly || !inputEnabled) return;
+    try {
+      if (id == null) {
+        selectedId = session.insert(
+          content,
+          transform: Transform2.translation(world.x, world.y),
+          font: DocumentFontReference(id: 'editor-sans-v1', family: 'Roboto'),
+        );
+      } else {
+        session.updateContent(id, content);
+        selectedId = id;
+      }
+      _refreshScene();
+      setTool(EditorTool.select);
+    } on ArgumentError catch (error) {
+      message = 'Could not save text: ${error.message}';
+      _notify(toolbar: true);
+    } on StateError catch (error) {
+      message = 'Could not save text: ${error.message}';
+      _notify(toolbar: true);
+    }
+  }
+
+  void editSelectedText() {
+    final element = session.document.byId[selectedId];
+    if (element == null ||
+        readOnly ||
+        !inputEnabled ||
+        scene.isLocked(element.id)) {
+      return;
+    }
+    if (element.content is TextElementContent ||
+        element.content is StickyNoteElementContent) {
+      onEditText?.call(
+        scene.worldTransformOf(element.id).apply(Point2.zero),
+        element.id,
+        element.content is StickyNoteElementContent,
+      );
+    }
+  }
+
   Camera camera = Camera(translation: Point2(80, 80));
   EditorTool tool = EditorTool.pen;
   ElementId? selectedId;
   int color = 0xff202d46;
   double strokeWidth = 3;
+  double eraserSize = 32;
+  Point2? eraserPosition;
+  final eraseChanges = <ElementId, List<ElementContent>>{};
+  bool get isErasing =>
+      tool == EditorTool.eraser || tool == EditorTool.segmentEraser;
+
+  void setEraserSize(double value) {
+    if (!value.isFinite || value < 4 || value > 120) return;
+    cancelGesture(notify: false);
+    eraserSize = value;
+    _notify(toolbar: true);
+  }
+
+  void hover(Offset local) {
+    if (!isErasing) return;
+    eraserPosition = _world(local);
+    _notify();
+  }
+
+  void _erase(Point2 from, Point2 to) {
+    final radius = camera.worldTolerance(eraserSize / 2);
+    if (_gestureTool == EditorTool.segmentEraser) {
+      final area = Bounds2.fromPoints([from, to]).inflate(radius);
+      for (final element in scene.visible(area)) {
+        if (element.content is! StrokeElementContent ||
+            scene.isLocked(element.id))
+          continue;
+        final original = element.content as StrokeElementContent;
+        final current = eraseChanges[element.id] ?? [original];
+        final transform = scene.worldTransformOf(element.id);
+        final parts = <ElementContent>[];
+        var changed = false;
+        for (final content in current.cast<StrokeElementContent>()) {
+          final fragments = eraseStrokeSegment(
+            points: content.points,
+            worldTransform: transform,
+            from: from,
+            to: to,
+            radius: radius + content.style.width * transform.maximumScale / 2,
+          );
+          if (fragments.length != 1 ||
+              !identical(fragments.single, content.points))
+            changed = true;
+          for (final points in fragments) {
+            parts.add(
+              StrokeElementContent(
+                points: points,
+                style: content.style,
+                kind: content.kind,
+              ),
+            );
+          }
+        }
+        if (changed) eraseChanges[element.id] = parts;
+      }
+    } else {
+      final steps = math.max(1, (from.distanceTo(to) / (radius / 3)).ceil());
+      for (var i = 0; i <= steps; i++) {
+        final center = from + (to - from) * (i / steps);
+        for (final id in scene.eraserHits(center, radius)) {
+          eraseChanges.putIfAbsent(id, () => []);
+        }
+      }
+    }
+    eraserPosition = to;
+  }
+
+  void clearAll() {
+    if (readOnly || !inputEnabled) return;
+    cancelGesture(notify: false);
+    if (session.clearAll()) _refreshScene();
+    _notify(toolbar: true);
+  }
+
   bool spaceHeld = false;
   String? message;
   Size viewportSize = Size.zero;
@@ -77,7 +210,17 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void _refreshScene() {
+    for (final layout in textLayouts.values) {
+      layout.dispose();
+    }
+    textLayouts.clear();
     scene = EditorScene(session.document);
+    for (final element in scene.paintOrder) {
+      if (element.content is TextElementContent ||
+          element.content is StickyNoteElementContent) {
+        textLayouts[element.id] = layoutElementText(element.content);
+      }
+    }
     paths
       ..clear()
       ..addEntries(
@@ -127,7 +270,12 @@ final class EditorCanvasController extends ChangeNotifier {
     _start = _world(event.localPosition);
     _lastScreen = Point2(event.localPosition.dx, event.localPosition.dy);
     message = null;
-    if (_gestureTool == EditorTool.select) {
+    if (_gestureTool == EditorTool.eraser ||
+        _gestureTool == EditorTool.segmentEraser) {
+      selectedId = null;
+      _erase(_start!, _start!);
+      _notify(toolbar: true);
+    } else if (_gestureTool == EditorTool.select) {
       selectedId = scene.hitTest(
         _start!,
         worldTolerance: camera.worldTolerance(6),
@@ -146,6 +294,10 @@ final class EditorCanvasController extends ChangeNotifier {
     final screen = Point2(event.localPosition.dx, event.localPosition.dy);
     final world = _world(event.localPosition);
     switch (_gestureTool) {
+      case EditorTool.text || EditorTool.sticky:
+        break;
+      case EditorTool.eraser || EditorTool.segmentEraser:
+        _erase(_world(Offset(_lastScreen!.x, _lastScreen!.y)), world);
       case EditorTool.pan:
         camera = _boundedCamera(camera.pan(screen - _lastScreen!));
       case EditorTool.select:
@@ -212,7 +364,29 @@ final class EditorCanvasController extends ChangeNotifier {
   void pointerUp(PointerUpEvent event) {
     if (event.pointer != _pointer) return;
     try {
-      if (_gestureTool == EditorTool.pen) {
+      if (_gestureTool == EditorTool.text ||
+          _gestureTool == EditorTool.sticky) {
+        final sticky = _gestureTool == EditorTool.sticky;
+        final id = scene.hitTest(
+          _start!,
+          worldTolerance: camera.worldTolerance(4),
+        );
+        final content = session.document.byId[id]?.content;
+        onEditText?.call(
+          _start!,
+          content is TextElementContent || content is StickyNoteElementContent
+              ? id
+              : null,
+          sticky,
+        );
+      } else if (_gestureTool == EditorTool.eraser ||
+          _gestureTool == EditorTool.segmentEraser) {
+        _erase(
+          _world(Offset(_lastScreen!.x, _lastScreen!.y)),
+          _world(event.localPosition),
+        );
+        if (session.replaceElements(eraseChanges)) _refreshScene();
+      } else if (_gestureTool == EditorTool.pen) {
         final world = _world(event.localPosition);
         final relative = world - _start!;
         if (_points.length < 50000 && relative != _points.last) {
@@ -256,6 +430,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void cancelGesture({bool notify = true}) {
+    eraseChanges.clear();
     _pointer = null;
     _gestureTool = null;
     _start = null;
@@ -371,6 +546,11 @@ final class EditorCanvasController extends ChangeNotifier {
     _trackpadCamera = null;
     toolbarChanges.dispose();
     paths.clear();
+    for (final layout in textLayouts.values) {
+      layout.dispose();
+    }
+    textLayouts.clear();
+    onEditText = null;
     _points.clear();
     super.dispose();
   }
@@ -407,6 +587,8 @@ Path elementPath(ElementContent content) {
       path
         ..moveTo(start.x, start.y)
         ..lineTo(end.x, end.y);
+    case TextElementContent() || StickyNoteElementContent():
+      break;
     default:
       throw ArgumentError('This editor slice supports pen, shapes and lines.');
   }
@@ -429,6 +611,11 @@ class EditorCanvas extends StatelessWidget {
       return ListenableBuilder(
         listenable: controller.toolbarChanges,
         builder: (context, child) => MouseRegion(
+          onHover: (event) => controller.hover(event.localPosition),
+          onExit: (_) {
+            controller.eraserPosition = null;
+            controller._notify();
+          },
           cursor: controller.tool == EditorTool.pan
               ? SystemMouseCursors.grab
               : controller.tool == EditorTool.select
@@ -484,6 +671,19 @@ class _EditorPainter extends CustomPainter {
     canvas.save();
     canvas.scale(c.camera.zoom);
     for (final element in c.scene.visible(view.inflate(6 / c.camera.zoom))) {
+      final fragments = c.eraseChanges[element.id];
+      if (fragments != null) {
+        for (final content in fragments) {
+          _element(
+            canvas,
+            element.copyWith(content: content),
+            c.scene.worldTransformOf(element.id),
+            elementPath(content),
+            origin,
+          );
+        }
+        continue;
+      }
       _element(
         canvas,
         element,
@@ -526,12 +726,23 @@ class _EditorPainter extends CustomPainter {
           bounds.bottom - origin.y + c.moveDelta.y,
         ),
         Paint()
-          ..color = const Color(0xff2563eb)
+          ..color = const Color(0xFF4464F6)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.5 / c.camera.zoom,
       );
     }
     canvas.restore();
+    if (c.isErasing && c.eraserPosition != null) {
+      final p = c.camera.worldToViewport(c.eraserPosition!);
+      canvas.drawCircle(
+        Offset(p.x, p.y),
+        c.eraserSize / 2,
+        Paint()
+          ..color = const Color(0xff4464f6)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5,
+      );
+    }
   }
 
   void _element(
@@ -557,6 +768,32 @@ class _EditorPainter extends CustomPainter {
       LineElementContent(:final style) => style,
       _ => null,
     };
+    if (content is TextElementContent || content is StickyNoteElementContent) {
+      final bounds = switch (content) {
+        TextElementContent() => content.bounds,
+        StickyNoteElementContent() => content.bounds,
+        _ => throw StateError('text'),
+      };
+      final padding = content is StickyNoteElementContent ? 12.0 : 0.0;
+      canvas.saveLayer(
+        Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom),
+        Paint()..color = Colors.white.withValues(alpha: element.opacity),
+      );
+      if (content is StickyNoteElementContent) {
+        canvas.drawRect(
+          Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom),
+          Paint()..color = Color(content.backgroundColor),
+        );
+      }
+      canvas.clipRect(
+        Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom),
+      );
+      controller.textLayouts[element.id]?.paint(
+        canvas,
+        Offset(bounds.left + padding, bounds.top + padding),
+      );
+      canvas.restore();
+    }
     if (content is ShapeElementContent && content.fillColor != null) {
       canvas.drawPath(
         path,

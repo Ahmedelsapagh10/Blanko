@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'src/editor/workspace_page.dart';
 import 'src/persistence/board_store.dart';
+import 'src/theme/blanko_brand.dart';
 
 void main() => runApp(const WhiteboardApp());
 
@@ -11,12 +12,10 @@ class WhiteboardApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'Whiteboard',
+    title: BlankoBrand.appName,
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff2563eb)),
-      useMaterial3: true,
-    ),
+    theme: BlankoTheme.light,
+    darkTheme: BlankoTheme.dark,
     home: WorkspacePage(store: store),
   );
 }

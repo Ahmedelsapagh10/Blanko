@@ -14,7 +14,8 @@ abstract final class BlankoBrand {
   static const String onboardingHeading = 'Your ideas start here.';
   static const String onboardingBody =
       'A simple space to think, sketch, and bring ideas to life.';
-  static const String emptyStateHeading = 'A blank space. Endless possibilities.';
+  static const String emptyStateHeading =
+      'A blank space. Endless possibilities.';
   static const String primaryCta = 'Create a board';
   static const String defaultBoardTitle = 'Untitled board';
 
@@ -116,7 +117,10 @@ abstract final class BlankoTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: BlankoBrand.originBlue, width: 1.5),
+          borderSide: const BorderSide(
+            color: BlankoBrand.originBlue,
+            width: 1.5,
+          ),
         ),
         labelStyle: const TextStyle(color: BlankoBrand.mutedText),
         hintStyle: const TextStyle(color: BlankoBrand.mutedText),
@@ -197,7 +201,10 @@ abstract final class BlankoTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: BlankoBrand.originBlue, width: 1.5),
+          borderSide: const BorderSide(
+            color: BlankoBrand.originBlue,
+            width: 1.5,
+          ),
         ),
         labelStyle: const TextStyle(color: BlankoBrand.darkMutedText),
         hintStyle: const TextStyle(color: BlankoBrand.darkMutedText),
@@ -257,30 +264,27 @@ class _BlankoSymbolPainter extends CustomPainter {
     canvas.save();
     canvas.scale(size.width / 1024.0, size.height / 1024.0);
 
-    final strokePaint =
-        Paint()
-          ..color = strokeColor
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 92
-          ..strokeCap = StrokeCap.round
-          ..strokeJoin = StrokeJoin.round;
+    final strokePaint = Paint()
+      ..color = strokeColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 92
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
 
-    final path =
-        Path()
-          ..moveTo(642.166, 232.857)
-          ..arcToPoint(
-            const Offset(783.948, 367.403),
-            radius: const Radius.circular(308),
-            largeArc: true,
-            clockwise: false,
-          );
+    final path = Path()
+      ..moveTo(642.166, 232.857)
+      ..arcToPoint(
+        const Offset(783.948, 367.403),
+        radius: const Radius.circular(308),
+        largeArc: true,
+        clockwise: false,
+      );
 
     canvas.drawPath(path, strokePaint);
 
-    final dotPaint =
-        Paint()
-          ..color = dotColor
-          ..style = PaintingStyle.fill;
+    final dotPaint = Paint()
+      ..color = dotColor
+      ..style = PaintingStyle.fill;
 
     canvas.drawCircle(const Offset(722.055, 286.743), 26.680, dotPaint);
 
@@ -289,7 +293,8 @@ class _BlankoSymbolPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _BlankoSymbolPainter oldDelegate) =>
-      strokeColor != oldDelegate.strokeColor || dotColor != oldDelegate.dotColor;
+      strokeColor != oldDelegate.strokeColor ||
+      dotColor != oldDelegate.dotColor;
 }
 
 /// Official Blanko Wordmark vector widget.
@@ -332,10 +337,7 @@ class BlankoWordmark extends StatelessWidget {
 }
 
 class _BlankoWordmarkPainter extends CustomPainter {
-  _BlankoWordmarkPainter({
-    required this.fillColor,
-    required this.dotColor,
-  });
+  _BlankoWordmarkPainter({required this.fillColor, required this.dotColor});
 
   final Color fillColor;
   final Color dotColor;
@@ -366,11 +368,7 @@ class _BlankoWordmarkPainter extends CustomPainter {
     );
 
     // Letter 'l'
-    addLetter(
-      'M364 1490H112V0H364Z',
-      553.2186,
-      715.0750,
-    );
+    addLetter('M364 1490H112V0H364Z', 553.2186, 715.0750);
 
     // Letter 'a'
     addLetter(
@@ -446,7 +444,9 @@ class _BlankoWordmarkPainter extends CustomPainter {
 Path _parseSvgPath(String d) {
   final path = Path();
   final tokens = <String>[];
-  final matches = RegExp(r'([a-zA-Z])|([-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?)').allMatches(d);
+  final matches = RegExp(
+    r'([a-zA-Z])|([-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?)',
+  ).allMatches(d);
   for (final m in matches) {
     tokens.add(m.group(0)!);
   }
@@ -477,7 +477,8 @@ Path _parseSvgPath(String d) {
         path.lineTo(currentX, currentY);
         break;
       case 'C':
-        while (i < tokens.length && !RegExp(r'^[a-zA-Z]$').hasMatch(tokens[i])) {
+        while (i < tokens.length &&
+            !RegExp(r'^[a-zA-Z]$').hasMatch(tokens[i])) {
           final x1 = double.parse(tokens[i++]);
           final y1 = double.parse(tokens[i++]);
           final x2 = double.parse(tokens[i++]);

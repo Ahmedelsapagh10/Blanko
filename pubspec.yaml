@@ -71,6 +71,10 @@ flutter:
       fonts:
         - asset: assets/benchmark_fonts/Roboto-Regular.ttf
 
+    - family: Noto Sans Arabic
+      fonts:
+        - asset: assets/benchmark_fonts/NotoSansArabic-Regular.ttf
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

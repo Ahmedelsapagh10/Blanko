@@ -1,5 +1,6 @@
 import '../document/document.dart';
 import '../document/document_geometry.dart';
+import '../document/document_settings.dart';
 import '../document/element.dart';
 import '../geometry/geometry.dart';
 
@@ -30,6 +31,7 @@ final class BoardSession {
   ElementId insert(
     ElementContent content, {
     Transform2 transform = Transform2.identity,
+    DocumentFontReference? font,
   }) {
     var candidate = _nextId;
     late ElementId id;
@@ -44,9 +46,26 @@ final class BoardSession {
       content: content,
       transform: transform,
     );
-    _commit(_Change([], [_Positioned(_document.elements.length, element)]));
+    _commit(
+      _Change([], [
+        _Positioned(_document.elements.length, element),
+      ], font: font),
+    );
     _nextId = candidate;
     return id;
+  }
+
+  bool updateContent(ElementId id, ElementContent content) {
+    final element = _document.byId[id];
+    if (element == null || _isLocked(element)) return false;
+    final index = _document.elements.indexOf(element);
+    _commit(
+      _Change(
+        [_Positioned(index, element)],
+        [_Positioned(index, element.copyWith(content: content))],
+      ),
+    );
+    return true;
   }
 
   /// Converts a world displacement into the owner's local coordinate system.
@@ -100,6 +119,84 @@ final class BoardSession {
         for (var i = 0; i < _document.elements.length; i++)
           if (removedIds.contains(_document.elements[i].id))
             _Positioned(i, _document.elements[i]),
+      ], []),
+    );
+    return true;
+  }
+
+  /// Replaces editable leaves or deletes complete unlocked ownership subtrees.
+  /// A gesture publishes one revision, retaining source order and sparse undo.
+  bool replaceElements(Map<ElementId, List<ElementContent>> replacements) {
+    final before = <_Positioned>[];
+    final after = <_Positioned>[];
+    final removed = <ElementId>{};
+    final accepted = <ElementId, List<ElementContent>>{};
+    for (final entry in replacements.entries) {
+      final element = _document.byId[entry.key];
+      if (element == null ||
+          _isLocked(element) ||
+          _hasLockedDescendant(element))
+        continue;
+      if (entry.value.isNotEmpty && element.content.canOwnChildren) continue;
+      accepted[entry.key] = entry.value;
+      if (entry.value.isEmpty) {
+        final pending = [element];
+        while (pending.isNotEmpty) {
+          final current = pending.removeLast();
+          removed.add(current.id);
+          pending.addAll(_document.childrenOf(current.id));
+        }
+      }
+    }
+    var outputIndex = 0;
+    for (var i = 0; i < _document.elements.length; i++) {
+      final element = _document.elements[i];
+      final replacement = accepted[element.id];
+      if (removed.contains(element.id) || replacement != null) {
+        before.add(_Positioned(i, element));
+        if (!removed.contains(element.id) && replacement != null) {
+          for (var part = 0; part < replacement.length; part++) {
+            final id = part == 0 ? element.id : _allocateId();
+            after.add(
+              _Positioned(
+                outputIndex++,
+                DocumentElement(
+                  id: id,
+                  parentId: element.parentId,
+                  transform: element.transform,
+                  locked: element.locked,
+                  opacity: element.opacity,
+                  content: replacement[part],
+                ),
+              ),
+            );
+          }
+        }
+      } else {
+        outputIndex++;
+      }
+    }
+    if (before.isEmpty) return false;
+    _commit(_Change(before, after));
+    return true;
+  }
+
+  ElementId _allocateId() {
+    while (_nextId <= maximumDocumentRevision) {
+      final id = ElementId('element-${_nextId++}');
+      if (!_initialIds.contains(id) && !_document.byId.containsKey(id))
+        return id;
+    }
+    throw StateError('Element identity range exhausted.');
+  }
+
+  /// Explicit board-wide action; manifests stay alive for undo and other uses.
+  bool clearAll() {
+    if (_document.elements.isEmpty) return false;
+    _commit(
+      _Change([
+        for (var i = 0; i < _document.elements.length; i++)
+          _Positioned(i, _document.elements[i]),
       ], []),
     );
     return true;
@@ -176,7 +273,16 @@ final class BoardSession {
       title: _document.title,
       canvasSettings: _document.canvasSettings,
       assets: _document.assets,
-      fontReferences: _document.fontReferences,
+      // Font declarations remain available to both sides of undo history.
+      fontReferences: change.font == null
+          ? _document.fontReferences
+          : [
+              ...?_document.fontReferences,
+              if (!(_document.fontReferences ?? <DocumentFontReference>[]).any(
+                (font) => font.id == change.font!.id,
+              ))
+                change.font!,
+            ],
       metadata: _document.metadata,
       elements: elements,
     );
@@ -187,7 +293,8 @@ final class BoardSession {
 }
 
 final class _Change {
-  _Change(this.before, this.after);
+  _Change(this.before, this.after, {this.font});
+  final DocumentFontReference? font;
   final List<_Positioned> before;
   final List<_Positioned> after;
 }

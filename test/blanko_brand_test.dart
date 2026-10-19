@@ -47,33 +47,26 @@ void main() {
       expect(dark.colorScheme.surface, BlankoBrand.darkSurface);
     });
 
-    testWidgets('BlankoSymbol renders vector geometry with accessibility semantics', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: Center(
-              child: BlankoSymbol(size: 48),
-            ),
+    testWidgets(
+      'BlankoSymbol renders vector geometry with accessibility semantics',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(body: Center(child: BlankoSymbol(size: 48))),
           ),
-        ),
-      );
+        );
 
-      expect(find.byType(BlankoSymbol), findsOneWidget);
-      expect(find.bySemanticsLabel('Blanko Logo'), findsOneWidget);
-    });
+        expect(find.byType(BlankoSymbol), findsOneWidget);
+        expect(find.bySemanticsLabel('Blanko Logo'), findsOneWidget);
+      },
+    );
 
     testWidgets('BlankoWordmark renders vector wordmark with semantics', (
       tester,
     ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: Center(
-              child: BlankoWordmark(height: 32),
-            ),
-          ),
+          home: Scaffold(body: Center(child: BlankoWordmark(height: 32))),
         ),
       );
 

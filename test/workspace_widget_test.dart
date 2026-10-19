@@ -99,7 +99,7 @@ void main() {
     await tester.tap(find.byTooltip('Boards'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'Second board');
-    await tester.tap(find.text('Create board'));
+    await tester.tap(find.text('Create a board'));
     await tester.pumpAndSettle();
     expect(canvas(tester).elementCount, 0);
     await pen(tester, 300);
@@ -134,7 +134,7 @@ void main() {
     expect((await store.readBoard(id))!.document.elements, isEmpty);
     await tester.tap(find.byTooltip('Boards'));
     await tester.pumpAndSettle();
-    expect(find.text('Create board'), findsNothing);
+    expect(find.text('Create a board'), findsNothing);
     expect(canvas(tester).session.document.id, id);
     store.failWrites = false;
     await tester.tap(find.text('Retry save'));
@@ -153,7 +153,7 @@ void main() {
     await pen(tester);
     await tester.tap(find.byTooltip('Boards'));
     await tester.pump();
-    expect(find.text('Create board'), findsNothing);
+    expect(find.text('Create a board'), findsNothing);
     expect(canvas(tester).inputEnabled, isFalse);
     await tester.sendKeyDownEvent(LogicalKeyboardKey.controlLeft);
     await tester.sendKeyEvent(LogicalKeyboardKey.keyZ);
@@ -162,7 +162,7 @@ void main() {
     expect(canvas(tester).elementCount, 1);
     gate.complete();
     await tester.pumpAndSettle();
-    expect(find.text('Create board'), findsOneWidget);
+    expect(find.text('Create a board'), findsOneWidget);
     await tester.tap(find.text('Close'));
     await tester.pumpAndSettle();
     expect(find.text('Saved locally'), findsOneWidget);
@@ -253,7 +253,7 @@ void main() {
     expect(await tester.binding.handleRequestAppExit(), AppExitResponse.cancel);
     await tester.tap(find.byTooltip('Boards'));
     await tester.pumpAndSettle();
-    expect(find.text('Create board'), findsNothing);
+    expect(find.text('Create a board'), findsNothing);
     store.readOnly = false;
     await tester.tap(find.text('Retry save'));
     await tester.pumpAndSettle();

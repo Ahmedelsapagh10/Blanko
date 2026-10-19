@@ -15,6 +15,7 @@ import '../viewport/camera.dart';
 import 'board_session.dart';
 import 'editor_canvas.dart';
 import 'editor_page.dart';
+import '../theme/blanko_brand.dart';
 
 /// Owns the workspace connection and the lifetime of its one open editor.
 class WorkspacePage extends StatefulWidget {
@@ -304,16 +305,28 @@ class _WorkspacePageState extends State<WorkspacePage> {
   Widget build(BuildContext context) {
     if (_canvas == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Whiteboard')),
         body: Center(
           child: _error == null
-              ? const CircularProgressIndicator()
+              ? const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    BlankoSymbol(size: 64),
+                    SizedBox(height: 24),
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2.5),
+                    ),
+                  ],
+                )
               : Padding(
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(_error!),
+                      const BlankoSymbol(size: 48),
+                      const SizedBox(height: 16),
+                      Text(_error!, textAlign: TextAlign.center),
                       const SizedBox(height: 16),
                       FilledButton(
                         onPressed: _busy ? null : _initialize,
@@ -338,6 +351,10 @@ class _WorkspacePageState extends State<WorkspacePage> {
           key: ValueKey(_canvas),
           controller: _canvas,
           title: _canvas!.session.document.title,
+          leading: const Padding(
+            padding: EdgeInsets.all(12),
+            child: Center(child: BlankoSymbol(size: 24)),
+          ),
           actions: [
             IconButton(
               tooltip: 'Boards',
@@ -353,7 +370,11 @@ class _WorkspacePageState extends State<WorkspacePage> {
                   message:
                       save.error ??
                       '${_store!.location} · saved generation ${save.acknowledgedVersion}',
-                  child: Text(status, key: const ValueKey('save-status')),
+                  child: Text(
+                    status,
+                    key: const ValueKey('save-status'),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ),
@@ -410,27 +431,64 @@ class _BoardLibraryState extends State<_BoardLibrary> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-    title: const Text('Boards'),
+    title: const Row(
+      children: [
+        BlankoSymbol(size: 24),
+        SizedBox(width: 10),
+        Text('Blanko Boards', style: TextStyle(fontWeight: FontWeight.w600)),
+      ],
+    ),
     content: SizedBox(
       width: 460,
       height: 360,
       child: Column(
         children: [
           Expanded(
-            child: ListView(
-              children: [
-                for (final board in widget.boards)
-                  ListTile(
-                    title: Text(board.document.title),
-                    subtitle: Text(
-                      '${board.document.elements.length} elements · revision ${board.document.revision}',
+            child: widget.boards.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const BlankoSymbol(size: 40),
+                          const SizedBox(height: 16),
+                          Text(
+                            BlankoBrand.emptyStateHeading,
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(fontWeight: FontWeight.w600),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            BlankoBrand.descriptor,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: BlankoBrand.mutedText),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () =>
-                        Navigator.pop(context, ('open', board.document.id)),
+                  )
+                : ListView(
+                    children: [
+                      for (final board in widget.boards)
+                        ListTile(
+                          title: Text(board.document.title),
+                          subtitle: Text(
+                            '${board.document.elements.length} elements · revision ${board.document.revision}',
+                            style: const TextStyle(
+                              color: BlankoBrand.mutedText,
+                            ),
+                          ),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () => Navigator.pop(context, (
+                            'open',
+                            board.document.id,
+                          )),
+                        ),
+                    ],
                   ),
-              ],
-            ),
           ),
           if (widget.writable)
             TextField(
@@ -438,14 +496,16 @@ class _BoardLibraryState extends State<_BoardLibrary> {
               maxLength: 120,
               decoration: const InputDecoration(
                 labelText: 'New board name',
-                hintText: 'Untitled board',
+                hintText: BlankoBrand.defaultBoardTitle,
               ),
             ),
           Text(
             widget.location,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: BlankoBrand.mutedText),
           ),
         ],
       ),
@@ -459,9 +519,11 @@ class _BoardLibraryState extends State<_BoardLibrary> {
         FilledButton(
           onPressed: () => Navigator.pop(context, (
             'create',
-            _name.text.trim().isEmpty ? 'Untitled board' : _name.text.trim(),
+            _name.text.trim().isEmpty
+                ? BlankoBrand.defaultBoardTitle
+                : _name.text.trim(),
           )),
-          child: const Text('Create board'),
+          child: const Text(BlankoBrand.primaryCta),
         ),
     ],
   );

@@ -2,7 +2,26 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-19. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; next usable slice is text/sticky notes. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; next usable slices are MVP-03A erasers/Clear All followed by MVP-03B text/sticky notes. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+
+## MVP-03A — Eraser & Clear All
+
+Priority P0; depends on MVP-02. Acceptance: real-editor gestures are atomic, cancel-safe, zoom-aware, undoable and persisted. Verification: focused command/geometry/widget tests, analysis and macOS/Chrome smoke checks. Extreme performance remains in M14.
+
+- [ ] MVP-0301 Object eraser with continuous drag and one Undo operation.
+- [ ] MVP-0302 Adjustable screen-space eraser size and visible cursor.
+- [ ] MVP-0303 Segment eraser preserves stroke fragments, style, transforms and order.
+- [ ] MVP-0304 Confirm/cancel Clear All, one Undo, current-board identity preserved.
+- [ ] MVP-0305 Verify autosave/reopening and actual macOS/Chrome tools.
+
+## MVP-03B — Text Editing & Sticky Notes
+
+Priority P0; depends on MVP-03A. Acceptance: multiline Arabic/English editing, colors, size, wrapping, select/move/resize/delete, Undo and persistence. Verification: targeted editing/persistence tests, analysis and real app smoke.
+
+- [ ] MVP-0311 Create and re-edit multiline text with keyboard/IME drafts.
+- [ ] MVP-0312 Text size, color, direction, wrapping and resizing.
+- [ ] MVP-0313 Editable sticky notes with background colors and automatic height.
+- [ ] MVP-0314 Verify Undo/Redo, cancellation, autosave/reopen and app smoke.
 
 ## MVP-02 — Local Projects, Autosave & Reliable Reopening (verified)
 

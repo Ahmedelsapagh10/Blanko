@@ -56,6 +56,20 @@ final class EditorScene {
     for (final index in _index.query(worldViewport)) paintOrder[index],
   ];
 
+  bool isLocked(ElementId id) => _locked[id] ?? true;
+
+  Iterable<ElementId> eraserHits(Point2 world, double radius) sync* {
+    final area = Bounds2(world.x, world.y, world.x, world.y).inflate(radius);
+    for (final index in _index.query(area)) {
+      final element = paintOrder[index];
+      if (isLocked(element.id)) continue;
+      final local = _geometry.worldToLocal(element.id, world);
+      final tolerance =
+          radius * worldTransformOf(element.id).inverse().maximumScale;
+      if (_hits(element.content, local, tolerance)) yield element.id;
+    }
+  }
+
   ElementId? hitTest(Point2 world, {required double worldTolerance}) {
     if (!worldTolerance.isFinite || worldTolerance < 0) {
       throw ArgumentError.value(worldTolerance, 'worldTolerance');
