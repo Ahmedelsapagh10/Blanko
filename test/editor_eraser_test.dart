@@ -112,22 +112,23 @@ void main() {
         transform: Transform2.translation(20, 50),
       );
       // Refresh through undo/redo rather than exposing scene mutation.
+      c.session.insert(ShapeElementContent(kind:ShapeKind.rectangle, bounds:Bounds2(0,0,200,100), fillColor:0xff556677),transform:Transform2.translation(20,50));
       c.undo();
       c.redo();
       c.setTool(EditorTool.segmentEraser);
       c.setEraserSize(20);
       await erase(tester, const Offset(200, 110), const Offset(200, 150));
-      expect(c.elementCount, 2);
-      for (final element in c.session.document.elements) {
+      expect(c.elementCount, 3);
+      for (final element in c.session.document.elements.where((e)=>e.content is StrokeElementContent)) {
         expect(
           (element.content as StrokeElementContent).style.color,
           0xff123456,
         );
       }
       c.undo();
-      expect(c.elementCount, 1);
-      c.redo();
       expect(c.elementCount, 2);
+      c.redo();
+      expect(c.elementCount, 3);
       await tester.pumpWidget(const SizedBox());
     },
   );

@@ -135,8 +135,9 @@ final class BoardSession {
       final element = _document.byId[entry.key];
       if (element == null ||
           _isLocked(element) ||
-          _hasLockedDescendant(element))
+          _hasLockedDescendant(element)) {
         continue;
+      }
       if (entry.value.isNotEmpty && element.content.canOwnChildren) continue;
       accepted[entry.key] = entry.value;
       if (entry.value.isEmpty) {
@@ -184,8 +185,9 @@ final class BoardSession {
   ElementId _allocateId() {
     while (_nextId <= maximumDocumentRevision) {
       final id = ElementId('element-${_nextId++}');
-      if (!_initialIds.contains(id) && !_document.byId.containsKey(id))
+      if (!_initialIds.contains(id) && !_document.byId.containsKey(id)) {
         return id;
+      }
     }
     throw StateError('Element identity range exhausted.');
   }

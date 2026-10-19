@@ -135,8 +135,9 @@ final class EditorCanvasController extends ChangeNotifier {
       final area = Bounds2.fromPoints([from, to]).inflate(radius);
       for (final element in scene.visible(area)) {
         if (element.content is! StrokeElementContent ||
-            scene.isLocked(element.id))
+            scene.isLocked(element.id)) {
           continue;
+        }
         final original = element.content as StrokeElementContent;
         final current = eraseChanges[element.id] ?? [original];
         final transform = scene.worldTransformOf(element.id);
@@ -151,8 +152,9 @@ final class EditorCanvasController extends ChangeNotifier {
             radius: radius + content.style.width * transform.maximumScale / 2,
           );
           if (fragments.length != 1 ||
-              !identical(fragments.single, content.points))
+              !identical(fragments.single, content.points)) {
             changed = true;
+          }
           for (final points in fragments) {
             parts.add(
               StrokeElementContent(

@@ -199,8 +199,12 @@ class _BoardTextEditorState extends State<_BoardTextEditor> {
               textCapitalization: TextCapitalization.sentences,
               textDirection: elementTextDirection(_text.text, _direction),
               style: TextStyle(
-                fontFamily: 'Roboto',
-                fontFamilyFallback: const ['Noto Sans Arabic'],
+                fontFamily: 'Inter',
+                fontFamilyFallback: const [
+                  'IBM Plex Sans Arabic',
+                  'Roboto',
+                  'Noto Sans Arabic',
+                ],
                 fontSize: _fontSize,
                 color: Color(_color),
                 height: 1.3,

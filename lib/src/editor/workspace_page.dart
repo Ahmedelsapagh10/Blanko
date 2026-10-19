@@ -15,6 +15,7 @@ import '../viewport/camera.dart';
 import 'board_session.dart';
 import 'editor_canvas.dart';
 import 'editor_page.dart';
+import 'editor_text.dart';
 import '../theme/blanko_brand.dart';
 
 /// Owns the workspace connection and the lifetime of its one open editor.
@@ -68,6 +69,8 @@ class _WorkspacePageState extends State<WorkspacePage> {
       _error = null;
     });
     try {
+      await ensureEditorFonts();
+      if (!mounted) return;
       final store = widget.store ?? await openBoardStore();
       _store = store;
       await store.initialize();

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../theme/blanko_brand.dart';
 import 'editor_canvas.dart';
 import 'text_editor_dialog.dart';
+import 'editor_text.dart';
 import '../document/element.dart';
 import '../geometry/geometry.dart';
 
@@ -41,6 +42,8 @@ class _EditorPageState extends State<EditorPage> {
     final document = controller.session.document;
     final content = id == null ? null : document.byId[id]?.content;
     try {
+      await ensureEditorFonts();
+      if (!mounted) return;
       final result = await showBoardTextEditor(
         context,
         content: content,

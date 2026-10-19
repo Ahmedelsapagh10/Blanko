@@ -305,4 +305,23 @@ void main() {
     expect(session.canUndo, isTrue);
     expect(session.canRedo, isFalse);
   });
+  test('batch replacement preserves source order, identities, locks and clear undo', () {
+    final stroke = StrokeElementContent(points:[Point2.zero,Point2(100,0)],style:StrokeStyle(color:0xff123456,width:4));
+    final session = BoardSession(document:BoardDocument(id:'batch',title:'Keep me',revision:0,elements:[
+      DocumentElement(id:ElementId('a'),content:stroke,opacity:.4,transform:Transform2.translation(5,6)),
+      entry('b'),entry('c'),entry('element-1',locked:true),
+    ]));
+    final original = session.document;
+    expect(session.replaceElements({ElementId('a'):[stroke,stroke],ElementId('c'):[],ElementId('element-1'):[]}),true);
+    final changed = session.document;
+    expect(changed.elements.map((e)=>e.id.value),['a','element-2','b','element-1']);
+    expect(changed.elements[1].opacity,.4);
+    expect(changed.elements[1].transform,original.elements.first.transform);
+    session.undo(); expect(session.document.elements.map((e)=>e.id),original.elements.map((e)=>e.id));
+    session.redo(); expect(session.document.elements.map((e)=>e.id),changed.elements.map((e)=>e.id));
+    expect(session.replaceElements({ElementId('element-1'):[]}),false);
+    session.clearAll();expect(session.document.elements,isEmpty);expect(session.document.title,'Keep me');
+    session.undo();expect(session.document.elements.map((e)=>e.id),changed.elements.map((e)=>e.id));
+  });
+
 }

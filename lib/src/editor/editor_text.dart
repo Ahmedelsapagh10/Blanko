@@ -1,5 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../document/element.dart';
+
+Future<void>? _fontLoad;
+
+/// Register bundled families before creating persistent text layouts.
+Future<void> ensureEditorFonts() => _fontLoad ??= _loadFonts();
+
+Future<void> _loadFonts() async {
+  try {
+    for (final entry in const {
+      'Roboto': 'assets/benchmark_fonts/Roboto-Regular.ttf',
+      'Noto Sans Arabic': 'assets/benchmark_fonts/NotoSansArabic-Regular.ttf',
+    }.entries) {
+      final loader = FontLoader(entry.key)..addFont(rootBundle.load(entry.value));
+      await loader.load().timeout(const Duration(seconds: 15));
+    }
+  } catch (_) {
+    _fontLoad = null;
+    rethrow;
+  }
+}
 
 TextDirection elementTextDirection(
   String text,
@@ -10,10 +31,12 @@ TextDirection elementTextDirection(
   for (final rune in text.runes) {
     if (rune >= 0x590 && rune <= 0x8ff ||
         rune >= 0xfb1d && rune <= 0xfdff ||
-        rune >= 0xfe70 && rune <= 0xfefc)
+        rune >= 0xfe70 && rune <= 0xfefc) {
       return TextDirection.rtl;
-    if (rune >= 65 && rune <= 90 || rune >= 97 && rune <= 122)
+    }
+    if (rune >= 65 && rune <= 90 || rune >= 97 && rune <= 122) {
       return TextDirection.ltr;
+    }
   }
   return TextDirection.ltr;
 }
@@ -42,8 +65,12 @@ TextPainter layoutElementText(ElementContent content) {
     text: TextSpan(
       text: text,
       style: TextStyle(
-        fontFamily: 'Roboto',
-        fontFamilyFallback: const ['Noto Sans Arabic'],
+        fontFamily: 'Inter',
+        fontFamilyFallback: const [
+          'IBM Plex Sans Arabic',
+          'Roboto',
+          'Noto Sans Arabic',
+        ],
         fontSize: style.fontSize,
         color: Color(style.color),
         height: 1.3,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:whiteboard/src/editor/editor_canvas.dart';
 import 'package:whiteboard/src/document/element.dart';
@@ -25,6 +26,12 @@ void main() {
       await workspace.open(tester, store);
       await add(tester, EditorTool.text, 'Hello مرحبا\nWorld العالم');
       final c = workspace.canvas(tester);
+      final beforeMove = c.session.document.elements.single.transform;
+      final origin = tester.getTopLeft(find.byKey(const ValueKey('board-canvas')));
+      final move = await tester.startGesture(origin + const Offset(190,170), kind:PointerDeviceKind.mouse);
+      await move.moveTo(origin + const Offset(220,210)); await move.up(); await tester.pumpAndSettle();
+      expect(c.session.document.elements.single.transform.tx, beforeMove.tx+30);
+      expect(c.session.document.elements.single.transform.ty, beforeMove.ty+40);
       var text =
           c.session.document.elements.single.content as TextElementContent;
       expect(text.text, 'Hello مرحبا\nWorld العالم');
@@ -45,6 +52,8 @@ void main() {
       await tester.pumpAndSettle();
       final field = find.byKey(const ValueKey('board-text-input'));
       await tester.enterText(field, 'مرحبا English\nSecond line');
+      tester.testTextInput.updateEditingValue(const TextEditingValue(text:'مرحبا English\nSecond line',selection:TextSelection.collapsed(offset:5),composing:TextRange(start:0,end:5)));
+      expect((c.session.document.elements.single.content as TextElementContent).text,text.text);
       tester
           .widget<Slider>(find.byKey(const ValueKey('board-text-width')))
           .onChanged!(160);
