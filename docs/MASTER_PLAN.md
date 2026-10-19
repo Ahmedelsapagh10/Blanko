@@ -4,24 +4,49 @@ Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md).
 
 Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; next usable slices are MVP-03A erasers/Clear All followed by MVP-03B text/sticky notes. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
-## MVP-03A — Eraser & Clear All
+## MVP-03A — Eraser & Clear All (verified)
 
 Priority P0; depends on MVP-02. Acceptance: real-editor gestures are atomic, cancel-safe, zoom-aware, undoable and persisted. Verification: focused command/geometry/widget tests, analysis and macOS/Chrome smoke checks. Extreme performance remains in M14.
 
-- [ ] MVP-0301 Object eraser with continuous drag and one Undo operation.
-- [ ] MVP-0302 Adjustable screen-space eraser size and visible cursor.
-- [ ] MVP-0303 Segment eraser preserves stroke fragments, style, transforms and order.
-- [ ] MVP-0304 Confirm/cancel Clear All, one Undo, current-board identity preserved.
-- [ ] MVP-0305 Verify autosave/reopening and actual macOS/Chrome tools.
+- [x] MVP-0301 Object eraser with continuous drag and one Undo operation.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-02.
+  - Acceptance: Object eraser with continuous drag, atomic stroke deletion, zoom-aware hit testing and one Undo operation; tests: `test/stroke_eraser_test.dart`, `test/editor_eraser_test.dart`; evidence: passing on host and Chrome web.
 
-## MVP-03B — Text Editing & Sticky Notes
+- [x] MVP-0302 Adjustable screen-space eraser size and visible cursor.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-02.
+  - Acceptance: Adjustable screen-space eraser size slider in toolbar and visible cursor rendered via canvas painter; tests: `test/editor_eraser_test.dart`; evidence: passing on host and Chrome web.
+
+- [x] MVP-0303 Segment eraser preserves stroke fragments, style, transforms and order.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-02.
+  - Acceptance: Segment eraser splits strokes into fragments at intersections, preserving style, opacity, transform and document order; tests: `test/stroke_eraser_test.dart`, `test/editor_eraser_test.dart`, `test/board_session_test.dart`; evidence: passing on host and Chrome web.
+
+- [x] MVP-0304 Confirm/cancel Clear All, one Undo, current-board identity preserved.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-02.
+  - Acceptance: Confirmation dialog for Clear All with cancel safety, single undo restoration, and current board id/title preservation; tests: `test/editor_eraser_test.dart`; evidence: passing on host and Chrome web.
+
+- [x] MVP-0305 Verify autosave/reopening and actual macOS/Chrome tools.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-02.
+  - Acceptance: Erased content, clear all, and undo/redo persist to durable storage and survive workspace reopening across macOS and Chrome; tests: `test/editor_eraser_test.dart`, `test/workspace_widget_test.dart`; evidence: passing on host and Chrome web.
+
+## MVP-03B — Text Editing & Sticky Notes (verified)
 
 Priority P0; depends on MVP-03A. Acceptance: multiline Arabic/English editing, colors, size, wrapping, select/move/resize/delete, Undo and persistence. Verification: targeted editing/persistence tests, analysis and real app smoke.
 
-- [ ] MVP-0311 Create and re-edit multiline text with keyboard/IME drafts.
-- [ ] MVP-0312 Text size, color, direction, wrapping and resizing.
-- [ ] MVP-0313 Editable sticky notes with background colors and automatic height.
-- [ ] MVP-0314 Verify Undo/Redo, cancellation, autosave/reopen and app smoke.
+- [x] MVP-0311 Create and re-edit multiline text with keyboard/IME drafts.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-03A.
+  - Acceptance: Create and re-edit multiline text with IME draft composition, modal text editor dialog, font size, wrap width, and color picker; tests: `test/editor_text_test.dart`; evidence: passing on host and Chrome web.
+
+- [x] MVP-0312 Text size, color, direction, wrapping and resizing.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-03A.
+  - Acceptance: Text typography fallback with Roboto and Noto Sans Arabic, auto/LTR/RTL direction detection, width wrapping, and bounding box selection/movement/resizing; tests: `test/editor_text_test.dart`; evidence: passing on host and Chrome web.
+
+- [x] MVP-0313 Editable sticky notes with background colors and automatic height.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-03A.
+  - Acceptance: Editable sticky notes with background fill colors, padding, automatic layout height, empty text deletion, and double-click re-editing; tests: `test/editor_text_test.dart`; evidence: passing on host and Chrome web.
+
+- [x] MVP-0314 Verify Undo/Redo, cancellation, autosave/reopen and app smoke.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-03A.
+  - Acceptance: Text and sticky note edits, moving, resizing, cancellation, and deletion survive undo/redo and autosave reopening; tests: `test/editor_text_test.dart`, `test/workspace_widget_test.dart`; evidence: passing on host and Chrome web.
 
 ## MVP-02 — Local Projects, Autosave & Reliable Reopening (verified)
 
@@ -529,33 +554,33 @@ Acceptance contract: Native editable multiline Arabic/English/mixed text and IME
 
 Verification contract: RTL/IME/editing widget tests, decode/error/disposal tests, frame invariants, font-license audit and device checks.
 
-- [ ] WB-0701 Implement text rendering.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Implement text rendering**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0701 Implement text rendering.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
+  - Acceptance: **Implement text rendering**, integrated where applicable under M07/MVP-03B contract with font fallback and text layout; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
-- [ ] WB-0702 Implement editable text overlay.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Implement editable text overlay**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0702 Implement editable text overlay.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
+  - Acceptance: **Implement editable text overlay**, integrated where applicable under M07/MVP-03B contract with modal draft editor and double-click re-editing; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
-- [ ] WB-0703 Arabic/RTL and mixed-direction text.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Arabic/RTL and mixed-direction text**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0703 Arabic/RTL and mixed-direction text.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
+  - Acceptance: **Arabic/RTL and mixed-direction text**, integrated where applicable under M07/MVP-03B contract with automatic direction detection and bundled font fallback; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
-- [ ] WB-0704 Cursor, selection, and IME.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Cursor, selection, and IME**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0704 Cursor, selection, and IME.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
+  - Acceptance: **Cursor, selection, and IME**, integrated where applicable under M07/MVP-03B contract with IME composing text input and selection bounding box; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
-- [ ] WB-0705 Auto-resize and wrapping.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Auto-resize and wrapping**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0705 Auto-resize and wrapping.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
+  - Acceptance: **Auto-resize and wrapping**, integrated where applicable under M07/MVP-03B contract with maxWidth layout and adjustable wrap width; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
-- [ ] WB-0706 Implement Sticky Notes.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Implement Sticky Notes**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0706 Implement Sticky Notes.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
+  - Acceptance: **Implement Sticky Notes**, integrated where applicable under M07/MVP-03B contract with background fill colors, padding, and empty deletion; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
-- [ ] WB-0707 Sticky Note styles and resize.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Sticky Note styles and resize**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0707 Sticky Note styles and resize.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
+  - Acceptance: **Sticky Note styles and resize**, integrated where applicable under M07/MVP-03B contract with background color presets and auto-height text layout; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
 - [ ] WB-0708 Implement image import and display.
   - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.

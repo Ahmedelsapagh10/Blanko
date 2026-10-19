@@ -1,11 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../document/element.dart';
 
+bool _fontsLoaded = false;
 Future<void>? _fontLoad;
 
 /// Register bundled families before creating persistent text layouts.
-Future<void> ensureEditorFonts() => _fontLoad ??= _loadFonts();
+Future<void> ensureEditorFonts() {
+  if (_fontsLoaded) return SynchronousFuture<void>(null);
+  return _fontLoad ??= _loadFonts();
+}
 
 Future<void> _loadFonts() async {
   try {
@@ -16,6 +21,7 @@ Future<void> _loadFonts() async {
       final loader = FontLoader(entry.key)..addFont(rootBundle.load(entry.value));
       await loader.load().timeout(const Duration(seconds: 15));
     }
+    _fontsLoaded = true;
   } catch (_) {
     _fontLoad = null;
     rethrow;
