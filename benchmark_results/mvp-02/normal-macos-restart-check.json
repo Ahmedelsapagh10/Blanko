@@ -1,0 +1,12 @@
+{
+  "normalCommand": "flutter run -d macos",
+  "normalBundleId": "ahmedelsapagh.com.whiteboard",
+  "actualCloseAndNewProcess": true,
+  "acknowledgedRecordByteIdentical": true,
+  "sha256": "ef26baa0c0243b44fa9df1efa6bde4d2f53775ff96e7d453769d025dc454ddc9",
+  "elements": 1,
+  "revision": 1,
+  "generation": 2,
+  "cliWarning": "Failed to foreground app; open returned 1. CUA selected actual running app and verified Editor.",
+  "isolatedTestBundleStillSeparate": true
+}

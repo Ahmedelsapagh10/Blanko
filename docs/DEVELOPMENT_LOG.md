@@ -223,3 +223,73 @@ Actual execution: focused **28 host +28 Chrome pass** across4 files; `flutter an
 Limitations: session-only; single selection and root pen/shapes/lines; committed snapshot/index/path rebuilds;100 inverse commands/50K points per stroke; no advanced content/storage/export/mobile qualification. Native framework duplicate-KeyDown assertion happens before app Focus callbacks; no app root cause established, no suppression/SDK change. App logical Latin shortcuts do not qualify non-Latin layouts; live CUA Meta+Z had no undo, toolbar actions verified. Some CUA drags had no commit; input event capture unavailable, no supported toolbar-focus defect. First-drag shapes and keyboard pass synthetic host/Chrome tests; do not claim physical event qualification. Follow up after persistence protects boards.
 
 No package/SDK/pubspec/lockfile/platform/configuration/migration changes in MVP-01. Shared pubspec/fonts and benchmark/render changes from prior sessions remain preserved. No staging/reset/commit; original index checksum unchanged. No engineering continues after checkpoint; launched app/server remain for user's unsaved boards. Next implementation is M09 local save/reopen and failure/recovery/writer correctness, ahead of advanced editing and stress optimization.
+
+## 2026-10-19 — MVP-02 Local Projects, Autosave and Reopening
+
+Implemented durable Boards without event sourcing or a new state-management framework. Independent agents owned codec, platform stores, save coordinator/tests and read-only reviews; coordinator owned Workspace integration/UI/native validation/canonical docs. Preserved old performance work and user changes. Git HEAD advanced externally to c431539 during execution; no agent Git/index/commit writes.
+
+Application/source files:
+
+- `lib/main.dart`: normal entry now owns a WorkspacePage; injectable BoardStore for explicit tests only.
+- `lib/src/document/document_codec.dart`: strict schema1 JSON for every existing value/content type, complete manifests/order/hierarchy/metadata, safe finite numbers and geometry; reject unknown/duplicate/future/malformed data and excessive input. No silent schema conversion.
+- `lib/src/persistence/board_store.dart`: BoardSnapshot local envelope with validated camera, storage generation and save time; small durable store interface and CAS conflict error. No Undo/resources in storage.
+- `lib/src/persistence/file_board_store.dart`: official application-support path, explicit test override, single native workspace writer via process guard+OS lock, serialized compare-and-swap, flushed temp/atomic rename, per-board files and last-board pointer; no destructive destination-delete workaround.
+- `lib/src/persistence/web_board_store.dart`: real strict-durability IndexedDB, transaction-complete acknowledgement/CAS, lifetime Web Lock, read-only competitors, connection invalidation and safe close.
+- `lib/src/persistence/open_board_store.dart`: conditional backend factory.
+- `lib/src/persistence/unsupported_board_store.dart`: actionable unsupported-platform failure rather than a memory fallback.
+- `lib/src/persistence/board_autosave.dart`: serialized/coalesced newest snapshot, generations/revision checks, latest acknowledgement status, explicit Retry, retained work, initial read-only ownership and writer-loss failure, disposal-safe accepted drain.
+- `lib/src/persistence/close_guard.dart`: conditional close-guard export.
+- `lib/src/persistence/close_guard_stub.dart`: native no-op browser warning adapter; native uses lifecycle exit callback.
+- `lib/src/persistence/close_guard_web.dart`: beforeunload warning while dirty, listener removal on disposal; no promise of waiting for browser I/O.
+- `lib/src/editor/workspace_page.dart`: owns store/open editor/autosave; library create/open, last-board restore, status/errors/retry, settled camera saves, flush and input suppression during switching, candidate validation before replacement, save-aware native exit, safe startup errors and stale-initialization suppression.
+- `lib/src/editor/editor_page.dart`: supports externally owned controller, board title/actions; no double disposal; ignores input during async switching.
+- `lib/src/editor/editor_canvas.dart`: read-only/input-enabled gates, navigation status/end notification for persisted viewport, preserves all previous drawing behavior and transient commit boundary.
+- `macos/Runner/MainFlutterWindow.swift`: native close delegate routes red Close through existing cancelable application termination, retaining visible failed/pending board. Necessary fix discovered by actual fault injection, not speculative platform refactoring.
+
+Tests:
+
+- `test/document_codec_test.dart`:12 exact round-trip/all-content/RTL/strict corruption/safe integer/10,001-element and large-world cases.
+- `test/board_snapshot_test.dart`:2 local envelope/camera/generation/invalid-record cases.
+- `test/board_autosave_test.dart`:16 serialized writes/coalescing/stale ack/CAS/Undo/camera/failure/retry/lost writer/readonly/disposal/reentrancy cases.
+- `test/file_board_store_test.dart`:8 real filesystem/atomic failure/reopen/rapid revisions/independent boards/corruption/close/cross-process lock cases.
+- `test/web_board_store_test.dart`:6 actual IndexedDB/Web Locks/reopen/transactions/independent boards/CAS abort/corruption/close cases; no memory backend.
+- `test/workspace_widget_test.dart`:12 integrated normal entry/drawing/reopen/Undo/library/rapid edits/status/error/retry/pending switch+keyboard/exit/readonly/writer-loss/startup cleanup/disposed init/viewport scenarios. These controlled store/widget restarts are simulated and not reported as physical crashes.
+- `test/support/test_board_store.dart`: explicit test-only delayed/failing store; never selected in production.
+- `test/editor_widget_test.dart`: retained7 MVP-01 drawing/geometry/input/disposal regressions using the isolated Editor harness.
+- `test/widget_test.dart`: normal persistent entry injects test store and requires acknowledged Saved status; lab smoke retained. Existing BoardSession9 and EditorScene10 tests rerun unchanged.
+
+Dependencies/build files:
+
+- `pubspec.yaml`: pinned official path_provider2.1.6 for host app-data paths and web1.1.1 for modern browser APIs.
+- `pubspec.lock`:25 new transitive resolutions; no existing package/Flutter/Dart upgrade. Installed compatibility constraints and exact SDK metadata recorded in verification.
+- `macos/Podfile`, `macos/Podfile.lock`: initial Flutter/CocoaPods integration generated by native tooling (CocoaPods1.16.2 already installed; no upgrade).
+- `macos/Flutter/Flutter-Debug.xcconfig`, `macos/Flutter/Flutter-Release.xcconfig`: optional generated Pods configuration includes.
+- `macos/Runner.xcodeproj/project.pbxproj`, `macos/Runner.xcworkspace/contents.xcworkspacedata`: generated Pods project/framework/check/embed integration. Existing app identity/deployment requirements retained.
+- `ios/Podfile`, `ios/Flutter/Debug.xcconfig`, `ios/Flutter/Release.xcconfig`: Flutter's generated initial CocoaPods scaffolding/includes; no iOS build/device claim.
+- `linux/flutter/generated_plugins.cmake`, `windows/flutter/generated_plugins.cmake`: generated transitive jni FFI hook declarations; those platforms remain unbuilt/unqualified. No Android/Gradle/SDK version changes.
+
+Canonical/user documentation:
+
+- `AGENTS.md`: current usable-feature priority after verified persistence.
+- `README.md`: stable native/web launch commands, exact manual draw/save/close/reopen/library checks and platform durability boundaries.
+- `docs/EXECUTION_DIRECTIVE.md`: preserve explicit MVP-02 authorization and automatic next-usable-feature priority.
+- `docs/MASTER_PLAN.md`:8 concrete MVP-02 checkboxes verified with evidence; full old tasks preserved; broader storage/hardening work remains unchecked.
+- `docs/PROJECT_STATUS.md`, `docs/HANDOFF.md`: actual44/266=16.54% state, safe resume/live apps/data/next text-and-note implementation contracts.
+- `docs/ARCHITECTURE.md`: snapshot/store/coordinator/Workspace/resource/close ownership and commit boundaries.
+- `docs/DECISIONS.md`: ADR-015 minimal per-platform durable snapshots and ADR-016 evidence-driven native close fix, official package/API references.
+- `docs/TEST_MATRIX.md`: actual78 host/76 Chrome, real versus simulated scenarios, commands and exclusions.
+- `docs/RISKS.md`: browser profile/eviction, power loss, recovery/device/asset/10K and debug R limitations.
+- `docs/PERFORMANCE.md`: no new benchmark/performance claim; previous evidence untouched.
+- `docs/DEVELOPMENT_LOG.md`: this exact file manifest and verification record.
+
+Evidence under `benchmark_results/mvp-02/`: `verification.json`, small verified-source archive/hashes, local ignored logs, strict font test preflight audit, raw agent-authored test snapshots/restart checks and real JPEG screenshots. No synthetic screenshots. Normal `flutter run -d macos` and isolated debug app built/ran; real close/relaunch restored bytes. Chrome stable-origin Reload, tab close/reopen, independent1/2-element boards, styles/camera and actual read-only secondary verified. Native permission0555 fault preserved prior ack and in-memory latest;0755+Retry succeeded. Initial red-Close hid failed board; delegate fix repeated failed close/switch blocking and successful saved exit. Controlled pending writes/failures are simulated; native process exit/browser page teardown are real. No full Chrome-process quit (old user tabs preserved), physical crash or power-cut test.
+
+Final source: **78 host+76 Chrome tests pass; analysis clean; Dart format/diff checks clean.** Initial import/finder/invalid-camera-fixture failures preserved and excluded, production range/contract not weakened. Dynamic lost-writer state and async switch keyboard races fixed with regressions. No-authored-work opening failures can exit; disposed opening cannot create a stale board. Native foreground launch warning handled by observing actual window, no SDK suppression. Only generated native caches cleaned; isolated test permissions restored, old Chrome8765 tabs/server preserved. Existing source/history/evidence not discarded.
+
+Development caveat discovered: Flutter web R hot restart retains its prior Web Lock and can open new Dart state read-only. Full browser Reload releases the page lock and restores writing without changing acknowledged IndexedDB data. This is recorded under broader WB-0914; no unsafe lock stealing or private engine hook. Use normal browser profile/stable web-server URL rather than relying on Flutter disposable profile/cache. Undo/tool/selection preferences remain session-only. Portable backups/image original storage/full device/release/10K qualification remain pending.
+
+Next highest-value usable slice inspected: existing M07 text/note domain values and strict codec are ready, but Editor renderer rejects unsupported content and authoritative font manifests must be integrated atomically before exposing tools. Follow-on work requires owned text layouts/readiness, standard Flutter text editing/RTL/IME drafts and persisted reopen tests; no speculative font/raster experiment or new state framework. No new feature implementation is claimed at this checkpoint. No approval question or background engineering claim; live app/server are available for manual testing.
+
+Final data-preservation step: the isolated verification window later showed2 saved elements in its named board. Closed both saved native app processes through their guarded close paths, then ran a one-off Flutter host script outside the automatic test suite, calling existing FileBoardStore APIs under both workspace OS locks. Copied3 absent board IDs into normal workspace as new storage-generation1 snapshots, preserving complete documents/revisions/camera; preflight rejected any conflicting ID. Verified pre-existing normal board raw bytes unchanged and every copied document/camera equal. All source boards retained; normal count4, last “Native named board”2 elements. Reopened the normal app; verification app closed. This is a non-destructive local workspace consolidation for user continuity, not a portable import feature. Result/log: workspace-consolidation.json/log. One extra integrity action passed separately from the78/76 regression counts. Temporary path-specific script was not installed under test/ and cannot run in normal test discovery.
+
+Final Git observation: external staging included current MVP-02 files and separate design/brand assets. This work did not stage/reset/commit or modify those brand files. The earlier empty-index assertion was invalidated by external staging, not a source/test failure; final checks preserve the index as found. Source/archive hashes,78/76 markers, analysis/format and normal workspace-copy integrity were rechecked successfully.

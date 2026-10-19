@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'src/editor/editor_page.dart';
+import 'src/editor/workspace_page.dart';
+import 'src/persistence/board_store.dart';
 
 void main() => runApp(const WhiteboardApp());
 
 class WhiteboardApp extends StatelessWidget {
-  const WhiteboardApp({super.key});
+  const WhiteboardApp({super.key, this.store});
+  final BoardStore? store;
 
   @override
   Widget build(BuildContext context) => MaterialApp(
@@ -15,6 +17,6 @@ class WhiteboardApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff2563eb)),
       useMaterial3: true,
     ),
-    home: const EditorPage(),
+    home: WorkspacePage(store: store),
   );
 }

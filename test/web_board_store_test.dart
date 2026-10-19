@@ -1,0 +1,207 @@
+@TestOn('browser')
+library;
+
+import 'dart:async';
+import 'dart:js_interop';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:web/web.dart' as web;
+import 'package:whiteboard/src/document/document.dart';
+import 'package:whiteboard/src/document/element.dart';
+import 'package:whiteboard/src/geometry/geometry.dart';
+import 'package:whiteboard/src/persistence/board_store.dart';
+import 'package:whiteboard/src/persistence/web_board_store.dart';
+import 'package:whiteboard/src/viewport/camera.dart';
+
+BoardSnapshot snapshot(String id, int generation, int revision) =>
+    BoardSnapshot(
+      document: BoardDocument(
+        id: id,
+        revision: revision,
+        assets: const [],
+        fontReferences: const [],
+        title: 'لوحة $id',
+        elements: [
+          DocumentElement(
+            id: ElementId('shape'),
+            revision: revision,
+            transform: Transform2.translation(-400.25, 12345.75),
+            content: ShapeElementContent(
+              kind: ShapeKind.ellipse,
+              bounds: Bounds2(0, 0, 100, 80),
+              fillColor: 0x55443322,
+            ),
+          ),
+        ],
+      ),
+      camera: Camera(translation: Point2(19.5, -700), zoom: 0.42),
+      version: generation,
+      savedAt: DateTime.utc(2026, 10, 19, 10, generation),
+    );
+
+void main() {
+  late String databaseName;
+  final stores = <WebBoardStore>[];
+  Future<WebBoardStore> open() async {
+    final store = WebBoardStore(databaseName: databaseName);
+    stores.add(store);
+    await store.initialize();
+    return store;
+  }
+
+  setUp(() {
+    databaseName = 'whiteboard.test.${DateTime.now().microsecondsSinceEpoch}';
+  });
+  tearDown(() async {
+    for (final store in stores.reversed) {
+      await store.close();
+    }
+    stores.clear();
+    final completion = Completer<void>();
+    final request = web.window.indexedDB.deleteDatabase(databaseName);
+    request.onsuccess = ((web.Event _) {
+      completion.complete();
+    }).toJS;
+    request.onerror = ((web.Event _) {
+      completion.completeError(StateError('Test database cleanup failed.'));
+    }).toJS;
+    await completion.future;
+  });
+
+  test(
+    'real IndexedDB retains snapshots and last board after all connections close',
+    () async {
+      final store = await open();
+      expect(store.writable, isTrue);
+      expect(store.location, contains('IndexedDB'));
+      final original = snapshot('first', 1, 7);
+      await store.writeBoard(original, expectedVersion: null);
+      await store.writeLastBoard('first');
+      await store.close();
+      final reopened = await open();
+      expect(reopened.writable, isTrue);
+      expect((await reopened.readBoard('first'))!.encode(), original.encode());
+      expect(await reopened.readLastBoard(), 'first');
+      expect((await reopened.listBoards()).single.encode(), original.encode());
+    },
+  );
+
+  test(
+    'rapid real transactions commit latest generation without mixing boards',
+    () async {
+      final store = await open();
+      await store.writeBoard(snapshot('a', 1, 1), expectedVersion: null);
+      final writes = <Future<void>>[];
+      for (var generation = 2; generation <= 15; generation++) {
+        writes.add(
+          store.writeBoard(
+            snapshot('a', generation, generation),
+            expectedVersion: generation - 1,
+          ),
+        );
+      }
+      writes.add(store.writeBoard(snapshot('b', 1, 0), expectedVersion: null));
+      await Future.wait(writes);
+      await store.close();
+      final reopened = await open();
+      expect((await reopened.readBoard('a'))!.version, 15);
+      expect((await reopened.readBoard('b'))!.version, 1);
+      expect(await reopened.listBoards(), hasLength(2));
+    },
+  );
+
+  test(
+    'transactional CAS aborts stale saves and keeps acknowledged record',
+    () async {
+      final store = await open();
+      final original = snapshot('a', 1, 6);
+      await store.writeBoard(original, expectedVersion: null);
+      await expectLater(
+        store.writeBoard(snapshot('a', 2, 7), expectedVersion: null),
+        throwsA(isA<StorageConflict>()),
+      );
+      await expectLater(
+        store.writeBoard(snapshot('a', 2, 5), expectedVersion: 1),
+        throwsA(isA<StorageConflict>()),
+      );
+      await expectLater(
+        store.writeBoard(snapshot('a', 3, 7), expectedVersion: 1),
+        throwsA(isA<StorageConflict>()),
+      );
+      expect((await store.readBoard('a'))!.encode(), original.encode());
+      await store.writeBoard(snapshot('a', 2, 6), expectedVersion: 1);
+      expect((await store.readBoard('a'))!.version, 2);
+    },
+  );
+
+  test(
+    'actual Web Lock makes second store read-only, then releases on close',
+    () async {
+      final writer = await open();
+      await writer.writeBoard(snapshot('a', 1, 0), expectedVersion: null);
+      final reader = await open();
+      expect(reader.writable, isFalse);
+      expect(await reader.listBoards(), hasLength(1));
+      await expectLater(
+        reader.writeBoard(snapshot('b', 1, 0), expectedVersion: null),
+        throwsStateError,
+      );
+      await expectLater(reader.writeLastBoard('a'), throwsStateError);
+      await reader.close();
+      expect(writer.writable, isTrue);
+      await writer.close();
+      final nextWriter = await open();
+      expect(nextWriter.writable, isTrue);
+      await nextWriter.writeBoard(snapshot('b', 1, 0), expectedVersion: null);
+    },
+  );
+
+  test(
+    'closing waits for queued transactions and rejects subsequent edits',
+    () async {
+      final store = await open();
+      final write = store.writeBoard(
+        snapshot('a', 1, 0),
+        expectedVersion: null,
+      );
+      final close = store.close();
+      await expectLater(
+        store.writeBoard(snapshot('b', 1, 0), expectedVersion: null),
+        throwsStateError,
+      );
+      await write;
+      await close;
+      final reopened = await open();
+      expect(await reopened.readBoard('a'), isNotNull);
+      expect(await reopened.readBoard('b'), isNull);
+    },
+  );
+
+  test(
+    'malformed persisted data is reported without silently dropping boards',
+    () async {
+      final store = await open();
+      await store.writeBoard(snapshot('a', 1, 0), expectedVersion: null);
+      final opened = Completer<web.IDBDatabase>();
+      final request = web.window.indexedDB.open(databaseName);
+      request.onsuccess = ((web.Event _) {
+        opened.complete(request.result as web.IDBDatabase);
+      }).toJS;
+      final raw = await opened.future;
+      final completion = Completer<void>();
+      final transaction = raw.transaction('boards'.toJS, 'readwrite');
+      transaction.oncomplete = ((web.Event _) {
+        completion.complete();
+      }).toJS;
+      transaction.objectStore('boards').put('{corrupt'.toJS, 'a'.toJS);
+      await completion.future;
+      raw.close();
+      await expectLater(store.listBoards(), throwsFormatException);
+      await expectLater(store.readBoard('a'), throwsFormatException);
+      await expectLater(
+        store.writeBoard(snapshot('a', 2, 1), expectedVersion: 1),
+        throwsFormatException,
+      );
+    },
+  );
+}

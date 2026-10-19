@@ -2,7 +2,21 @@
 
 Updated 2026-10-18. Complete requirement/task mapping: [MASTER_PLAN](MASTER_PLAN.md), per-milestone verification contracts. This matrix records current coverage rather than claiming future tests exist.
 
-## MVP-01 current editor verification — 2026-10-19
+## MVP-02 persistence verification — 2026-10-19
+
+**78 host +76 Chrome pass**,9 files per target, static analysis clean. Exact commands/source hashes/archive/failure exclusions in `benchmark_results/mvp-02/verification.json`. Codec12, snapshot2, autosave16, workspace12, entries2, Editor7, BoardSession9, EditorScene10; native backend8 versus browser backend6. These include all MVP-01 regressions; historical rendering suites were not rerun.
+
+Native tests use real temporary files, flushed reopen, cross-process OS locks, CAS/rapid generations, actual rename failure/retry, malformed data and pending-close drain. Chrome backend tests use actual IndexedDB/Web Locks, transaction completion and aborted stale CAS, independent boards and connection reopen. Test doubles are explicitly injected in UI/coordinator tests only; production has no memory fallback.
+
+Actual normal macOS entry and separate isolated bundle were built and relaunched in new processes. Normal1-stroke snapshot and isolated3-board snapshots were byte-identical after restart. Native live permission0555 fault produced Save failed while retaining memory and prior acknowledged bytes; restore0755/Retry saved latest. Failed red Close initially hid the window; fixed native delegate, then repeated failed close retained visible board and blocked switch; saved close exited normally. Screenshots and restart JSON are retained. Permissions restored; no user-data cleanup.
+
+Actual Chrome page Reload, close-tab/fresh-tab reopening, independent styled boards, last-board/80% viewport restore and real second-tab read-only verified. Entire Chrome process was not quit because earlier tabs contain unsaved MVP-01 work. Simulated pending-I/O/widget restarts are labeled; no actual crash/power-cut claim. Final Debug builds prove functionality only. Native launcher foreground warning was resolved by selecting the running window through CUA; no claim of universally clean OS launch behavior.
+
+Development-only finding: Flutter `R` hot restart can leave its old Web Lock promise alive; use a full browser Reload after restart. No unsafe lock stealing or private SDK hook adopted. Browser reload/tab lifecycle is qualified; debug hot-restart cleanup remains part of the broader unverified writer-coordination task.
+
+Commands are in README/HANDOFF; Chrome test preflight emits its audit under mvp-02 so historical asset evidence is not overwritten. Windows/Edge/Safari/Android/iOS, physical input/presentation, long memory and10K save/render costs remain unqualified.
+
+## MVP-01 editor verification — historical checkpoint (2026-10-19)
 
 28/28 host and28/28 Chrome tests across `editor_widget_test.dart` (7), `widget_test.dart` (2), `board_session_test.dart` (9), `editor_scene_test.dart` (10). `flutter analyze --no-pub`: no issues. Exact commands/exit codes/source hashes and preserved initial failures: `benchmark_results/mvp-01/verification.json`. These are focused integration/regression tests, not a rerun of every historical renderer suite or a performance claim.
 

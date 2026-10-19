@@ -1,0 +1,29 @@
+{
+  "purpose": "Preserve later saved edits made in the isolated verification app in the normal app too",
+  "existingNormalBoardsPreserved": 1,
+  "copiedBoards": [
+    {
+      "id": "board-hncughx9ju-u5btgp",
+      "title": "Native named board",
+      "revision": 2,
+      "elements": 2
+    },
+    {
+      "id": "board-hncufoc99x-y20gug",
+      "title": "Untitled board",
+      "revision": 1,
+      "elements": 1
+    },
+    {
+      "id": "board-hnctxnbs3a-3356hh",
+      "title": "Untitled board",
+      "revision": 6,
+      "elements": 4
+    }
+  ],
+  "normalBoardCount": 4,
+  "lastBoard": "board-hncughx9ju-u5btgp",
+  "sourceBoardsRetained": true,
+  "noExistingBoardOverwritten": true,
+  "method": "Existing FileBoardStore APIs under both OS writer locks; new generation1 only for absent IDs"
+}

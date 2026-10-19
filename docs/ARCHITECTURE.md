@@ -1,6 +1,16 @@
 # Architecture
 
-Requirements: [execution directive](EXECUTION_DIRECTIVE.md). Current status: MVP-01 session editor plus separate rendering laboratory. Historical measurements and rejected designs remain in phase reports. No full V1 qualification.
+Requirements: [execution directive](EXECUTION_DIRECTIVE.md). Current status: persistent Editor with Board Library (MVP-01/02), plus separate rendering laboratory. Historical measurements and rejected designs remain in phase reports. No full V1 qualification.
+
+## MVP-02 storage and ownership
+
+`DocumentCodec` serializes strict schema1 values for all existing model types, never renderer resources or Undo history. Authoritative non-null manifests, source order, hierarchy, finite/safe numeric values and geometry invariants are validated. Unknown/duplicate fields and unsupported versions fail explicitly. Defensive caps64MiB document JSON/100K elements/2M stroke points exceed the10K requirement; no performance inference follows.
+
+`BoardSnapshot` wraps a document, validated camera, UTC save time and a separate storage generation. `BoardStore` is a small constructor-injected platform boundary, not another state-management layer. `FileBoardStore` uses application support (path_provider), an in-process guard plus OS workspace writer lock, per-board flushed temporary files and same-directory atomic replacement. Last-board identity is separate and only references an already committed board. No delete-destination fallback. `WebBoardStore` uses actual IndexedDB (package:web), strict readwrite transactions and transaction-complete acknowledgements, with a lifetime Web Lock for the workspace writer. Secondary instances/tabs are read-only; neither backend substitutes memory on failure. Both compare exact expected generations and reject regressing document revisions.
+
+`BoardAutosave` owns one in-flight write plus the newest pending snapshot. Document revisions describe commands; storage generations also include camera-only saves. Older completions cannot acknowledge newer edits. Errors retain the newest in-memory snapshot and require Retry; a lost writable backend is a failure, not a safe read-only transition. `WorkspacePage` owns the store, one Editor controller and one autosave coordinator. Completed commands submit immediately; navigation is captured at gesture end or after250ms idle. Status is Saving until the latest accepted snapshot is acknowledged. Switching flushes, blocks pointer/keyboard editing during async work, validates the next editor before replacement and preserves the current session on error. Initialization/disposal suppress stale publication/default-board creation.
+
+Native normal exit awaits flush and cancels on failure. MainFlutterWindow's close delegate redirects the red close button through Flutter's normal cancelable application termination, keeping the window visible while flush fails. This follows the current single-window app model. Browsers cannot await an unload; beforeunload warns while dirty. Browser ownership is released automatically on page destruction. Native app restart and real Chrome page teardown/reload were verified; hard power-cut recovery and every platform are not qualified. Current toolbar/selection preferences and Undo remain session-only; camera/document/last-board identity are stored. Image originals are not yet implemented; serializing references does not claim asset-byte persistence.
 
 ## MVP-01 ownership and commit boundary
 

@@ -1,0 +1,11 @@
+{
+  "realProcessQuitAndRelaunch": true,
+  "bundleId": "ahmedelsapagh.com.whiteboard.mvp02verification",
+  "isolatedBundleReason": "Preserve earlier unsaved user app; Dart source identical to root",
+  "boardBytesUnchanged": true,
+  "sha256": "7ce4c690ba068801837c84f432b869f7b3107db2dfdea2c37e2414742d6692cb",
+  "revision": 4,
+  "generation": 5,
+  "elements": 2,
+  "scenario": "Three native mouse strokes, toolbar Undo, Saved locally, app menu Quit, confirmed absent in app inventory, relaunch, same two visible strokes and bytes; session Undo empty."
+}

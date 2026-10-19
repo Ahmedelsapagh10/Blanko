@@ -13,6 +13,7 @@ import 'package:whiteboard/benchmark_main.dart';
 import 'package:whiteboard/src/benchmarks/benchmark_page.dart';
 import 'package:whiteboard/src/editor/editor_canvas.dart';
 import 'package:whiteboard/src/editor/editor_page.dart';
+import 'support/test_board_store.dart';
 
 void main() {
   testWidgets(
@@ -27,12 +28,13 @@ void main() {
     },
   );
   testWidgets('Normal entry opens the usable editor', (tester) async {
-    await tester.pumpWidget(const WhiteboardApp());
+    await tester.pumpWidget(WhiteboardApp(store: TestBoardStore()));
+    await tester.pumpAndSettle();
     expect(find.byType(EditorPage), findsOneWidget);
     expect(find.byType(EditorCanvas), findsOneWidget);
     expect(find.byTooltip('Pen (P)'), findsOneWidget);
     expect(find.byType(BenchmarkPage), findsNothing);
-    expect(find.text('Session only · not saved'), findsOneWidget);
+    expect(find.text('Saved locally'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
   });
 }

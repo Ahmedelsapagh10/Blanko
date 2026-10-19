@@ -4,22 +4,41 @@ Current autonomous execution: [project status](docs/PROJECT_STATUS.md),
 [canonical plan](docs/MASTER_PLAN.md), [resume notes](docs/HANDOFF.md).
 The historical phase sections below preserve their original evidence; the
 [master directive](docs/EXECUTION_DIRECTIVE.md) now authorizes continued local
-development. The normal application now opens a usable session editor.
+development. The normal application now opens a persistent Editor with a Board Library.
 
-## Run the Whiteboard
+## Run the persistent Whiteboard
 
-From this repository, use separate terminals for the targets you want:
+From this repository, launch macOS:
 
 ```sh
+flutter pub get
 flutter run -d macos
-flutter run -d chrome --web-port=8765 --web-browser-debug-port=9227
 ```
 
-Both exact commands were executed with Flutter 3.41.9 / Dart 3.11.5. These launch the real Editor in Debug; they are functional checks, not performance measurements. Chrome's debug port is optional and was used during verification. If port8765 is already serving your board, use that open tab rather than reloading unsaved work.
+For Chrome, run a stable local server and open **http://localhost:8766** in your normal Chrome profile:
 
-Draw with Pen, Rectangle, Ellipse, Triangle or Line. Select an outline/stroke to move it; use Delete and the Undo/Redo buttons. Pan with the hand tool, Space+drag or middle button. Zoom with +/− or Ctrl/⌘+scroll. Colors and three stroke widths are available. Escape cancels a draft. History retains the latest100 committed operations.
+```sh
+flutter run -d web-server --web-port=8766 --web-hostname=localhost
+```
 
-**This version is session-only. Closing/reloading loses the board.** Saving and reopening boards is the next implementation priority, ahead of advanced tools. Non-Latin keyboard shortcuts and native keyboard startup/focus behavior still need qualification; toolbar actions are available. Text, images, frames, project/PNG export and full device support remain pending. See [current verification](benchmark_results/mvp-01/verification.json) and [per-file changes](docs/DEVELOPMENT_LOG.md#2026-10-19--mvp-01-first-usable-whiteboard).
+Keep the server running while reopening the web app. During development, use a full browser Reload after Flutter hot restart (`R`), which can otherwise retain the old debug-page writer lock. Use the same browser profile and exact URL/port. A normal profile avoids depending on Flutter's disposable debug-browser profile and best-effort profile-cache copying. These commands were executed with Flutter3.41.9/Dart3.11.5. macOS stores boards in its application-support workspace; Chrome uses real IndexedDB. Native and browser workspaces are independent, with no cloud sync.
+
+### Verify saving and reopening
+
+1. Open **Boards**, enter a name and choose **Create board**.
+2. Draw with Pen or a shape tool. Select an outline/stroke to move it; try Delete and Undo. Colors and three widths are available.
+3. Wait for **Saved locally**. Pan/zoom is also saved after navigation settles.
+4. On macOS, close the window or Quit, then reopen the app. In Chrome, reload or close the tab and open the same URL again.
+5. Confirm the same board, elements, colors, positions and viewport return. Undo/Redo starts empty because history is session-only.
+6. Create a second board with different content; switch between them through **Boards** and repeat reopening. The last selected board reopens automatically.
+
+If **Save failed** appears, keep the board open and use **Retry save** after restoring storage access. Work stays in memory; failed saves block board switching and cancel normal macOS closing. Browser close/reload warns while unsaved, since browsers cannot wait for an asynchronous write during unload. Another editing window/tab holds the writer lock; secondary sessions are explicitly read-only.
+
+**Persistence begins with this version. Older windows still showing “Session only · not saved” are running MVP-01 and cannot retroactively autosave.** The earlier Chrome tabs were left untouched. Do not clear browser site data if you need its local boards. Browser storage can be evicted; portable backups/export remain future work. Forced termination may lose unacknowledged changes; real power-loss/directory-sync recovery is not qualified.
+
+Current scope: Pen, Rectangle, Ellipse, Triangle, Line, single selection/movement/Delete, bounded Undo/Redo, grid/pan/zoom, board creation/library/reopen, automatic acknowledged saves and error retry. Text/notes/images/frames and advanced tools/export follow. Current tool/color/selection preferences are not persisted; authored element styles are. No10K performance pass is claimed.
+
+Actual tests/restart evidence and screenshots: [MVP-02 verification](benchmark_results/mvp-02/verification.json). Exact per-file changes: [development log](docs/DEVELOPMENT_LOG.md#2026-10-19--mvp-02-local-projects-autosave-and-reopening).
 
 ## Historical rendering laboratory
 

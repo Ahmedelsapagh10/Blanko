@@ -28,3 +28,13 @@ New actual font condition exposed fractional power-of-two tile resampling that f
 - Editor creates only root pen/shapes/lines and supports single selection; unsupported content/import/hierarchy rendering is not exposed. Full production content/opacity/resource behavior remains future work.
 - Committed edits rebuild snapshot/index/path map. Pointer previews do not.100 bounded inverse history entries and50K points/stroke are practical slice limits, not measured10K performance.
 - Chrome test compilation hit ENOSPC before tests; verified retry passed after~780MiB stale project-output cleanup. Only~0.9GiB free at retry: build serially, preserve active app/server files and all user data; no repeated unrelated cache deletion.
+
+## MVP-02 current storage risks — 2026-10-19
+
+MVP-02 native process restart and browser page reload/reopening now verified; session-only data loss is resolved for newly persisted boards. Old MVP-01 windows cannot retroactively save. Real native permission failure/retry, stale-generation rejection and separate-writer exclusion verified. Native red-Close hidden-window defect fixed/tested; startup opening failure may exit when no authored work exists, while actual failed edits remain protected.
+
+Browser profile/origin/eviction/cleared data remain platform limits, not backup. Use stable web-server URL in normal Chrome profile; Flutter debug Chrome profile/cache is not a durability guarantee. Full Chrome process restart was not executed to preserve old unsaved tabs. Flutter R hot restart can retain an old Web Lock; full page Reload is required and verified. Broader coordination remains unchecked; no unsafe steal/private API fix.
+
+Native file flush+rename is process-restart evidence; directory fsync/physical power loss not verified. Forced kill can lose unacknowledged edits. Pending tests use controlled delays, not actual crashes. Corrupt/future records fail visibly; richer recovery and reconnection UX remain pending. Original images/assets and library rename/duplicate/delete remain unimplemented. Whole-snapshot encoding and per-commit derived rebuild costs need later10K hardening; do not resume that before usable features.
+
+Two official pinned packages add25 transitives and generated native build scaffolding; only macOS/Chrome compiled/executed. Other device/toolchains remain separate obligations. External Git baseline advanced to c431539; this work never rewrote the index. All test permission changes restored; only regenerable native build caches removed.

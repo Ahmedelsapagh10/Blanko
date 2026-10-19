@@ -1,0 +1,34 @@
+{
+  "records": {
+    "Ym9hcmQtaG5jdWZvYzk5eC15MjBndWc.board.json": "{\"format\":\"whiteboard.local\",\"version\":1,\"generation\":2,\"document\":\"{\\\"format\\\":\\\"whiteboard.document\\\",\\\"schemaVersion\\\":1,\\\"id\\\":\\\"board-hncufoc99x-y20gug\\\",\\\"workspaceId\\\":null,\\\"revision\\\":1,\\\"title\\\":\\\"Untitled board\\\",\\\"canvas\\\":{\\\"backgroundColor\\\":4294967295,\\\"grid\\\":{\\\"visible\\\":true,\\\"spacing\\\":40.0,\\\"color\\\":4293520883}},\\\"assets\\\":[],\\\"fontReferences\\\":[],\\\"metadata\\\":{\\\"createdAt\\\":\\\"2026-10-19T12:03:32.549357Z\\\",\\\"modifiedAt\\\":\\\"2026-10-19T12:03:32.549357Z\\\",\\\"createdWithVersion\\\":null,\\\"modifiedWithVersion\\\":null,\\\"minimumReaderVersion\\\":1},\\\"elements\\\":[{\\\"id\\\":\\\"element-1\\\",\\\"parentId\\\":null,\\\"revision\\\":1,\\\"locked\\\":false,\\\"opacity\\\":1.0,\\\"transform\\\":[1.0,0.0,0.0,1.0,120.0,22.0],\\\"content\\\":{\\\"type\\\":\\\"stroke\\\",\\\"kind\\\":\\\"pen\\\",\\\"points\\\":[[0.0,0.0],[230.0,120.0]],\\\"style\\\":{\\\"color\\\":4280298822,\\\"width\\\":3.0}}}]}\",\"camera\":[80.0,80.0,1.0],\"savedAt\":\"2026-10-19T12:03:59.941349Z\"}",
+    "Ym9hcmQtaG5jdHhuYnMzYS0zMzU2aGg.board.json": "{\"format\":\"whiteboard.local\",\"version\":1,\"generation\":7,\"document\":\"{\\\"format\\\":\\\"whiteboard.document\\\",\\\"schemaVersion\\\":1,\\\"id\\\":\\\"board-hnctxnbs3a-3356hh\\\",\\\"workspaceId\\\":null,\\\"revision\\\":6,\\\"title\\\":\\\"Untitled board\\\",\\\"canvas\\\":{\\\"backgroundColor\\\":4294967295,\\\"grid\\\":{\\\"visible\\\":true,\\\"spacing\\\":40.0,\\\"color\\\":4293520883}},\\\"assets\\\":[],\\\"fontReferences\\\":[],\\\"metadata\\\":{\\\"createdAt\\\":\\\"2026-10-19T11:45:22.456294Z\\\",\\\"modifiedAt\\\":\\\"2026-10-19T11:45:22.456294Z\\\",\\\"createdWithVersion\\\":null,\\\"modifiedWithVersion\\\":null,\\\"minimumReaderVersion\\\":1},\\\"elements\\\":[{\\\"id\\\":\\\"element-1\\\",\\\"parentId\\\":null,\\\"revision\\\":1,\\\"locked\\\":false,\\\"opacity\\\":1.0,\\\"transform\\\":[1.0,0.0,0.0,1.0,30.0,32.0],\\\"content\\\":{\\\"type\\\":\\\"stroke\\\",\\\"kind\\\":\\\"pen\\\",\\\"points\\\":[[0.0,0.0],[240.0,120.0]],\\\"style\\\":{\\\"color\\\":4280298822,\\\"width\\\":3.0}}},{\\\"id\\\":\\\"element-2\\\",\\\"parentId\\\":null,\\\"revision\\\":2,\\\"locked\\\":false,\\\"opacity\\\":1.0,\\\"transform\\\":[1.0,0.0,0.0,1.0,40.0,192.0],\\\"content\\\":{\\\"type\\\":\\\"stroke\\\",\\\"kind\\\":\\\"pen\\\",\\\"points\\\":[[0.0,0.0],[210.0,60.0]],\\\"style\\\":{\\\"color\\\":4280298822,\\\"width\\\":3.0}}},{\\\"id\\\":\\\"element-3\\\",\\\"parentId\\\":null,\\\"revision\\\":5,\\\"locked\\\":false,\\\"opacity\\\":1.0,\\\"transform\\\":[1.0,0.0,0.0,1.0,330.0,32.0],\\\"content\\\":{\\\"type\\\":\\\"stroke\\\",\\\"kind\\\":\\\"pen\\\",\\\"points\\\":[[0.0,0.0],[210.0,100.0]],\\\"style\\\":{\\\"color\\\":4280298822,\\\"width\\\":3.0}}},{\\\"id\\\":\\\"element-4\\\",\\\"parentId\\\":null,\\\"revision\\\":6,\\\"locked\\\":false,\\\"opacity\\\":1.0,\\\"transform\\\":[1.0,0.0,0.0,1.0,350.0,192.0],\\\"content\\\":{\\\"type\\\":\\\"stroke\\\",\\\"kind\\\":\\\"pen\\\",\\\"points\\\":[[0.0,0.0],[210.0,60.0]],\\\"style\\\":{\\\"color\\\":4280298822,\\\"width\\\":3.0}}}]}\",\"camera\":[80.0,80.0,1.0],\"savedAt\":\"2026-10-19T12:03:23.920553Z\"}",
+    "Ym9hcmQtaG5jdWdoeDlqdS11NWJ0Z3A.board.json": "{\"format\":\"whiteboard.local\",\"version\":1,\"generation\":2,\"document\":\"{\\\"format\\\":\\\"whiteboard.document\\\",\\\"schemaVersion\\\":1,\\\"id\\\":\\\"board-hncughx9ju-u5btgp\\\",\\\"workspaceId\\\":null,\\\"revision\\\":1,\\\"title\\\":\\\"Native named board\\\",\\\"canvas\\\":{\\\"backgroundColor\\\":4294967295,\\\"grid\\\":{\\\"visible\\\":true,\\\"spacing\\\":40.0,\\\"color\\\":4293520883}},\\\"assets\\\":[],\\\"fontReferences\\\":[],\\\"metadata\\\":{\\\"createdAt\\\":\\\"2026-10-19T12:04:22.238133Z\\\",\\\"modifiedAt\\\":\\\"2026-10-19T12:04:22.238133Z\\\",\\\"createdWithVersion\\\":null,\\\"modifiedWithVersion\\\":null,\\\"minimumReaderVersion\\\":1},\\\"elements\\\":[{\\\"id\\\":\\\"element-1\\\",\\\"parentId\\\":null,\\\"revision\\\":1,\\\"locked\\\":false,\\\"opacity\\\":1.0,\\\"transform\\\":[1.0,0.0,0.0,1.0,320.0,22.0],\\\"content\\\":{\\\"type\\\":\\\"stroke\\\",\\\"kind\\\":\\\"pen\\\",\\\"points\\\":[[0.0,0.0],[220.0,150.0]],\\\"style\\\":{\\\"color\\\":4280298822,\\\"width\\\":3.0}}}]}\",\"camera\":[80.0,80.0,1.0],\"savedAt\":\"2026-10-19T12:04:26.739792Z\"}"
+  },
+  "lastBoard": "board-hncughx9ju-u5btgp",
+  "summary": [
+    {
+      "id": "board-hncufoc99x-y20gug",
+      "title": "Untitled board",
+      "revision": 1,
+      "generation": 2,
+      "elements": 1,
+      "sha256": "93827b15a4897f17f670905bd5cdc259b114681de585b164b2eec16667466915"
+    },
+    {
+      "id": "board-hnctxnbs3a-3356hh",
+      "title": "Untitled board",
+      "revision": 6,
+      "generation": 7,
+      "elements": 4,
+      "sha256": "44a0c0cd9e4498403a6bdfa19379fe5a613918c1385c22f56ff51bf529e4f76c"
+    },
+    {
+      "id": "board-hncughx9ju-u5btgp",
+      "title": "Native named board",
+      "revision": 1,
+      "generation": 2,
+      "elements": 1,
+      "sha256": "edc68f4b0dbad04ba534225ac80a77cea4d2102aa287c9f1bb9a1f101d3ef0e1"
+    }
+  ]
+}

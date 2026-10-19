@@ -1,0 +1,228 @@
+{
+  "date": "2026-10-19",
+  "milestone": "MVP-02 Local Projects, Autosave & Reliable Reopening",
+  "scope": "MVP-01 supported content plus local boards; not full V1/M09/device qualification",
+  "environment": {
+    "frameworkVersion": "3.41.9",
+    "channel": "stable",
+    "repositoryUrl": "https://github.com/flutter/flutter.git",
+    "frameworkRevision": "00b0c91f06209d9e4a41f71b7a512d6eb3b9c694",
+    "frameworkCommitDate": "2026-04-29 10:03:19 -0700",
+    "engineRevision": "42d3d75a56efe1a2e9902f52dc8006099c45d937",
+    "engineCommitDate": "2026-04-28 17:31:55.000Z",
+    "engineContentHash": "9161402dc0e134b3fb5adee5046b6e84b1a5e1c1",
+    "engineBuildDate": "2026-04-28 22:37:18.442",
+    "dartSdkVersion": "3.11.5",
+    "devToolsVersion": "2.54.2",
+    "flutterVersion": "3.41.9",
+    "hardware": "Apple M4 / 16 GiB",
+    "os": "macOS 26.5.1",
+    "chrome": "155.0.8059.82"
+  },
+  "packages": {
+    "path_provider": "2.1.6 pinned, official flutter.dev; installed Dart^3.10.0 / Flutter>=3.38.0",
+    "web": "1.1.1 pinned, official dart.dev; installed Dart^3.4.0",
+    "new_transitives": 25,
+    "existing_dependency_or_sdk_upgrades": false,
+    "sources": [
+      "https://pub.dev/packages/path_provider",
+      "https://pub.dev/packages/web"
+    ]
+  },
+  "analysis": {
+    "command": "flutter analyze --no-pub",
+    "exit_code": 0,
+    "result": "No issues found",
+    "log": "analysis.log"
+  },
+  "tests": [
+    {
+      "target": "host",
+      "passed": 78,
+      "exit_code": 0,
+      "log": "host-final.log",
+      "command": "flutter test --no-pub --concurrency=1 test/document_codec_test.dart test/board_snapshot_test.dart test/board_autosave_test.dart test/file_board_store_test.dart test/workspace_widget_test.dart test/widget_test.dart test/editor_widget_test.dart test/board_session_test.dart test/editor_scene_test.dart"
+    },
+    {
+      "target": "Chrome",
+      "passed": 76,
+      "exit_code": 0,
+      "log": "chrome-final.log",
+      "command": "CHROME_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' flutter test --no-pub --platform chrome test/document_codec_test.dart test/board_snapshot_test.dart test/board_autosave_test.dart test/web_board_store_test.dart test/workspace_widget_test.dart test/widget_test.dart test/editor_widget_test.dart test/board_session_test.dart test/editor_scene_test.dart",
+      "preflight": "python3 tool/verify_benchmark_fonts.py --prepare-web-tests --output benchmark_results/mvp-02/test-font-preflight.json"
+    }
+  ],
+  "case_counts": {
+    "document_codec": 12,
+    "board_snapshot": 2,
+    "board_autosave": 16,
+    "file_backend": 8,
+    "web_backend": 6,
+    "workspace_widget": 12,
+    "entry_points": 2,
+    "editor_widget": 7,
+    "board_session": 9,
+    "editor_scene": 10
+  },
+  "actual_native": {
+    "normal_command": "flutter run -d macos",
+    "normal_bundle": "ahmedelsapagh.com.whiteboard",
+    "mode": "Debug",
+    "normal_restart": "Real mouse drawing -> Saved locally -> red Close -> process absent -> new process -> same visible stroke and byte-identical revision1/generation2 snapshot. Final-source normal launch verified.",
+    "normal_evidence": "normal-macos-restart-check.json",
+    "isolated_bundle": "ahmedelsapagh.com.whiteboard.mvp02verification",
+    "isolated_reason": "Separate identity protected earlier unsaved user sessions while fault injection ran; no security/sandbox weakening.",
+    "isolated_scenarios": [
+      "3 rapid strokes -> Undo -> Saved -> actual menu Quit/relaunch; same2 elements and byte-identical revision4/generation5 record",
+      "Actual permission fault0555 -> new edit -> Save failed; prior acknowledged bytes unchanged, latest retained in memory;0755 restore -> Retry success",
+      "Red Close initially hid failed-save window while process remained; fixed native delegate -> repeated failed redClose retains visible4 elements and blocks library switch; Retry saves; saved redClose exits",
+      "Three independent boards4/1/1 elements and last named board restored after close/relaunch with every record byte-identical"
+    ],
+    "isolated_evidence": [
+      "native-restart-check.json",
+      "native-final-restart-check.json"
+    ],
+    "permissions_restored": "0755",
+    "warnings": [
+      "Normal Flutter launcher reported foreground open returned1; CUA selected and observed running Editor. Intentional process close reported Lost connection to device, tool exit0."
+    ],
+    "power_loss_tested": false
+  },
+  "actual_browser": {
+    "command": "flutter run -d web-server --web-port=8766 --web-hostname=localhost",
+    "origin": "http://localhost:8766",
+    "backend": "Real IndexedDB whiteboard.workspace.v1; strict transaction completion acknowledgements, Web Locks",
+    "scenarios": [
+      "New board0 ->2 mouse strokes saved generation3 -> Undo1 stroke saved generation4 -> browser Reload restores1 stroke/generation4, Undo/Redo disabled",
+      "Create Chrome second board with2 blue rectangles (revision2/generation3); library shows first1/revision3 and second2/revision2 independently",
+      "Switch first board, zoom80% saved generation5 -> close only this saved tab -> fresh tab same URL restores correct first board,1 stroke,80% view and empty history",
+      "Reopen second board and Reload -> same2 blue rectangles and generation3; last selected board correct",
+      "Actual competing tab opens explicit read-only and drawing attempt leaves content count2; secondary tab closed, writable primary remains",
+      "Owned dev-server process restarted at same origin; page reload preserves records"
+    ],
+    "full_chrome_process_restart": false,
+    "full_process_restart_exclusion": "Older Chrome tabs have unsaved MVP-01 content and were preserved. Actual page teardown/reload/reopening tested; not entire Chrome quit.",
+    "debug_hot_restart_limitation": "Flutter R hot restart retained an old page Web Lock and opened new Dart state read-only. A full browser Reload is the supported development reset; do not steal locks or claim R cleanup qualification. This does not alter acknowledged IndexedDB records.",
+    "profile_limit": "Origin/profile-scoped, browser quota/eviction/cleared-site-data apply. Use a normal persistent Chrome profile; avoid depending on Flutter temporary profile/cache copying."
+  },
+  "simulated_cases": [
+    "Controlled delayed test-store writes exercise pending close/switch, rapid edit/coalescing/Undo and keyboard suppression; not real crashes",
+    "Injected test-store failure/permission/quota/connection loss exercise retained-memory status and Retry; real native permission fault additionally verified",
+    "Widget disposal/recreation is a simulated widget restart, distinguished from actual native process and browser page tests"
+  ],
+  "failures_and_remediation": [
+    "Initial missing AppExitResponse import fixed",
+    "Ambiguous library text finder corrected to ListTile",
+    "Camera-only fixture outside newly validated supported world corrected from1e8 at.02 to1e7 at.02; cap not relaxed",
+    "Read-only state on lost writer fixed to failed, retained queue and exit protection; covered by regressions",
+    "Native failed redClose hid window; tested single-window delegate remediation without SDK patch or new package",
+    "No-authored-work opening failure now permits app exit; disposed initialization cannot create a stale default board; regressions pass"
+  ],
+  "limitations": [
+    "Only MVP-01 root pen/shapes/lines are editable; codec preserves all existing types but image original bytes are not implemented",
+    "Undo/tool/color/selection preferences are session-only; authored styles, document/camera/last board persisted",
+    "Browser unload warns while dirty; cannot await async writes; forced termination can lose unacknowledged changes",
+    "Native flush+rename process restart tested; directory fsync and physical power loss unqualified",
+    "Richer corruption/connection recovery and library rename/duplicate/delete remain in M09",
+    "Windows/Edge/Safari/Android/iOS device/build qualification and10K save/memory/rendering budgets remain pending"
+  ],
+  "git": {
+    "observed_baseline": "c43153941dcf9ff8a6c603393c7ced59ca67f9f5",
+    "note": "External commit/staging occurred during execution, including unrelated design/brand assets. No agent Git writes; preserve current index as found.",
+    "observed_head_at_final_check": "c43153941dcf9ff8a6c603393c7ced59ca67f9f5"
+  },
+  "progress": {
+    "verified": 44,
+    "total": 266,
+    "percent": 16.54,
+    "mvp02": "8/8",
+    "next": "M07 usable Text/Sticky Notes; no new feature claimed implemented"
+  },
+  "performance": "No benchmarks executed; no Debug frame-time or production performance claim. Existing10K/16.7ms obligation/evidence retained in M14.",
+  "source_sha256": {
+    "lib/main.dart": "6596bd22071f325a0c2528c741e7f61bbfd2bff4ff1faf7fb0cc9495d4665c63",
+    "lib/src/document/document_codec.dart": "5e10a1dbfa9974ad9a5b92ebf086d1820b839be7900c8ad0ad492ddd5a8aaaeb",
+    "lib/src/editor/board_session.dart": "71547cab38268422b9dfd04deb5890825475cbae31f5f09e0aa944f2bffba3b9",
+    "lib/src/editor/editor_canvas.dart": "26614a64981e794230facc1f2ced6c856f851a8e8fd95d0ab34a1b5c76935efc",
+    "lib/src/editor/editor_page.dart": "4ebb5693fe488f2733b82012c232e30067e9fadabe28038e6b5ed51ef084eeef",
+    "lib/src/editor/editor_scene.dart": "1f158a0bfead74e1b8d80a7c4526d29f640355fe1b12559054ebf84b402c5571",
+    "lib/src/editor/workspace_page.dart": "46c52fefc184d767f90db3b536697a3394356eb00954d0d1a546d06be1f522c1",
+    "lib/src/persistence/board_autosave.dart": "d853b275a01ae357bb324fa230c1b27c7863422ab6fd835ee7e612944efa1fd3",
+    "lib/src/persistence/board_store.dart": "5093583d50e52a188452e237023e58d4b5d4f468a8a42da075997a642182a7ca",
+    "lib/src/persistence/close_guard.dart": "45b0ab63f8ab234cc7dfda6f6923144b9d1e86e963ca8ddf6ecb520b284f2704",
+    "lib/src/persistence/close_guard_stub.dart": "c863d5429094e8879874dd7da7abfc6006ade1887c856826bc49429cf81ab128",
+    "lib/src/persistence/close_guard_web.dart": "8b78e304f8157b6b81e8879e6aced87b17716e627572a626226dd812fceecea3",
+    "lib/src/persistence/file_board_store.dart": "5be12e9b3fa0f7bad1df6c0db69ff81dadf2dad8698d9a244d93e1ffb4694db2",
+    "lib/src/persistence/open_board_store.dart": "b81010b5af7743765202591ba21ec2a6dda1cdc438fdec7d4a1ca044ab82ac82",
+    "lib/src/persistence/unsupported_board_store.dart": "2bc931914e830b19131b26dfd38b85b6264b3ab50f3dd66f1467afd31f1ccf42",
+    "lib/src/persistence/web_board_store.dart": "0a1d963dc19f69f41caf35e6f30bf5591a3cf675b8e1d6bd49020941ee909fec",
+    "macos/Runner/MainFlutterWindow.swift": "fa1093584eefb1f28998200757120860f9855b809fe4cf808ad456b5b22097bf",
+    "pubspec.lock": "8b78bf7226a08d2d424a31e04676216f1d82246340411e5e5980f794f7f5defe",
+    "pubspec.yaml": "b56d0df9bae59eaacd758df7ac2a3d4984fd8f9efc863299ef7f7c8aa8c31100",
+    "test/board_autosave_test.dart": "4a9e4e99232c8108d81657b9b6b68df414b136dfafb504847884e19e3fd31caa",
+    "test/board_snapshot_test.dart": "1dd637940d520713f7930f22b511dadbcf060d40a869e9ee2b021765128c8849",
+    "test/document_codec_test.dart": "e8641ceb57982d7c809aa3896c621295ccffd0329abc2df1722aac0d0006489d",
+    "test/editor_widget_test.dart": "2fa63987e811cde1c3c877912597bf6e1e38fb1d9b3471490f323af1bcc991bf",
+    "test/file_board_store_test.dart": "83a098bf067d4dcda9d954994b0a666adc8a1de65dfdad4021937627b6423c25",
+    "test/support/test_board_store.dart": "2b5986cf772a882bb01addc26dca006d6bea9ccd01b727603da09d28d8f9f3e7",
+    "test/web_board_store_test.dart": "544c3cf6ac1c4a604b03ac74af2b1acca12d5a026fbb93573567b6580d322edb",
+    "test/widget_test.dart": "bafbc84ca5f196b8d38629deef21cbf190d662e51f717841ff85b7c6618d3779",
+    "test/workspace_widget_test.dart": "478d36b55c7242cb7bdb924b3a11550868b2b3c245dde80ea1e00cb6d246a4af"
+  },
+  "source_archive": "verified-source.tar.gz",
+  "source_archive_sha256": "bac70773419c0cadbbeea04f1983bed65c15c2cea0c68218af2cdbfe07f69b2d",
+  "screenshots": [
+    "chrome-after-reload.jpg",
+    "chrome-before-reload.jpg",
+    "chrome-board-library.jpg",
+    "chrome-final-restored.jpg",
+    "chrome-readonly-secondary.jpg",
+    "macos-after-final-restart.jpg",
+    "macos-before-restart.jpg",
+    "macos-failed-close-protected.jpg",
+    "macos-save-failed.jpg",
+    "normal-macos-consolidated.jpg",
+    "normal-macos-final.jpg",
+    "normal-macos-restored.jpg"
+  ],
+  "final_checks": {
+    "source_hashes": "all match final tested source",
+    "source_archive": "sha256 verified",
+    "test_markers": "78 host/76 Chrome complete",
+    "analysis": "No issues found",
+    "task_count": "44/266",
+    "git_index": "Externally staged during checkpoint, including MVP-02 and unrelated brand files; no agent staging/reset/commit.",
+    "normal_native_record": "Original normal sample board bytes preserved during copy; all3 source documents and cameras verified equal in normal workspace.",
+    "runtime_outputs": "Normal native app open on consolidated Native named board2 elements; verification app closed, source data retained. Chrome writable2-element board/Saved locally; owned web server51657 running.",
+    "consolidated_normal_workspace": "4 boards; original normal record byte-identical; last Native named board2 elements; actual UI Saved locally; source records retained"
+  },
+  "workspace_consolidation": {
+    "purpose": "Preserve later saved edits made in the isolated verification app in the normal app too",
+    "existingNormalBoardsPreserved": 1,
+    "copiedBoards": [
+      {
+        "id": "board-hncughx9ju-u5btgp",
+        "title": "Native named board",
+        "revision": 2,
+        "elements": 2
+      },
+      {
+        "id": "board-hncufoc99x-y20gug",
+        "title": "Untitled board",
+        "revision": 1,
+        "elements": 1
+      },
+      {
+        "id": "board-hnctxnbs3a-3356hh",
+        "title": "Untitled board",
+        "revision": 6,
+        "elements": 4
+      }
+    ],
+    "normalBoardCount": 4,
+    "lastBoard": "board-hncughx9ju-u5btgp",
+    "sourceBoardsRetained": true,
+    "noExistingBoardOverwritten": true,
+    "method": "Existing FileBoardStore APIs under both OS writer locks; new generation1 only for absent IDs"
+  }
+}

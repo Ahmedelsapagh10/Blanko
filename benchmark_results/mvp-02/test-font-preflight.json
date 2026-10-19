@@ -1,0 +1,1381 @@
+{
+  "manifest": "assets/benchmark_fonts/manifest.json",
+  "manifestId": "roboto-3.015-noto-sans-arabic-2.012-v1",
+  "manifestSha256": "1aae539365aeac9583743f88e9563201303268a28aa50d8b5d16f1e081369b88",
+  "scope": "Local pinned font asset integrity, metadata and nonzero glyph coverage only.",
+  "corpus": {
+    "ascii": "U+0020..U+007E inclusive, including literal backslash U+005C",
+    "arabic": "فكرة جديدة",
+    "additionalUi": "·…"
+  },
+  "limitations": [
+    "Does not verify Arabic shaping, visual fidelity, text metrics or browser font readiness.",
+    "Does not establish coverage of arbitrary user text or Unicode.",
+    "Release archive hashes and source commits are recorded provenance, not re-downloaded by this audit."
+  ],
+  "assets": [
+    {
+      "path": "assets/benchmark_fonts/Roboto-Regular.ttf",
+      "bytes": 460324,
+      "sha256": "58ef696cb53697e15c857c55aa528b06417e7396347c800edf166fedcbc85e35",
+      "licensePath": "assets/benchmark_fonts/Roboto-OFL.txt",
+      "licenseSha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41",
+      "copyright": "Copyright 2011 The Roboto Project Authors (https://github.com/googlefonts/roboto-classic)",
+      "weightClass": 400,
+      "versions": [
+        "Version 3.015; 2026"
+      ],
+      "nameRecords": [
+        {
+          "id": 1,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Roboto"
+        },
+        {
+          "id": 2,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Regular"
+        },
+        {
+          "id": 5,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Version 3.015; 2026"
+        },
+        {
+          "id": 6,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Roboto-Regular"
+        }
+      ],
+      "tables": {
+        "GDEF": {
+          "offset": 376136,
+          "bytes": 1294,
+          "checksum": 3312565936
+        },
+        "GPOS": {
+          "offset": 377432,
+          "bytes": 71676,
+          "checksum": 3731722285
+        },
+        "GSUB": {
+          "offset": 449108,
+          "bytes": 11214,
+          "checksum": 1035095093
+        },
+        "OS/2": {
+          "offset": 408,
+          "bytes": 96,
+          "checksum": 2695410061
+        },
+        "cmap": {
+          "offset": 14068,
+          "bytes": 6520,
+          "checksum": 502987845
+        },
+        "cvt ": {
+          "offset": 25284,
+          "bytes": 254,
+          "checksum": 1006118525
+        },
+        "fpgm": {
+          "offset": 20588,
+          "bytes": 3974,
+          "checksum": 2818933810
+        },
+        "gasp": {
+          "offset": 376124,
+          "bytes": 12,
+          "checksum": 524313
+        },
+        "glyf": {
+          "offset": 39108,
+          "bytes": 299139,
+          "checksum": 1589801520
+        },
+        "head": {
+          "offset": 284,
+          "bytes": 54,
+          "checksum": 317304872
+        },
+        "hhea": {
+          "offset": 340,
+          "bytes": 36,
+          "checksum": 279584849
+        },
+        "hmtx": {
+          "offset": 504,
+          "bytes": 13564,
+          "checksum": 2241828631
+        },
+        "loca": {
+          "offset": 25540,
+          "bytes": 13568,
+          "checksum": 609484791
+        },
+        "maxp": {
+          "offset": 376,
+          "bytes": 32,
+          "checksum": 284365165
+        },
+        "name": {
+          "offset": 338248,
+          "bytes": 986,
+          "checksum": 1530103775
+        },
+        "post": {
+          "offset": 339236,
+          "bytes": 36887,
+          "checksum": 2507622850
+        },
+        "prep": {
+          "offset": 24564,
+          "bytes": 718,
+          "checksum": 2035863251
+        }
+      },
+      "unicodeCmaps": [
+        {
+          "platform": 0,
+          "encoding": 3,
+          "format": 4
+        },
+        {
+          "platform": 0,
+          "encoding": 4,
+          "format": 12
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "format": 4
+        },
+        {
+          "platform": 3,
+          "encoding": 10,
+          "format": 12
+        }
+      ],
+      "requiredCodepoints": [
+        "U+0020",
+        "U+0021",
+        "U+0022",
+        "U+0023",
+        "U+0024",
+        "U+0025",
+        "U+0026",
+        "U+0027",
+        "U+0028",
+        "U+0029",
+        "U+002A",
+        "U+002B",
+        "U+002C",
+        "U+002D",
+        "U+002E",
+        "U+002F",
+        "U+0030",
+        "U+0031",
+        "U+0032",
+        "U+0033",
+        "U+0034",
+        "U+0035",
+        "U+0036",
+        "U+0037",
+        "U+0038",
+        "U+0039",
+        "U+003A",
+        "U+003B",
+        "U+003C",
+        "U+003D",
+        "U+003E",
+        "U+003F",
+        "U+0040",
+        "U+0041",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+0049",
+        "U+004A",
+        "U+004B",
+        "U+004C",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0051",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0055",
+        "U+0056",
+        "U+0057",
+        "U+0058",
+        "U+0059",
+        "U+005A",
+        "U+005B",
+        "U+005C",
+        "U+005D",
+        "U+005E",
+        "U+005F",
+        "U+0060",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0066",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006A",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0071",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0078",
+        "U+0079",
+        "U+007A",
+        "U+007B",
+        "U+007C",
+        "U+007D",
+        "U+007E",
+        "U+00B7",
+        "U+2026"
+      ],
+      "coveredCorpusCodepoints": [
+        "U+0020",
+        "U+0021",
+        "U+0022",
+        "U+0023",
+        "U+0024",
+        "U+0025",
+        "U+0026",
+        "U+0027",
+        "U+0028",
+        "U+0029",
+        "U+002A",
+        "U+002B",
+        "U+002C",
+        "U+002D",
+        "U+002E",
+        "U+002F",
+        "U+0030",
+        "U+0031",
+        "U+0032",
+        "U+0033",
+        "U+0034",
+        "U+0035",
+        "U+0036",
+        "U+0037",
+        "U+0038",
+        "U+0039",
+        "U+003A",
+        "U+003B",
+        "U+003C",
+        "U+003D",
+        "U+003E",
+        "U+003F",
+        "U+0040",
+        "U+0041",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+0049",
+        "U+004A",
+        "U+004B",
+        "U+004C",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0051",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0055",
+        "U+0056",
+        "U+0057",
+        "U+0058",
+        "U+0059",
+        "U+005A",
+        "U+005B",
+        "U+005C",
+        "U+005D",
+        "U+005E",
+        "U+005F",
+        "U+0060",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0066",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006A",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0071",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0078",
+        "U+0079",
+        "U+007A",
+        "U+007B",
+        "U+007C",
+        "U+007D",
+        "U+007E",
+        "U+00B7",
+        "U+2026"
+      ],
+      "missingRequiredCodepoints": [],
+      "hasGSUB": true,
+      "hasGPOS": true
+    },
+    {
+      "path": "assets/benchmark_fonts/Roboto-Medium.ttf",
+      "bytes": 460708,
+      "sha256": "7ef6161cd143394e68bfa2ea38aa0f3321186c154c6425985d1008afa4e62f68",
+      "licensePath": "assets/benchmark_fonts/Roboto-OFL.txt",
+      "licenseSha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41",
+      "copyright": "Copyright 2011 The Roboto Project Authors (https://github.com/googlefonts/roboto-classic)",
+      "weightClass": 500,
+      "versions": [
+        "Version 3.015; 2026"
+      ],
+      "nameRecords": [
+        {
+          "id": 1,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Roboto Medium"
+        },
+        {
+          "id": 2,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Regular"
+        },
+        {
+          "id": 5,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Version 3.015; 2026"
+        },
+        {
+          "id": 6,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Roboto-Medium"
+        },
+        {
+          "id": 16,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Roboto"
+        },
+        {
+          "id": 17,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Medium"
+        }
+      ],
+      "tables": {
+        "GDEF": {
+          "offset": 376328,
+          "bytes": 1294,
+          "checksum": 3312565936
+        },
+        "GPOS": {
+          "offset": 377624,
+          "bytes": 71866,
+          "checksum": 501745066
+        },
+        "GSUB": {
+          "offset": 449492,
+          "bytes": 11214,
+          "checksum": 1035095093
+        },
+        "OS/2": {
+          "offset": 408,
+          "bytes": 96,
+          "checksum": 2701963678
+        },
+        "cmap": {
+          "offset": 14068,
+          "bytes": 6520,
+          "checksum": 502987845
+        },
+        "cvt ": {
+          "offset": 25284,
+          "bytes": 254,
+          "checksum": 1006118525
+        },
+        "fpgm": {
+          "offset": 20588,
+          "bytes": 3974,
+          "checksum": 2818933810
+        },
+        "gasp": {
+          "offset": 376316,
+          "bytes": 12,
+          "checksum": 524313
+        },
+        "glyf": {
+          "offset": 39108,
+          "bytes": 299276,
+          "checksum": 3759974571
+        },
+        "head": {
+          "offset": 284,
+          "bytes": 54,
+          "checksum": 317042740
+        },
+        "hhea": {
+          "offset": 340,
+          "bytes": 36,
+          "checksum": 279322638
+        },
+        "hmtx": {
+          "offset": 504,
+          "bytes": 13564,
+          "checksum": 1458178216
+        },
+        "loca": {
+          "offset": 25540,
+          "bytes": 13568,
+          "checksum": 609876387
+        },
+        "maxp": {
+          "offset": 376,
+          "bytes": 32,
+          "checksum": 284365165
+        },
+        "name": {
+          "offset": 338384,
+          "bytes": 1044,
+          "checksum": 1725797505
+        },
+        "post": {
+          "offset": 339428,
+          "bytes": 36887,
+          "checksum": 2507622850
+        },
+        "prep": {
+          "offset": 24564,
+          "bytes": 718,
+          "checksum": 2035863251
+        }
+      },
+      "unicodeCmaps": [
+        {
+          "platform": 0,
+          "encoding": 3,
+          "format": 4
+        },
+        {
+          "platform": 0,
+          "encoding": 4,
+          "format": 12
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "format": 4
+        },
+        {
+          "platform": 3,
+          "encoding": 10,
+          "format": 12
+        }
+      ],
+      "requiredCodepoints": [
+        "U+0020",
+        "U+0021",
+        "U+0022",
+        "U+0023",
+        "U+0024",
+        "U+0025",
+        "U+0026",
+        "U+0027",
+        "U+0028",
+        "U+0029",
+        "U+002A",
+        "U+002B",
+        "U+002C",
+        "U+002D",
+        "U+002E",
+        "U+002F",
+        "U+0030",
+        "U+0031",
+        "U+0032",
+        "U+0033",
+        "U+0034",
+        "U+0035",
+        "U+0036",
+        "U+0037",
+        "U+0038",
+        "U+0039",
+        "U+003A",
+        "U+003B",
+        "U+003C",
+        "U+003D",
+        "U+003E",
+        "U+003F",
+        "U+0040",
+        "U+0041",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+0049",
+        "U+004A",
+        "U+004B",
+        "U+004C",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0051",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0055",
+        "U+0056",
+        "U+0057",
+        "U+0058",
+        "U+0059",
+        "U+005A",
+        "U+005B",
+        "U+005C",
+        "U+005D",
+        "U+005E",
+        "U+005F",
+        "U+0060",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0066",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006A",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0071",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0078",
+        "U+0079",
+        "U+007A",
+        "U+007B",
+        "U+007C",
+        "U+007D",
+        "U+007E",
+        "U+00B7",
+        "U+2026"
+      ],
+      "coveredCorpusCodepoints": [
+        "U+0020",
+        "U+0021",
+        "U+0022",
+        "U+0023",
+        "U+0024",
+        "U+0025",
+        "U+0026",
+        "U+0027",
+        "U+0028",
+        "U+0029",
+        "U+002A",
+        "U+002B",
+        "U+002C",
+        "U+002D",
+        "U+002E",
+        "U+002F",
+        "U+0030",
+        "U+0031",
+        "U+0032",
+        "U+0033",
+        "U+0034",
+        "U+0035",
+        "U+0036",
+        "U+0037",
+        "U+0038",
+        "U+0039",
+        "U+003A",
+        "U+003B",
+        "U+003C",
+        "U+003D",
+        "U+003E",
+        "U+003F",
+        "U+0040",
+        "U+0041",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+0049",
+        "U+004A",
+        "U+004B",
+        "U+004C",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0051",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0055",
+        "U+0056",
+        "U+0057",
+        "U+0058",
+        "U+0059",
+        "U+005A",
+        "U+005B",
+        "U+005C",
+        "U+005D",
+        "U+005E",
+        "U+005F",
+        "U+0060",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0066",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006A",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0071",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0078",
+        "U+0079",
+        "U+007A",
+        "U+007B",
+        "U+007C",
+        "U+007D",
+        "U+007E",
+        "U+00B7",
+        "U+2026"
+      ],
+      "missingRequiredCodepoints": [],
+      "hasGSUB": true,
+      "hasGPOS": true
+    },
+    {
+      "path": "assets/benchmark_fonts/Roboto-Bold.ttf",
+      "bytes": 462536,
+      "sha256": "070615f757a610d4042a0330402f7df76d9627f1b857ebfbfb76e00a5b00d865",
+      "licensePath": "assets/benchmark_fonts/Roboto-OFL.txt",
+      "licenseSha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41",
+      "copyright": "Copyright 2011 The Roboto Project Authors (https://github.com/googlefonts/roboto-classic)",
+      "weightClass": 700,
+      "versions": [
+        "Version 3.015; 2026"
+      ],
+      "nameRecords": [
+        {
+          "id": 1,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Roboto"
+        },
+        {
+          "id": 2,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Bold"
+        },
+        {
+          "id": 5,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Version 3.015; 2026"
+        },
+        {
+          "id": 6,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Roboto-Bold"
+        }
+      ],
+      "tables": {
+        "GDEF": {
+          "offset": 378164,
+          "bytes": 1294,
+          "checksum": 3312565936
+        },
+        "GPOS": {
+          "offset": 379460,
+          "bytes": 71860,
+          "checksum": 1331303441
+        },
+        "GSUB": {
+          "offset": 451320,
+          "bytes": 11214,
+          "checksum": 1035095093
+        },
+        "OS/2": {
+          "offset": 408,
+          "bytes": 96,
+          "checksum": 2715070861
+        },
+        "cmap": {
+          "offset": 14068,
+          "bytes": 6520,
+          "checksum": 502987845
+        },
+        "cvt ": {
+          "offset": 25284,
+          "bytes": 254,
+          "checksum": 1006118525
+        },
+        "fpgm": {
+          "offset": 20588,
+          "bytes": 3974,
+          "checksum": 2818933810
+        },
+        "gasp": {
+          "offset": 378152,
+          "bytes": 12,
+          "checksum": 524313
+        },
+        "glyf": {
+          "offset": 39108,
+          "bytes": 301164,
+          "checksum": 1069427747
+        },
+        "head": {
+          "offset": 284,
+          "bytes": 54,
+          "checksum": 316846142
+        },
+        "hhea": {
+          "offset": 340,
+          "bytes": 36,
+          "checksum": 279060439
+        },
+        "hmtx": {
+          "offset": 504,
+          "bytes": 13564,
+          "checksum": 132615811
+        },
+        "loca": {
+          "offset": 25540,
+          "bytes": 13568,
+          "checksum": 614204308
+        },
+        "maxp": {
+          "offset": 376,
+          "bytes": 32,
+          "checksum": 284365165
+        },
+        "name": {
+          "offset": 340272,
+          "bytes": 990,
+          "checksum": 1544390540
+        },
+        "post": {
+          "offset": 341264,
+          "bytes": 36887,
+          "checksum": 2507622850
+        },
+        "prep": {
+          "offset": 24564,
+          "bytes": 718,
+          "checksum": 2035863251
+        }
+      },
+      "unicodeCmaps": [
+        {
+          "platform": 0,
+          "encoding": 3,
+          "format": 4
+        },
+        {
+          "platform": 0,
+          "encoding": 4,
+          "format": 12
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "format": 4
+        },
+        {
+          "platform": 3,
+          "encoding": 10,
+          "format": 12
+        }
+      ],
+      "requiredCodepoints": [
+        "U+0020",
+        "U+0021",
+        "U+0022",
+        "U+0023",
+        "U+0024",
+        "U+0025",
+        "U+0026",
+        "U+0027",
+        "U+0028",
+        "U+0029",
+        "U+002A",
+        "U+002B",
+        "U+002C",
+        "U+002D",
+        "U+002E",
+        "U+002F",
+        "U+0030",
+        "U+0031",
+        "U+0032",
+        "U+0033",
+        "U+0034",
+        "U+0035",
+        "U+0036",
+        "U+0037",
+        "U+0038",
+        "U+0039",
+        "U+003A",
+        "U+003B",
+        "U+003C",
+        "U+003D",
+        "U+003E",
+        "U+003F",
+        "U+0040",
+        "U+0041",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+0049",
+        "U+004A",
+        "U+004B",
+        "U+004C",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0051",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0055",
+        "U+0056",
+        "U+0057",
+        "U+0058",
+        "U+0059",
+        "U+005A",
+        "U+005B",
+        "U+005C",
+        "U+005D",
+        "U+005E",
+        "U+005F",
+        "U+0060",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0066",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006A",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0071",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0078",
+        "U+0079",
+        "U+007A",
+        "U+007B",
+        "U+007C",
+        "U+007D",
+        "U+007E",
+        "U+00B7",
+        "U+2026"
+      ],
+      "coveredCorpusCodepoints": [
+        "U+0020",
+        "U+0021",
+        "U+0022",
+        "U+0023",
+        "U+0024",
+        "U+0025",
+        "U+0026",
+        "U+0027",
+        "U+0028",
+        "U+0029",
+        "U+002A",
+        "U+002B",
+        "U+002C",
+        "U+002D",
+        "U+002E",
+        "U+002F",
+        "U+0030",
+        "U+0031",
+        "U+0032",
+        "U+0033",
+        "U+0034",
+        "U+0035",
+        "U+0036",
+        "U+0037",
+        "U+0038",
+        "U+0039",
+        "U+003A",
+        "U+003B",
+        "U+003C",
+        "U+003D",
+        "U+003E",
+        "U+003F",
+        "U+0040",
+        "U+0041",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+0049",
+        "U+004A",
+        "U+004B",
+        "U+004C",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0051",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0055",
+        "U+0056",
+        "U+0057",
+        "U+0058",
+        "U+0059",
+        "U+005A",
+        "U+005B",
+        "U+005C",
+        "U+005D",
+        "U+005E",
+        "U+005F",
+        "U+0060",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0066",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006A",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0071",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0078",
+        "U+0079",
+        "U+007A",
+        "U+007B",
+        "U+007C",
+        "U+007D",
+        "U+007E",
+        "U+00B7",
+        "U+2026"
+      ],
+      "missingRequiredCodepoints": [],
+      "hasGSUB": true,
+      "hasGPOS": true
+    },
+    {
+      "path": "assets/benchmark_fonts/NotoSansArabic-Regular.ttf",
+      "bytes": 292600,
+      "sha256": "472abe37ec7a7ce61aa2ca6f01d9c4299f6add431da828f054cd1b41ac0ed5a4",
+      "licensePath": "assets/benchmark_fonts/NotoSansArabic-OFL.txt",
+      "licenseSha256": "07fc70bfeb985cc1a87a8587d0a0c80bab11c86c9dc3fd95b6f0cb332f983e96",
+      "copyright": "Copyright 2022 The Noto Project Authors (https://github.com/notofonts/arabic)",
+      "weightClass": 400,
+      "versions": [
+        "Version 2.012; ttfautohint (v1.8.4.7-5d5b)"
+      ],
+      "nameRecords": [
+        {
+          "id": 1,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Noto Sans Arabic"
+        },
+        {
+          "id": 2,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Regular"
+        },
+        {
+          "id": 5,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "Version 2.012; ttfautohint (v1.8.4.7-5d5b)"
+        },
+        {
+          "id": 6,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "value": "NotoSansArabic-Regular"
+        }
+      ],
+      "tables": {
+        "GDEF": {
+          "offset": 284,
+          "bytes": 716,
+          "checksum": 3331574921
+        },
+        "GPOS": {
+          "offset": 1000,
+          "bytes": 22174,
+          "checksum": 3649919339
+        },
+        "GSUB": {
+          "offset": 23176,
+          "bytes": 5854,
+          "checksum": 1250939648
+        },
+        "OS/2": {
+          "offset": 29032,
+          "bytes": 96,
+          "checksum": 2907406733
+        },
+        "cmap": {
+          "offset": 29128,
+          "bytes": 13118,
+          "checksum": 2642809377
+        },
+        "cvt ": {
+          "offset": 288744,
+          "bytes": 78,
+          "checksum": 105516900
+        },
+        "fpgm": {
+          "offset": 288824,
+          "bytes": 3596,
+          "checksum": 1647246716
+        },
+        "gasp": {
+          "offset": 288736,
+          "bytes": 8,
+          "checksum": 16
+        },
+        "glyf": {
+          "offset": 42248,
+          "bytes": 213706,
+          "checksum": 814963903
+        },
+        "head": {
+          "offset": 255956,
+          "bytes": 54,
+          "checksum": 1099796866
+        },
+        "hhea": {
+          "offset": 256012,
+          "bytes": 36,
+          "checksum": 696722940
+        },
+        "hmtx": {
+          "offset": 256048,
+          "bytes": 6844,
+          "checksum": 1900323636
+        },
+        "loca": {
+          "offset": 262892,
+          "bytes": 6848,
+          "checksum": 250474502
+        },
+        "maxp": {
+          "offset": 269740,
+          "bytes": 32,
+          "checksum": 191700129
+        },
+        "name": {
+          "offset": 269772,
+          "bytes": 1718,
+          "checksum": 3140605615
+        },
+        "post": {
+          "offset": 271492,
+          "bytes": 17241,
+          "checksum": 2917356971
+        },
+        "prep": {
+          "offset": 292420,
+          "bytes": 178,
+          "checksum": 1581251464
+        }
+      },
+      "unicodeCmaps": [
+        {
+          "platform": 0,
+          "encoding": 3,
+          "format": 4
+        },
+        {
+          "platform": 0,
+          "encoding": 4,
+          "format": 12
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "format": 4
+        },
+        {
+          "platform": 3,
+          "encoding": 10,
+          "format": 12
+        }
+      ],
+      "requiredCodepoints": [
+        "U+0020",
+        "U+0629",
+        "U+062C",
+        "U+062F",
+        "U+0631",
+        "U+0641",
+        "U+0643",
+        "U+064A"
+      ],
+      "coveredCorpusCodepoints": [
+        "U+0020",
+        "U+0021",
+        "U+0022",
+        "U+0023",
+        "U+0024",
+        "U+0025",
+        "U+0026",
+        "U+0027",
+        "U+0028",
+        "U+0029",
+        "U+002A",
+        "U+002B",
+        "U+002C",
+        "U+002D",
+        "U+002E",
+        "U+002F",
+        "U+0030",
+        "U+0031",
+        "U+0032",
+        "U+0033",
+        "U+0034",
+        "U+0035",
+        "U+0036",
+        "U+0037",
+        "U+0038",
+        "U+0039",
+        "U+003A",
+        "U+003B",
+        "U+003C",
+        "U+003D",
+        "U+003E",
+        "U+003F",
+        "U+0040",
+        "U+0041",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+0049",
+        "U+004A",
+        "U+004B",
+        "U+004C",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0051",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0055",
+        "U+0056",
+        "U+0057",
+        "U+0058",
+        "U+0059",
+        "U+005A",
+        "U+005B",
+        "U+005C",
+        "U+005D",
+        "U+005E",
+        "U+005F",
+        "U+0060",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0066",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006A",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0071",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0078",
+        "U+0079",
+        "U+007A",
+        "U+007B",
+        "U+007C",
+        "U+007D",
+        "U+007E",
+        "U+00B7",
+        "U+0629",
+        "U+062C",
+        "U+062F",
+        "U+0631",
+        "U+0641",
+        "U+0643",
+        "U+064A",
+        "U+2026"
+      ],
+      "missingRequiredCodepoints": [],
+      "hasGSUB": true,
+      "hasGPOS": true
+    }
+  ],
+  "negativeChecks": [
+    {
+      "case": "tampered font hash",
+      "rejected": true,
+      "reason": "Roboto-Regular.ttf: SHA-256 mismatch"
+    },
+    {
+      "case": "tampered license hash",
+      "rejected": true,
+      "reason": "license SHA-256 mismatch"
+    },
+    {
+      "case": "missing literal backslash coverage",
+      "rejected": true,
+      "reason": "missing required glyphs: U+005C"
+    },
+    {
+      "case": "missing Arabic glyph coverage",
+      "rejected": true,
+      "reason": "missing required glyphs: U+0641"
+    }
+  ],
+  "passed": true
+}

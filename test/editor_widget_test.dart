@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:whiteboard/main.dart';
+import 'package:whiteboard/src/editor/editor_page.dart';
 import 'package:whiteboard/src/document/element.dart';
 import 'package:whiteboard/src/editor/editor_canvas.dart';
 import 'package:whiteboard/src/geometry/geometry.dart';
@@ -23,7 +23,7 @@ Future<void> open(
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
-  await tester.pumpWidget(const WhiteboardApp());
+  await tester.pumpWidget(const MaterialApp(home: EditorPage()));
   await tester.pump();
 }
 

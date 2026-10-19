@@ -1,0 +1,36 @@
+{
+  "realNativeCloseButtonExitAndNewProcess": true,
+  "allThreeBoardRecordsByteIdentical": true,
+  "lastBoardId": "board-hncughx9ju-u5btgp",
+  "expectedLastBoardTitle": "Native named board",
+  "expectedElements": 1,
+  "permissionsRestored": "0755",
+  "finalDartAndNativeSourceEqual": true,
+  "boardSummary": [
+    {
+      "id": "board-hncufoc99x-y20gug",
+      "title": "Untitled board",
+      "revision": 1,
+      "generation": 2,
+      "elements": 1,
+      "sha256": "93827b15a4897f17f670905bd5cdc259b114681de585b164b2eec16667466915"
+    },
+    {
+      "id": "board-hnctxnbs3a-3356hh",
+      "title": "Untitled board",
+      "revision": 6,
+      "generation": 7,
+      "elements": 4,
+      "sha256": "44a0c0cd9e4498403a6bdfa19379fe5a613918c1385c22f56ff51bf529e4f76c"
+    },
+    {
+      "id": "board-hncughx9ju-u5btgp",
+      "title": "Native named board",
+      "revision": 1,
+      "generation": 2,
+      "elements": 1,
+      "sha256": "edc68f4b0dbad04ba534225ac80a77cea4d2102aa287c9f1bb9a1f101d3ef0e1"
+    }
+  ],
+  "closeFailureRegression": "Before fix redClose hid window despite failed save, process alive; isolated test process stopped. With NSWindowDelegate redirect to Flutter termination, failed redClose retained visible4-element board, switch blocked, permissionrestore+Retry acknowledged4; subsequent saved redClose exited normally."
+}

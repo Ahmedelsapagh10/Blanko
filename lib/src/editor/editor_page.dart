@@ -4,23 +4,32 @@ import 'package:flutter/services.dart';
 import 'editor_canvas.dart';
 
 class EditorPage extends StatefulWidget {
-  const EditorPage({super.key});
+  const EditorPage({
+    super.key,
+    this.controller,
+    this.title = 'Whiteboard',
+    this.actions = const [],
+  });
+  final EditorCanvasController? controller;
+  final String title;
+  final List<Widget> actions;
   @override
   State<EditorPage> createState() => _EditorPageState();
 }
 
 class _EditorPageState extends State<EditorPage> {
-  final controller = EditorCanvasController();
+  late final controller = widget.controller ?? EditorCanvasController();
   final focusNode = FocusNode(debugLabel: 'Whiteboard canvas');
 
   @override
   void dispose() {
     focusNode.dispose();
-    controller.dispose();
+    if (widget.controller == null) controller.dispose();
     super.dispose();
   }
 
   KeyEventResult _key(FocusNode node, KeyEvent event) {
+    if (!controller.inputEnabled) return KeyEventResult.ignored;
     final key = event.logicalKey;
     if (key == LogicalKeyboardKey.space) {
       controller.spaceHeld = event is! KeyUpEvent;
@@ -71,13 +80,15 @@ class _EditorPageState extends State<EditorPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text('Whiteboard'),
-      actions: const [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Center(child: Text('Session only · not saved')),
-        ),
-      ],
+      title: Text(widget.title),
+      actions: widget.actions.isNotEmpty
+          ? widget.actions
+          : const [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Center(child: Text('Session only · not saved')),
+              ),
+            ],
     ),
     body: Focus(
       focusNode: focusNode,

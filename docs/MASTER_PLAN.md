@@ -2,9 +2,45 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-19. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: deliver MVP-01 now. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; next usable slice is text/sticky notes. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
-## MVP-01 — First Usable Whiteboard (highest priority)
+## MVP-02 — Local Projects, Autosave & Reliable Reopening (verified)
+
+Acceptance: preserve acknowledged completed edits across macOS app restart and Chrome reload, with an initial Board Library, ordered saves, accurate status and actionable failures. Undo/Redo remains session-only. No speculative rendering work. Dependencies: verified MVP-01 and production document contracts.
+
+- [x] MVP-0201 Define strict versioned document/local snapshot serialization.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: Round-trip every existing document value and reject malformed/unsupported snapshots without replacement. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+- [x] MVP-0202 Implement durable native and IndexedDB stores.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: Flush plus atomic native file replacement and browser transaction completion acknowledge writes; no in-memory fallback. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+- [x] MVP-0203 Serialize revisioned autosave and retry.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: One writer, generation compare-and-swap, newest pending snapshot, accurate acknowledged status and retained work on failure. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+- [x] MVP-0204 Integrate Board Library and last-board restoration.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: Create independent boards, reopen existing content, preserve viewport and restore last selected board. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+- [x] MVP-0205 Protect pending saves and secondary sessions.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: Flush before switch, retain current board on failure, close protection and read-only competing writers. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+- [x] MVP-0206 Verify persistence regressions and actual macOS restart.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: Run automated failure/order/round-trip tests plus real restart of isolated test instance. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+- [x] MVP-0207 Verify actual Chrome reload and persistent backend.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: Exercise IndexedDB across real reload/reopen and independent boards, distinguish simulated failures. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+- [x] MVP-0208 Deliver manual checks, evidence and next milestone.
+  - Status: VERIFIED; priority: P0; dependencies: MVP-01 and relevant MVP-02 serialization/store/coordinator contracts.
+  - Acceptance: Update status/handoff with executed commands, limits, actual screenshots and next usable feature. Tests: scoped automated and actual application checks; evidence: `benchmark_results/mvp-02/verification.json`,78 host/76 Chrome tests, real normal+isolated macOS restart, Chrome reload/tab reopening and forced native permission failure/retry/close protection.
+
+## MVP-01 — First Usable Whiteboard (verified)
 
 Acceptance: normal entry point opens a real interactive editor on macOS and Chrome, using production document values. Usable canvas/pen/shapes, selection/movement/delete and bounded session Undo/Redo; functional toolbar. No benchmark-only completion claims. Following priority: local saving/reopening boards before advanced editing; then text/notes/images/frames, remaining tools, import/export/PNG, adaptive mobile, full platforms/performance hardening. All long-term tasks below retained.
 
@@ -669,6 +705,7 @@ Verification contract: Stale-save/retry/quota/disk/permission/crash/reload fault
   - Acceptance: **Implement Web persistent storage validation**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-0914 Implement single-writer/read-only coordination.
+  - Current MVP-02 evidence: native process/browser-tab exclusion verified. Broader qualification remains unchecked, including debug Flutter R hot-restart cleanup; full page reload releases the stale page lock. Do not steal live locks.
   - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
   - Acceptance: **Implement single-writer/read-only coordination**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: pending.
 

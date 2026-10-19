@@ -2,7 +2,7 @@
 
 Build the existing single-user, local-first Flutter Whiteboard into verified V1 for Windows, macOS, Chrome/Edge/Safari, Android and iOS. Product requirements and authorization: [execution directive](docs/EXECUTION_DIRECTIVE.md). This directive supersedes historical report approval stops; failed technical gates trigger remediation, never an invented pass.
 
-Current priority override2026-10-19: deliver MVP-01 usable normal-entry editor, then local persistence. Dense performance remains an unverified Production Hardening obligation; speculative caching/fonts/benchmarks paused and do not gate unrelated editor integration. Follow the latest explicit user priority in the directive/master plan.
+Current priority override2026-10-19: MVP-01 usable editor and MVP-02 local persistence/reopening are verified; next implement the usable text/notes slice. Dense performance remains an unverified Production Hardening obligation; speculative caching/fonts/benchmarks paused and do not gate unrelated editor integration. Follow the latest explicit user priority in the directive/master plan.
 
 ## Resume and track
 

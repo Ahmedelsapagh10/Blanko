@@ -17,7 +17,7 @@ enum EditorTool { select, pan, pen, rectangle, ellipse, triangle, line }
 
 /// Flutter interaction state; only completed gestures enter the pure session.
 final class EditorCanvasController extends ChangeNotifier {
-  EditorCanvasController({BoardSession? session})
+  EditorCanvasController({BoardSession? session, this.readOnly = false})
     : session =
           session ??
           BoardSession(
@@ -41,6 +41,8 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   final BoardSession session;
+  final bool readOnly;
+  bool inputEnabled = true;
   final toolbarChanges = ValueNotifier<int>(0);
   late EditorScene scene;
   final paths = <ElementId, Path>{};
@@ -65,6 +67,7 @@ final class EditorCanvasController extends ChangeNotifier {
   bool _disposed = false;
 
   bool get hasGesture => _pointer != null;
+  bool get isNavigating => hasGesture || _trackpadCamera != null;
   int get elementCount => session.document.elements.length;
 
   void _notify({bool toolbar = false}) {
@@ -109,12 +112,16 @@ final class EditorCanvasController extends ChangeNotifier {
 
   void pointerDown(PointerDownEvent event) {
     if (_disposed ||
+        !inputEnabled ||
         _pointer != null ||
         event.buttons & (kPrimaryMouseButton | kMiddleMouseButton) == 0) {
       return;
     }
     _pointer = event.pointer;
-    _gestureTool = spaceHeld || event.buttons & kMiddleMouseButton != 0
+    _gestureTool =
+        (readOnly && tool != EditorTool.select) ||
+            spaceHeld ||
+            event.buttons & kMiddleMouseButton != 0
         ? EditorTool.pan
         : tool;
     _start = _world(event.localPosition);
@@ -142,7 +149,7 @@ final class EditorCanvasController extends ChangeNotifier {
       case EditorTool.pan:
         camera = _boundedCamera(camera.pan(screen - _lastScreen!));
       case EditorTool.select:
-        if (selectedId != null) moveDelta = world - _start!;
+        if (!readOnly && selectedId != null) moveDelta = world - _start!;
       case EditorTool.pen:
         final relative = world - _start!;
         if (relative.distanceTo(_points.last) * camera.zoom >= .75) {
@@ -219,7 +226,9 @@ final class EditorCanvasController extends ChangeNotifier {
           transform: Transform2.translation(_start!.x, _start!.y),
         );
         _refreshScene();
-      } else if (_gestureTool == EditorTool.select && selectedId != null) {
+      } else if (!readOnly &&
+          _gestureTool == EditorTool.select &&
+          selectedId != null) {
         final delta = _world(event.localPosition) - _start!;
         if (delta.distanceTo(Point2.zero) * camera.zoom >= 2) {
           session.translate(selectedId!, delta);
@@ -259,18 +268,21 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void deleteSelection() {
+    if (readOnly || !inputEnabled) return;
     cancelGesture(notify: false);
     if (selectedId != null && session.delete(selectedId!)) _refreshScene();
     _notify(toolbar: true);
   }
 
   void undo() {
+    if (readOnly || !inputEnabled) return;
     cancelGesture(notify: false);
     if (session.undo()) _refreshScene();
     _notify(toolbar: true);
   }
 
   void redo() {
+    if (readOnly || !inputEnabled) return;
     cancelGesture(notify: false);
     if (session.redo()) _refreshScene();
     _notify(toolbar: true);
@@ -343,6 +355,7 @@ final class EditorCanvasController extends ChangeNotifier {
   void trackpadEnd(PointerPanZoomEndEvent event) {
     _trackpadCamera = null;
     _trackpadAnchor = null;
+    _notify(toolbar: true);
   }
 
   void focusLost() {
