@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-18",
+  "staticAnalysis": "PASS",
+  "hostTests": {
+    "passed": 90,
+    "log": "integrated-full-host.log"
+  },
+  "chromeTests": {
+    "passed": 90,
+    "log": "integrated-full-chrome.log"
+  },
+  "retainedFlagPageAndDocumentTests": {
+    "host": 14,
+    "chrome": 14,
+    "uniqueAdditionalCases": false
+  },
+  "focusedDocumentGeometryHost": 9,
+  "newUniqueTests": 29,
+  "newRetainedPixelTests": 9,
+  "newDocumentModelTests": 11,
+  "newDocumentGeometryTests": 9,
+  "profiles": {
+    "targets": [
+      "Chrome",
+      "macOS"
+    ],
+    "validVariantsPerTarget": 2,
+    "validWindowsPerVariant": 3,
+    "completeFullSuites": false,
+    "renderingGateQualified": false,
+    "excludedNativeCapture": "macos-direct-excluded-startup.json",
+    "reproduction": [
+      "python3 tool/summarize_retained_ranges.py --target web",
+      "python3 tool/summarize_retained_ranges.py --target macos"
+    ]
+  },
+  "negativeCollectorFixturesRejected": 6,
+  "independentReview": "Retained renderer/summarizer and pure document contracts reviewed. Validator controls tightened; metadata/settings/resource contracts explicitly remain incomplete. Root reviewed world-transform source/tests.",
+  "renderingSourceHashesMatchBuiltPairs": true,
+  "gitIndexUnchanged": true,
+  "gitIndexSha256": "b197c24fb16b37a8c120b9709e75474942f021b2a754a0ce4e783fe02b65130a",
+  "newSourceAndTestSha256": {
+    "lib/src/document/document_geometry.dart": "78b5144e588f808d980a700f76dbbcd83437bab13800ed984a6e49f7936fa6c4",
+    "lib/src/document/element.dart": "f6ba705d00e3c35da6f6834c758389494a2860241a8d8702846634f68be86c3b",
+    "lib/src/document/document.dart": "f29221dd8c34e1794c0d0ffeb49eecc13d5d664de0d8e3baaf2726f2277e1c08",
+    "test/document_model_test.dart": "1a7cd1ee22a4345df05c1768183e2cde839240efaf0c4807558b29c44639060a",
+    "test/document_geometry_test.dart": "850a238d16415c1d1ceabf700dffb5048a24f836fdc5329e6f9ab5510f4e066b",
+    "test/retained_ranges_test.dart": "5be5dd707dcc017fc92faa33516f5942820fe8eb400f89379a90540361ed4d01",
+    "tool/summarize_retained_ranges.py": "e0eedbce4c8ad802c71258ecce82c85ad341a3e5f5c8e8a86812baaff14d0bb1"
+  },
+  "packagesSdkOrPlatformChanges": false,
+  "limitations": [
+    "Physical input/presentation not validated",
+    "Long-duration/total GPU memory not validated",
+    "On-screen retained raster layers not implemented",
+    "Full navigation/all-visible stress/cold gate not repeated for rejected vector-only candidate",
+    "Systemwide memory/disk pressure limits diagnostic causal precision",
+    "Native final-focus telemetry unavailable; continuous occlusion unmonitored",
+    "Production document title/metadata/settings/asset/font manifests and geometry bounds/hits/index/commands/storage incomplete",
+    "Windows/Edge/Safari/Android/iOS runtime qualification pending"
+  ],
+  "summarizerSyntax": "PASS (temporary writable Python cache)",
+  "strictProfileValidation": {
+    "web": "PASS diagnostic only",
+    "macos": "PASS diagnostic only"
+  },
+  "gitDiffWhitespaceCheck": "PASS"
+}

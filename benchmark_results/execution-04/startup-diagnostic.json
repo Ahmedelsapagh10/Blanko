@@ -1,0 +1,208 @@
+{
+  "diagnosticOnly": true,
+  "renderingGateQualified": false,
+  "requests": [
+    {
+      "url": "http://127.0.0.1:8765/?phase0=startup-audit",
+      "resourceType": "document",
+      "startMs": 5.423874999999953,
+      "status": 200,
+      "endMs": 17.95987500000001,
+      "timing": {
+        "startTime": 1792330623735.61,
+        "domainLookupStart": -1,
+        "domainLookupEnd": -1,
+        "connectStart": -1,
+        "secureConnectionStart": -1,
+        "connectEnd": -1,
+        "requestStart": 0.079,
+        "responseStart": 3.412,
+        "responseEnd": 4.001
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/flutter_bootstrap.js",
+      "resourceType": "script",
+      "startMs": 16.858416000000034,
+      "status": 200,
+      "endMs": 18.56749999999988,
+      "timing": {
+        "startTime": 1792330623745.037,
+        "domainLookupStart": 0.059,
+        "domainLookupEnd": 0.065,
+        "connectStart": 0.065,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.201,
+        "requestStart": 0.232,
+        "responseStart": 0.867,
+        "responseEnd": 4.131
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/canvaskit/skwasm.wasm",
+      "resourceType": "fetch",
+      "startMs": 53.21137499999986,
+      "status": 200,
+      "endMs": 78.51166599999988,
+      "timing": {
+        "startTime": 1792330623783.264,
+        "domainLookupStart": 0.057,
+        "domainLookupEnd": 0.062,
+        "connectStart": 0.062,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.316,
+        "requestStart": 0.34,
+        "responseStart": 1.124,
+        "responseEnd": 14.319
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/canvaskit/skwasm.js",
+      "resourceType": "script",
+      "startMs": 53.524832999999944,
+      "status": 200,
+      "endMs": 55.85741600000006,
+      "timing": {
+        "startTime": 1792330623783.4421,
+        "domainLookupStart": 0.022,
+        "domainLookupEnd": 0.023,
+        "connectStart": 0.023,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.171,
+        "requestStart": 0.184,
+        "responseStart": 0.886,
+        "responseEnd": 2.238
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/main.dart.mjs",
+      "resourceType": "script",
+      "startMs": 53.558708000000024,
+      "status": 200,
+      "endMs": 55.60283299999992,
+      "timing": {
+        "startTime": 1792330623783.5278,
+        "domainLookupStart": 0.018,
+        "domainLookupEnd": 0.019,
+        "connectStart": 0.019,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.095,
+        "requestStart": 0.124,
+        "responseStart": 0.667,
+        "responseEnd": 1.35
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/favicon.png",
+      "resourceType": "other",
+      "startMs": 53.859541000000036,
+      "status": 200,
+      "endMs": 57.575333,
+      "timing": {
+        "startTime": 1792330623784.755,
+        "domainLookupStart": 0.032,
+        "domainLookupEnd": 0.036,
+        "connectStart": 0.036,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.121,
+        "requestStart": 0.14,
+        "responseStart": 1.107,
+        "responseEnd": 2.395
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/main.dart.wasm",
+      "resourceType": "fetch",
+      "startMs": 55.636999999999944,
+      "status": 200,
+      "endMs": 67.05216599999994,
+      "timing": {
+        "startTime": 1792330623785.205,
+        "domainLookupStart": 0.024,
+        "domainLookupEnd": 0.028,
+        "connectStart": 0.028,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.128,
+        "requestStart": 0.14,
+        "responseStart": 0.793,
+        "responseEnd": 9.62
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/FontManifest.json",
+      "resourceType": "fetch",
+      "startMs": 78.67579099999989,
+      "status": 200,
+      "endMs": 80.57770800000003,
+      "timing": {
+        "startTime": 1792330623809.39,
+        "domainLookupStart": 0.047,
+        "domainLookupEnd": 0.051,
+        "connectStart": 0.051,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.193,
+        "requestStart": 0.22,
+        "responseStart": 0.669,
+        "responseEnd": 1.116
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/fonts/MaterialIcons-Regular.otf",
+      "resourceType": "fetch",
+      "startMs": 80.37750000000005,
+      "status": 200,
+      "endMs": 84.48208299999988,
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/packages/cupertino_icons/assets/CupertinoIcons.ttf",
+      "resourceType": "fetch",
+      "startMs": 80.55299999999988,
+      "status": 200,
+      "endMs": 84.60633299999995,
+      "failure": {
+        "errorText": "net::ERR_ABORTED"
+      }
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me4GZLCzYlKw.woff2",
+      "resourceType": "fetch",
+      "startMs": 80.57054100000005,
+      "status": 200,
+      "endMs": 769.082625,
+      "timing": {
+        "startTime": 1792330623811.5918,
+        "domainLookupStart": 0.03,
+        "domainLookupEnd": 149.65,
+        "connectStart": 150.074,
+        "secureConnectionStart": 150.074,
+        "connectEnd": 317.611,
+        "requestStart": 317.899,
+        "responseStart": 462.258,
+        "responseEnd": 669.644
+      }
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/notosansarabic/v28/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfyGyvvnCBFQLaig.woff2",
+      "resourceType": "fetch",
+      "startMs": 1128.902625
+    }
+  ],
+  "console": [],
+  "errors": [],
+  "firstReady": {
+    "scene": "sparse",
+    "fixtureMs": 23.5,
+    "rendererPrepareMs": 103.9,
+    "loadToInteractiveMs": 232.9,
+    "dartEntryToInteractiveMs": 259.3
+  },
+  "navigationToReadyWallMs": 1022.3814580000001,
+  "runtime": {
+    "crossOriginIsolated": false,
+    "skwasmLoaded": true,
+    "skwasmIsMultiThreaded": false
+  }
+}

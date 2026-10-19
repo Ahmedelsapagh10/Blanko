@@ -1,0 +1,62 @@
+[
+  {
+    "fixture": "wrongThreadProbe",
+    "rejected": true,
+    "reason": "skwasm-multi: actual skwasm thread probe disagrees with variant"
+  },
+  {
+    "fixture": "missingWorker",
+    "rejected": true,
+    "reason": "skwasm-multi: multi-thread skwasm has no observed worker URL evidence"
+  },
+  {
+    "fixture": "missingIsolation",
+    "rejected": true,
+    "reason": "skwasm-multi: unexpected origin isolation"
+  },
+  {
+    "fixture": "missingAppResponse",
+    "rejected": true,
+    "reason": "skwasm-single: missing successful app compiler artifact response"
+  },
+  {
+    "fixture": "wrongCompiler",
+    "rejected": true,
+    "reason": "skwasm-single: normal/editSingle: compiler disagrees with intended engine experiment"
+  },
+  {
+    "fixture": "droppedFrames",
+    "rejected": true,
+    "reason": "canvaskit: normal/editSingle: stage frame distribution truncated or incomplete"
+  },
+  {
+    "fixture": "changedQuantile",
+    "rejected": true,
+    "reason": "canvaskit: normal/editSingle: stage/p95Ms disagrees with complete frame series"
+  },
+  {
+    "fixture": "changedDensity",
+    "rejected": true,
+    "reason": "skwasm-multi: visible density differs: visibleMax"
+  },
+  {
+    "fixture": "lifecycleChange",
+    "rejected": true,
+    "reason": "skwasm-single: dense/editSingle: viewport, focus or lifecycle changed during capture"
+  },
+  {
+    "fixture": "partialCommit",
+    "rejected": true,
+    "reason": "canvaskit: dense/editMulti: commit width or resolved/synchronized counts disagree"
+  },
+  {
+    "fixture": "resourceOverflow",
+    "rejected": true,
+    "reason": "canvaskit: backend resource evidence overflowed or requested backend differs"
+  },
+  {
+    "fixture": "overBudget",
+    "rejected": true,
+    "reason": "skwasm-single: normal/editSingle: vector byte bound violated"
+  }
+]

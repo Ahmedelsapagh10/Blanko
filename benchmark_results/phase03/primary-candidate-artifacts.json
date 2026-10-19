@@ -1,0 +1,4 @@
+{
+  "description": "Primary native candidate snapshot before cold-audit rebuild. Intermediate source snapshots and primary web binary were not archived; raw configurations/results are retained.",
+  "nativeAppDartSha256": "d1d572ada2330b02c3a37a244ae91df2b0b6b98fd26ca4244bf4261a8a2417a6"
+}

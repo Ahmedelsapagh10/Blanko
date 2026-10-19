@@ -1,0 +1,40 @@
+[
+  {
+    "platform": "host",
+    "command": [
+      "flutter",
+      "test",
+      "--no-pub",
+      "--concurrency=1",
+      "--dart-define=WB_RETAINED_LAYERS=true",
+      "--dart-define=WB_RETAINED_EXPERIMENT=true",
+      "--dart-define=WB_LAYER_INTERLEAVED=true",
+      "test/benchmark_page_test.dart"
+    ],
+    "exitCode": 0
+  },
+  {
+    "platform": "chrome",
+    "command": [
+      "flutter",
+      "test",
+      "--no-pub",
+      "--concurrency=1",
+      "--dart-define=WB_RETAINED_LAYERS=true",
+      "--dart-define=WB_RETAINED_EXPERIMENT=true",
+      "--dart-define=WB_LAYER_INTERLEAVED=true",
+      "--platform",
+      "chrome",
+      "test/benchmark_page_test.dart"
+    ],
+    "exitCode": 0
+  },
+  {
+    "command": [
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exitCode": 1
+  }
+]

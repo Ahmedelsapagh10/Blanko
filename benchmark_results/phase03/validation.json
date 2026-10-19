@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-17",
+  "staticAnalysis": "passed, no issues",
+  "hostTestsPassed": 53,
+  "chromeTestsPassed": 53,
+  "primarySuitesExecuted": 4,
+  "primaryWorkloadsExecuted": 80,
+  "cleanCollectionPairs": [
+    "web"
+  ],
+  "nativePairControlWarnings": [
+    {
+      "variant": "after",
+      "scene": "dense",
+      "workload": "camera",
+      "lifecycleChanges": 2
+    },
+    {
+      "variant": "after",
+      "scene": "dense",
+      "workload": "staticRedraw",
+      "lifecycleChanges": 2
+    }
+  ],
+  "nativeControlUncleanRowsExcludedFromAcceptance": true,
+  "coldAuditCases": 16,
+  "coldAuditControlsClean": true,
+  "coldZoomNewBuildsValidated": true,
+  "evictionAndDisposalValidated": true,
+  "allReceivedPrimaryAndColdSamplesRetained": true,
+  "lateCallbackCompletenessIndependentlyVerified": false,
+  "primaryCacheErrors": 0,
+  "publishedBudgetBytes": 67108864,
+  "sourceAndHistoricalHashesVerified": true,
+  "pythonScriptSyntax": "passed",
+  "nativeProfileBuilds": "primary reference/candidate and supplemental cold reference/candidate succeeded",
+  "webProfileBuilds": "primary reference/candidate and supplemental cold reference/candidate succeeded",
+  "physicalInputOrPresentationValidated": false,
+  "longTermGpuMemorySafetyValidated": false,
+  "candidateEnabledByDefault": false,
+  "packagesOrPlatformConfigurationChanged": false,
+  "recommendation": "NO-GO",
+  "measuredBlockers": [
+    "Chrome dense single/multi editing >16.7ms P95",
+    "Native sustained updates 89.102ms P95 >16.7ms"
+  ],
+  "phase1Started": false,
+  "phase04Started": false,
+  "nodeCollectorSyntax": "passed",
+  "formatting": "4 Dart files checked, 0 changes",
+  "diffWhitespace": "passed",
+  "localBenchmarkServerRunning": false
+}

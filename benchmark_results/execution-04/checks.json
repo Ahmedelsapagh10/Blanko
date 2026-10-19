@@ -1,0 +1,35 @@
+[
+  {
+    "name": "host-page",
+    "command": [
+      "flutter",
+      "test",
+      "--no-pub",
+      "--concurrency=1",
+      "test/benchmark_page_test.dart"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "chrome-page",
+    "command": [
+      "flutter",
+      "test",
+      "--no-pub",
+      "--concurrency=1",
+      "--platform",
+      "chrome",
+      "test/benchmark_page_test.dart"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "analysis",
+    "command": [
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "exitCode": 0
+  }
+]

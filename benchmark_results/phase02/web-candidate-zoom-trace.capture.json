@@ -1,0 +1,8 @@
+{
+  "trigger": "result:normalEditing",
+  "startAfterTriggerMs": 7000,
+  "requestedDurationMs": 3000,
+  "actualCpuCaptureWallMs": 4033.5788329999996,
+  "cpuSampleIntervalMicros": 1000,
+  "categories": "devtools.timeline,v8,blink,cc,gpu"
+}

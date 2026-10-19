@@ -1,0 +1,109 @@
+{
+  "host": {
+    "complete": true,
+    "passed": 116,
+    "sourceHashesUnchanged": true
+  },
+  "chrome": {
+    "complete": true,
+    "passed": 116,
+    "sourceHashesUnchanged": true
+  },
+  "analysis": {
+    "command": [
+      "flutter",
+      "analyze",
+      "--no-pub"
+    ],
+    "success": true,
+    "log": "benchmark_results/execution-05/analysis.log"
+  },
+  "profiles": {
+    "complete": true,
+    "rows": 12,
+    "fontTransfersCompleteBeforeReady": true,
+    "renderingGateQualified": false,
+    "source": "profile-manifest.json"
+  },
+  "startupLocalOnly": {
+    "success": true,
+    "blockedExternal": [],
+    "source": "startup-local-only.json"
+  },
+  "historicalAttempts": [
+    {
+      "path": "host-fonts-initial-retry-failure.log",
+      "status": "FAILED",
+      "reason": "retry created failing future before FutureBuilder attached; fixed"
+    },
+    {
+      "path": "analysis-initial.log",
+      "status": "FAILED",
+      "reason": "unnecessary test import; removed"
+    },
+    {
+      "path": "chrome-fonts.log",
+      "status": "STOPPED",
+      "reason": "5 cases completed; real font asset wait, no complete suite marker; SDK test ignores asset platform messages"
+    },
+    {
+      "path": "chrome-font-diagnostic.log",
+      "status": "STOPPED",
+      "reason": "font asset read blocked; trace source only, no suite pass"
+    },
+    {
+      "path": "chrome-font-setup-diagnostic.log",
+      "status": "STOPPED",
+      "reason": "setUpAll also blocked on ignored asset channel, no cases completed"
+    },
+    {
+      "path": "initial-host-regression/host-tests.json",
+      "status": "FAILED",
+      "reason": "genuine glyph warm-resampling mismatch; read relocated logs from that subdirectory"
+    },
+    {
+      "path": "interrupted-host-regression/host-tests.json",
+      "status": "STOPPED",
+      "reason": "ready future from prior test zone caused widget-factory wait; fixed fast path; relocated logs in subdirectory"
+    },
+    {
+      "path": "tile-font-diagnostic-compile-failure.log",
+      "status": "FAILED",
+      "reason": "temporary diagnostic referenced unavailable debugPrint; corrected then removed tracing"
+    },
+    {
+      "path": "tile-font-diagnostic.log",
+      "status": "FAILED",
+      "reason": "actual unchanged warm direct324/cached266 dark pixels, mean byte error0.7132568; before repair"
+    },
+    {
+      "path": "host-font-fast-path.log",
+      "status": "FAILED",
+      "reason": "extra await changed factory error completion; skip ready await fixed"
+    },
+    {
+      "path": "initial-profile-port-probe/profile-manifest.json",
+      "status": "INCOMPLETE_SUITE",
+      "reason": "valid first direct arm, runner rejected TIME_WAIT closed-port reuse; all3 arms recaptured after helper fix; commands/raw paths retain original output prefix"
+    }
+  ],
+  "limitations": [
+    "engine stage timings are not physical input/presentation",
+    "new controlled font metrics are not historical font-only causal comparison",
+    "no full cold/navigation/all-visible/image-heavy/soak/platform gate",
+    "matching-scale fractional camera/widget/device text fidelity remains unqualified",
+    "Wasm no cases passed historically and not rerun"
+  ],
+  "independentProfileAudit": {
+    "passed": true,
+    "frames": 2911,
+    "commits": 617,
+    "negativeCasesRejected": 18,
+    "source": "font-profile-validation.json"
+  },
+  "changedDartFormatting": {
+    "files": 10,
+    "modified": 0,
+    "command": "dart format --output=none --set-exit-if-changed (10 changed Dart files)"
+  }
+}

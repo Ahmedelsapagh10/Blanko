@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/ahmedelsapagh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "tool/inspect_web_startup.mjs",
+    "--playwright",
+    "/Users/ahmedelsapagh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
+    "--executable",
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "--output",
+    "benchmark_results/execution-04/startup-diagnostic.json"
+  ],
+  "exitCode": 0,
+  "processGroupOwned": true,
+  "timeoutSeconds": 110
+}

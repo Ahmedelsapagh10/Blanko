@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-19",
+  "milestone": "MVP-01 First Usable Whiteboard",
+  "scope": "Usable session editor; not full V1 or performance qualification",
+  "environment": {
+    "hardware": "Apple M4 / 16 GiB",
+    "os": "macOS 26.5.1",
+    "flutter": "3.41.9",
+    "dart": "3.11.5",
+    "chrome": "155.0.8059.82"
+  },
+  "analysis": {
+    "command": "flutter analyze --no-pub",
+    "exit_code": 0,
+    "result": "No issues found",
+    "log": "analysis.log"
+  },
+  "tests": [
+    {
+      "target": "host",
+      "command": "flutter test --no-pub --concurrency=1 test/editor_widget_test.dart test/widget_test.dart test/board_session_test.dart test/editor_scene_test.dart",
+      "passed": 28,
+      "exit_code": 0,
+      "log": "editor-host.log"
+    },
+    {
+      "target": "Chrome",
+      "command": "CHROME_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' flutter test --no-pub --platform chrome test/editor_widget_test.dart test/widget_test.dart test/board_session_test.dart test/editor_scene_test.dart",
+      "passed": 28,
+      "exit_code": 0,
+      "log": "editor-chrome.log",
+      "preflight": "python3 tool/verify_benchmark_fonts.py --prepare-web-tests"
+    }
+  ],
+  "launches": [
+    {
+      "target": "macOS",
+      "command": "flutter run -d macos",
+      "mode": "Debug",
+      "result": "Built and opened real Editor; screenshot shows 12 existing user elements. CLI detached; app left open to preserve unsaved work.",
+      "screenshot": "macos-editor.jpg",
+      "warning": "Framework HardwareKeyboard assertion: duplicate KeyDown physical comma 0x70036 / logical Arabic waw 0x648, before application Focus callbacks. Cause unproved; native keyboard qualification remains pending."
+    },
+    {
+      "target": "Chrome",
+      "command": "flutter run -d chrome --web-port=8765 --web-browser-debug-port=9227",
+      "mode": "Debug",
+      "result": "Opened real Editor at localhost:8765. Existing user tab with 46 elements preserved; agent tested a separate fresh tab. Dev server left running for these unsaved sessions.",
+      "screenshot": "chrome-editor.jpg"
+    }
+  ],
+  "live_ui_checks": {
+    "Chrome": [
+      "Fresh board began with zero elements",
+      "Pen committed visible blue stroke",
+      "Rectangle committed; selected outline drag visibly moved rectangle",
+      "Backspace deleted selection: 2 to 1 elements",
+      "Toolbar Undo restored: 1 to 2 elements",
+      "Toolbar Redo reapplied delete: 2 to 1 elements",
+      "Undo restore and new pen commit cleared Redo",
+      "Zoom out changed 100% to 80% without adding elements"
+    ],
+    "limitations": [
+      "CUA Meta+Z did not undo in live session; synthetic keyboard tests pass. App currently matches logical Latin shortcuts, non-Latin logical shortcut handling is not qualified.",
+      "Some CUA drawing drags did not commit; actual event arrival/cancellation not captured. No application focus defect established by independent source review; all four shape first-drag widget cases pass on host and Chrome.",
+      "Native screenshot is observed user content, not agent-authored interaction proof."
+    ]
+  },
+  "failures_preserved": [
+    "analysis-initial.log: initial API/style corrections before successful analysis",
+    "editor-host-initial-disposal-failure.log: late pointer-up after disposed notifier; fixed and covered",
+    "editor-chrome-no-space.log: compiler ENOSPC, zero executed tests; excluded from passes"
+  ],
+  "cleanup": "Only six Oct18 .dart_tool/flutter_build directories, old macOS Profile product and generated module/SDK caches removed (~780 MiB). Current Debug binary, active Chrome temporary/profile/server files, SDKs, dependencies, user data and historical evidence preserved. ~889 MiB free after retry.",
+  "performance": "No benchmarks executed. Debug launches and widget tests establish functionality only. Historical failed 10K/16.7ms gates retained in Production Hardening.",
+  "limitations": [
+    "Session only: closing/reloading loses contents; local persistence is next priority",
+    "Single selection; root-level pen/shapes/lines only; no import or advanced content renderer",
+    "Committed edit rebuilds immutable snapshot/index/path map; no full-document reconstruction per pointer move",
+    "100-command inverse history; 50K points per stroke; world +/-1e9; camera zoom .02 to 32",
+    "Full native keyboard/focus/layout, physical input, memory soak and Windows/Edge/Safari/Android/iOS device qualification pending"
+  ],
+  "source_sha256": {
+    "lib/main.dart": "8d3fc4c31b221f7902af8fa5f4dfbfc54f25161aa3b175c732ccc3b751e9709d",
+    "lib/src/editor/board_session.dart": "71547cab38268422b9dfd04deb5890825475cbae31f5f09e0aa944f2bffba3b9",
+    "lib/src/editor/editor_scene.dart": "1f158a0bfead74e1b8d80a7c4526d29f640355fe1b12559054ebf84b402c5571",
+    "lib/src/editor/editor_canvas.dart": "d4dacba8dde1a29108f529451211be16962c1260424f742b3726ee806396c7d8",
+    "lib/src/editor/editor_page.dart": "b16e27ba10539ef0bdb872b9d0278463a627b23a0139ecb7c751b50e104b1119",
+    "test/widget_test.dart": "2f6a76c01f84d10765069f31e48d5ae69eefd60e402ce8a42c7d4ddd91d455e5",
+    "test/board_session_test.dart": "d760045a0935f4946c2ba36c634e5d2aeee60bfd12fe1d163873c51d5d10f8dd",
+    "test/editor_scene_test.dart": "26306f3ac0c08277b3c454afeeda4d912699d2a7d642c4b77109f17a47b5d0e2",
+    "test/editor_widget_test.dart": "e3318ec72805e79487a8345a78287f94db0e63fb9b778c3f53d1dcbe5e02f5d0"
+  },
+  "git_index_sha256_expected": "b197c24fb16b37a8c120b9709e75474942f021b2a754a0ce4e783fe02b65130a",
+  "no_dependency_sdk_platform_changes_this_milestone": true,
+  "next_priority": "Local save/reopen with acknowledged revision state, safe versioned serialization and platform storage; no cache experiments first.",
+  "final_checks": {
+    "dart_format": "9 files, 0 changed",
+    "git_diff_check": "pass",
+    "source_hashes": "all 9 editor/test files match executed verification source",
+    "task_count": "36/258, MVP-01 8/8; historical task checks preserved",
+    "git_index": "unchanged b197c24fb16b37a8c120b9709e75474942f021b2a754a0ce4e783fe02b65130a"
+  }
+}

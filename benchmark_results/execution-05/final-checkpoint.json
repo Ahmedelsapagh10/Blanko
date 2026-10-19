@@ -1,0 +1,62 @@
+{
+  "clientDate": "2026-10-19",
+  "recordedUtc": "2026-10-19T10:45:20.665801+00:00",
+  "verifiedTasks": 28,
+  "trackedTasks": 250,
+  "progressPercent": 11.2,
+  "renderingGate": "NO-GO",
+  "fontControlTask": "WB-0120 VERIFIED",
+  "gitIndexSha256": "b197c24fb16b37a8c120b9709e75474942f021b2a754a0ce4e783fe02b65130a",
+  "originalIndexPreserved": true,
+  "capturedSourceHashesMatch": true,
+  "testSourceAssetHashesMatchAcrossTargets": true,
+  "availableBytes": 6339973120,
+  "sourceSnapshot": {
+    "path": "benchmark_results/execution-05/source-snapshot.tar.gz",
+    "sha256": "887451308780741d3753e3e3172724c92ecea134d3a9630b50d394a920199fce",
+    "bytes": 1151769
+  },
+  "finalAppArtifacts": {
+    "path": "benchmark_results/execution-05/final-app-artifacts.tar.gz",
+    "sha256": "3d4f2a8d76305ec3f63b100c81967c36831436047d0a43c00718341fd54e054c",
+    "bytes": 1108489,
+    "scope": [
+      "main.dart.js",
+      "flutter_bootstrap.js",
+      "assets/FontManifest.json",
+      "assets/AssetManifest.bin"
+    ],
+    "earlierAppArmsRetained": false
+  },
+  "postCaptureValidatorSha256": "749e0fb42276b0b1bd9fbceeb92a42b44a42fe709f943ea263a91353a9b877a3",
+  "ownTemporaryReleaseArchiveCleanup": [
+    {
+      "path": "/tmp/whiteboard-roboto.zip",
+      "bytes": 28917974,
+      "verifiedReleaseArchiveSha256": "bee3e9334ea86dd63e184598f31fb16750881c2da1a6f097a66e0f66a95b3d54"
+    },
+    {
+      "path": "/tmp/whiteboard-arabic.zip",
+      "bytes": 20494293,
+      "verifiedReleaseArchiveSha256": "65bceb5106ca17e8e0b4660bacec4d362afd56e0251e71fedf83f76dfe9f4abe"
+    }
+  ],
+  "tests": {
+    "host": 116,
+    "chrome": 116,
+    "analysis": "No issues found",
+    "changedDartFormat": "10 files, 0 changed"
+  },
+  "managedRuns": {
+    "allProfileCollectorsExitedZero": true,
+    "allOwnedServersStopped": true,
+    "startupCollectorExitedZero": true,
+    "globalProcessAbsenceClaimed": false
+  },
+  "limits": [
+    "no full performance gate",
+    "no physical input/presentation or long-memory/device qualification",
+    "no full typography or matching-scale subpixel raster fidelity qualification",
+    "earlier app/bootstrap bytes overwritten, runner hashes retained; no wire-body digest"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-18",
+  "inspectionUTC": "2026-10-18T11:48:02.009590+00:00",
+  "readOnlyAudit": true,
+  "freeBytesAtEnd": 1371041792,
+  "swapSnapshot": {
+    "allocatedMiB": 4096,
+    "usedMiB": 2493.5
+  },
+  "compressorSnapshot": {
+    "pageBytes": 16384,
+    "storedPages": 759268,
+    "occupiedPages": 234984
+  },
+  "provenRegeneration": {
+    "priorCleanupArtifactMtimeUTC": "2026-10-18T07:24:21.551343+00:00",
+    "previouslyDeletedPath": "/Users/ahmedelsapagh/.gradle/caches/8.14.3/transforms",
+    "newDirectoryCtimeUTC": "2026-10-18T10:34:32.161791+00:00",
+    "interpretation": "Previously deleted transforms were recreated after cleanup. Regeneration is observed; responsible process was not identified."
+  },
+  "conditionalGeneratedCacheCandidates": [
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/8.14.3/transforms",
+      "directoryMtimeUTC": "2026-10-18T10:34:32.161791+00:00",
+      "directoryCtimeUTC": "2026-10-18T10:34:32.161791+00:00",
+      "currentProjectGradle": false,
+      "openMatchingFilesAtInspection": 0,
+      "matchingDaemonAtInspection": false,
+      "cleanupCandidateRequiresFreshActivityCheck": true,
+      "allocatedBytes": 2844700672
+    },
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/8.12/transforms",
+      "directoryMtimeUTC": "2026-10-18T10:50:00.873917+00:00",
+      "directoryCtimeUTC": "2026-10-18T10:50:00.873917+00:00",
+      "currentProjectGradle": false,
+      "openMatchingFilesAtInspection": 0,
+      "matchingDaemonAtInspection": false,
+      "cleanupCandidateRequiresFreshActivityCheck": true,
+      "allocatedBytes": 1126715392
+    },
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/9.2.0/transforms",
+      "directoryMtimeUTC": "2026-10-18T06:43:34.756335+00:00",
+      "directoryCtimeUTC": "2026-10-18T06:43:34.756335+00:00",
+      "currentProjectGradle": false,
+      "openMatchingFilesAtInspection": 0,
+      "matchingDaemonAtInspection": false,
+      "cleanupCandidateRequiresFreshActivityCheck": true,
+      "allocatedBytes": 740618240
+    }
+  ],
+  "excluded": [
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/8.14",
+      "reason": "Current project Gradle version; preserve."
+    },
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/9.7.1",
+      "reason": "Active GradleDaemon9.7.1 PID38478 observed."
+    },
+    {
+      "path": "/Users/ahmedelsapagh/Library/Developer/Xcode/DerivedData/Runner-apjyeuxypglseobxcbaimbpkqqzl",
+      "reason": "Different user project cpv_end_user iOS workspace; Info.plist LastAccessedDate11:40:03UTC today."
+    },
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/modules-2",
+      "reason": "Downloaded dependencies preserved."
+    }
+  ],
+  "limitations": [
+    "Snapshots do not establish which process recreated caches.",
+    "macOS swap is system managed and must not be deleted manually.",
+    "Inactive caches may be rebuilt by other projects, so cleanup alone does not guarantee stable free space.",
+    "No files deleted, no processes stopped, and no builds/tests run by this audit."
+  ],
+  "activeGradleDaemonSnapshot": [
+    {
+      "pid": 38478,
+      "parentPid": 1,
+      "version": "9.7.1"
+    },
+    {
+      "pid": 45616,
+      "parentPid": 1,
+      "version": "8.4"
+    },
+    {
+      "pid": 45626,
+      "parentPid": 1,
+      "version": "8.7"
+    },
+    {
+      "pid": 46091,
+      "parentPid": 1,
+      "version": "8.1"
+    },
+    {
+      "pid": 46116,
+      "parentPid": 1,
+      "version": "8.4"
+    },
+    {
+      "pid": 46349,
+      "parentPid": 1,
+      "version": "7.6.1"
+    }
+  ],
+  "activityInspectionUTC": "2026-10-18T11:48:14.742740+00:00",
+  "lsofExitCode": 0
+}

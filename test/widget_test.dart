@@ -9,22 +9,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:whiteboard/main.dart';
+import 'package:whiteboard/benchmark_main.dart';
+import 'package:whiteboard/src/benchmarks/benchmark_page.dart';
+import 'package:whiteboard/src/editor/editor_canvas.dart';
+import 'package:whiteboard/src/editor/editor_page.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets(
+    'BenchmarkApp opens the rendering lab and disposes during loading',
+    (tester) async {
+      await tester.pumpWidget(const BenchmarkApp());
+      expect(find.byType(BenchmarkPage), findsOneWidget);
+      expect(find.text('Whiteboard · Rendering spike'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets('Normal entry opens the usable editor', (tester) async {
+    await tester.pumpWidget(const WhiteboardApp());
+    expect(find.byType(EditorPage), findsOneWidget);
+    expect(find.byType(EditorCanvas), findsOneWidget);
+    expect(find.byTooltip('Pen (P)'), findsOneWidget);
+    expect(find.byType(BenchmarkPage), findsNothing);
+    expect(find.text('Session only · not saved'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
   });
 }

@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-18",
+  "kind": "bounded vector retention experiment, no gate qualification",
+  "sourceHashes": {
+    "lib/benchmark_main.dart": "cc7b08a8761225125f7fc25e89402d47624bbc15fb5cc2950241a392fd4ebc6e",
+    "lib/main.dart": "525df2a854f3c54c831302c89f3089afd991cd03900c207e261d821bdc9ec656",
+    "lib/src/viewport/camera.dart": "640a3ee8db3472a71235dc05a8900b6c1047aa260f76cb092edac47c9b286a53",
+    "lib/src/benchmarks/scene_picture_cache.dart": "d7bffd46c3c4bd45c0859ff0c9b71f2b4ae1826d0a882689bfb208d528edf566",
+    "lib/src/benchmarks/benchmark_canvas.dart": "320a2c06af09699507f4a79be37dde4e6567ad8d81035975f0b15632e6548de8",
+    "lib/src/benchmarks/frame_samples.dart": "e8f81a7a2ae688cf8c40e27130a3252c1002d5cad2143653623289e0b9815d1b",
+    "lib/src/benchmarks/scene_tile_cache.dart": "92593a4fb7b3a81bb9d38ce683aa2bb635428257f155dbaf3179659302216a35",
+    "lib/src/benchmarks/scene_renderer.dart": "b145ba136b33ea24f3698985ee644259f29043bd44b177ffa3aea2cc2894d127",
+    "lib/src/benchmarks/benchmark_scene.dart": "a706976b4ae7a2eff976641f620b9e71182aac96ad16739def208453d90e3256",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "fd06fba9e071da6e3947c1382ec899175c76d38e53eca995c175531ad53947d2",
+    "lib/src/benchmarks/benchmark_telemetry.dart": "ed3d03c5f2dc34d5fc0f09fd16efd19596800f26ac7d495e2b92d078c1771ab1",
+    "lib/src/benchmarks/benchmark_page.dart": "22b620c165462fb3aed37214a56d72d31de80dc85f18eb7b6f8ccb83c3ea3938",
+    "lib/src/geometry/geometry.dart": "8b84c86d7974ade83d8b24d50e27932521f3eccf3680c115f6a650ed7b9dbff7",
+    "lib/src/spatial/spatial_grid.dart": "b7f6695b779d68cd29d3083c92e5fe132afd72e230664e64bc707e2ce6093c84",
+    "pubspec.yaml": "0a9baca6e8dfca314306cfb02587023686c9c34d523644780ccb2f50956f4278",
+    "pubspec.lock": "353b981ec19ef69d4e918807244fb842547ebde79b7e00702824513756d4bb89"
+  },
+  "webDirect": {
+    "mainJsSha256": "edfc2c557c8967805568d8c6cac8c27b7e78026937fae24d48c8a24cad150f22",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": false,
+      "PHASE01_OPTIMIZED": true,
+      "WB_RETAINED_EXPERIMENT": true,
+      "WB_RETAINED_RANGES": false
+    }
+  },
+  "sdk": {
+    "frameworkVersion": "3.41.9",
+    "channel": "stable",
+    "repositoryUrl": "https://github.com/flutter/flutter.git",
+    "frameworkRevision": "00b0c91f06209d9e4a41f71b7a512d6eb3b9c694",
+    "frameworkCommitDate": "2026-04-29 10:03:19 -0700",
+    "engineRevision": "42d3d75a56efe1a2e9902f52dc8006099c45d937",
+    "engineCommitDate": "2026-04-28 17:31:55.000Z",
+    "engineContentHash": "9161402dc0e134b3fb5adee5046b6e84b1a5e1c1",
+    "engineBuildDate": "2026-04-28 22:37:18.442",
+    "dartSdkVersion": "3.11.5",
+    "devToolsVersion": "2.54.2",
+    "flutterVersion": "3.41.9",
+    "flutterRoot": "/Users/ahmedelsapagh/development/flutter"
+  },
+  "webRetained": {
+    "mainJsSha256": "c18af6afbd3dea70de995bb493ec9add040d07460b1171a5f79f544a9abaef3e",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": false,
+      "PHASE01_OPTIMIZED": true,
+      "WB_RETAINED_EXPERIMENT": true,
+      "WB_RETAINED_RANGES": true
+    }
+  },
+  "independentUnimportedSources": [
+    "lib/src/document/element.dart",
+    "lib/src/document/document.dart"
+  ],
+  "macosDirectExcludedStartup": {
+    "executableSha256": "a6d0be43bf5a7b13a46f20cb31ad8cf38f80ff6a41350ab49e8fdc95e1a98f72",
+    "appFrameworkSha256": "90030d066e7e96d7c332bf409cdc30ebe6d54f65799c2d4e53881c8557e1a364",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": false,
+      "PHASE01_OPTIMIZED": true,
+      "WB_RETAINED_EXPERIMENT": true,
+      "WB_RETAINED_RANGES": false,
+      "PHASE0_AUTORUN_DELAY_MS": 20000
+    },
+    "exclusionReason": "Incorrect PHASE0_AUTORUN_DELAY_MS define (actual flag PHASE01_AUTORUN_DELAY_MS); timed windows began before visibility check."
+  },
+  "macosDirect": {
+    "executableSha256": "03af6b84819dfdc9ead701e3f55e68ffe40c7b62e70ca90883ee8f0aa89cd4ad",
+    "appFrameworkSha256": "4121d830d4c1214acdc7dd351331e61db98839ffeaa4734a7d67c2046bcf486d",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": false,
+      "PHASE01_OPTIMIZED": true,
+      "WB_RETAINED_EXPERIMENT": true,
+      "WB_RETAINED_RANGES": false,
+      "PHASE01_AUTORUN_DELAY_MS": 20000
+    }
+  },
+  "macosRetained": {
+    "executableSha256": "4f06713effed42e8199eb942b4561b17a821a62d6bcbce74aca84eac2e1c2985",
+    "appFrameworkSha256": "129539345f350f196a7811e2a7f5fa7208bccbbf039ae0cf23322ca38a131f4d",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": false,
+      "PHASE01_OPTIMIZED": true,
+      "WB_RETAINED_EXPERIMENT": true,
+      "WB_RETAINED_RANGES": true,
+      "PHASE01_AUTORUN_DELAY_MS": 20000
+    }
+  }
+}

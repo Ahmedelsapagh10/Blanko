@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-15",
+  "timezone": "Africa/Cairo",
+  "hardware": {
+    "chip": "Apple M4",
+    "logicalCpus": 10,
+    "physicalMemoryBytes": 17179869184,
+    "architecture": "arm64"
+  },
+  "os": {
+    "name": "macOS",
+    "version": "26.5.1",
+    "build": "25F80"
+  },
+  "sdk": {
+    "flutter": "3.41.9",
+    "channel": "stable",
+    "frameworkRevision": "00b0c91f06",
+    "dart": "3.11.5",
+    "engine": "9161402dc0e134b3fb5adee5046b6e84b1a5e1c1",
+    "engineRevision": "42d3d75a56efe1a2e9902f52dc8006099c45d937"
+  },
+  "toolchains": {
+    "xcode": "26.2 (17C52)",
+    "appleSdk": "26.2",
+    "java": "OpenJDK 21.0.7",
+    "androidPlatforms": [
+      31,
+      33,
+      34,
+      35,
+      36
+    ],
+    "adb": "36.0.0-13206524",
+    "androidDevices": [],
+    "windows": "Native build unavailable on macOS host",
+    "ios": "SDK present; simctl/CoreSimulator first-launch query stalled; runtime and signing not verified",
+    "edge": "Not installed in /Applications",
+    "safari": "Installed; profile benchmark not executed",
+    "doctor": "flutter doctor -v stalled in simulator discovery and was terminated"
+  },
+  "measurements": {
+    "native": "Flutter profile; SDK default native renderer; RSS at 1 Hz",
+    "web": "Flutter JS profile with CanvasKit; Chromium 155.0.8059.40; hardware ANGLE Metal / Apple M4",
+    "warmupSeconds": 1,
+    "cameraMeasurementSeconds": 10,
+    "movementMeasurementSeconds": 5,
+    "hitQueries": 256,
+    "hitWarmupQueries": 32,
+    "percentile": "nearest rank; per-series ring capacity 2400",
+    "assetOriginals": 4,
+    "assetNormalPixels": [
+      1024,
+      1024
+    ],
+    "assetHeavyPixels": [
+      2048,
+      2048
+    ],
+    "assetReferences": 100,
+    "targetStageP95Ms": 16.7,
+    "releaseBaselineApproved": false,
+    "variants": {
+      "reference": "PHASE01_OPTIMIZED=false",
+      "retained": "PHASE01_OPTIMIZED=true; bounded overview only",
+      "rejected": "two static preview pictures; retained as exploratory data only"
+    },
+    "nativeCpuProfiling": "FLUTTER_ENGINE_SWITCHES=1, FLUTTER_ENGINE_SWITCH_1=enable-dart-profiling=true; VM 1000us samples",
+    "nativeStartDelayMs": 10000,
+    "memoryCyclesPerSuite": 16,
+    "repeatedCommitSamples": 256,
+    "repeatedCommitWarmup": 16,
+    "overviewPixelsMax": [
+      2048,
+      2048
+    ],
+    "overviewCacheLogicalBytesMax": 16777216,
+    "cacheBuildConcurrencyPerRenderer": 1,
+    "nativeRenderer": "Skia/Metal, evidenced by engine timelines (GrMtlPipelineStateBuilder etc.)",
+    "webProfiling": "Primary Chrome 155.0.8059.40 frame suites have no CPU tracing; separate three-second CPU/cc/gpu diagnostic windows. After diagnostic used automatically updated 155.0.8059.82, not a matched primary frame comparison.",
+    "automationRuntime": "Existing Node 24.19.0 / Playwright 1.62.1; no dependency installed"
+  },
+  "exclusions": [
+    "macos-uncontrolled-repeat: visibility/focus inspection during suite; high variability; not used for before/after claims",
+    "macos-rejected-preview: exploratory combined cache candidate; uncontrolled visibility; not a causal preview-only comparison",
+    "macos-reference-no-cpu: exploratory replication; main comparison uses explicit CPU-profile-enabled runs",
+    "web-reference-trace-collector-failed: transport closed on full-session trace export; recovered aggregates excluded from primary comparison",
+    "web-software-exploratory: headless shell 156 with SwiftShader; excluded from hardware comparison"
+  ],
+  "inputSmoke": {
+    "syntheticWheelZoomInChangedPixels": true,
+    "syntheticWheelZoomOutChangedPixels": true,
+    "syntheticMouseDragChangedPixels": true,
+    "physicalTrackpadTested": false
+  },
+  "measurementRevision": "Corrected 2D X/Y camera scale and viewport-proportional sweep; earlier measurements superseded.",
+  "sourceSha256": {
+    "lib/benchmark_main.dart": "cc7b08a8761225125f7fc25e89402d47624bbc15fb5cc2950241a392fd4ebc6e",
+    "lib/main.dart": "525df2a854f3c54c831302c89f3089afd991cd03900c207e261d821bdc9ec656",
+    "lib/src/viewport/camera.dart": "640a3ee8db3472a71235dc05a8900b6c1047aa260f76cb092edac47c9b286a53",
+    "lib/src/benchmarks/benchmark_canvas.dart": "06bfb490beffa0e54a69232cdee521cad384b22f29dbb5830f72b7ce941fbef3",
+    "lib/src/benchmarks/frame_samples.dart": "6121103243b473a93c606f9aa200169124813e4642fc519b172fd4622e900031",
+    "lib/src/benchmarks/scene_renderer.dart": "de7a2129bd1a39441f0be9f6bdbd761ad879c233e44e86d90064da55395de970",
+    "lib/src/benchmarks/benchmark_scene.dart": "a706976b4ae7a2eff976641f620b9e71182aac96ad16739def208453d90e3256",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "cc289a90b8357bb9acd7e02e3fecd276577badc32908094d5e94ea93d2732db9",
+    "lib/src/benchmarks/benchmark_telemetry.dart": "e6a1bf9d1fafb662fd80fe040cdfb390af8c856e89cd37dc97577d8d00837766",
+    "lib/src/benchmarks/benchmark_page.dart": "219e71628e782bf31eb42ebe9977b9236a040e1c5f2e71aa9e7911f056018015",
+    "lib/src/geometry/geometry.dart": "8b84c86d7974ade83d8b24d50e27932521f3eccf3680c115f6a650ed7b9dbff7",
+    "lib/src/spatial/spatial_grid.dart": "b7f6695b779d68cd29d3083c92e5fe132afd72e230664e64bc707e2ce6093c84"
+  },
+  "remediation": "Phase 0.1",
+  "reportDate": "2026-10-16",
+  "sourceHashScope": "Final application source; native reference built before optimized-only pending-cache guards and diagnostic rebuild logging. Primary web variants and final native candidate use final application source."
+}

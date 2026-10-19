@@ -1,0 +1,10 @@
+{
+  "nativeWindowService": [
+    "two getApp service errors",
+    "getState timed out after reset"
+  ],
+  "nativeReference": "Stopped progressing after hierarchy readiness; interrupted, complete false; exact cause unconfirmed",
+  "firstReferenceTraceAttempt": "Bounded 120-second collector timeout; only sparse result printed, no CPU/timeline saved; later retry succeeded",
+  "excludedPrototype": "complete 12 workloads; stress truncated at2400/5980, retained separately; replaced by final12000-capacity comparison",
+  "networkOrDependencyFailureExplainingSlowFrames": false
+}

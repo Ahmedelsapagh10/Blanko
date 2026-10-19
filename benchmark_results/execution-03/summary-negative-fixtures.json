@@ -1,0 +1,45 @@
+{
+  "basedOn": "actual web four-row diagnostics",
+  "fixtures": [
+    {
+      "fixture": "wrongProfile",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "fixture": "droppedSamples",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "fixture": "overBudget",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "fixture": "resubmittedSubtrees",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "fixture": "wrongInterleavedIndices",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "fixture": "partialFallbackResources",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "fixture": "denseLifecycleChange",
+      "exitCode": 1,
+      "rejected": true
+    },
+    {
+      "fixture": "visibleDensityMismatch",
+      "exitCode": 1,
+      "rejected": true
+    }
+  ]
+}

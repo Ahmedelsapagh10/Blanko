@@ -1,0 +1,19 @@
+{
+  "browser": "155.0.8059.82",
+  "gpu": [
+    {
+      "vendorId": 4203,
+      "deviceId": 0,
+      "vendorString": "Google Inc. (Apple)",
+      "deviceString": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Version 26.5.1 (Build 25F80))",
+      "driverVendor": "Apple",
+      "driverVersion": "26.5.1"
+    }
+  ],
+  "webgl": "enabled",
+  "gpuCompositing": "enabled",
+  "viewport": {
+    "width": 1200,
+    "height": 796
+  }
+}

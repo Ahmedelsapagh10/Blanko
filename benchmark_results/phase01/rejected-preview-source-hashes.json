@@ -1,0 +1,14 @@
+{
+  "lib/benchmark_main.dart": "cc7b08a8761225125f7fc25e89402d47624bbc15fb5cc2950241a392fd4ebc6e",
+  "lib/main.dart": "525df2a854f3c54c831302c89f3089afd991cd03900c207e261d821bdc9ec656",
+  "lib/src/viewport/camera.dart": "640a3ee8db3472a71235dc05a8900b6c1047aa260f76cb092edac47c9b286a53",
+  "lib/src/benchmarks/benchmark_canvas.dart": "06bfb490beffa0e54a69232cdee521cad384b22f29dbb5830f72b7ce941fbef3",
+  "lib/src/benchmarks/frame_samples.dart": "6121103243b473a93c606f9aa200169124813e4642fc519b172fd4622e900031",
+  "lib/src/benchmarks/scene_renderer.dart": "8e18a268167d397e60f2c0f0c300317326b6e2d80331069af264ea4930167e9d",
+  "lib/src/benchmarks/benchmark_scene.dart": "ccf128cec3b5739d727feb7d5410c21613beeb8b6195694e9db2323bec8718dd",
+  "lib/src/benchmarks/benchmark_fixtures.dart": "cc289a90b8357bb9acd7e02e3fecd276577badc32908094d5e94ea93d2732db9",
+  "lib/src/benchmarks/benchmark_telemetry.dart": "e6a1bf9d1fafb662fd80fe040cdfb390af8c856e89cd37dc97577d8d00837766",
+  "lib/src/benchmarks/benchmark_page.dart": "36ddc96af92ec92037b59e13b52f3101e4c14c414fe05a7b98f798145bf40810",
+  "lib/src/geometry/geometry.dart": "8b84c86d7974ade83d8b24d50e27932521f3eccf3680c115f6a650ed7b9dbff7",
+  "lib/src/spatial/spatial_grid.dart": "b7f6695b779d68cd29d3083c92e5fe132afd72e230664e64bc707e2ce6093c84"
+}

@@ -1,0 +1,5 @@
+{
+  "ownedServersTerminated": [],
+  "unmatchedListenersUnchanged": [],
+  "benchmarkApps": "Collectors terminate their own processes in finally; completed."
+}

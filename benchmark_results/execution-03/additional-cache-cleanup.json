@@ -1,0 +1,21 @@
+{
+  "utc": "2026-10-18T11:50:39.355696+00:00",
+  "removedGeneratedTransforms": [
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/8.12/transforms",
+      "allocatedBytes": 1126715392,
+      "matchingDaemon": false,
+      "openFiles": false
+    },
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/9.2.0/transforms",
+      "allocatedBytes": 740618240,
+      "matchingDaemon": false,
+      "openFiles": false
+    }
+  ],
+  "beforeFreeBytes": 1369378816,
+  "afterFreeBytes": 3264393216,
+  "freeGainBytes": 1895014400,
+  "authorization": "User instructed assistant to free space and continue; source/user data/downloaded modules/SDK/current or active Gradle caches preserved."
+}

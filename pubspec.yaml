@@ -57,6 +57,16 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/benchmark_fonts/
+
+  # Web engines otherwise fetch a default Roboto before Dart starts. The lab
+  # explicitly registers its own aliases and waits before creating paragraphs.
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/benchmark_fonts/Roboto-Regular.ttf
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

@@ -1,0 +1,9 @@
+{
+  "classification": "completed exploratory experiment, excluded from final paired candidate",
+  "tileInterior": 256,
+  "imageSide": 258,
+  "pacingMs": 16,
+  "fallback": "separate live draw per missing tile; duplicated straddling entries",
+  "compiledMainJsSha256": "768aba8068c42a0cc6ccb52fed2535a5b3128fd2ec9ebe199123ef41614f549d",
+  "reasonRejected": "dense navigation P95 198.401ms vs reference 3.4ms despite stress P95 39.1ms"
+}

@@ -1,0 +1,51 @@
+{
+  "id": "roboto-3.015-noto-sans-arabic-2.012-v1",
+  "scope": "benchmark only; unmodified upstream fonts; not a production font policy",
+  "license": "SIL Open Font License 1.1",
+  "assets": [
+    {
+      "path": "assets/benchmark_fonts/Roboto-Regular.ttf",
+      "bytes": 460324,
+      "sha256": "58ef696cb53697e15c857c55aa528b06417e7396347c800edf166fedcbc85e35",
+      "releaseUrl": "https://github.com/googlefonts/roboto-3-classic/releases/download/v3.015/Roboto_v3.015.zip",
+      "releaseArchiveSha256": "bee3e9334ea86dd63e184598f31fb16750881c2da1a6f097a66e0f66a95b3d54",
+      "releaseMember": "hinted/static/Roboto-Regular.ttf",
+      "sourceCommit": "91d5d3e5b81efa04a77925cc609fdcdd7ee663d1",
+      "licensePath": "assets/benchmark_fonts/Roboto-OFL.txt",
+      "licenseSha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+    },
+    {
+      "path": "assets/benchmark_fonts/Roboto-Medium.ttf",
+      "bytes": 460708,
+      "sha256": "7ef6161cd143394e68bfa2ea38aa0f3321186c154c6425985d1008afa4e62f68",
+      "releaseUrl": "https://github.com/googlefonts/roboto-3-classic/releases/download/v3.015/Roboto_v3.015.zip",
+      "releaseArchiveSha256": "bee3e9334ea86dd63e184598f31fb16750881c2da1a6f097a66e0f66a95b3d54",
+      "releaseMember": "hinted/static/Roboto-Medium.ttf",
+      "sourceCommit": "91d5d3e5b81efa04a77925cc609fdcdd7ee663d1",
+      "licensePath": "assets/benchmark_fonts/Roboto-OFL.txt",
+      "licenseSha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+    },
+    {
+      "path": "assets/benchmark_fonts/Roboto-Bold.ttf",
+      "bytes": 462536,
+      "sha256": "070615f757a610d4042a0330402f7df76d9627f1b857ebfbfb76e00a5b00d865",
+      "releaseUrl": "https://github.com/googlefonts/roboto-3-classic/releases/download/v3.015/Roboto_v3.015.zip",
+      "releaseArchiveSha256": "bee3e9334ea86dd63e184598f31fb16750881c2da1a6f097a66e0f66a95b3d54",
+      "releaseMember": "hinted/static/Roboto-Bold.ttf",
+      "sourceCommit": "91d5d3e5b81efa04a77925cc609fdcdd7ee663d1",
+      "licensePath": "assets/benchmark_fonts/Roboto-OFL.txt",
+      "licenseSha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+    },
+    {
+      "path": "assets/benchmark_fonts/NotoSansArabic-Regular.ttf",
+      "bytes": 292600,
+      "sha256": "472abe37ec7a7ce61aa2ca6f01d9c4299f6add431da828f054cd1b41ac0ed5a4",
+      "releaseUrl": "https://github.com/notofonts/arabic/releases/download/NotoSansArabic-v2.012/NotoSansArabic-v2.012.zip",
+      "releaseArchiveSha256": "65bceb5106ca17e8e0b4660bacec4d362afd56e0251e71fedf83f76dfe9f4abe",
+      "releaseMember": "NotoSansArabic/full/ttf/NotoSansArabic-Regular.ttf",
+      "sourceCommit": "6c8320740db19efbb3127c3697b0ee5d0fa62319",
+      "licensePath": "assets/benchmark_fonts/NotoSansArabic-OFL.txt",
+      "licenseSha256": "07fc70bfeb985cc1a87a8587d0a0c80bab11c86c9dc3fd95b6f0cb332f983e96"
+    }
+  ]
+}

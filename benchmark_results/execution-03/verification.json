@@ -1,0 +1,51 @@
+{
+  "fullRegression": {
+    "host": {
+      "passed": 109,
+      "files": 16,
+      "sourceHashesUnchanged": true,
+      "artifact": "recovered-tests/host-batches.json"
+    },
+    "chrome": {
+      "passed": 109,
+      "files": 16,
+      "sourceHashesUnchanged": true,
+      "artifact": "recovered-tests/chrome-batches.json"
+    }
+  },
+  "subsequentChanges": "Benchmark-only opt-in interleaved workload/active paint indices, page tests support layer widget; braces-only lint fix in recording-failure test. Rendering/model logic unchanged since full regression.",
+  "subsequentConfiguredPageChecks": {
+    "host": 3,
+    "chrome": 3,
+    "flags": [
+      "WB_RETAINED_LAYERS=true",
+      "WB_RETAINED_EXPERIMENT=true",
+      "WB_LAYER_INTERLEAVED=true"
+    ],
+    "logs": [
+      "layer-page-host.log",
+      "layer-page-chrome.log"
+    ]
+  },
+  "analysis": "No issues found after lint correction; final-analyze.log",
+  "historicalFailedAnalysis": "layer-page-verification.json records the initial lint failure, subsequently corrected; not overwritten.",
+  "indexSha256": "b197c24fb16b37a8c120b9709e75474942f021b2a754a0ce4e783fe02b65130a",
+  "packagesOrSdkChanged": false,
+  "renderingGateQualified": false,
+  "independentAudit": {
+    "scope": "source hashes,109+109 manifests,raw/summary metrics,exact controls/IDs/visible density,bounds/fallback and limitations",
+    "result": "No critical defect/fabricated result found; report dense-only native and zero reported engine layer-cache bytes explicitly."
+  },
+  "benchmarks": {
+    "web": "4 matched Profile diagnostic rows across direct/vector/layers; strict validation pass",
+    "macos": "3 matched dense-only Profile rows; all-normal comparison unvalidated due lifecycle exclusions",
+    "renderingGateQualified": false,
+    "validatorNegativeFixtures": 8
+  },
+  "installedSdkWasmCapability": "--wasm with JavaScript fallback verified in installed-web-build-help.txt; no Wasm build or runtime/backend/isolation verification executed.",
+  "finalCheckpoint": "final-checkpoint.json",
+  "formatCheck": {
+    "files": 9,
+    "changes": 0
+  }
+}

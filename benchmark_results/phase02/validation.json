@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-16",
+  "staticAnalysis": "passed: no issues",
+  "nativeTestsPassed": 46,
+  "chromeTestsPassed": 46,
+  "formatting": "22 files, 0 changes",
+  "pythonCollectorCompile": "passed",
+  "nodeCollectorSyntax": "passed",
+  "diffWhitespace": "passed",
+  "matchedPrimaryWebWorkloadPairs": 12,
+  "primaryWebDisposalCycles": 32,
+  "primaryStressFrameCounts": {
+    "before": 2288,
+    "after": 5984
+  },
+  "primaryFrameSamplesTruncated": false,
+  "primaryBrowser": "155.0.8059.82 / hardware ANGLE Metal Apple M4",
+  "matchedCpuCompositorDiagnosticCaptures": 2,
+  "nativeProfileBuilds": "reference and final candidate succeeded",
+  "nativeBoundedDiagnosticWorkloads": 10,
+  "nativeFullSuiteQualified": false,
+  "sourceHashes": "verified; geometry/camera/index/source scene/default app unchanged",
+  "candidateDefaultEnabled": false,
+  "recommendation": "NO-GO",
+  "failedMeasuredGate": "sustained update/navigation stage P95 131.5 ms >16.7 ms",
+  "additionalBottleneck": "cold tile generation and live fallback contention; native diagnostic cold regression",
+  "untestedRequirements": [
+    "full controlled native suite",
+    "physical input/presentation latency",
+    "long-term native/browser/GPU pressure",
+    "other platform runtimes",
+    "broader fractional zoom/DPR fidelity"
+  ],
+  "phase1Started": false
+}

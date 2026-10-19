@@ -1,0 +1,16 @@
+{
+  "failure": "ENOSPC during dirty-repair test compiler output, not a test assertion failure",
+  "removedProjectGeneratedPaths": [
+    ".dart_tool/flutter_build",
+    "build/test_cache",
+    "build/macos",
+    "build/89a6598c8854ed031dfc25d83c80860e.cache.dill.track.dill"
+  ],
+  "preserved": [
+    "source",
+    "Git index",
+    "benchmark evidence",
+    "build/web"
+  ],
+  "referenceBuildSha256": "a7c34c206dd2cae68571b503a17424c69bcdfa8a3c03fbbf5ad422b09208b881"
+}

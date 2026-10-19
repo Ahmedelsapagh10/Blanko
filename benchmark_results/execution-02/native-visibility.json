@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-18",
+  "direct": {
+    "preRunAX": "Sparse selected; Run10sSweep enabled; timed suite not started",
+    "action": "AX Raise",
+    "screenshotOverallPixels": [
+      800,
+      632
+    ],
+    "continuousOcclusionMonitored": false,
+    "focusAvailability": "Recorded focus transitions checked; final focus may be unavailable."
+  },
+  "excluded": "macos-direct-excluded-startup.json used nonexistent PHASE0_AUTORUN_DELAY_MS flag; not compared.",
+  "retained": {
+    "preRunAX": "Sparse selected; Run10sSweep enabled; timed suite not started",
+    "action": "AX Raise",
+    "screenshotOverallPixels": [
+      800,
+      632
+    ],
+    "continuousOcclusionMonitored": false,
+    "focusAvailability": "Recorded focus transitions checked; final focus may be unavailable."
+  }
+}

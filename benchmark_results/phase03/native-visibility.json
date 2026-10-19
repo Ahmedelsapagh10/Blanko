@@ -1,0 +1,31 @@
+{
+  "reference": {
+    "app": "whiteboard profile bundle",
+    "action": "Raise standard window via exposed accessibility action during 45-second startup delay",
+    "verified": "UI state and native screenshot show full benchmark window",
+    "screenshotPixels": [
+      800,
+      632
+    ],
+    "logicalClientSize": [
+      800,
+      600
+    ],
+    "continuousForegroundNotIndependentlyMonitored": true
+  },
+  "candidate": {
+    "app": "whiteboard profile bundle",
+    "action": "Raise standard window via exposed accessibility action during 45-second startup delay",
+    "verified": "UI state and native screenshot show full benchmark window",
+    "screenshotPixels": [
+      800,
+      632
+    ],
+    "logicalClientSize": [
+      800,
+      600
+    ],
+    "continuousForegroundNotIndependentlyMonitored": true,
+    "sameViewportVerified": true
+  }
+}

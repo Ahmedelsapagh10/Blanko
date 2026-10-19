@@ -1,0 +1,7 @@
+{
+  "startAfterDenseReadyMs": 7000,
+  "requestedDurationMs": 3000,
+  "actualCpuCaptureWallMs": 3158.355124999998,
+  "cpuSampleIntervalMicros": 1000,
+  "categories": "devtools.timeline,v8,blink,cc,gpu"
+}

@@ -1,0 +1,2359 @@
+{
+  "complete": true,
+  "rssSamplingSeconds": 1,
+  "ready": [
+    {
+      "scene": "sparse",
+      "fixtureMs": 13.997,
+      "rendererPrepareMs": 127.548,
+      "loadToInteractiveMs": 169.811,
+      "dartEntryToInteractiveMs": 188.649,
+      "receivedSinceLaunchMs": 1230.782
+    },
+    {
+      "scene": "dense",
+      "fixtureMs": 21.485,
+      "rendererPrepareMs": 430.656,
+      "loadToInteractiveMs": 509.727,
+      "receivedSinceLaunchMs": 20813.929
+    },
+    {
+      "scene": "imageHeavy",
+      "fixtureMs": 98.766,
+      "rendererPrepareMs": 2259.058,
+      "loadToInteractiveMs": 2450.385,
+      "receivedSinceLaunchMs": 42335.784
+    },
+    {
+      "scene": "deepHierarchy",
+      "fixtureMs": 84.71,
+      "rendererPrepareMs": 2874.503,
+      "loadToInteractiveMs": 3029.924,
+      "receivedSinceLaunchMs": 65031.21
+    },
+    {
+      "scene": "dense",
+      "fixtureMs": 100.95,
+      "rendererPrepareMs": 2409.891,
+      "loadToInteractiveMs": 2580.501,
+      "receivedSinceLaunchMs": 86649.061
+    },
+    {
+      "scene": "dense",
+      "fixtureMs": 97.833,
+      "rendererPrepareMs": 2270.262,
+      "loadToInteractiveMs": 2435.076,
+      "receivedSinceLaunchMs": 114385.674
+    }
+  ],
+  "runs": [
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 38106,
+        "entryMicrosByType": {
+          "ShapeContent": 462,
+          "StrokeContent": 3945,
+          "TextContent": 75314,
+          "ArrowContent": 313,
+          "ImageContent": 5
+        }
+      },
+      "overviewPrepareMs": 0.0,
+      "overviewBytes": 0,
+      "scene": "sparse",
+      "workload": "camera",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 346.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 1.904,
+          "p95Ms": 4.004,
+          "p99Ms": 4.872
+        },
+        "build": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 0.688,
+          "p95Ms": 0.931,
+          "p99Ms": 1.001
+        },
+        "raster": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 1.904,
+          "p95Ms": 4.004,
+          "p99Ms": 4.872
+        },
+        "totalSpan": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 3.13,
+          "p95Ms": 5.443,
+          "p99Ms": 6.417
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 0.012,
+          "p95Ms": 0.076,
+          "p99Ms": 0.085
+        },
+        "recordPaintCpu": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 0.049,
+          "p95Ms": 0.122,
+          "p99Ms": 0.141
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 0.234,
+          "p95Ms": 0.395,
+          "p99Ms": 0.426
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 660,
+        "visibleP50": 1,
+        "visibleMax": 7
+      },
+      "load": {
+        "fixtureMs": 13.997,
+        "rendererPrepareMs": 127.548,
+        "loadToInteractiveMs": 169.811,
+        "dartEntryToInteractiveMs": 188.649
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.0,
+          "p95Ms": 0.002,
+          "p99Ms": 0.003
+        },
+        "hits": 123,
+        "queries": 256,
+        "candidateP95": 1
+      },
+      "indexUpdateMicros": null,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 246016
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 38106,
+        "entryMicrosByType": {
+          "ShapeContent": 462,
+          "StrokeContent": 3945,
+          "TextContent": 75314,
+          "ArrowContent": 313,
+          "ImageContent": 5
+        }
+      },
+      "overviewPrepareMs": 0.0,
+      "overviewBytes": 0,
+      "scene": "sparse",
+      "workload": "movement",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 326.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 300,
+          "retained": 300,
+          "p50Ms": 0.664,
+          "p95Ms": 1.313,
+          "p99Ms": 1.601
+        },
+        "build": {
+          "observed": 300,
+          "retained": 300,
+          "p50Ms": 0.183,
+          "p95Ms": 0.388,
+          "p99Ms": 0.444
+        },
+        "raster": {
+          "observed": 300,
+          "retained": 300,
+          "p50Ms": 0.664,
+          "p95Ms": 1.313,
+          "p99Ms": 1.601
+        },
+        "totalSpan": {
+          "observed": 300,
+          "retained": 300,
+          "p50Ms": 1.323,
+          "p95Ms": 2.427,
+          "p99Ms": 2.694
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 300,
+          "retained": 300,
+          "p50Ms": 0.011,
+          "p95Ms": 0.028,
+          "p99Ms": 0.039
+        },
+        "recordPaintCpu": {
+          "observed": 300,
+          "retained": 300,
+          "p50Ms": 0.035,
+          "p95Ms": 0.074,
+          "p99Ms": 0.086
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 300,
+          "retained": 300,
+          "p50Ms": 0.103,
+          "p95Ms": 0.204,
+          "p99Ms": 0.242
+        },
+        "commitCpu": {
+          "observed": 1,
+          "retained": 1,
+          "p50Ms": 0.316,
+          "p95Ms": 0.316,
+          "p99Ms": 0.316
+        },
+        "paintCount": 361,
+        "visibleP50": 1,
+        "visibleMax": 1
+      },
+      "load": {
+        "fixtureMs": 13.997,
+        "rendererPrepareMs": 127.548,
+        "loadToInteractiveMs": 169.811,
+        "dartEntryToInteractiveMs": 188.649
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.0,
+          "p95Ms": 0.002,
+          "p99Ms": 0.003
+        },
+        "hits": 123,
+        "queries": 256,
+        "candidateP95": 1
+      },
+      "indexUpdateMicros": 40,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 248464
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 10262,
+        "entryMicrosByType": {
+          "ShapeContent": 286,
+          "StrokeContent": 3857,
+          "TextContent": 60281,
+          "ArrowContent": 117,
+          "ImageContent": 2
+        }
+      },
+      "overviewPrepareMs": 346.895,
+      "overviewBytes": 7879832,
+      "scene": "dense",
+      "workload": "camera",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 346.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 497,
+          "retained": 497,
+          "p50Ms": 3.585,
+          "p95Ms": 27.84,
+          "p99Ms": 51.632
+        },
+        "build": {
+          "observed": 497,
+          "retained": 497,
+          "p50Ms": 2.778,
+          "p95Ms": 5.539,
+          "p99Ms": 7.715
+        },
+        "raster": {
+          "observed": 497,
+          "retained": 497,
+          "p50Ms": 2.53,
+          "p95Ms": 27.84,
+          "p99Ms": 51.632
+        },
+        "totalSpan": {
+          "observed": 497,
+          "retained": 497,
+          "p50Ms": 6.496,
+          "p95Ms": 51.667,
+          "p99Ms": 87.355
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 324,
+        "queryCpu": {
+          "observed": 497,
+          "retained": 497,
+          "p50Ms": 2.62,
+          "p95Ms": 5.091,
+          "p99Ms": 6.952
+        },
+        "recordPaintCpu": {
+          "observed": 497,
+          "retained": 497,
+          "p50Ms": 0.009,
+          "p95Ms": 0.952,
+          "p99Ms": 1.824
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 497,
+          "retained": 497,
+          "p50Ms": 2.658,
+          "p95Ms": 5.325,
+          "p99Ms": 7.197
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 523,
+        "visibleP50": 6725,
+        "visibleMax": 10000
+      },
+      "load": {
+        "fixtureMs": 21.485,
+        "rendererPrepareMs": 430.656,
+        "loadToInteractiveMs": 509.727
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.032,
+          "p95Ms": 0.06,
+          "p99Ms": 0.067
+        },
+        "hits": 256,
+        "queries": 256,
+        "candidateP95": 93
+      },
+      "indexUpdateMicros": null,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 488928,
+      "timelineFile": "benchmark_results/phase01/macos-rejected-preview.camera.timeline.json.gz"
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 10262,
+        "entryMicrosByType": {
+          "ShapeContent": 286,
+          "StrokeContent": 3857,
+          "TextContent": 60281,
+          "ArrowContent": 117,
+          "ImageContent": 2
+        }
+      },
+      "overviewPrepareMs": 346.895,
+      "overviewBytes": 0,
+      "scene": "dense",
+      "workload": "movement",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 326.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 106,
+          "retained": 106,
+          "p50Ms": 49.441,
+          "p95Ms": 53.584,
+          "p99Ms": 54.36
+        },
+        "build": {
+          "observed": 106,
+          "retained": 106,
+          "p50Ms": 5.92,
+          "p95Ms": 6.057,
+          "p99Ms": 6.34
+        },
+        "raster": {
+          "observed": 106,
+          "retained": 106,
+          "p50Ms": 49.441,
+          "p95Ms": 53.584,
+          "p99Ms": 54.36
+        },
+        "totalSpan": {
+          "observed": 106,
+          "retained": 106,
+          "p50Ms": 87.529,
+          "p95Ms": 103.182,
+          "p99Ms": 105.484
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 106,
+          "retained": 106,
+          "p50Ms": 2.622,
+          "p95Ms": 2.734,
+          "p99Ms": 2.774
+        },
+        "recordPaintCpu": {
+          "observed": 106,
+          "retained": 106,
+          "p50Ms": 3.005,
+          "p95Ms": 3.076,
+          "p99Ms": 3.168
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 106,
+          "retained": 106,
+          "p50Ms": 5.732,
+          "p95Ms": 5.862,
+          "p99Ms": 5.888
+        },
+        "commitCpu": {
+          "observed": 1,
+          "retained": 1,
+          "p50Ms": 0.163,
+          "p95Ms": 0.163,
+          "p99Ms": 0.163
+        },
+        "paintCount": 122,
+        "visibleP50": 1465,
+        "visibleMax": 1465
+      },
+      "load": {
+        "fixtureMs": 21.485,
+        "rendererPrepareMs": 430.656,
+        "loadToInteractiveMs": 509.727
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.032,
+          "p95Ms": 0.06,
+          "p99Ms": 0.067
+        },
+        "hits": 256,
+        "queries": 256,
+        "candidateP95": 93
+      },
+      "indexUpdateMicros": 20,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 497184
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 171510,
+        "entryMicrosByType": {
+          "ShapeContent": 17470,
+          "StrokeContent": 20901,
+          "TextContent": 398715,
+          "ArrowContent": 14610,
+          "ImageContent": 249
+        }
+      },
+      "overviewPrepareMs": 1605.452,
+      "overviewBytes": 11747328,
+      "scene": "imageHeavy",
+      "workload": "camera",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 346.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 207,
+          "retained": 207,
+          "p50Ms": 14.528,
+          "p95Ms": 167.433,
+          "p99Ms": 352.313
+        },
+        "build": {
+          "observed": 207,
+          "retained": 207,
+          "p50Ms": 13.736,
+          "p95Ms": 15.159,
+          "p99Ms": 15.738
+        },
+        "raster": {
+          "observed": 207,
+          "retained": 207,
+          "p50Ms": 9.185,
+          "p95Ms": 167.433,
+          "p99Ms": 352.313
+        },
+        "totalSpan": {
+          "observed": 207,
+          "retained": 207,
+          "p50Ms": 24.033,
+          "p95Ms": 331.29,
+          "p99Ms": 836.425
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 178,
+        "queryCpu": {
+          "observed": 210,
+          "retained": 210,
+          "p50Ms": 12.779,
+          "p95Ms": 14.181,
+          "p99Ms": 14.42
+        },
+        "recordPaintCpu": {
+          "observed": 210,
+          "retained": 210,
+          "p50Ms": 0.074,
+          "p95Ms": 3.892,
+          "p99Ms": 24.619
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 210,
+          "retained": 210,
+          "p50Ms": 13.122,
+          "p95Ms": 14.575,
+          "p99Ms": 30.747
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 214,
+        "visibleP50": 10000,
+        "visibleMax": 10000
+      },
+      "load": {
+        "fixtureMs": 98.766,
+        "rendererPrepareMs": 2259.058,
+        "loadToInteractiveMs": 2450.385
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.221,
+          "p95Ms": 0.359,
+          "p99Ms": 0.512
+        },
+        "hits": 256,
+        "queries": 256,
+        "candidateP95": 156
+      },
+      "indexUpdateMicros": null,
+      "imageSide": 2048,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 67108864,
+      "sampledRssKiBPeak": 737424
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 171510,
+        "entryMicrosByType": {
+          "ShapeContent": 17470,
+          "StrokeContent": 20901,
+          "TextContent": 398715,
+          "ArrowContent": 14610,
+          "ImageContent": 249
+        }
+      },
+      "overviewPrepareMs": 1605.452,
+      "overviewBytes": 0,
+      "scene": "imageHeavy",
+      "workload": "movement",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 326.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 58,
+          "retained": 58,
+          "p50Ms": 89.778,
+          "p95Ms": 96.548,
+          "p99Ms": 98.649
+        },
+        "build": {
+          "observed": 58,
+          "retained": 58,
+          "p50Ms": 6.264,
+          "p95Ms": 6.404,
+          "p99Ms": 15.232
+        },
+        "raster": {
+          "observed": 58,
+          "retained": 58,
+          "p50Ms": 89.778,
+          "p95Ms": 96.548,
+          "p99Ms": 98.649
+        },
+        "totalSpan": {
+          "observed": 58,
+          "retained": 58,
+          "p50Ms": 171.816,
+          "p95Ms": 188.941,
+          "p99Ms": 189.274
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 58,
+          "retained": 58,
+          "p50Ms": 2.774,
+          "p95Ms": 2.833,
+          "p99Ms": 2.849
+        },
+        "recordPaintCpu": {
+          "observed": 58,
+          "retained": 58,
+          "p50Ms": 3.162,
+          "p95Ms": 3.21,
+          "p99Ms": 3.277
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 58,
+          "retained": 58,
+          "p50Ms": 6.054,
+          "p95Ms": 6.151,
+          "p99Ms": 6.155
+        },
+        "commitCpu": {
+          "observed": 1,
+          "retained": 1,
+          "p50Ms": 0.147,
+          "p95Ms": 0.147,
+          "p99Ms": 0.147
+        },
+        "paintCount": 63,
+        "visibleP50": 1507,
+        "visibleMax": 1507
+      },
+      "load": {
+        "fixtureMs": 98.766,
+        "rendererPrepareMs": 2259.058,
+        "loadToInteractiveMs": 2450.385
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.221,
+          "p95Ms": 0.359,
+          "p99Ms": 0.512
+        },
+        "hits": 256,
+        "queries": 256,
+        "candidateP95": 156
+      },
+      "indexUpdateMicros": 22,
+      "imageSide": 2048,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 67108864,
+      "sampledRssKiBPeak": 699952
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 50439,
+        "entryMicrosByType": {
+          "ShapeContent": 35607,
+          "StrokeContent": 21568,
+          "TextContent": 394539,
+          "ArrowContent": 2899,
+          "ImageContent": 280
+        }
+      },
+      "overviewPrepareMs": 2352.938,
+      "overviewBytes": 11706368,
+      "scene": "deepHierarchy",
+      "workload": "camera",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 346.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 301,
+          "retained": 301,
+          "p50Ms": 13.267,
+          "p95Ms": 164.747,
+          "p99Ms": 217.795
+        },
+        "build": {
+          "observed": 301,
+          "retained": 301,
+          "p50Ms": 12.116,
+          "p95Ms": 16.092,
+          "p99Ms": 20.61
+        },
+        "raster": {
+          "observed": 301,
+          "retained": 301,
+          "p50Ms": 8.932,
+          "p95Ms": 164.747,
+          "p99Ms": 217.795
+        },
+        "totalSpan": {
+          "observed": 301,
+          "retained": 301,
+          "p50Ms": 22.922,
+          "p95Ms": 337.457,
+          "p99Ms": 384.28
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 274,
+        "queryCpu": {
+          "observed": 301,
+          "retained": 301,
+          "p50Ms": 10.789,
+          "p95Ms": 14.571,
+          "p99Ms": 18.762
+        },
+        "recordPaintCpu": {
+          "observed": 301,
+          "retained": 301,
+          "p50Ms": 0.073,
+          "p95Ms": 3.0,
+          "p99Ms": 7.334
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 301,
+          "retained": 301,
+          "p50Ms": 11.356,
+          "p95Ms": 15.002,
+          "p99Ms": 19.554
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 305,
+        "visibleP50": 8602,
+        "visibleMax": 10000
+      },
+      "load": {
+        "fixtureMs": 84.71,
+        "rendererPrepareMs": 2874.503,
+        "loadToInteractiveMs": 3029.924
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.211,
+          "p95Ms": 0.416,
+          "p99Ms": 0.518
+        },
+        "hits": 242,
+        "queries": 256,
+        "candidateP95": 112
+      },
+      "indexUpdateMicros": null,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 548400
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 50439,
+        "entryMicrosByType": {
+          "ShapeContent": 35607,
+          "StrokeContent": 21568,
+          "TextContent": 394539,
+          "ArrowContent": 2899,
+          "ImageContent": 280
+        }
+      },
+      "overviewPrepareMs": 2352.938,
+      "overviewBytes": 0,
+      "scene": "deepHierarchy",
+      "workload": "movement",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 326.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 91,
+          "retained": 91,
+          "p50Ms": 55.85,
+          "p95Ms": 61.765,
+          "p99Ms": 65.863
+        },
+        "build": {
+          "observed": 91,
+          "retained": 91,
+          "p50Ms": 7.004,
+          "p95Ms": 7.169,
+          "p99Ms": 18.315
+        },
+        "raster": {
+          "observed": 91,
+          "retained": 91,
+          "p50Ms": 55.85,
+          "p95Ms": 61.765,
+          "p99Ms": 65.863
+        },
+        "totalSpan": {
+          "observed": 91,
+          "retained": 91,
+          "p50Ms": 101.853,
+          "p95Ms": 116.725,
+          "p99Ms": 121.333
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 91,
+          "retained": 91,
+          "p50Ms": 3.047,
+          "p95Ms": 3.156,
+          "p99Ms": 3.195
+        },
+        "recordPaintCpu": {
+          "observed": 91,
+          "retained": 91,
+          "p50Ms": 3.662,
+          "p95Ms": 3.727,
+          "p99Ms": 3.882
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 91,
+          "retained": 91,
+          "p50Ms": 6.814,
+          "p95Ms": 6.941,
+          "p99Ms": 7.118
+        },
+        "commitCpu": {
+          "observed": 1,
+          "retained": 1,
+          "p50Ms": 0.226,
+          "p95Ms": 0.226,
+          "p99Ms": 0.226
+        },
+        "paintCount": 109,
+        "visibleP50": 1643,
+        "visibleMax": 1643
+      },
+      "load": {
+        "fixtureMs": 84.71,
+        "rendererPrepareMs": 2874.503,
+        "loadToInteractiveMs": 3029.924
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.211,
+          "p95Ms": 0.416,
+          "p99Ms": 0.518
+        },
+        "hits": 242,
+        "queries": 256,
+        "candidateP95": 112
+      },
+      "indexUpdateMicros": 21,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 526800
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 49121,
+        "entryMicrosByType": {
+          "ShapeContent": 19047,
+          "StrokeContent": 45276,
+          "TextContent": 395501,
+          "ArrowContent": 3123,
+          "ImageContent": 246
+        }
+      },
+      "overviewPrepareMs": 1881.681,
+      "overviewBytes": 7879832,
+      "scene": "dense",
+      "workload": "withoutText",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 346.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 125,
+          "retained": 125,
+          "p50Ms": 74.353,
+          "p95Ms": 162.355,
+          "p99Ms": 174.902
+        },
+        "build": {
+          "observed": 125,
+          "retained": 125,
+          "p50Ms": 5.104,
+          "p95Ms": 40.985,
+          "p99Ms": 41.684
+        },
+        "raster": {
+          "observed": 125,
+          "retained": 125,
+          "p50Ms": 74.353,
+          "p95Ms": 162.355,
+          "p99Ms": 174.902
+        },
+        "totalSpan": {
+          "observed": 125,
+          "retained": 125,
+          "p50Ms": 137.915,
+          "p95Ms": 320.189,
+          "p99Ms": 334.787
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 125,
+          "retained": 125,
+          "p50Ms": 1.541,
+          "p95Ms": 13.172,
+          "p99Ms": 13.39
+        },
+        "recordPaintCpu": {
+          "observed": 125,
+          "retained": 125,
+          "p50Ms": 3.003,
+          "p95Ms": 26.653,
+          "p99Ms": 27.047
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 125,
+          "retained": 125,
+          "p50Ms": 4.493,
+          "p95Ms": 39.971,
+          "p99Ms": 40.723
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 152,
+        "visibleP50": 764,
+        "visibleMax": 10000
+      },
+      "load": {
+        "fixtureMs": 100.95,
+        "rendererPrepareMs": 2409.891,
+        "loadToInteractiveMs": 2580.501
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.123,
+          "p95Ms": 0.32,
+          "p99Ms": 1.05
+        },
+        "hits": 256,
+        "queries": 256,
+        "candidateP95": 93
+      },
+      "indexUpdateMicros": null,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 548752,
+      "timelineFile": "benchmark_results/phase01/macos-rejected-preview.withoutText.timeline.json.gz"
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 49121,
+        "entryMicrosByType": {
+          "ShapeContent": 19047,
+          "StrokeContent": 45276,
+          "TextContent": 395501,
+          "ArrowContent": 3123,
+          "ImageContent": 246
+        }
+      },
+      "overviewPrepareMs": 1881.681,
+      "overviewBytes": 7879832,
+      "scene": "dense",
+      "workload": "withoutImages",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 346.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 42,
+          "retained": 42,
+          "p50Ms": 130.375,
+          "p95Ms": 1238.503,
+          "p99Ms": 1318.23
+        },
+        "build": {
+          "observed": 42,
+          "retained": 42,
+          "p50Ms": 4.626,
+          "p95Ms": 46.512,
+          "p99Ms": 54.637
+        },
+        "raster": {
+          "observed": 42,
+          "retained": 42,
+          "p50Ms": 130.375,
+          "p95Ms": 1238.503,
+          "p99Ms": 1318.23
+        },
+        "totalSpan": {
+          "observed": 42,
+          "retained": 42,
+          "p50Ms": 251.43,
+          "p95Ms": 2280.472,
+          "p99Ms": 2484.721
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 42,
+          "retained": 42,
+          "p50Ms": 0.9,
+          "p95Ms": 11.64,
+          "p99Ms": 13.214
+        },
+        "recordPaintCpu": {
+          "observed": 42,
+          "retained": 42,
+          "p50Ms": 2.765,
+          "p95Ms": 32.774,
+          "p99Ms": 40.038
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 42,
+          "retained": 42,
+          "p50Ms": 3.9,
+          "p95Ms": 45.483,
+          "p99Ms": 53.467
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 48,
+        "visibleP50": 488,
+        "visibleMax": 10000
+      },
+      "load": {
+        "fixtureMs": 100.95,
+        "rendererPrepareMs": 2409.891,
+        "loadToInteractiveMs": 2580.501
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.123,
+          "p95Ms": 0.32,
+          "p99Ms": 1.05
+        },
+        "hits": 256,
+        "queries": 256,
+        "candidateP95": 93
+      },
+      "indexUpdateMicros": null,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 541552
+    },
+    {
+      "optimized": true,
+      "preparation": {
+        "imageMicros": 33607,
+        "entryMicrosByType": {
+          "ShapeContent": 16770,
+          "StrokeContent": 32160,
+          "TextContent": 383746,
+          "ArrowContent": 2517,
+          "ImageContent": 228
+        }
+      },
+      "overviewPrepareMs": 1776.067,
+      "overviewBytes": 7879832,
+      "scene": "dense",
+      "workload": "overview",
+      "platform": "macOS",
+      "mode": "profile",
+      "viewport": {
+        "canvasWidth": 800.0,
+        "canvasHeight": 346.0,
+        "windowWidth": 800.0,
+        "windowHeight": 600.0,
+        "dpr": 1.0
+      },
+      "viewportChanged": false,
+      "lifecycleChanges": 0,
+      "warmupMs": 1000.0,
+      "frames": {
+        "stage": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 14.63,
+          "p95Ms": 14.984,
+          "p99Ms": 15.151
+        },
+        "build": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 14.63,
+          "p95Ms": 14.981,
+          "p99Ms": 15.151
+        },
+        "raster": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 6.805,
+          "p95Ms": 7.352,
+          "p99Ms": 7.856
+        },
+        "totalSpan": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 21.767,
+          "p95Ms": 22.629,
+          "p99Ms": 23.225
+        }
+      },
+      "cpu": {
+        "pointerReceiptToPaint": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 601,
+        "queryCpu": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 13.86,
+          "p95Ms": 14.147,
+          "p99Ms": 14.304
+        },
+        "recordPaintCpu": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 0.063,
+          "p95Ms": 0.074,
+          "p99Ms": 0.081
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 601,
+          "retained": 601,
+          "p50Ms": 14.084,
+          "p95Ms": 14.398,
+          "p99Ms": 14.564
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 661,
+        "visibleP50": 10000,
+        "visibleMax": 10000
+      },
+      "load": {
+        "fixtureMs": 97.833,
+        "rendererPrepareMs": 2270.262,
+        "loadToInteractiveMs": 2435.076
+      },
+      "hitTest": {
+        "cpu": {
+          "observed": 256,
+          "retained": 256,
+          "p50Ms": 0.123,
+          "p95Ms": 0.32,
+          "p99Ms": 1.05
+        },
+        "hits": 256,
+        "queries": 256,
+        "candidateP95": 93
+      },
+      "indexUpdateMicros": null,
+      "imageSide": 1024,
+      "imageOriginals": 4,
+      "imageReferences": 100,
+      "decodedPixelBytes": 16777216,
+      "sampledRssKiBPeak": 538848,
+      "timelineFile": "benchmark_results/phase01/macos-rejected-preview.overview.timeline.json.gz"
+    }
+  ],
+  "diagnostics": [
+    {
+      "kind": "repeatedCommits",
+      "fullReconstructionReference": {
+        "observed": 256,
+        "retained": 256,
+        "p50Ms": 55.519,
+        "p95Ms": 65.73,
+        "p99Ms": 69.886
+      },
+      "incrementalTotal": {
+        "observed": 256,
+        "retained": 256,
+        "p50Ms": 0.026,
+        "p95Ms": 0.028,
+        "p99Ms": 0.033
+      },
+      "incrementalGeometry": {
+        "observed": 256,
+        "retained": 256,
+        "p50Ms": 0.017,
+        "p95Ms": 0.019,
+        "p99Ms": 0.024
+      },
+      "incrementalSynchronization": {
+        "observed": 256,
+        "retained": 256,
+        "p50Ms": 0.008,
+        "p95Ms": 0.009,
+        "p99Ms": 0.011
+      },
+      "incrementalIndex": {
+        "observed": 256,
+        "retained": 256,
+        "p50Ms": 0.007,
+        "p95Ms": 0.007,
+        "p99Ms": 0.008
+      },
+      "lastResolved": 1,
+      "lastSynchronized": 1,
+      "receivedSeconds": 141.64
+    },
+    {
+      "kind": "idle",
+      "seconds": 2,
+      "paintCallbacks": 0,
+      "receivedSeconds": 145.647
+    },
+    {
+      "kind": "openClose",
+      "cycle": 0,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "forcedGcMemoryUsage": {
+        "type": "MemoryUsage",
+        "heapUsage": 26577824,
+        "heapCapacity": 55984128,
+        "externalUsage": 318784
+      },
+      "receivedSeconds": 147.762
+    },
+    {
+      "kind": "openClose",
+      "cycle": 1,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 151.047
+    },
+    {
+      "kind": "openClose",
+      "cycle": 2,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 154.117
+    },
+    {
+      "kind": "openClose",
+      "cycle": 3,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "forcedGcMemoryUsage": {
+        "type": "MemoryUsage",
+        "heapUsage": 26593440,
+        "heapCapacity": 57556992,
+        "externalUsage": 318784
+      },
+      "receivedSeconds": 156.741
+    },
+    {
+      "kind": "openClose",
+      "cycle": 4,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 158.711
+    },
+    {
+      "kind": "openClose",
+      "cycle": 5,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 161.018
+    },
+    {
+      "kind": "openClose",
+      "cycle": 6,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 163.128
+    },
+    {
+      "kind": "openClose",
+      "cycle": 7,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "forcedGcMemoryUsage": {
+        "type": "MemoryUsage",
+        "heapUsage": 26593440,
+        "heapCapacity": 58081280,
+        "externalUsage": 318784
+      },
+      "receivedSeconds": 165.382
+    },
+    {
+      "kind": "openClose",
+      "cycle": 8,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 167.153
+    },
+    {
+      "kind": "openClose",
+      "cycle": 9,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 169.062
+    },
+    {
+      "kind": "openClose",
+      "cycle": 10,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 170.569
+    },
+    {
+      "kind": "openClose",
+      "cycle": 11,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "forcedGcMemoryUsage": {
+        "type": "MemoryUsage",
+        "heapUsage": 26593440,
+        "heapCapacity": 57786368,
+        "externalUsage": 318784
+      },
+      "receivedSeconds": 172.244
+    },
+    {
+      "kind": "openClose",
+      "cycle": 12,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 173.965
+    },
+    {
+      "kind": "openClose",
+      "cycle": 13,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 175.745
+    },
+    {
+      "kind": "openClose",
+      "cycle": 14,
+      "allocatedLogicalPixelBytes": 24657048,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "receivedSeconds": 177.409
+    },
+    {
+      "kind": "openClose",
+      "cycle": 15,
+      "allocatedLogicalPixelBytes": 78856192,
+      "overviewBytesAfterDispose": 0,
+      "picturesAfterDispose": 0,
+      "disposed": true,
+      "forcedGcMemoryUsage": {
+        "type": "MemoryUsage",
+        "heapUsage": 26593440,
+        "heapCapacity": 44679168,
+        "externalUsage": 318784
+      },
+      "receivedSeconds": 179.141
+    }
+  ],
+  "rssSamples": [
+    {
+      "seconds": 0.002,
+      "rssKiB": 32
+    },
+    {
+      "seconds": 1.095,
+      "rssKiB": 142192
+    },
+    {
+      "seconds": 2.11,
+      "rssKiB": 220560
+    },
+    {
+      "seconds": 3.196,
+      "rssKiB": 224896
+    },
+    {
+      "seconds": 4.269,
+      "rssKiB": 229232
+    },
+    {
+      "seconds": 5.363,
+      "rssKiB": 221440
+    },
+    {
+      "seconds": 6.451,
+      "rssKiB": 225184
+    },
+    {
+      "seconds": 7.532,
+      "rssKiB": 230512
+    },
+    {
+      "seconds": 8.624,
+      "rssKiB": 238400
+    },
+    {
+      "seconds": 9.701,
+      "rssKiB": 234944
+    },
+    {
+      "seconds": 10.795,
+      "rssKiB": 240288
+    },
+    {
+      "seconds": 11.856,
+      "rssKiB": 244656
+    },
+    {
+      "seconds": 12.93,
+      "rssKiB": 246016
+    },
+    {
+      "seconds": 14.03,
+      "rssKiB": 247504
+    },
+    {
+      "seconds": 15.08,
+      "rssKiB": 248464
+    },
+    {
+      "seconds": 16.176,
+      "rssKiB": 245376
+    },
+    {
+      "seconds": 17.272,
+      "rssKiB": 235232
+    },
+    {
+      "seconds": 18.363,
+      "rssKiB": 236192
+    },
+    {
+      "seconds": 19.454,
+      "rssKiB": 237072
+    },
+    {
+      "seconds": 20.52,
+      "rssKiB": 291488
+    },
+    {
+      "seconds": 21.573,
+      "rssKiB": 422544
+    },
+    {
+      "seconds": 22.666,
+      "rssKiB": 439664
+    },
+    {
+      "seconds": 23.746,
+      "rssKiB": 488800
+    },
+    {
+      "seconds": 24.829,
+      "rssKiB": 488928
+    },
+    {
+      "seconds": 25.933,
+      "rssKiB": 483104
+    },
+    {
+      "seconds": 27.007,
+      "rssKiB": 463968
+    },
+    {
+      "seconds": 28.082,
+      "rssKiB": 460688
+    },
+    {
+      "seconds": 29.178,
+      "rssKiB": 470032
+    },
+    {
+      "seconds": 30.258,
+      "rssKiB": 470832
+    },
+    {
+      "seconds": 31.332,
+      "rssKiB": 470352
+    },
+    {
+      "seconds": 32.405,
+      "rssKiB": 464128
+    },
+    {
+      "seconds": 33.494,
+      "rssKiB": 475408
+    },
+    {
+      "seconds": 34.575,
+      "rssKiB": 497184
+    },
+    {
+      "seconds": 35.654,
+      "rssKiB": 489792
+    },
+    {
+      "seconds": 36.741,
+      "rssKiB": 494320
+    },
+    {
+      "seconds": 37.825,
+      "rssKiB": 496736
+    },
+    {
+      "seconds": 38.92,
+      "rssKiB": 487088
+    },
+    {
+      "seconds": 39.991,
+      "rssKiB": 492768
+    },
+    {
+      "seconds": 41.063,
+      "rssKiB": 616896
+    },
+    {
+      "seconds": 42.135,
+      "rssKiB": 639440
+    },
+    {
+      "seconds": 43.196,
+      "rssKiB": 737424
+    },
+    {
+      "seconds": 44.276,
+      "rssKiB": 711616
+    },
+    {
+      "seconds": 45.339,
+      "rssKiB": 699472
+    },
+    {
+      "seconds": 46.433,
+      "rssKiB": 661344
+    },
+    {
+      "seconds": 47.505,
+      "rssKiB": 711872
+    },
+    {
+      "seconds": 48.59,
+      "rssKiB": 713120
+    },
+    {
+      "seconds": 49.674,
+      "rssKiB": 723888
+    },
+    {
+      "seconds": 50.747,
+      "rssKiB": 564560
+    },
+    {
+      "seconds": 51.831,
+      "rssKiB": 561872
+    },
+    {
+      "seconds": 52.897,
+      "rssKiB": 601680
+    },
+    {
+      "seconds": 53.989,
+      "rssKiB": 730224
+    },
+    {
+      "seconds": 54.992,
+      "rssKiB": 699952
+    },
+    {
+      "seconds": 56.063,
+      "rssKiB": 600992
+    },
+    {
+      "seconds": 57.14,
+      "rssKiB": 684864
+    },
+    {
+      "seconds": 58.213,
+      "rssKiB": 677568
+    },
+    {
+      "seconds": 59.3,
+      "rssKiB": 671440
+    },
+    {
+      "seconds": 60.382,
+      "rssKiB": 686240
+    },
+    {
+      "seconds": 61.461,
+      "rssKiB": 610528
+    },
+    {
+      "seconds": 62.53,
+      "rssKiB": 557200
+    },
+    {
+      "seconds": 63.624,
+      "rssKiB": 569968
+    },
+    {
+      "seconds": 64.713,
+      "rssKiB": 529696
+    },
+    {
+      "seconds": 65.796,
+      "rssKiB": 539856
+    },
+    {
+      "seconds": 66.892,
+      "rssKiB": 513952
+    },
+    {
+      "seconds": 67.963,
+      "rssKiB": 530512
+    },
+    {
+      "seconds": 69.061,
+      "rssKiB": 548400
+    },
+    {
+      "seconds": 70.15,
+      "rssKiB": 531376
+    },
+    {
+      "seconds": 71.24,
+      "rssKiB": 503088
+    },
+    {
+      "seconds": 72.312,
+      "rssKiB": 506144
+    },
+    {
+      "seconds": 73.414,
+      "rssKiB": 495312
+    },
+    {
+      "seconds": 74.494,
+      "rssKiB": 500160
+    },
+    {
+      "seconds": 75.528,
+      "rssKiB": 506816
+    },
+    {
+      "seconds": 76.619,
+      "rssKiB": 515184
+    },
+    {
+      "seconds": 77.678,
+      "rssKiB": 518528
+    },
+    {
+      "seconds": 78.761,
+      "rssKiB": 506256
+    },
+    {
+      "seconds": 79.84,
+      "rssKiB": 526800
+    },
+    {
+      "seconds": 80.923,
+      "rssKiB": 501280
+    },
+    {
+      "seconds": 82.005,
+      "rssKiB": 513424
+    },
+    {
+      "seconds": 83.115,
+      "rssKiB": 526512
+    },
+    {
+      "seconds": 84.179,
+      "rssKiB": 522832
+    },
+    {
+      "seconds": 85.273,
+      "rssKiB": 508896
+    },
+    {
+      "seconds": 86.356,
+      "rssKiB": 518848
+    },
+    {
+      "seconds": 87.396,
+      "rssKiB": 536624
+    },
+    {
+      "seconds": 88.473,
+      "rssKiB": 537712
+    },
+    {
+      "seconds": 89.571,
+      "rssKiB": 533168
+    },
+    {
+      "seconds": 90.674,
+      "rssKiB": 530400
+    },
+    {
+      "seconds": 91.773,
+      "rssKiB": 525792
+    },
+    {
+      "seconds": 92.866,
+      "rssKiB": 548752
+    },
+    {
+      "seconds": 93.94,
+      "rssKiB": 534400
+    },
+    {
+      "seconds": 95.043,
+      "rssKiB": 539360
+    },
+    {
+      "seconds": 96.107,
+      "rssKiB": 548480
+    },
+    {
+      "seconds": 97.18,
+      "rssKiB": 539648
+    },
+    {
+      "seconds": 98.272,
+      "rssKiB": 511888
+    },
+    {
+      "seconds": 99.344,
+      "rssKiB": 493392
+    },
+    {
+      "seconds": 100.426,
+      "rssKiB": 502912
+    },
+    {
+      "seconds": 101.529,
+      "rssKiB": 506560
+    },
+    {
+      "seconds": 102.614,
+      "rssKiB": 504160
+    },
+    {
+      "seconds": 103.697,
+      "rssKiB": 502528
+    },
+    {
+      "seconds": 104.765,
+      "rssKiB": 505824
+    },
+    {
+      "seconds": 105.849,
+      "rssKiB": 513952
+    },
+    {
+      "seconds": 106.93,
+      "rssKiB": 519696
+    },
+    {
+      "seconds": 107.999,
+      "rssKiB": 512496
+    },
+    {
+      "seconds": 109.083,
+      "rssKiB": 535472
+    },
+    {
+      "seconds": 110.172,
+      "rssKiB": 541552
+    },
+    {
+      "seconds": 111.264,
+      "rssKiB": 524160
+    },
+    {
+      "seconds": 112.277,
+      "rssKiB": 519472
+    },
+    {
+      "seconds": 113.365,
+      "rssKiB": 538032
+    },
+    {
+      "seconds": 114.389,
+      "rssKiB": 531696
+    },
+    {
+      "seconds": 115.471,
+      "rssKiB": 538848
+    },
+    {
+      "seconds": 116.54,
+      "rssKiB": 523984
+    },
+    {
+      "seconds": 117.607,
+      "rssKiB": 523984
+    },
+    {
+      "seconds": 118.693,
+      "rssKiB": 519360
+    },
+    {
+      "seconds": 119.784,
+      "rssKiB": 528016
+    },
+    {
+      "seconds": 120.879,
+      "rssKiB": 523136
+    },
+    {
+      "seconds": 121.949,
+      "rssKiB": 525872
+    },
+    {
+      "seconds": 123.023,
+      "rssKiB": 522400
+    },
+    {
+      "seconds": 124.1,
+      "rssKiB": 530496
+    },
+    {
+      "seconds": 125.163,
+      "rssKiB": 522688
+    },
+    {
+      "seconds": 126.224,
+      "rssKiB": 521040
+    },
+    {
+      "seconds": 127.3,
+      "rssKiB": 554816
+    },
+    {
+      "seconds": 128.383,
+      "rssKiB": 555088
+    },
+    {
+      "seconds": 129.454,
+      "rssKiB": 557936
+    },
+    {
+      "seconds": 130.534,
+      "rssKiB": 557392
+    },
+    {
+      "seconds": 131.623,
+      "rssKiB": 559584
+    },
+    {
+      "seconds": 132.716,
+      "rssKiB": 553840
+    },
+    {
+      "seconds": 133.799,
+      "rssKiB": 556688
+    },
+    {
+      "seconds": 134.892,
+      "rssKiB": 554144
+    },
+    {
+      "seconds": 135.953,
+      "rssKiB": 559408
+    },
+    {
+      "seconds": 137.029,
+      "rssKiB": 558128
+    },
+    {
+      "seconds": 138.131,
+      "rssKiB": 557728
+    },
+    {
+      "seconds": 139.215,
+      "rssKiB": 557776
+    },
+    {
+      "seconds": 140.301,
+      "rssKiB": 556480
+    },
+    {
+      "seconds": 141.406,
+      "rssKiB": 555888
+    },
+    {
+      "seconds": 142.505,
+      "rssKiB": 571152
+    },
+    {
+      "seconds": 143.609,
+      "rssKiB": 560432
+    },
+    {
+      "seconds": 144.678,
+      "rssKiB": 560432
+    },
+    {
+      "seconds": 145.757,
+      "rssKiB": 561264
+    },
+    {
+      "seconds": 146.839,
+      "rssKiB": 623424
+    },
+    {
+      "seconds": 147.896,
+      "rssKiB": 626208
+    },
+    {
+      "seconds": 148.984,
+      "rssKiB": 763040
+    },
+    {
+      "seconds": 150.06,
+      "rssKiB": 774368
+    },
+    {
+      "seconds": 151.153,
+      "rssKiB": 710672
+    },
+    {
+      "seconds": 152.232,
+      "rssKiB": 710032
+    },
+    {
+      "seconds": 153.293,
+      "rssKiB": 657088
+    },
+    {
+      "seconds": 154.333,
+      "rssKiB": 644688
+    },
+    {
+      "seconds": 155.434,
+      "rssKiB": 777312
+    },
+    {
+      "seconds": 156.507,
+      "rssKiB": 821888
+    },
+    {
+      "seconds": 157.6,
+      "rssKiB": 695920
+    },
+    {
+      "seconds": 158.694,
+      "rssKiB": 700688
+    },
+    {
+      "seconds": 159.783,
+      "rssKiB": 779856
+    },
+    {
+      "seconds": 160.869,
+      "rssKiB": 768032
+    },
+    {
+      "seconds": 161.871,
+      "rssKiB": 695808
+    },
+    {
+      "seconds": 162.952,
+      "rssKiB": 664016
+    },
+    {
+      "seconds": 163.998,
+      "rssKiB": 715696
+    },
+    {
+      "seconds": 165.063,
+      "rssKiB": 703808
+    },
+    {
+      "seconds": 166.165,
+      "rssKiB": 698992
+    },
+    {
+      "seconds": 167.263,
+      "rssKiB": 697552
+    },
+    {
+      "seconds": 168.355,
+      "rssKiB": 783232
+    },
+    {
+      "seconds": 169.387,
+      "rssKiB": 708896
+    },
+    {
+      "seconds": 170.482,
+      "rssKiB": 732768
+    },
+    {
+      "seconds": 171.528,
+      "rssKiB": 774384
+    },
+    {
+      "seconds": 172.605,
+      "rssKiB": 690480
+    },
+    {
+      "seconds": 173.71,
+      "rssKiB": 716448
+    },
+    {
+      "seconds": 174.714,
+      "rssKiB": 702752
+    },
+    {
+      "seconds": 175.745,
+      "rssKiB": 788400
+    },
+    {
+      "seconds": 176.823,
+      "rssKiB": 720864
+    },
+    {
+      "seconds": 177.839,
+      "rssKiB": 670288
+    },
+    {
+      "seconds": 178.933,
+      "rssKiB": 748272
+    }
+  ],
+  "timelineFile": "benchmark_results/phase01/macos-rejected-preview.timeline.json.gz",
+  "vmServiceAvailable": true,
+  "rpcErrors": [
+    {
+      "method": "setVMTimelineFlags",
+      "error": "Invalid params"
+    },
+    {
+      "method": "setVMTimelineFlags",
+      "error": "Invalid params"
+    },
+    {
+      "method": "getCpuSamples",
+      "error": "Feature is disabled"
+    },
+    {
+      "method": "setVMTimelineFlags",
+      "error": "Invalid params"
+    },
+    {
+      "method": "setVMTimelineFlags",
+      "error": "Invalid params"
+    },
+    {
+      "method": "setVMTimelineFlags",
+      "error": "Invalid params"
+    },
+    {
+      "method": "getCpuSamples",
+      "error": "Feature is disabled"
+    },
+    {
+      "method": "setVMTimelineFlags",
+      "error": "Invalid params"
+    },
+    {
+      "method": "getCpuSamples",
+      "error": "Feature is disabled"
+    },
+    {
+      "method": "getCpuSamples",
+      "error": "Feature is disabled"
+    }
+  ],
+  "elapsedSeconds": 179.634,
+  "primaryComparisonExcluded": true
+}

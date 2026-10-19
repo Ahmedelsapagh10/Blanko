@@ -1,0 +1,2598 @@
+{
+  "target": "web",
+  "boundedDiagnosticOnly": true,
+  "partialRowComparison": false,
+  "excludedRows": {
+    "direct": [],
+    "vector": [],
+    "layers": []
+  },
+  "renderingGateQualified": false,
+  "physicalInputOrPresentationValidated": false,
+  "estimatedRasterExposureIsTotalGpuMemory": false,
+  "variants": {
+    "direct": {
+      "complete": false,
+      "runs": [
+        {
+          "scene": "normal",
+          "workload": "editSingle",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 357,
+              "retained": 357,
+              "p50Ms": 2.701,
+              "p95Ms": 4.699,
+              "p99Ms": 5.299
+            },
+            "build": {
+              "observed": 357,
+              "retained": 357,
+              "p50Ms": 0.401,
+              "p95Ms": 4.699,
+              "p99Ms": 5.299
+            },
+            "raster": {
+              "observed": 357,
+              "retained": 357,
+              "p50Ms": 2.6,
+              "p95Ms": 3.201,
+              "p99Ms": 3.401
+            },
+            "totalSpan": {
+              "observed": 357,
+              "retained": 357,
+              "p50Ms": 3.101,
+              "p95Ms": 7.399,
+              "p99Ms": 8
+            }
+          },
+          "cadence": {
+            "observed": 356,
+            "retained": 356,
+            "p50Ms": 16.699,
+            "p95Ms": 17.301,
+            "p99Ms": 17.6
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 0.2,
+              "p95Ms": 0.401,
+              "p99Ms": 0.5
+            },
+            "recordPaintCpu": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 3,
+              "p95Ms": 3.9,
+              "p99Ms": 4.099
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 3.5,
+              "p95Ms": 4.699,
+              "p99Ms": 4.701
+            },
+            "commitCpu": {
+              "observed": 59,
+              "retained": 59,
+              "p50Ms": 0.1,
+              "p95Ms": 0.299,
+              "p99Ms": 0.4
+            },
+            "commandToFirstPaintRecordMs": 32,
+            "paintCount": 59,
+            "visibleP50": 199,
+            "visibleMax": 199
+          },
+          "load": {
+            "fixtureMs": 23.699,
+            "rendererPrepareMs": 103,
+            "loadToInteractiveMs": 162.599,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 5.701,
+                "p95Ms": 126.9,
+                "p99Ms": 126.9
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 4.8,
+                "p95Ms": 5.701,
+                "p99Ms": 5.701
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 5,
+                "p95Ms": 126.9,
+                "p99Ms": 126.9
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 8.299,
+                "p95Ms": 131.8,
+                "p99Ms": 131.8
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 59,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 59,
+              "p50Ms": 0.1,
+              "p95Ms": 0.299,
+              "p99Ms": 0.4
+            },
+            "geometryCpu": {
+              "samples": 59,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "synchronizationCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.101,
+              "p99Ms": 0.201
+            },
+            "indexCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            },
+            "invalidationCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.099
+            },
+            "validationCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            }
+          },
+          "resolvedCounts": [
+            1
+          ],
+          "synchronizedCounts": [
+            1
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 347,
+            "p50Ms": 2.701,
+            "p95Ms": 4.699,
+            "p99Ms": 5.299
+          },
+          "otherFrames": {
+            "samples": 10,
+            "p50Ms": 2.699,
+            "p95Ms": 4.1,
+            "p99Ms": 4.1
+          },
+          "slowFramesOver16_7ms": 0,
+          "slowFramesWithin100ms": 0,
+          "layers": null,
+          "retained": null,
+          "activeEditIds": [
+            "element-25"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editSingle",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 24.6,
+              "p95Ms": 32.5,
+              "p99Ms": 34.399
+            },
+            "build": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 0.399,
+              "p95Ms": 32.5,
+              "p99Ms": 34.399
+            },
+            "raster": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 24.201,
+              "p95Ms": 24.901,
+              "p99Ms": 25.201
+            },
+            "totalSpan": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 24.901,
+              "p95Ms": 56.7,
+              "p99Ms": 59.1
+            }
+          },
+          "cadence": {
+            "observed": 167,
+            "retained": 167,
+            "p50Ms": 25.1,
+            "p95Ms": 56.9,
+            "p99Ms": 59.399
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 1.299,
+              "p95Ms": 1.401,
+              "p99Ms": 2.5
+            },
+            "recordPaintCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 26.699,
+              "p95Ms": 27.6,
+              "p99Ms": 28.3
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 28.199,
+              "p95Ms": 29.199,
+              "p99Ms": 30
+            },
+            "commitCpu": {
+              "observed": 56,
+              "retained": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "commandToFirstPaintRecordMs": 135.8,
+            "paintCount": 56,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 40,
+            "rendererPrepareMs": 111.1,
+            "loadToInteractiveMs": 213.801,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.5,
+                "p95Ms": 151.2,
+                "p99Ms": 151.2
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.5,
+                "p95Ms": 7.601,
+                "p99Ms": 7.601
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 2.199,
+                "p95Ms": 151.2,
+                "p99Ms": 151.2
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.799,
+                "p95Ms": 158.801,
+                "p99Ms": 158.801
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 56,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "geometryCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.101,
+              "p99Ms": 0.201
+            },
+            "synchronizationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.101,
+              "p99Ms": 0.101
+            },
+            "indexCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            },
+            "invalidationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.0
+            },
+            "validationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.1
+            }
+          },
+          "resolvedCounts": [
+            1
+          ],
+          "synchronizedCounts": [
+            1
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 162,
+            "p50Ms": 24.6,
+            "p95Ms": 32.5,
+            "p99Ms": 34.399
+          },
+          "otherFrames": {
+            "samples": 6,
+            "p50Ms": 24.201,
+            "p95Ms": 25.201,
+            "p99Ms": 25.201
+          },
+          "slowFramesOver16_7ms": 168,
+          "slowFramesWithin100ms": 162,
+          "layers": null,
+          "retained": null,
+          "activeEditIds": [
+            "element-1"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editMulti",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 169,
+              "retained": 169,
+              "p50Ms": 24.899,
+              "p95Ms": 32.5,
+              "p99Ms": 33.1
+            },
+            "build": {
+              "observed": 169,
+              "retained": 169,
+              "p50Ms": 0.3,
+              "p95Ms": 32.5,
+              "p99Ms": 33.1
+            },
+            "raster": {
+              "observed": 169,
+              "retained": 169,
+              "p50Ms": 24.5,
+              "p95Ms": 25.5,
+              "p99Ms": 26.199
+            },
+            "totalSpan": {
+              "observed": 169,
+              "retained": 169,
+              "p50Ms": 25.201,
+              "p95Ms": 56.701,
+              "p99Ms": 58.1
+            }
+          },
+          "cadence": {
+            "observed": 168,
+            "retained": 168,
+            "p50Ms": 25.301,
+            "p95Ms": 57.199,
+            "p99Ms": 58.5
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 54,
+              "retained": 54,
+              "p50Ms": 1.1,
+              "p95Ms": 1.201,
+              "p99Ms": 2.201
+            },
+            "recordPaintCpu": {
+              "observed": 54,
+              "retained": 54,
+              "p50Ms": 26.799,
+              "p95Ms": 27.5,
+              "p99Ms": 27.801
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 54,
+              "retained": 54,
+              "p50Ms": 28.2,
+              "p95Ms": 29,
+              "p99Ms": 29.201
+            },
+            "commitCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 0.199,
+              "p95Ms": 0.3,
+              "p99Ms": 0.301
+            },
+            "commandToFirstPaintRecordMs": 58.199,
+            "paintCount": 55,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 25.399,
+            "rendererPrepareMs": 103.701,
+            "loadToInteractiveMs": 228.9,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 38.1,
+                "p95Ms": 129.301,
+                "p99Ms": 129.301
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 8,
+                "p95Ms": 38.1,
+                "p99Ms": 38.1
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 37.699,
+                "p95Ms": 129.301,
+                "p99Ms": 129.301
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 75.799,
+                "p95Ms": 137.401,
+                "p99Ms": 137.401
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 55,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 55,
+              "p50Ms": 0.199,
+              "p95Ms": 0.3,
+              "p99Ms": 0.301
+            },
+            "geometryCpu": {
+              "samples": 55,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "synchronizationCpu": {
+              "samples": 55,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "indexCpu": {
+              "samples": 55,
+              "p50Ms": 0.1,
+              "p95Ms": 0.199,
+              "p99Ms": 0.201
+            },
+            "invalidationCpu": {
+              "samples": 55,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.0
+            },
+            "validationCpu": {
+              "samples": 55,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.1
+            }
+          },
+          "resolvedCounts": [
+            16
+          ],
+          "synchronizedCounts": [
+            16
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 159,
+            "p50Ms": 24.899,
+            "p95Ms": 32.5,
+            "p99Ms": 33.1
+          },
+          "otherFrames": {
+            "samples": 10,
+            "p50Ms": 24.8,
+            "p95Ms": 26.199,
+            "p99Ms": 26.199
+          },
+          "slowFramesOver16_7ms": 169,
+          "slowFramesWithin100ms": 159,
+          "layers": null,
+          "retained": null,
+          "activeEditIds": [
+            "element-1",
+            "element-3",
+            "element-5",
+            "element-6",
+            "element-9",
+            "element-11",
+            "element-12",
+            "element-13",
+            "element-14",
+            "element-15",
+            "element-16",
+            "element-17",
+            "element-19",
+            "element-21",
+            "element-22",
+            "element-25"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editInterleaved",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 167,
+              "retained": 167,
+              "p50Ms": 25.199,
+              "p95Ms": 33,
+              "p99Ms": 34.199
+            },
+            "build": {
+              "observed": 167,
+              "retained": 167,
+              "p50Ms": 0.301,
+              "p95Ms": 33,
+              "p99Ms": 34.199
+            },
+            "raster": {
+              "observed": 167,
+              "retained": 167,
+              "p50Ms": 24.701,
+              "p95Ms": 26.101,
+              "p99Ms": 26.7
+            },
+            "totalSpan": {
+              "observed": 167,
+              "retained": 167,
+              "p50Ms": 25.5,
+              "p95Ms": 57.601,
+              "p99Ms": 59.6
+            }
+          },
+          "cadence": {
+            "observed": 166,
+            "retained": 166,
+            "p50Ms": 25.601,
+            "p95Ms": 58,
+            "p99Ms": 59.9
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 1.101,
+              "p95Ms": 1.201,
+              "p99Ms": 1.3
+            },
+            "recordPaintCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 26.6,
+              "p95Ms": 27.601,
+              "p99Ms": 28.699
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 28.199,
+              "p95Ms": 29.401,
+              "p99Ms": 30.299
+            },
+            "commitCpu": {
+              "observed": 56,
+              "retained": 56,
+              "p50Ms": 0.299,
+              "p95Ms": 0.4,
+              "p99Ms": 1.6
+            },
+            "commandToFirstPaintRecordMs": 58.7,
+            "paintCount": 56,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 25.5,
+            "rendererPrepareMs": 102,
+            "loadToInteractiveMs": 221.301,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 37.099,
+                "p95Ms": 127.599,
+                "p99Ms": 127.599
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 8.301,
+                "p95Ms": 37.099,
+                "p99Ms": 37.099
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 29.5,
+                "p95Ms": 127.599,
+                "p99Ms": 127.599
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 66.599,
+                "p95Ms": 135.9,
+                "p99Ms": 135.9
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 56,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 56,
+              "p50Ms": 0.299,
+              "p95Ms": 0.4,
+              "p99Ms": 1.6
+            },
+            "geometryCpu": {
+              "samples": 56,
+              "p50Ms": 0.199,
+              "p95Ms": 0.301,
+              "p99Ms": 1.6
+            },
+            "synchronizationCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "indexCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "invalidationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.0
+            },
+            "validationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.101
+            }
+          },
+          "resolvedCounts": [
+            16
+          ],
+          "synchronizedCounts": [
+            16
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 162,
+            "p50Ms": 25.101,
+            "p95Ms": 33.0,
+            "p99Ms": 34.199
+          },
+          "otherFrames": {
+            "samples": 5,
+            "p50Ms": 25.199,
+            "p95Ms": 26.601,
+            "p99Ms": 26.601
+          },
+          "slowFramesOver16_7ms": 167,
+          "slowFramesWithin100ms": 162,
+          "layers": null,
+          "retained": null,
+          "activeEditIds": [
+            "element-1",
+            "element-692",
+            "element-1370",
+            "element-2039",
+            "element-2729",
+            "element-3401",
+            "element-4047",
+            "element-4682",
+            "element-5342",
+            "element-5990",
+            "element-6668",
+            "element-7332",
+            "element-7983",
+            "element-8643",
+            "element-9315",
+            "element-9999"
+          ]
+        }
+      ],
+      "stressJsHeapBytes": {
+        "initial": null,
+        "peak": null,
+        "last": null,
+        "steadyLast5Mean": null
+      },
+      "finalJsHeap": null,
+      "rendererCycles": 0,
+      "rssSamples": null,
+      "diagnostics": []
+    },
+    "vector": {
+      "complete": false,
+      "runs": [
+        {
+          "scene": "normal",
+          "workload": "editSingle",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 356,
+              "retained": 356,
+              "p50Ms": 2.599,
+              "p95Ms": 3.5,
+              "p99Ms": 4.3
+            },
+            "build": {
+              "observed": 356,
+              "retained": 356,
+              "p50Ms": 0.4,
+              "p95Ms": 1.4,
+              "p99Ms": 2.5
+            },
+            "raster": {
+              "observed": 356,
+              "retained": 356,
+              "p50Ms": 2.599,
+              "p95Ms": 3.5,
+              "p99Ms": 3.8
+            },
+            "totalSpan": {
+              "observed": 356,
+              "retained": 356,
+              "p50Ms": 3.101,
+              "p95Ms": 4.8,
+              "p99Ms": 5.801
+            }
+          },
+          "cadence": {
+            "observed": 355,
+            "retained": 355,
+            "p50Ms": 16.7,
+            "p95Ms": 17.2,
+            "p99Ms": 17.5
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 0.2,
+              "p95Ms": 0.4,
+              "p99Ms": 0.5
+            },
+            "recordPaintCpu": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 0.399,
+              "p95Ms": 0.5,
+              "p99Ms": 0.601
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 1,
+              "p95Ms": 1.7,
+              "p99Ms": 4.2
+            },
+            "commitCpu": {
+              "observed": 59,
+              "retained": 59,
+              "p50Ms": 0.2,
+              "p95Ms": 0.3,
+              "p99Ms": 0.4
+            },
+            "commandToFirstPaintRecordMs": 29.201,
+            "paintCount": 59,
+            "visibleP50": 199,
+            "visibleMax": 199
+          },
+          "load": {
+            "fixtureMs": 27.9,
+            "rendererPrepareMs": 105.6,
+            "loadToInteractiveMs": 162.5,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 7.399,
+                "p95Ms": 133.5,
+                "p99Ms": 133.5
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 4.799,
+                "p95Ms": 6,
+                "p99Ms": 6
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 7.399,
+                "p95Ms": 133.5,
+                "p99Ms": 133.5
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 10.7,
+                "p95Ms": 138.299,
+                "p99Ms": 138.299
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 59,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 59,
+              "p50Ms": 0.2,
+              "p95Ms": 0.3,
+              "p99Ms": 0.4
+            },
+            "geometryCpu": {
+              "samples": 59,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.3
+            },
+            "synchronizationCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.2,
+              "p99Ms": 0.2
+            },
+            "indexCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            },
+            "invalidationCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.101,
+              "p99Ms": 0.101
+            },
+            "validationCpu": {
+              "samples": 59,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            }
+          },
+          "resolvedCounts": [
+            1
+          ],
+          "synchronizedCounts": [
+            1
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 347,
+            "p50Ms": 2.599,
+            "p95Ms": 3.5,
+            "p99Ms": 4.0
+          },
+          "otherFrames": {
+            "samples": 9,
+            "p50Ms": 2.4,
+            "p95Ms": 7.3,
+            "p99Ms": 7.3
+          },
+          "slowFramesOver16_7ms": 0,
+          "slowFramesWithin100ms": 0,
+          "layers": null,
+          "retained": {
+            "approximateBytes": 97812,
+            "peakApproximateBytes": 103540,
+            "limitApproximateBytes": 16777216,
+            "pictures": 39,
+            "pictureLimit": 128,
+            "rangeSize": 256,
+            "activeCount": 1,
+            "activeOverflow": false,
+            "builds": 78,
+            "reuses": 2262,
+            "recordedEntries": 412,
+            "invalidations": 0,
+            "evictions": 0,
+            "directFallbacks": 0,
+            "clears": 2,
+            "disposedPictures": 39,
+            "firstPaintRecordCpuMs": 2.101,
+            "recordCpu": {
+              "observed": 78,
+              "retained": 78,
+              "p50Ms": 0.099,
+              "p95Ms": 0.201,
+              "p99Ms": 0.3
+            },
+            "disposed": false
+          },
+          "activeEditIds": [
+            "element-25"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editSingle",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 24.7,
+              "p95Ms": 25.699,
+              "p99Ms": 26.8
+            },
+            "build": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 0.3,
+              "p95Ms": 1.899,
+              "p99Ms": 2.4
+            },
+            "raster": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 24.7,
+              "p95Ms": 25.699,
+              "p99Ms": 26.8
+            },
+            "totalSpan": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 25.2,
+              "p95Ms": 27.099,
+              "p99Ms": 27.9
+            }
+          },
+          "cadence": {
+            "observed": 229,
+            "retained": 229,
+            "p50Ms": 25.4,
+            "p95Ms": 27.2,
+            "p99Ms": 28.101
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 1.2,
+              "p95Ms": 1.301,
+              "p99Ms": 2.101
+            },
+            "recordPaintCpu": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 0.2,
+              "p95Ms": 0.3,
+              "p99Ms": 0.301
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 1.5,
+              "p95Ms": 1.801,
+              "p99Ms": 2.5
+            },
+            "commitCpu": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.2
+            },
+            "commandToFirstPaintRecordMs": 140.301,
+            "paintCount": 58,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 33,
+            "rendererPrepareMs": 113.199,
+            "loadToInteractiveMs": 229.599,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.1,
+                "p95Ms": 146.4,
+                "p99Ms": 146.4
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.1,
+                "p95Ms": 7.6,
+                "p99Ms": 7.6
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 2.801,
+                "p95Ms": 146.4,
+                "p99Ms": 146.4
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.5,
+                "p95Ms": 154.1,
+                "p99Ms": 154.1
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 58,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 58,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.2
+            },
+            "geometryCpu": {
+              "samples": 58,
+              "p50Ms": 0.099,
+              "p95Ms": 0.199,
+              "p99Ms": 0.2
+            },
+            "synchronizationCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.101,
+              "p99Ms": 0.101
+            },
+            "indexCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.101,
+              "p99Ms": 0.101
+            },
+            "invalidationCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.099
+            },
+            "validationCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.1
+            }
+          },
+          "resolvedCounts": [
+            1
+          ],
+          "synchronizedCounts": [
+            1
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 225,
+            "p50Ms": 24.7,
+            "p95Ms": 25.5,
+            "p99Ms": 26.3
+          },
+          "otherFrames": {
+            "samples": 5,
+            "p50Ms": 25.1,
+            "p95Ms": 27.3,
+            "p99Ms": 27.3
+          },
+          "slowFramesOver16_7ms": 230,
+          "slowFramesWithin100ms": 225,
+          "layers": null,
+          "retained": {
+            "approximateBytes": 2154976,
+            "peakApproximateBytes": 2287640,
+            "limitApproximateBytes": 16777216,
+            "pictures": 40,
+            "pictureLimit": 128,
+            "rangeSize": 256,
+            "activeCount": 1,
+            "activeOverflow": false,
+            "builds": 80,
+            "reuses": 2280,
+            "recordedEntries": 11633,
+            "invalidations": 0,
+            "evictions": 0,
+            "directFallbacks": 0,
+            "clears": 2,
+            "disposedPictures": 40,
+            "firstPaintRecordCpuMs": 32.101,
+            "recordCpu": {
+              "observed": 80,
+              "retained": 80,
+              "p50Ms": 0.9,
+              "p95Ms": 1.4,
+              "p99Ms": 5.5
+            },
+            "disposed": false
+          },
+          "activeEditIds": [
+            "element-1"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editMulti",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 24.601,
+              "p95Ms": 25.899,
+              "p99Ms": 27.5
+            },
+            "build": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 0.3,
+              "p95Ms": 2.2,
+              "p99Ms": 2.9
+            },
+            "raster": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 24.601,
+              "p95Ms": 25.899,
+              "p99Ms": 27.5
+            },
+            "totalSpan": {
+              "observed": 230,
+              "retained": 230,
+              "p50Ms": 25.101,
+              "p95Ms": 27.7,
+              "p99Ms": 28.701
+            }
+          },
+          "cadence": {
+            "observed": 229,
+            "retained": 229,
+            "p50Ms": 25.3,
+            "p95Ms": 27.8,
+            "p99Ms": 29
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 1.2,
+              "p95Ms": 1.401,
+              "p99Ms": 2.2
+            },
+            "recordPaintCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 0.299,
+              "p95Ms": 0.4,
+              "p99Ms": 0.4
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 1.8,
+              "p95Ms": 2.6,
+              "p99Ms": 4.1
+            },
+            "commitCpu": {
+              "observed": 56,
+              "retained": 56,
+              "p50Ms": 0.2,
+              "p95Ms": 0.299,
+              "p99Ms": 2.301
+            },
+            "commandToFirstPaintRecordMs": 60.699,
+            "paintCount": 56,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 40.2,
+            "rendererPrepareMs": 107.2,
+            "loadToInteractiveMs": 251.599,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 39.699,
+                "p95Ms": 147.5,
+                "p99Ms": 147.5
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 8.9,
+                "p95Ms": 39.699,
+                "p99Ms": 39.699
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 36.701,
+                "p95Ms": 147.5,
+                "p99Ms": 147.5
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 76.5,
+                "p95Ms": 156.4,
+                "p99Ms": 156.4
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 56,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 56,
+              "p50Ms": 0.2,
+              "p95Ms": 0.299,
+              "p99Ms": 2.301
+            },
+            "geometryCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 2.2
+            },
+            "synchronizationCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "indexCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.199,
+              "p99Ms": 0.201
+            },
+            "invalidationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.1
+            },
+            "validationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            }
+          },
+          "resolvedCounts": [
+            16
+          ],
+          "synchronizedCounts": [
+            16
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 218,
+            "p50Ms": 24.601,
+            "p95Ms": 25.901,
+            "p99Ms": 27.5
+          },
+          "otherFrames": {
+            "samples": 12,
+            "p50Ms": 24.599,
+            "p95Ms": 25.1,
+            "p99Ms": 25.1
+          },
+          "slowFramesOver16_7ms": 230,
+          "slowFramesWithin100ms": 218,
+          "layers": null,
+          "retained": {
+            "approximateBytes": 2149808,
+            "peakApproximateBytes": 2287640,
+            "limitApproximateBytes": 16777216,
+            "pictures": 40,
+            "pictureLimit": 128,
+            "rangeSize": 256,
+            "activeCount": 16,
+            "activeOverflow": false,
+            "builds": 80,
+            "reuses": 2200,
+            "recordedEntries": 11618,
+            "invalidations": 0,
+            "evictions": 0,
+            "directFallbacks": 0,
+            "clears": 2,
+            "disposedPictures": 40,
+            "firstPaintRecordCpuMs": 29.699,
+            "recordCpu": {
+              "observed": 80,
+              "retained": 80,
+              "p50Ms": 0.701,
+              "p95Ms": 0.9,
+              "p99Ms": 2.9
+            },
+            "disposed": false
+          },
+          "activeEditIds": [
+            "element-1",
+            "element-3",
+            "element-5",
+            "element-6",
+            "element-9",
+            "element-11",
+            "element-12",
+            "element-13",
+            "element-14",
+            "element-15",
+            "element-16",
+            "element-17",
+            "element-19",
+            "element-21",
+            "element-22",
+            "element-25"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editInterleaved",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 232,
+              "retained": 232,
+              "p50Ms": 24.7,
+              "p95Ms": 25.301,
+              "p99Ms": 26.199
+            },
+            "build": {
+              "observed": 232,
+              "retained": 232,
+              "p50Ms": 0.299,
+              "p95Ms": 2.2,
+              "p99Ms": 2.8
+            },
+            "raster": {
+              "observed": 232,
+              "retained": 232,
+              "p50Ms": 24.7,
+              "p95Ms": 25.301,
+              "p99Ms": 26.199
+            },
+            "totalSpan": {
+              "observed": 232,
+              "retained": 232,
+              "p50Ms": 25.1,
+              "p95Ms": 27.3,
+              "p99Ms": 28
+            }
+          },
+          "cadence": {
+            "observed": 231,
+            "retained": 231,
+            "p50Ms": 25.299,
+            "p95Ms": 27.5,
+            "p99Ms": 28.1
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 1.199,
+              "p95Ms": 1.3,
+              "p99Ms": 2.1
+            },
+            "recordPaintCpu": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 0.3,
+              "p95Ms": 0.4,
+              "p99Ms": 0.401
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 1.801,
+              "p95Ms": 2.2,
+              "p99Ms": 2.9
+            },
+            "commitCpu": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 0.2,
+              "p95Ms": 0.301,
+              "p99Ms": 0.401
+            },
+            "commandToFirstPaintRecordMs": 61.399,
+            "paintCount": 58,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 24.5,
+            "rendererPrepareMs": 107.4,
+            "loadToInteractiveMs": 225.699,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 37.099,
+                "p95Ms": 132.1,
+                "p99Ms": 132.1
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 8.9,
+                "p95Ms": 37.099,
+                "p99Ms": 37.099
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 29.901,
+                "p95Ms": 132.1,
+                "p99Ms": 132.1
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 67,
+                "p95Ms": 141,
+                "p99Ms": 141
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 58,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 58,
+              "p50Ms": 0.2,
+              "p95Ms": 0.301,
+              "p99Ms": 0.401
+            },
+            "geometryCpu": {
+              "samples": 58,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.299
+            },
+            "synchronizationCpu": {
+              "samples": 58,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "indexCpu": {
+              "samples": 58,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "invalidationCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            },
+            "validationCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.101
+            }
+          },
+          "resolvedCounts": [
+            16
+          ],
+          "synchronizedCounts": [
+            16
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 225,
+            "p50Ms": 24.7,
+            "p95Ms": 25.301,
+            "p99Ms": 26.199
+          },
+          "otherFrames": {
+            "samples": 7,
+            "p50Ms": 24.6,
+            "p95Ms": 24.801,
+            "p99Ms": 24.801
+          },
+          "slowFramesOver16_7ms": 232,
+          "slowFramesWithin100ms": 225,
+          "layers": null,
+          "retained": {
+            "approximateBytes": 2159884,
+            "peakApproximateBytes": 2287640,
+            "limitApproximateBytes": 16777216,
+            "pictures": 54,
+            "pictureLimit": 128,
+            "rangeSize": 256,
+            "activeCount": 16,
+            "activeOverflow": false,
+            "builds": 94,
+            "reuses": 3078,
+            "recordedEntries": 11618,
+            "invalidations": 0,
+            "evictions": 0,
+            "directFallbacks": 0,
+            "clears": 2,
+            "disposedPictures": 40,
+            "firstPaintRecordCpuMs": 29.8,
+            "recordCpu": {
+              "observed": 94,
+              "retained": 94,
+              "p50Ms": 0.7,
+              "p95Ms": 0.899,
+              "p99Ms": 2.3
+            },
+            "disposed": false
+          },
+          "activeEditIds": [
+            "element-1",
+            "element-692",
+            "element-1370",
+            "element-2039",
+            "element-2729",
+            "element-3401",
+            "element-4047",
+            "element-4682",
+            "element-5342",
+            "element-5990",
+            "element-6668",
+            "element-7332",
+            "element-7983",
+            "element-8643",
+            "element-9315",
+            "element-9999"
+          ]
+        }
+      ],
+      "stressJsHeapBytes": {
+        "initial": null,
+        "peak": null,
+        "last": null,
+        "steadyLast5Mean": null
+      },
+      "finalJsHeap": null,
+      "rendererCycles": 0,
+      "rssSamples": null,
+      "diagnostics": []
+    },
+    "layers": {
+      "complete": false,
+      "runs": [
+        {
+          "scene": "normal",
+          "workload": "editSingle",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 358,
+              "retained": 358,
+              "p50Ms": 2.701,
+              "p95Ms": 3.4,
+              "p99Ms": 4
+            },
+            "build": {
+              "observed": 358,
+              "retained": 358,
+              "p50Ms": 0.599,
+              "p95Ms": 1.5,
+              "p99Ms": 2.1
+            },
+            "raster": {
+              "observed": 358,
+              "retained": 358,
+              "p50Ms": 2.7,
+              "p95Ms": 3.3,
+              "p99Ms": 3.899
+            },
+            "totalSpan": {
+              "observed": 358,
+              "retained": 358,
+              "p50Ms": 3.4,
+              "p95Ms": 4.7,
+              "p99Ms": 5.5
+            }
+          },
+          "cadence": {
+            "observed": 357,
+            "retained": 357,
+            "p50Ms": 16.699,
+            "p95Ms": 17,
+            "p99Ms": 17.4
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 0.201,
+              "p95Ms": 0.301,
+              "p99Ms": 0.301
+            },
+            "recordPaintCpu": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 0.399,
+              "p95Ms": 0.5,
+              "p99Ms": 0.601
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 1,
+              "p95Ms": 1.4,
+              "p99Ms": 1.5
+            },
+            "commitCpu": {
+              "observed": 58,
+              "retained": 58,
+              "p50Ms": 0.2,
+              "p95Ms": 0.301,
+              "p99Ms": 0.5
+            },
+            "commandToFirstPaintRecordMs": 32.401,
+            "paintCount": 58,
+            "visibleP50": 199,
+            "visibleMax": 199
+          },
+          "load": {
+            "fixtureMs": 23.5,
+            "rendererPrepareMs": 108.7,
+            "loadToInteractiveMs": 173.5,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 7.4,
+                "p95Ms": 132.401,
+                "p99Ms": 132.401
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 4.699,
+                "p95Ms": 5.599,
+                "p99Ms": 5.599
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 7.4,
+                "p95Ms": 132.401,
+                "p99Ms": 132.401
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 11.1,
+                "p95Ms": 137.1,
+                "p99Ms": 137.1
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 58,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 58,
+              "p50Ms": 0.2,
+              "p95Ms": 0.301,
+              "p99Ms": 0.5
+            },
+            "geometryCpu": {
+              "samples": 58,
+              "p50Ms": 0.101,
+              "p95Ms": 0.3,
+              "p99Ms": 0.3
+            },
+            "synchronizationCpu": {
+              "samples": 58,
+              "p50Ms": 0.099,
+              "p95Ms": 0.101,
+              "p99Ms": 0.2
+            },
+            "indexCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.101,
+              "p99Ms": 0.101
+            },
+            "invalidationCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.1
+            },
+            "validationCpu": {
+              "samples": 58,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.1
+            }
+          },
+          "resolvedCounts": [
+            1
+          ],
+          "synchronizedCounts": [
+            1
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 339,
+            "p50Ms": 2.701,
+            "p95Ms": 3.3,
+            "p99Ms": 3.901
+          },
+          "otherFrames": {
+            "samples": 19,
+            "p50Ms": 2.601,
+            "p95Ms": 4.4,
+            "p99Ms": 4.4
+          },
+          "slowFramesOver16_7ms": 0,
+          "slowFramesWithin100ms": 0,
+          "layers": {
+            "layers": 1,
+            "layerLimit": 33,
+            "approximatePictureBytes": 74452,
+            "peakApproximatePictureBytes": 80404,
+            "pictureByteLimit": 16777216,
+            "estimatedRasterExposureBytes": 9168720,
+            "peakEstimatedRasterExposureBytes": 9567360,
+            "rasterEstimateLimit": 67108864,
+            "rasterEstimateAllocationFactor": 2,
+            "activeCount": 1,
+            "activeOverflow": false,
+            "builds": 2,
+            "reuses": 57,
+            "invalidations": 0,
+            "clears": 5,
+            "directFallbacks": 0,
+            "disposedRanges": 1,
+            "engineSubmissions": 2,
+            "firstPaintRecordCpuMs": 2.1,
+            "recordCpu": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 1.801,
+              "p95Ms": 2.5,
+              "p99Ms": 2.5
+            },
+            "disposed": false
+          },
+          "retained": null,
+          "activeEditIds": [
+            "element-25"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editSingle",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 231,
+              "retained": 231,
+              "p50Ms": 24.6,
+              "p95Ms": 25.6,
+              "p99Ms": 26.1
+            },
+            "build": {
+              "observed": 231,
+              "retained": 231,
+              "p50Ms": 0.3,
+              "p95Ms": 2.5,
+              "p99Ms": 3.099
+            },
+            "raster": {
+              "observed": 231,
+              "retained": 231,
+              "p50Ms": 24.6,
+              "p95Ms": 25.6,
+              "p99Ms": 26.1
+            },
+            "totalSpan": {
+              "observed": 231,
+              "retained": 231,
+              "p50Ms": 25.1,
+              "p95Ms": 27.699,
+              "p99Ms": 28.099
+            }
+          },
+          "cadence": {
+            "observed": 230,
+            "retained": 230,
+            "p50Ms": 25.2,
+            "p95Ms": 27.8,
+            "p99Ms": 28.2
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 1.201,
+              "p95Ms": 1.4,
+              "p99Ms": 1.899
+            },
+            "recordPaintCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 0.8,
+              "p95Ms": 1,
+              "p99Ms": 1.301
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 2.2,
+              "p95Ms": 2.5,
+              "p99Ms": 2.9
+            },
+            "commitCpu": {
+              "observed": 56,
+              "retained": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "commandToFirstPaintRecordMs": 144.3,
+            "paintCount": 56,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 40,
+            "rendererPrepareMs": 108.199,
+            "loadToInteractiveMs": 219.4,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.5,
+                "p95Ms": 148.3,
+                "p99Ms": 148.3
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.5,
+                "p95Ms": 7.5,
+                "p99Ms": 7.5
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 1.5,
+                "p95Ms": 148.3,
+                "p99Ms": 148.3
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 3.801,
+                "p95Ms": 155.9,
+                "p99Ms": 155.9
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 56,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 56,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "geometryCpu": {
+              "samples": 56,
+              "p50Ms": 0.099,
+              "p95Ms": 0.101,
+              "p99Ms": 0.2
+            },
+            "synchronizationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            },
+            "indexCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.1,
+              "p99Ms": 0.101
+            },
+            "invalidationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.101
+            },
+            "validationCpu": {
+              "samples": 56,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.0
+            }
+          },
+          "resolvedCounts": [
+            1
+          ],
+          "synchronizedCounts": [
+            1
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 219,
+            "p50Ms": 24.6,
+            "p95Ms": 25.6,
+            "p99Ms": 26.1
+          },
+          "otherFrames": {
+            "samples": 12,
+            "p50Ms": 24.5,
+            "p95Ms": 25.7,
+            "p99Ms": 25.7
+          },
+          "slowFramesOver16_7ms": 231,
+          "slowFramesWithin100ms": 219,
+          "layers": {
+            "layers": 1,
+            "layerLimit": 33,
+            "approximatePictureBytes": 2116700,
+            "peakApproximatePictureBytes": 2249588,
+            "pictureByteLimit": 16777216,
+            "estimatedRasterExposureBytes": 10466472,
+            "peakEstimatedRasterExposureBytes": 10663720,
+            "rasterEstimateLimit": 67108864,
+            "rasterEstimateAllocationFactor": 2,
+            "activeCount": 1,
+            "activeOverflow": false,
+            "builds": 2,
+            "reuses": 55,
+            "invalidations": 0,
+            "clears": 5,
+            "directFallbacks": 0,
+            "disposedRanges": 1,
+            "engineSubmissions": 2,
+            "firstPaintRecordCpuMs": 32.701,
+            "recordCpu": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 32.1,
+              "p95Ms": 40.399,
+              "p99Ms": 40.399
+            },
+            "disposed": false
+          },
+          "retained": null,
+          "activeEditIds": [
+            "element-1"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editMulti",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 233,
+              "retained": 233,
+              "p50Ms": 24.5,
+              "p95Ms": 25.2,
+              "p99Ms": 25.8
+            },
+            "build": {
+              "observed": 233,
+              "retained": 233,
+              "p50Ms": 0.3,
+              "p95Ms": 2.5,
+              "p99Ms": 3.301
+            },
+            "raster": {
+              "observed": 233,
+              "retained": 233,
+              "p50Ms": 24.5,
+              "p95Ms": 25.2,
+              "p99Ms": 25.8
+            },
+            "totalSpan": {
+              "observed": 233,
+              "retained": 233,
+              "p50Ms": 24.9,
+              "p95Ms": 27.401,
+              "p99Ms": 28.2
+            }
+          },
+          "cadence": {
+            "observed": 232,
+            "retained": 232,
+            "p50Ms": 25,
+            "p95Ms": 27.5,
+            "p99Ms": 28.5
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 56,
+              "retained": 56,
+              "p50Ms": 1.2,
+              "p95Ms": 1.3,
+              "p99Ms": 1.301
+            },
+            "recordPaintCpu": {
+              "observed": 56,
+              "retained": 56,
+              "p50Ms": 0.799,
+              "p95Ms": 1.299,
+              "p99Ms": 1.799
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 56,
+              "retained": 56,
+              "p50Ms": 2.2,
+              "p95Ms": 2.7,
+              "p99Ms": 5.099
+            },
+            "commitCpu": {
+              "observed": 57,
+              "retained": 57,
+              "p50Ms": 0.199,
+              "p95Ms": 0.3,
+              "p99Ms": 2.7
+            },
+            "commandToFirstPaintRecordMs": 62.3,
+            "paintCount": 57,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 26.8,
+            "rendererPrepareMs": 108,
+            "loadToInteractiveMs": 239.3,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 2,
+                "retained": 2,
+                "p50Ms": 40.8,
+                "p95Ms": 134.9,
+                "p99Ms": 134.9
+              },
+              "build": {
+                "observed": 2,
+                "retained": 2,
+                "p50Ms": 6.5,
+                "p95Ms": 40.8,
+                "p99Ms": 40.8
+              },
+              "raster": {
+                "observed": 2,
+                "retained": 2,
+                "p50Ms": 37.8,
+                "p95Ms": 134.9,
+                "p99Ms": 134.9
+              },
+              "totalSpan": {
+                "observed": 2,
+                "retained": 2,
+                "p50Ms": 78.7,
+                "p95Ms": 141.5,
+                "p99Ms": 141.5
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 57,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 57,
+              "p50Ms": 0.199,
+              "p95Ms": 0.3,
+              "p99Ms": 2.7
+            },
+            "geometryCpu": {
+              "samples": 57,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 2.5
+            },
+            "synchronizationCpu": {
+              "samples": 57,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "indexCpu": {
+              "samples": 57,
+              "p50Ms": 0.099,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "invalidationCpu": {
+              "samples": 57,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.101
+            },
+            "validationCpu": {
+              "samples": 57,
+              "p50Ms": 0.0,
+              "p95Ms": 0.0,
+              "p99Ms": 0.1
+            }
+          },
+          "resolvedCounts": [
+            16
+          ],
+          "synchronizedCounts": [
+            16
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 221,
+            "p50Ms": 24.5,
+            "p95Ms": 25.2,
+            "p99Ms": 25.8
+          },
+          "otherFrames": {
+            "samples": 12,
+            "p50Ms": 24.4,
+            "p95Ms": 25.8,
+            "p99Ms": 25.8
+          },
+          "slowFramesOver16_7ms": 233,
+          "slowFramesWithin100ms": 221,
+          "layers": {
+            "layers": 1,
+            "layerLimit": 33,
+            "approximatePictureBytes": 2111308,
+            "peakApproximatePictureBytes": 2249588,
+            "pictureByteLimit": 16777216,
+            "estimatedRasterExposureBytes": 10466472,
+            "peakEstimatedRasterExposureBytes": 10663720,
+            "rasterEstimateLimit": 67108864,
+            "rasterEstimateAllocationFactor": 2,
+            "activeCount": 16,
+            "activeOverflow": false,
+            "builds": 2,
+            "reuses": 56,
+            "invalidations": 0,
+            "clears": 4,
+            "directFallbacks": 0,
+            "disposedRanges": 1,
+            "engineSubmissions": 2,
+            "firstPaintRecordCpuMs": 30.5,
+            "recordCpu": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 30,
+              "p95Ms": 34.899,
+              "p99Ms": 34.899
+            },
+            "disposed": false
+          },
+          "retained": null,
+          "activeEditIds": [
+            "element-1",
+            "element-3",
+            "element-5",
+            "element-6",
+            "element-9",
+            "element-11",
+            "element-12",
+            "element-13",
+            "element-14",
+            "element-15",
+            "element-16",
+            "element-17",
+            "element-19",
+            "element-21",
+            "element-22",
+            "element-25"
+          ]
+        },
+        {
+          "scene": "dense",
+          "workload": "editInterleaved",
+          "viewportChanged": false,
+          "lifecycleChanges": 0,
+          "frames": {
+            "stage": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 24.9,
+              "p95Ms": 33.7,
+              "p99Ms": 34.4
+            },
+            "build": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 0.301,
+              "p95Ms": 33.7,
+              "p99Ms": 34.4
+            },
+            "raster": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 24.599,
+              "p95Ms": 25.5,
+              "p99Ms": 26.4
+            },
+            "totalSpan": {
+              "observed": 168,
+              "retained": 168,
+              "p50Ms": 25.299,
+              "p95Ms": 58.2,
+              "p99Ms": 59.7
+            }
+          },
+          "cadence": {
+            "observed": 167,
+            "retained": 167,
+            "p50Ms": 25.401,
+            "p95Ms": 58.5,
+            "p99Ms": 60
+          },
+          "cpu": {
+            "pointerReceiptToPaint": {
+              "observed": 0,
+              "retained": 0,
+              "p50Ms": null,
+              "p95Ms": null,
+              "p99Ms": null
+            },
+            "pointerTimestampRegressions": 0,
+            "overviewPaints": 0,
+            "queryCpu": {
+              "observed": 54,
+              "retained": 54,
+              "p50Ms": 1.2,
+              "p95Ms": 1.4,
+              "p99Ms": 2.2
+            },
+            "recordPaintCpu": {
+              "observed": 54,
+              "retained": 54,
+              "p50Ms": 27.899,
+              "p95Ms": 28.6,
+              "p99Ms": 29
+            },
+            "syntheticUpdateToPaint": {
+              "observed": 54,
+              "retained": 54,
+              "p50Ms": 29.5,
+              "p95Ms": 30.2,
+              "p99Ms": 30.6
+            },
+            "commitCpu": {
+              "observed": 55,
+              "retained": 55,
+              "p50Ms": 0.299,
+              "p95Ms": 0.4,
+              "p99Ms": 1.799
+            },
+            "commandToFirstPaintRecordMs": 61.2,
+            "paintCount": 55,
+            "visibleP50": 5638,
+            "visibleMax": 5638
+          },
+          "load": {
+            "fixtureMs": 27.201,
+            "rendererPrepareMs": 108.1,
+            "loadToInteractiveMs": 230.6,
+            "coldLoadFrames": {
+              "stage": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 40.2,
+                "p95Ms": 135.301,
+                "p99Ms": 135.301
+              },
+              "build": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 6.8,
+                "p95Ms": 40.2,
+                "p99Ms": 40.2
+              },
+              "raster": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 29.1,
+                "p95Ms": 135.301,
+                "p99Ms": 135.301
+              },
+              "totalSpan": {
+                "observed": 3,
+                "retained": 3,
+                "p50Ms": 69.3,
+                "p95Ms": 142.2,
+                "p99Ms": 142.2
+              }
+            }
+          },
+          "tiles": null,
+          "commitCount": 55,
+          "commitStages": {
+            "totalCpu": {
+              "samples": 55,
+              "p50Ms": 0.299,
+              "p95Ms": 0.4,
+              "p99Ms": 1.799
+            },
+            "geometryCpu": {
+              "samples": 55,
+              "p50Ms": 0.101,
+              "p95Ms": 0.3,
+              "p99Ms": 1.7
+            },
+            "synchronizationCpu": {
+              "samples": 55,
+              "p50Ms": 0.1,
+              "p95Ms": 0.201,
+              "p99Ms": 0.201
+            },
+            "indexCpu": {
+              "samples": 55,
+              "p50Ms": 0.1,
+              "p95Ms": 0.2,
+              "p99Ms": 0.201
+            },
+            "invalidationCpu": {
+              "samples": 55,
+              "p50Ms": 0.0,
+              "p95Ms": 0.099,
+              "p99Ms": 0.1
+            },
+            "validationCpu": {
+              "samples": 55,
+              "p50Ms": 0.0,
+              "p95Ms": 0.099,
+              "p99Ms": 0.1
+            }
+          },
+          "resolvedCounts": [
+            16
+          ],
+          "synchronizedCounts": [
+            16
+          ],
+          "framesWithin100msOfLatestCommitSchedulerTimestamp": {
+            "samples": 159,
+            "p50Ms": 25.0,
+            "p95Ms": 33.7,
+            "p99Ms": 34.4
+          },
+          "otherFrames": {
+            "samples": 9,
+            "p50Ms": 24.601,
+            "p95Ms": 25.3,
+            "p99Ms": 25.3
+          },
+          "slowFramesOver16_7ms": 168,
+          "slowFramesWithin100ms": 159,
+          "layers": {
+            "layers": 0,
+            "layerLimit": 33,
+            "approximatePictureBytes": 0,
+            "peakApproximatePictureBytes": 2249588,
+            "pictureByteLimit": 16777216,
+            "estimatedRasterExposureBytes": 0,
+            "peakEstimatedRasterExposureBytes": 10663720,
+            "rasterEstimateLimit": 67108864,
+            "rasterEstimateAllocationFactor": 2,
+            "activeCount": 16,
+            "activeOverflow": false,
+            "builds": 1,
+            "reuses": 0,
+            "invalidations": 0,
+            "clears": 59,
+            "directFallbacks": 55,
+            "disposedRanges": 1,
+            "engineSubmissions": 1,
+            "firstPaintRecordCpuMs": null,
+            "recordCpu": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 35,
+              "p95Ms": 35,
+              "p99Ms": 35
+            },
+            "disposed": false
+          },
+          "retained": null,
+          "activeEditIds": [
+            "element-1",
+            "element-692",
+            "element-1370",
+            "element-2039",
+            "element-2729",
+            "element-3401",
+            "element-4047",
+            "element-4682",
+            "element-5342",
+            "element-5990",
+            "element-6668",
+            "element-7332",
+            "element-7983",
+            "element-8643",
+            "element-9315",
+            "element-9999"
+          ]
+        }
+      ],
+      "stressJsHeapBytes": {
+        "initial": null,
+        "peak": null,
+        "last": null,
+        "steadyLast5Mean": null
+      },
+      "finalJsHeap": null,
+      "rendererCycles": 0,
+      "rssSamples": null,
+      "diagnostics": []
+    }
+  }
+}

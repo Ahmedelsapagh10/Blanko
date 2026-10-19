@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-15",
+  "timezone": "Africa/Cairo",
+  "hardware": {
+    "chip": "Apple M4",
+    "logicalCpus": 10,
+    "physicalMemoryBytes": 17179869184,
+    "architecture": "arm64"
+  },
+  "os": {
+    "name": "macOS",
+    "version": "26.5.1",
+    "build": "25F80"
+  },
+  "sdk": {
+    "flutter": "3.41.9",
+    "channel": "stable",
+    "frameworkRevision": "00b0c91f06",
+    "dart": "3.11.5",
+    "engine": "9161402dc0e134b3fb5adee5046b6e84b1a5e1c1"
+  },
+  "toolchains": {
+    "xcode": "26.2 (17C52)",
+    "appleSdk": "26.2",
+    "java": "OpenJDK 21.0.7",
+    "androidPlatforms": [
+      31,
+      33,
+      34,
+      35,
+      36
+    ],
+    "adb": "36.0.0-13206524",
+    "androidDevices": [],
+    "windows": "Native build unavailable on macOS host",
+    "ios": "SDK present; simctl/CoreSimulator first-launch query stalled; runtime and signing not verified",
+    "edge": "Not installed in /Applications",
+    "safari": "Installed; profile benchmark not executed",
+    "doctor": "flutter doctor -v stalled in simulator discovery and was terminated"
+  },
+  "measurements": {
+    "native": "Flutter profile; SDK default native renderer; RSS at 1 Hz",
+    "web": "Flutter JS profile with CanvasKit; Chromium 155.0.8059.40; hardware ANGLE Metal / Apple M4",
+    "warmupSeconds": 1,
+    "cameraMeasurementSeconds": 10,
+    "movementMeasurementSeconds": 5,
+    "hitQueries": 256,
+    "hitWarmupQueries": 32,
+    "percentile": "nearest rank; per-series ring capacity 2400",
+    "assetOriginals": 4,
+    "assetNormalPixels": [
+      1024,
+      1024
+    ],
+    "assetHeavyPixels": [
+      2048,
+      2048
+    ],
+    "assetReferences": 100,
+    "targetStageP95Ms": 16.7,
+    "releaseBaselineApproved": false
+  },
+  "exclusions": [],
+  "inputSmoke": {
+    "syntheticWheelZoomInChangedPixels": true,
+    "syntheticWheelZoomOutChangedPixels": true,
+    "syntheticMouseDragChangedPixels": true,
+    "physicalTrackpadTested": false
+  },
+  "measurementRevision": "Corrected 2D X/Y camera scale and viewport-proportional sweep; earlier measurements superseded.",
+  "sourceSha256": {
+    "lib/benchmark_main.dart": "cc7b08a8761225125f7fc25e89402d47624bbc15fb5cc2950241a392fd4ebc6e",
+    "lib/src/benchmarks/benchmark_canvas.dart": "40e8d6cbeb8ac4180cf078cf9a69d28ce6b2cb3303f9c225d215e6481b3f5830",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "cc289a90b8357bb9acd7e02e3fecd276577badc32908094d5e94ea93d2732db9",
+    "lib/src/benchmarks/benchmark_page.dart": "9e1cbdb523b584215ba0f555ade09420df8977ed395b3f1d45607914f4303c7d",
+    "lib/src/benchmarks/benchmark_scene.dart": "458b72d72af4b7f5d4f7263fbce5a13376e400e53f6385cfb6f51977ae54bac8",
+    "lib/src/benchmarks/benchmark_telemetry.dart": "24cfd44a693126709da4cba5c2391eb6babb19d287414a11d60f3e16d445f9a6",
+    "lib/src/benchmarks/frame_samples.dart": "6121103243b473a93c606f9aa200169124813e4642fc519b172fd4622e900031",
+    "lib/src/benchmarks/scene_renderer.dart": "0199155f16aabe9971c90dc75ad0c60e19a688c4643fd1fb1e96687495794299",
+    "lib/src/geometry/geometry.dart": "8b84c86d7974ade83d8b24d50e27932521f3eccf3680c115f6a650ed7b9dbff7",
+    "lib/src/spatial/spatial_grid.dart": "b7f6695b779d68cd29d3083c92e5fe132afd72e230664e64bc707e2ce6093c84",
+    "lib/src/viewport/camera.dart": "640a3ee8db3472a71235dc05a8900b6c1047aa260f76cb092edac47c9b286a53"
+  }
+}

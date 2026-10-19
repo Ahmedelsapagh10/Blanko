@@ -1,0 +1,206 @@
+{
+  "reference": {
+    "cpuSampleCount": 2955,
+    "cpuCapturedMicros": 3181115,
+    "topSelfSamples": [
+      [
+        "(idle)",
+        1841
+      ],
+      [
+        "(program)",
+        569
+      ],
+      [
+        "moveNext$0",
+        77
+      ],
+      [
+        "sort$1",
+        77
+      ],
+      [
+        "JSArray__compareAny",
+        63
+      ],
+      [
+        "add$1",
+        52
+      ],
+      [
+        "List_List$_of",
+        26
+      ],
+      [
+        "<anonymous>",
+        19
+      ],
+      [
+        "mark",
+        15
+      ],
+      [
+        "addAll$1",
+        14
+      ],
+      [
+        "paint$2",
+        12
+      ],
+      [
+        "createImageBitmap",
+        7
+      ]
+    ],
+    "traceEvents": 74614,
+    "gpuCompositorEventCount": 61646,
+    "topGpuCompositorNames": [
+      [
+        "CommandBuffer::OrderingBarrier",
+        6162
+      ],
+      [
+        "Scheduler::RunTask",
+        3534
+      ],
+      [
+        "Scheduler::ScheduleTask",
+        3264
+      ],
+      [
+        "CommandBuffer::Flush",
+        2991
+      ],
+      [
+        "GpuChannel::Flush",
+        2721
+      ],
+      [
+        "Scheduler::FinishTask",
+        1088
+      ],
+      [
+        "CommandBufferProxyImpl::OrderingBarrier",
+        1086
+      ],
+      [
+        "Scheduler::Running",
+        1004
+      ],
+      [
+        "GpuChannel::ExecuteDeferredRequest",
+        997
+      ],
+      [
+        "CommandBufferStub::OnAsyncFlush",
+        997
+      ]
+    ],
+    "phase02Markers": 0,
+    "hardwareGpuTimer": false,
+    "window": "7\u201310 seconds after normalEditing result; first dense camera sweep",
+    "traceOnlyNotAcceptanceTiming": true
+  },
+  "candidate": {
+    "cpuSampleCount": 2900,
+    "cpuCapturedMicros": 3245558,
+    "topSelfSamples": [
+      [
+        "(idle)",
+        1286
+      ],
+      [
+        "(program)",
+        423
+      ],
+      [
+        "wasm-function[3849]",
+        127
+      ],
+      [
+        "JSArray__compareAny",
+        55
+      ],
+      [
+        "<anonymous>",
+        53
+      ],
+      [
+        "readPixels",
+        44
+      ],
+      [
+        "moveNext$0",
+        40
+      ],
+      [
+        "sort$1",
+        39
+      ],
+      [
+        "add$1",
+        38
+      ],
+      [
+        "wasm-function[2722]",
+        29
+      ],
+      [
+        "fromWireType",
+        28
+      ],
+      [
+        "wasm-function[8827]",
+        27
+      ]
+    ],
+    "traceEvents": 60609,
+    "gpuCompositorEventCount": 50659,
+    "topGpuCompositorNames": [
+      [
+        "CommandBuffer::OrderingBarrier",
+        5389
+      ],
+      [
+        "Scheduler::RunTask",
+        3058
+      ],
+      [
+        "Scheduler::ScheduleTask",
+        2826
+      ],
+      [
+        "CommandBuffer::Flush",
+        2659
+      ],
+      [
+        "GpuChannel::Flush",
+        2427
+      ],
+      [
+        "Scheduler::FinishTask",
+        939
+      ],
+      [
+        "Scheduler::Running",
+        937
+      ],
+      [
+        "GpuChannel::ExecuteDeferredRequest",
+        887
+      ],
+      [
+        "CommandBufferStub::OnAsyncFlush",
+        887
+      ],
+      [
+        "CommandBufferService:PutChanged",
+        887
+      ]
+    ],
+    "phase02Markers": 0,
+    "hardwareGpuTimer": false,
+    "window": "7\u201310 seconds after normalEditing result; first dense camera sweep",
+    "traceOnlyNotAcceptanceTiming": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "generatedOnly": true,
+  "minimumAgeDays": 7,
+  "roots": [
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/8.14.3/transforms",
+      "openFiles": 0,
+      "staleCandidateCount": 0,
+      "staleAllocatedGiB": 0.0
+    },
+    {
+      "path": "/Users/ahmedelsapagh/.gradle/caches/8.14/transforms",
+      "openFiles": 67,
+      "staleCandidateCount": 0,
+      "staleAllocatedGiB": 0.0
+    }
+  ],
+  "candidates": []
+}

@@ -1,0 +1,114 @@
+{
+  "targets": {
+    "direct": [
+      {
+        "scene": "normal",
+        "workload": "editSingle",
+        "viewportChanged": false,
+        "lifecycleChanges": 1,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editSingle",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editMulti",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editInterleaved",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      }
+    ],
+    "vector": [
+      {
+        "scene": "normal",
+        "workload": "editSingle",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editSingle",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editMulti",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editInterleaved",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      }
+    ],
+    "layers": [
+      {
+        "scene": "normal",
+        "workload": "editSingle",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editSingle",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editMulti",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      },
+      {
+        "scene": "dense",
+        "workload": "editInterleaved",
+        "viewportChanged": false,
+        "lifecycleChanges": 0,
+        "viewFocusChanges": 0,
+        "lastObservedViewFocused": null
+      }
+    ]
+  },
+  "method": "Each collector launched the exact Profile executable; CUA selected that path, used exposed AX Raise and observed Sparse scene/Run10s button before the suite. PHASE01_AUTORUN_DELAY_MS=20000 in each arm.",
+  "continuousOcclusionMonitored": false,
+  "physicalInputOrPresentationValidated": false,
+  "nativeFocusAvailable": false,
+  "sessionDate": "2026-10-18",
+  "excludedCapture": "macos-direct-lifecycle-excluded.json",
+  "fullFourRowComparisonValidated": false,
+  "partialDenseComparison": "Only the three dense rows have zero recorded viewport/lifecycle/focus changes across all arms; strict --dense-only validation. Normal rows explicitly excluded, no normal claim."
+}

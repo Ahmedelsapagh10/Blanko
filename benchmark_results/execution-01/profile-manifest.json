@@ -1,0 +1,68 @@
+{
+  "sourceHashes": {
+    "lib/benchmark_main.dart": "cc7b08a8761225125f7fc25e89402d47624bbc15fb5cc2950241a392fd4ebc6e",
+    "lib/main.dart": "525df2a854f3c54c831302c89f3089afd991cd03900c207e261d821bdc9ec656",
+    "lib/src/viewport/camera.dart": "640a3ee8db3472a71235dc05a8900b6c1047aa260f76cb092edac47c9b286a53",
+    "lib/src/benchmarks/benchmark_canvas.dart": "320a2c06af09699507f4a79be37dde4e6567ad8d81035975f0b15632e6548de8",
+    "lib/src/benchmarks/frame_samples.dart": "e8f81a7a2ae688cf8c40e27130a3252c1002d5cad2143653623289e0b9815d1b",
+    "lib/src/benchmarks/scene_tile_cache.dart": "92593a4fb7b3a81bb9d38ce683aa2bb635428257f155dbaf3179659302216a35",
+    "lib/src/benchmarks/scene_renderer.dart": "8bfcc282f2e4f56c565c72e211a5555bbe1236529f6961e07017a01c420e426a",
+    "lib/src/benchmarks/benchmark_scene.dart": "a706976b4ae7a2eff976641f620b9e71182aac96ad16739def208453d90e3256",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "fd06fba9e071da6e3947c1382ec899175c76d38e53eca995c175531ad53947d2",
+    "lib/src/benchmarks/benchmark_telemetry.dart": "29ff6bd1537ecae0e8856b7d1b9a48ff1310380fc9b1d42e1adcf9a8705ecc82",
+    "lib/src/benchmarks/benchmark_page.dart": "69e2885a3b300f54650744b0f56907287e58fbc8e9f4d08bd3d6d66fcf007b80",
+    "lib/src/geometry/geometry.dart": "8b84c86d7974ade83d8b24d50e27932521f3eccf3680c115f6a650ed7b9dbff7",
+    "lib/src/spatial/spatial_grid.dart": "b7f6695b779d68cd29d3083c92e5fe132afd72e230664e64bc707e2ce6093c84",
+    "pubspec.lock": "353b981ec19ef69d4e918807244fb842547ebde79b7e00702824513756d4bb89",
+    "pubspec.yaml": "0a9baca6e8dfca314306cfb02587023686c9c34d523644780ccb2f50956f4278"
+  },
+  "flutter": "3.41.9",
+  "dart": "3.11.5",
+  "webReference": {
+    "mainJsSha256": "0db69e1e11b22f9ab5e8100d692b066b8c51fe3d41d0f05f49663b3874917789",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": true,
+      "PHASE03_RECOVERY": true,
+      "WB_DIRTY_REPAIR": false
+    }
+  },
+  "sameSourceRequiredForRepair": true,
+  "webRepair": {
+    "mainJsSha256": "007d0bd50361713fb8d2e480f69ec7c51b1b0c9e641835e2788ff6b3177fbb1a",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": true,
+      "PHASE03_RECOVERY": true,
+      "WB_DIRTY_REPAIR": true
+    }
+  },
+  "sameSourceVerified": true,
+  "macosReference": {
+    "executableSha256": "b48d0861ac6845d280eddc83cf1ea54d4bc6f47b245590acd8f8d9abdf2ff6fb",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": true,
+      "PHASE03_RECOVERY": true,
+      "WB_DIRTY_REPAIR": false,
+      "PHASE01_AUTORUN_DELAY_MS": 20000
+    },
+    "visibleWindowChecked": "CUA Raise and screenshot before collected edits; 800x632 overall; continuous occlusion not independently monitored"
+  },
+  "macosRepair": {
+    "executableSha256": "73de74267c528b9c212693f95cad6e37727314c011d3b212de11353e3cc4088c",
+    "flags": {
+      "PHASE0_AUTORUN": true,
+      "PHASE03_SUITE": true,
+      "PHASE02_TILES": true,
+      "PHASE03_RECOVERY": true,
+      "WB_DIRTY_REPAIR": true,
+      "PHASE01_AUTORUN_DELAY_MS": 20000
+    },
+    "visibleWindowChecked": "CUA Raise/AX/screenshot before collected edits; continuous occlusion not independently monitored"
+  },
+  "nativeFocusEventsAvailable": false
+}

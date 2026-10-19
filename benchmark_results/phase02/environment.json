@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-16",
+  "phase": "0.2",
+  "baseline": "PHASE02_TILES=false; PHASE01_OPTIMIZED=true",
+  "candidate": "PHASE02_TILES=true; fixed scale tiles; no overview raster",
+  "suite": "PHASE02_SUITE=true; 11 short workloads + 180-second stress",
+  "primaryProfilers": "disabled; native --memory records forced GC and own-process RSS",
+  "publishedTileBudgetBytes": 67108864,
+  "tilePixels": [
+    514,
+    514
+  ],
+  "inFlightTiles": 1,
+  "exclusions": [
+    "macos-startup-diagnostic-excluded: interrupted after five workloads; process sampled during zoom; not a primary comparison",
+    "macos-incomplete-visibility: frame delivery stopped after ten workloads; no foreground verification; not a completed acceptance suite",
+    "web-before-diagnostic: first separate trace attempt timed out before dense capture; primary full suite completed independently",
+    "web-prototype-global-inflight: completed first tile iteration; stress observed 5980 frames but retained last 2400; excluded from final full-distribution comparison"
+  ],
+  "nativeVisibility": "UI service unavailable; no foreground/occlusion observation; run flags and cadence reported, not proof of visibility",
+  "buildMode": "profile",
+  "hardware": "Apple M4 / 16 GiB / macOS 26.5.1",
+  "method": "matched new suite; do not compare to Phase 0.1 directly when viewport/workload changes",
+  "nativeBuildSourceSha256": {
+    "lib/src/benchmarks/scene_renderer.dart": "465700d8c58eb1a3add9f1ec6b012444add97b3a502f96f58af1a6c6c6078e5a",
+    "lib/src/benchmarks/scene_tile_cache.dart": "a6d181597903c846077d7e8232ac09c8f1aa584d5a465c027bc05ba7211e0f57",
+    "lib/src/benchmarks/benchmark_page.dart": "79d1f88ce4821883a3d2e2f2ee863fbb5431e64a1c03b9a49c2e117e4f7568c1",
+    "lib/src/benchmarks/benchmark_canvas.dart": "320a2c06af09699507f4a79be37dde4e6567ad8d81035975f0b15632e6548de8",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "fd06fba9e071da6e3947c1382ec899175c76d38e53eca995c175531ad53947d2"
+  },
+  "finalSourceSha256": {
+    "lib/src/benchmarks/scene_renderer.dart": "465700d8c58eb1a3add9f1ec6b012444add97b3a502f96f58af1a6c6c6078e5a",
+    "lib/src/benchmarks/scene_tile_cache.dart": "3016ef42999c784a81b693b493c919418409c897d19038f3af33284eec6b555c",
+    "lib/src/benchmarks/benchmark_page.dart": "fef440ed8204d66c0e660d4fecea6fce4a75cb427d9fa3eb349c2f7e2fe7e0bf",
+    "lib/src/benchmarks/benchmark_canvas.dart": "320a2c06af09699507f4a79be37dde4e6567ad8d81035975f0b15632e6548de8",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "fd06fba9e071da6e3947c1382ec899175c76d38e53eca995c175531ad53947d2",
+    "lib/src/benchmarks/frame_samples.dart": "e8f81a7a2ae688cf8c40e27130a3252c1002d5cad2143653623289e0b9815d1b",
+    "lib/src/benchmarks/benchmark_telemetry.dart": "29ff6bd1537ecae0e8856b7d1b9a48ff1310380fc9b1d42e1adcf9a8705ecc82"
+  },
+  "sdk": {
+    "frameworkVersion": "3.41.9",
+    "channel": "stable",
+    "repositoryUrl": "https://github.com/flutter/flutter.git",
+    "frameworkRevision": "00b0c91f06209d9e4a41f71b7a512d6eb3b9c694",
+    "frameworkCommitDate": "2026-04-29 10:03:19 -0700",
+    "engineRevision": "42d3d75a56efe1a2e9902f52dc8006099c45d937",
+    "engineCommitDate": "2026-04-28 17:31:55.000Z",
+    "engineContentHash": "9161402dc0e134b3fb5adee5046b6e84b1a5e1c1",
+    "engineBuildDate": "2026-04-28 22:37:18.442",
+    "dartSdkVersion": "3.11.5",
+    "devToolsVersion": "2.54.2",
+    "flutterVersion": "3.41.9"
+  },
+  "browserVersion": "155.0.8059.82",
+  "sourceScope": "Reference rendering path unchanged; later candidate-only diagnostics measure partial tile rebuild and guard pixel scales beyond bucket range.",
+  "finalCandidate": "Explicit PHASE02_TILES=true only; lab default remains Phase 0.1 (false). Unrelated pending work retained; 12000 timing samples for Phase 0.2.",
+  "sampling": "Reference stress delivered 2288 <2400 capacity, all retained; final candidate capacity12000 covers full 180 seconds at measured 60Hz. Summary asserts no truncation.",
+  "measuredNativeCandidateSourceSha256": {
+    "lib/src/benchmarks/scene_renderer.dart": "465700d8c58eb1a3add9f1ec6b012444add97b3a502f96f58af1a6c6c6078e5a",
+    "lib/src/benchmarks/scene_tile_cache.dart": "3016ef42999c784a81b693b493c919418409c897d19038f3af33284eec6b555c",
+    "lib/src/benchmarks/benchmark_page.dart": "fef440ed8204d66c0e660d4fecea6fce4a75cb427d9fa3eb349c2f7e2fe7e0bf",
+    "lib/src/benchmarks/benchmark_canvas.dart": "320a2c06af09699507f4a79be37dde4e6567ad8d81035975f0b15632e6548de8",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "fd06fba9e071da6e3947c1382ec899175c76d38e53eca995c175531ad53947d2",
+    "lib/src/benchmarks/frame_samples.dart": "e8f81a7a2ae688cf8c40e27130a3252c1002d5cad2143653623289e0b9815d1b",
+    "lib/src/benchmarks/benchmark_telemetry.dart": "29ff6bd1537ecae0e8856b7d1b9a48ff1310380fc9b1d42e1adcf9a8705ecc82"
+  },
+  "nativeBoundedDiagnostic": "10 completed short workloads; complete false, diagnosticComplete true, uncontrolled visibility; not a full acceptance suite",
+  "collectionFailures": "collection-failures.json",
+  "prototypeDisposition": "opt-in only; not default; all excluded prototype measurements preserved"
+}

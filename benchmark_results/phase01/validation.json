@@ -1,0 +1,19 @@
+{
+  "reportDate": "2026-10-16",
+  "staticAnalysis": "passed: no issues",
+  "nativeTestsPassed": 36,
+  "chromeTestsPassed": 36,
+  "formatting": "20 Dart files, 0 changes",
+  "pythonCollectorsCompile": "passed",
+  "nodeCollectorSyntax": "passed",
+  "matchedPrimaryWorkloadPairs": 22,
+  "primaryFrameWorkloadObservations": 44,
+  "resourceCyclesAcrossPrimarySuites": 64,
+  "finalApplicationHashes": "verified",
+  "traceReferences": "verified",
+  "renderingGate": "failed",
+  "physicalInputGate": "unmeasured",
+  "longTermMemoryGate": "unproven",
+  "phase1Implemented": false,
+  "recommendation": "NO-GO"
+}

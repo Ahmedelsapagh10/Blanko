@@ -1,0 +1,160 @@
+{
+  "softwareInput": true,
+  "physicalInput": false,
+  "dragSteps": 120,
+  "wheelEvents": 24,
+  "panChangedCanvasRegion": true,
+  "zoomChangedCanvasRegion": true,
+  "diagnostics": [
+    {
+      "kind": "pointer",
+      "metrics": {
+        "pointerReceiptToPaint": {
+          "observed": 119,
+          "retained": 119,
+          "p50Ms": 1.899,
+          "p95Ms": 3.3,
+          "p99Ms": 3.8
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 1.2,
+          "p95Ms": 2.101,
+          "p99Ms": 2.601
+        },
+        "recordPaintCpu": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 0.299,
+          "p95Ms": 38.5,
+          "p99Ms": 46.299
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 1.901,
+          "p95Ms": 40.1,
+          "p99Ms": 47.8
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 6127,
+        "visibleP50": 1096,
+        "visibleMax": 10000
+      },
+      "approximateJsHeap": {
+        "usedJSHeapSize": 64820599,
+        "totalJSHeapSize": 73678403,
+        "jsHeapSizeLimit": 4395630592
+      }
+    },
+    {
+      "kind": "pointer",
+      "metrics": {
+        "pointerReceiptToPaint": {
+          "observed": 126,
+          "retained": 126,
+          "p50Ms": 1.899,
+          "p95Ms": 3.399,
+          "p99Ms": 28.3
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 1.2,
+          "p95Ms": 2.101,
+          "p99Ms": 2.601
+        },
+        "recordPaintCpu": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 0.299,
+          "p95Ms": 38.5,
+          "p99Ms": 46.299
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 1.901,
+          "p95Ms": 40.1,
+          "p99Ms": 47.8
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 6136,
+        "visibleP50": 1096,
+        "visibleMax": 10000
+      },
+      "approximateJsHeap": {
+        "usedJSHeapSize": 67749012,
+        "totalJSHeapSize": 85496548,
+        "jsHeapSizeLimit": 4395630592
+      }
+    },
+    {
+      "kind": "pointer",
+      "metrics": {
+        "pointerReceiptToPaint": {
+          "observed": 143,
+          "retained": 143,
+          "p50Ms": 1.8,
+          "p95Ms": 3.601,
+          "p99Ms": 28.3
+        },
+        "pointerTimestampRegressions": 0,
+        "overviewPaints": 0,
+        "queryCpu": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 1.2,
+          "p95Ms": 2.101,
+          "p99Ms": 2.601
+        },
+        "recordPaintCpu": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 0.299,
+          "p95Ms": 38.5,
+          "p99Ms": 46.299
+        },
+        "syntheticUpdateToPaint": {
+          "observed": 5989,
+          "retained": 5989,
+          "p50Ms": 1.901,
+          "p95Ms": 40.1,
+          "p99Ms": 47.8
+        },
+        "commitCpu": {
+          "observed": 0,
+          "retained": 0,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null
+        },
+        "paintCount": 6155,
+        "visibleP50": 1096,
+        "visibleMax": 10000
+      },
+      "approximateJsHeap": {
+        "usedJSHeapSize": 66810997,
+        "totalJSHeapSize": 92422033,
+        "jsHeapSizeLimit": 4395630592
+      }
+    }
+  ]
+}

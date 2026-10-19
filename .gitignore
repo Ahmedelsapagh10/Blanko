@@ -32,6 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+/test/benchmark_font_assets/
 
 # Symbolication related
 app.*.symbols

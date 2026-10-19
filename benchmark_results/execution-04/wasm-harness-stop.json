@@ -1,0 +1,11 @@
+{
+  "reason": "Pure geometry Wasm diagnostic remained at suite loading with no test case executed; stop owned stalled diagnostic rather than an unbounded wait.",
+  "stopped": [
+    {
+      "pid": 80455,
+      "elapsed": "10:08",
+      "command": "/Users/ahmedelsapagh/development/flutter/bin/cache/dart-sdk/bin/dartvm --resolved_executable_name=/Users/ahmedelsapagh/development/flutter/bin/cache/dart-sdk/bin/dart --executable_name=/Users/ahmedelsapagh/development/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/ahmedelsapagh/development/flutter/packages/flutter_tools/.dart_tool/package_config.json /Users/ahmedelsapagh/development/flutter/bin/cache/flutter_tools.snapshot test --no-pub --platform chrome --wasm --verbose test/geometry_camera_test.dart",
+      "stdoutOwnershipVerified": true
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-18",
+  "fullHostRegression": "Compiler ENOSPC at first listener copy; no completed tests, not a pass.",
+  "ownedTestProcessesInterrupted": [
+    30079
+  ],
+  "freeMiBObservedBefore": 165,
+  "userCapacityRequestPending": true,
+  "ignoredCompilerCachesRemoved": [
+    ".dart_tool/flutter_build",
+    "build/macos/ModuleCache.noindex"
+  ],
+  "approximateMiBReclaimed": 523,
+  "binariesSourceEvidenceIndexPreserved": true
+}

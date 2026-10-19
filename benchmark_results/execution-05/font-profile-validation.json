@@ -1,0 +1,547 @@
+{
+  "passed": true,
+  "boundedDiagnosticOnly": true,
+  "renderingGateQualified": false,
+  "physicalInputOrPresentationValidated": false,
+  "alignedSubpixelTextFidelityQualified": false,
+  "comparison": "New fixed-font baseline; historical differences do not isolate font causation.",
+  "environment": {
+    "browser": "155.0.8059.82",
+    "gpu": [
+      {
+        "vendorId": 4203,
+        "deviceId": 0,
+        "vendorString": "Google Inc. (Apple)",
+        "deviceString": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4, Version 26.5.1 (Build 25F80))",
+        "driverVendor": "Apple",
+        "driverVersion": "26.5.1"
+      }
+    ],
+    "webgl": "enabled",
+    "gpuCompositing": "enabled",
+    "viewport": {
+      "width": 1200,
+      "height": 796
+    }
+  },
+  "files": {
+    "capturedSourceHashesVerified": 64,
+    "finalCompiledArtifactsVerified": 21,
+    "stableEngineAndAssetArtifactsMatchedAcrossArms": 19,
+    "trustedFontAssetsVerified": 4,
+    "compiledAssetManifestDecoded": true
+  },
+  "variants": {
+    "direct": [
+      {
+        "scene": "normal",
+        "workload": "editSingle",
+        "frames": {
+          "build": {
+            "samples": 360,
+            "p50Ms": 0.38,
+            "p95Ms": 4.545,
+            "p99Ms": 5.494
+          },
+          "raster": {
+            "samples": 360,
+            "p50Ms": 2.485,
+            "p95Ms": 3.07,
+            "p99Ms": 3.49
+          },
+          "stage": {
+            "samples": 360,
+            "p50Ms": 2.57,
+            "p95Ms": 4.545,
+            "p99Ms": 5.494
+          },
+          "totalSpan": {
+            "samples": 360,
+            "p50Ms": 3.026,
+            "p95Ms": 7.18,
+            "p99Ms": 8.101
+          }
+        },
+        "commitCount": 53,
+        "resolvedAndSynchronizedCount": 1,
+        "stageFramesOver16_7ms": 0
+      },
+      {
+        "scene": "dense",
+        "workload": "editSingle",
+        "frames": {
+          "build": {
+            "samples": 171,
+            "p50Ms": 0.34,
+            "p95Ms": 33.221,
+            "p99Ms": 34.07
+          },
+          "raster": {
+            "samples": 171,
+            "p50Ms": 24.86,
+            "p95Ms": 26.52,
+            "p99Ms": 27.03
+          },
+          "stage": {
+            "samples": 171,
+            "p50Ms": 25.584,
+            "p95Ms": 33.221,
+            "p99Ms": 34.07
+          },
+          "totalSpan": {
+            "samples": 171,
+            "p50Ms": 25.99,
+            "p95Ms": 58.535,
+            "p99Ms": 60.271
+          }
+        },
+        "commitCount": 50,
+        "resolvedAndSynchronizedCount": 1,
+        "stageFramesOver16_7ms": 171
+      },
+      {
+        "scene": "dense",
+        "workload": "editMulti",
+        "frames": {
+          "build": {
+            "samples": 166,
+            "p50Ms": 0.329,
+            "p95Ms": 33.935,
+            "p99Ms": 35.0
+          },
+          "raster": {
+            "samples": 166,
+            "p50Ms": 25.3,
+            "p95Ms": 26.61,
+            "p99Ms": 27.78
+          },
+          "stage": {
+            "samples": 166,
+            "p50Ms": 25.79,
+            "p95Ms": 33.935,
+            "p99Ms": 35.0
+          },
+          "totalSpan": {
+            "samples": 166,
+            "p50Ms": 26.14,
+            "p95Ms": 59.725,
+            "p99Ms": 61.599
+          }
+        },
+        "commitCount": 50,
+        "resolvedAndSynchronizedCount": 16,
+        "stageFramesOver16_7ms": 166
+      },
+      {
+        "scene": "dense",
+        "workload": "editInterleaved",
+        "frames": {
+          "build": {
+            "samples": 169,
+            "p50Ms": 0.296,
+            "p95Ms": 33.335,
+            "p99Ms": 36.4
+          },
+          "raster": {
+            "samples": 169,
+            "p50Ms": 24.85,
+            "p95Ms": 26.125,
+            "p99Ms": 28.391
+          },
+          "stage": {
+            "samples": 169,
+            "p50Ms": 25.09,
+            "p95Ms": 33.335,
+            "p99Ms": 36.4
+          },
+          "totalSpan": {
+            "samples": 169,
+            "p50Ms": 25.441,
+            "p95Ms": 58.225,
+            "p99Ms": 62.14
+          }
+        },
+        "commitCount": 50,
+        "resolvedAndSynchronizedCount": 16,
+        "stageFramesOver16_7ms": 169
+      }
+    ],
+    "vector": [
+      {
+        "scene": "normal",
+        "workload": "editSingle",
+        "frames": {
+          "build": {
+            "samples": 359,
+            "p50Ms": 0.395,
+            "p95Ms": 1.466,
+            "p99Ms": 2.145
+          },
+          "raster": {
+            "samples": 359,
+            "p50Ms": 2.68,
+            "p95Ms": 3.33,
+            "p99Ms": 3.64
+          },
+          "stage": {
+            "samples": 359,
+            "p50Ms": 2.68,
+            "p95Ms": 3.33,
+            "p99Ms": 3.64
+          },
+          "totalSpan": {
+            "samples": 359,
+            "p50Ms": 3.2,
+            "p95Ms": 4.69,
+            "p99Ms": 5.185
+          }
+        },
+        "commitCount": 54,
+        "resolvedAndSynchronizedCount": 1,
+        "stageFramesOver16_7ms": 0
+      },
+      {
+        "scene": "dense",
+        "workload": "editSingle",
+        "frames": {
+          "build": {
+            "samples": 227,
+            "p50Ms": 0.314,
+            "p95Ms": 1.87,
+            "p99Ms": 2.155
+          },
+          "raster": {
+            "samples": 227,
+            "p50Ms": 24.96,
+            "p95Ms": 27.485,
+            "p99Ms": 28.595
+          },
+          "stage": {
+            "samples": 227,
+            "p50Ms": 24.96,
+            "p95Ms": 27.485,
+            "p99Ms": 28.595
+          },
+          "totalSpan": {
+            "samples": 227,
+            "p50Ms": 25.755,
+            "p95Ms": 28.525,
+            "p99Ms": 29.755
+          }
+        },
+        "commitCount": 52,
+        "resolvedAndSynchronizedCount": 1,
+        "stageFramesOver16_7ms": 227
+      },
+      {
+        "scene": "dense",
+        "workload": "editMulti",
+        "frames": {
+          "build": {
+            "samples": 231,
+            "p50Ms": 0.28,
+            "p95Ms": 2.23,
+            "p99Ms": 2.95
+          },
+          "raster": {
+            "samples": 231,
+            "p50Ms": 24.561,
+            "p95Ms": 26.85,
+            "p99Ms": 27.445
+          },
+          "stage": {
+            "samples": 231,
+            "p50Ms": 24.561,
+            "p95Ms": 26.85,
+            "p99Ms": 27.445
+          },
+          "totalSpan": {
+            "samples": 231,
+            "p50Ms": 25.14,
+            "p95Ms": 27.86,
+            "p99Ms": 29.095
+          }
+        },
+        "commitCount": 51,
+        "resolvedAndSynchronizedCount": 16,
+        "stageFramesOver16_7ms": 231
+      },
+      {
+        "scene": "dense",
+        "workload": "editInterleaved",
+        "frames": {
+          "build": {
+            "samples": 235,
+            "p50Ms": 0.255,
+            "p95Ms": 2.33,
+            "p99Ms": 2.925
+          },
+          "raster": {
+            "samples": 235,
+            "p50Ms": 24.455,
+            "p95Ms": 25.23,
+            "p99Ms": 25.64
+          },
+          "stage": {
+            "samples": 235,
+            "p50Ms": 24.455,
+            "p95Ms": 25.23,
+            "p99Ms": 25.64
+          },
+          "totalSpan": {
+            "samples": 235,
+            "p50Ms": 24.865,
+            "p95Ms": 26.95,
+            "p99Ms": 27.885
+          }
+        },
+        "commitCount": 51,
+        "resolvedAndSynchronizedCount": 16,
+        "stageFramesOver16_7ms": 235
+      }
+    ],
+    "layers": [
+      {
+        "scene": "normal",
+        "workload": "editSingle",
+        "frames": {
+          "build": {
+            "samples": 359,
+            "p50Ms": 0.474,
+            "p95Ms": 1.599,
+            "p99Ms": 2.24
+          },
+          "raster": {
+            "samples": 359,
+            "p50Ms": 2.685,
+            "p95Ms": 3.305,
+            "p99Ms": 3.505
+          },
+          "stage": {
+            "samples": 359,
+            "p50Ms": 2.685,
+            "p95Ms": 3.305,
+            "p99Ms": 3.505
+          },
+          "totalSpan": {
+            "samples": 359,
+            "p50Ms": 3.231,
+            "p95Ms": 4.715,
+            "p99Ms": 5.474
+          }
+        },
+        "commitCount": 54,
+        "resolvedAndSynchronizedCount": 1,
+        "stageFramesOver16_7ms": 0
+      },
+      {
+        "scene": "dense",
+        "workload": "editSingle",
+        "frames": {
+          "build": {
+            "samples": 230,
+            "p50Ms": 0.295,
+            "p95Ms": 2.465,
+            "p99Ms": 2.965
+          },
+          "raster": {
+            "samples": 230,
+            "p50Ms": 24.57,
+            "p95Ms": 25.675,
+            "p99Ms": 26.495
+          },
+          "stage": {
+            "samples": 230,
+            "p50Ms": 24.57,
+            "p95Ms": 25.675,
+            "p99Ms": 26.495
+          },
+          "totalSpan": {
+            "samples": 230,
+            "p50Ms": 25.0,
+            "p95Ms": 27.365,
+            "p99Ms": 28.305
+          }
+        },
+        "commitCount": 50,
+        "resolvedAndSynchronizedCount": 1,
+        "stageFramesOver16_7ms": 230
+      },
+      {
+        "scene": "dense",
+        "workload": "editMulti",
+        "frames": {
+          "build": {
+            "samples": 231,
+            "p50Ms": 0.29,
+            "p95Ms": 2.59,
+            "p99Ms": 3.12
+          },
+          "raster": {
+            "samples": 231,
+            "p50Ms": 24.38,
+            "p95Ms": 26.495,
+            "p99Ms": 29.865
+          },
+          "stage": {
+            "samples": 231,
+            "p50Ms": 24.38,
+            "p95Ms": 26.495,
+            "p99Ms": 29.865
+          },
+          "totalSpan": {
+            "samples": 231,
+            "p50Ms": 24.935,
+            "p95Ms": 28.211,
+            "p99Ms": 31.96
+          }
+        },
+        "commitCount": 52,
+        "resolvedAndSynchronizedCount": 16,
+        "stageFramesOver16_7ms": 231
+      },
+      {
+        "scene": "dense",
+        "workload": "editInterleaved",
+        "frames": {
+          "build": {
+            "samples": 173,
+            "p50Ms": 0.285,
+            "p95Ms": 33.959,
+            "p99Ms": 34.62
+          },
+          "raster": {
+            "samples": 173,
+            "p50Ms": 24.38,
+            "p95Ms": 24.84,
+            "p99Ms": 25.075
+          },
+          "stage": {
+            "samples": 173,
+            "p50Ms": 24.515,
+            "p95Ms": 33.959,
+            "p99Ms": 34.62
+          },
+          "totalSpan": {
+            "samples": 173,
+            "p50Ms": 24.835,
+            "p95Ms": 58.09,
+            "p99Ms": 58.765
+          }
+        },
+        "commitCount": 50,
+        "resolvedAndSynchronizedCount": 16,
+        "stageFramesOver16_7ms": 173
+      }
+    ]
+  },
+  "fontRequestsFinishedBeforeReady": true,
+  "externalFontRequestsObserved": 0,
+  "localOnlyStartupPassed": true,
+  "localOnlyStartupToReadyWallMs": 548.5169579999999,
+  "negativeChecks": [
+    {
+      "case": "omitted frame",
+      "rejected": true,
+      "reason": "build: omitted or truncated frames"
+    },
+    {
+      "case": "wrong raster P95",
+      "rejected": true,
+      "reason": "raster/p95Ms: quantile differs from full series"
+    },
+    {
+      "case": "font finished after READY",
+      "rejected": true,
+      "reason": "Font asset not complete before readiness"
+    },
+    {
+      "case": "foreign font despite empty externalRequests",
+      "rejected": true,
+      "reason": "External font request"
+    },
+    {
+      "case": "wrong font manifest",
+      "rejected": true,
+      "reason": "Uncontrolled font manifest/readiness"
+    },
+    {
+      "case": "unknown compiler",
+      "rejected": true,
+      "reason": "unknown or unexpected compiler"
+    },
+    {
+      "case": "focus control contamination",
+      "rejected": true,
+      "reason": "viewport, lifecycle or focus contamination"
+    },
+    {
+      "case": "vector memory cap raised",
+      "rejected": true,
+      "reason": "vector memory or picture cap changed"
+    },
+    {
+      "case": "layer raster cap exceeded",
+      "rejected": true,
+      "reason": "layer memory or layer cap changed"
+    },
+    {
+      "case": "failed engine resource",
+      "rejected": true,
+      "reason": "failed engine resource response"
+    },
+    {
+      "case": "observed engine route not hashed before capture",
+      "rejected": true,
+      "reason": "observed engine/compiler artifact lacks before-capture provenance"
+    },
+    {
+      "case": "compiled font hash differs",
+      "rejected": true,
+      "reason": "compiled font digest differs from trusted source"
+    },
+    {
+      "case": "partial commit series",
+      "rejected": true,
+      "reason": "incomplete or invalid commit series"
+    },
+    {
+      "case": "wrong resolved count",
+      "rejected": true,
+      "reason": "incomplete or invalid commit series"
+    },
+    {
+      "case": "different active IDs",
+      "rejected": true,
+      "reason": "matched control differs: activeEditIds"
+    },
+    {
+      "case": "visible density changed",
+      "rejected": true,
+      "reason": "visible density changed"
+    },
+    {
+      "case": "local-only startup attempted external resource",
+      "rejected": true,
+      "reason": "local-only startup incomplete or external/error contamination"
+    },
+    {
+      "case": "trusted font asset manifest changed",
+      "rejected": true,
+      "reason": "trusted source font digest or size differs"
+    }
+  ],
+  "auditToolNotPresentAtCapture": {
+    "path": "tool/validate_font_profiles.py",
+    "sha256": "749e0fb42276b0b1bd9fbceeb92a42b44a42fe709f943ea263a91353a9b877a3"
+  },
+  "limitations": [
+    "Engine frame stages and totalSpan are not presentation or physical input latency.",
+    "Four edit rows do not qualify navigation, cold caches, long-running memory or the full gate.",
+    "Dense viewport has 5,638 visible elements in a 10,000-element document.",
+    "Font glyph coverage/readiness is not complete visual fidelity or arbitrary Unicode coverage.",
+    "Before-capture artifact digests are runner records, not independent network body digests.",
+    "Earlier app/bootstrap bytes were overwritten; final-arm and stable engine/font bytes remain checked.",
+    "Raster exposure caps are estimates, not measured total GPU memory."
+  ]
+}

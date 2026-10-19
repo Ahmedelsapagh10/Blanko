@@ -1,0 +1,1934 @@
+{
+  "complete": true,
+  "rssSamplingSeconds": 1,
+  "cpuProfilingEnabled": false,
+  "ready": [
+    {
+      "scene": "sparse",
+      "fixtureMs": 13.12,
+      "rendererPrepareMs": 100.506,
+      "loadToInteractiveMs": 122.048,
+      "dartEntryToInteractiveMs": 123.608,
+      "receivedSinceLaunchMs": 943.491
+    },
+    {
+      "scene": "normal",
+      "fixtureMs": 34.387,
+      "rendererPrepareMs": 86.151,
+      "loadToInteractiveMs": 164.706,
+      "receivedSinceLaunchMs": 46110.543
+    },
+    {
+      "scene": "normal",
+      "fixtureMs": 29.629,
+      "rendererPrepareMs": 94.981,
+      "loadToInteractiveMs": 146.959,
+      "receivedSinceLaunchMs": 50843.306
+    },
+    {
+      "scene": "dense",
+      "fixtureMs": 15.176,
+      "rendererPrepareMs": 83.055,
+      "loadToInteractiveMs": 135.186,
+      "receivedSinceLaunchMs": 55464.347
+    },
+    {
+      "scene": "dense",
+      "fixtureMs": 29.709,
+      "rendererPrepareMs": 100.216,
+      "loadToInteractiveMs": 179.647,
+      "receivedSinceLaunchMs": 62610.026
+    }
+  ],
+  "runs": [],
+  "diagnostics": [
+    {
+      "kind": "coldWallAudit",
+      "zoomNormalizedBeforeOpen": true,
+      "lifecycleChanges": 0,
+      "viewportChanged": false,
+      "scene": "normal",
+      "session": 0,
+      "mode": "profile",
+      "recovery": true,
+      "viewport": {
+        "width": 800.0,
+        "height": 346.0,
+        "dpr": 1.0
+      },
+      "openToCacheAndFrameworkPaintMs": 198.106,
+      "openingFrames": {
+        "stage": {
+          "observed": 6,
+          "retained": 6,
+          "p50Ms": 2.118,
+          "p95Ms": 8.888,
+          "p99Ms": 8.888
+        },
+        "build": {
+          "observed": 6,
+          "retained": 6,
+          "p50Ms": 0.698,
+          "p95Ms": 2.134,
+          "p99Ms": 2.134
+        },
+        "raster": {
+          "observed": 6,
+          "retained": 6,
+          "p50Ms": 1.724,
+          "p95Ms": 8.888,
+          "p99Ms": 8.888
+        },
+        "totalSpan": {
+          "observed": 6,
+          "retained": 6,
+          "p50Ms": 9.584,
+          "p95Ms": 77.374,
+          "p99Ms": 77.374
+        }
+      },
+      "operations": [
+        {
+          "operation": "firstZoomBucket",
+          "commandToCacheAndFrameworkPaintMs": 80.306,
+          "frames": {
+            "stage": {
+              "observed": 4,
+              "retained": 4,
+              "p50Ms": 3.957,
+              "p95Ms": 24.113,
+              "p99Ms": 24.113
+            },
+            "build": {
+              "observed": 4,
+              "retained": 4,
+              "p50Ms": 0.765,
+              "p95Ms": 1.89,
+              "p99Ms": 1.89
+            },
+            "raster": {
+              "observed": 4,
+              "retained": 4,
+              "p50Ms": 3.957,
+              "p95Ms": 24.113,
+              "p99Ms": 24.113
+            },
+            "totalSpan": {
+              "observed": 4,
+              "retained": 4,
+              "p50Ms": 14.372,
+              "p95Ms": 28.075,
+              "p99Ms": 28.075
+            }
+          },
+          "before": {
+            "bytes": 5283920,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 1,
+            "liveRegions": 1,
+            "limitBytes": 67108864,
+            "peakBytes": 5283920,
+            "entries": 5,
+            "builds": 5,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 1,
+            "paintMisses": 3,
+            "buildWallMs": 21.613,
+            "recordCpu": {
+              "observed": 5,
+              "retained": 5,
+              "p50Ms": 0.008,
+              "p95Ms": 0.237,
+              "p99Ms": 0.237
+            },
+            "imageAwaitWall": {
+              "observed": 5,
+              "retained": 5,
+              "p50Ms": 2.953,
+              "p95Ms": 13.103,
+              "p99Ms": 13.103
+            },
+            "buildWall": {
+              "observed": 5,
+              "retained": 5,
+              "p50Ms": 2.962,
+              "p95Ms": 13.304,
+              "p99Ms": 13.304
+            },
+            "maxBuildMs": 13.304,
+            "pending": false
+          },
+          "after": {
+            "bytes": 13738192,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 4,
+            "liveRegions": 19,
+            "limitBytes": 67108864,
+            "peakBytes": 13738192,
+            "entries": 13,
+            "builds": 13,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 6,
+            "buildWallMs": 95.576,
+            "recordCpu": {
+              "observed": 13,
+              "retained": 13,
+              "p50Ms": 0.104,
+              "p95Ms": 0.402,
+              "p99Ms": 0.402
+            },
+            "imageAwaitWall": {
+              "observed": 13,
+              "retained": 13,
+              "p50Ms": 4.808,
+              "p95Ms": 28.678,
+              "p99Ms": 28.678
+            },
+            "buildWall": {
+              "observed": 13,
+              "retained": 13,
+              "p50Ms": 4.915,
+              "p95Ms": 28.89,
+              "p99Ms": 28.89
+            },
+            "maxBuildMs": 28.89,
+            "pending": false
+          }
+        },
+        {
+          "operation": "visibleCommitRebuild",
+          "commandToCacheAndFrameworkPaintMs": 14.51,
+          "frames": {
+            "stage": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 4.473,
+              "p95Ms": 4.473,
+              "p99Ms": 4.473
+            },
+            "build": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 0.378,
+              "p95Ms": 0.378,
+              "p99Ms": 0.378
+            },
+            "raster": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 4.473,
+              "p95Ms": 4.473,
+              "p99Ms": 4.473
+            },
+            "totalSpan": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 4.96,
+              "p95Ms": 4.96,
+              "p99Ms": 4.96
+            }
+          },
+          "before": {
+            "bytes": 13738192,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 4,
+            "liveRegions": 19,
+            "limitBytes": 67108864,
+            "peakBytes": 13738192,
+            "entries": 13,
+            "builds": 13,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 6,
+            "buildWallMs": 95.576,
+            "recordCpu": {
+              "observed": 13,
+              "retained": 13,
+              "p50Ms": 0.104,
+              "p95Ms": 0.402,
+              "p99Ms": 0.402
+            },
+            "imageAwaitWall": {
+              "observed": 13,
+              "retained": 13,
+              "p50Ms": 4.808,
+              "p95Ms": 28.678,
+              "p99Ms": 28.678
+            },
+            "buildWall": {
+              "observed": 13,
+              "retained": 13,
+              "p50Ms": 4.915,
+              "p95Ms": 28.89,
+              "p99Ms": 28.89
+            },
+            "maxBuildMs": 28.89,
+            "pending": false
+          },
+          "after": {
+            "bytes": 12681408,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 4,
+            "liveRegions": 19,
+            "limitBytes": 67108864,
+            "peakBytes": 13738192,
+            "entries": 12,
+            "builds": 14,
+            "evictions": 0,
+            "invalidations": 2,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 3,
+            "paintMisses": 6,
+            "buildWallMs": 104.161,
+            "recordCpu": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 0.104,
+              "p95Ms": 0.438,
+              "p99Ms": 0.438
+            },
+            "imageAwaitWall": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 4.808,
+              "p95Ms": 28.678,
+              "p99Ms": 28.678
+            },
+            "buildWall": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 4.915,
+              "p95Ms": 28.89,
+              "p99Ms": 28.89
+            },
+            "maxBuildMs": 28.89,
+            "pending": false
+          }
+        }
+      ],
+      "evictSweepAndReturnWallMs": 447.246,
+      "returnToEvictedViewMs": 30.218,
+      "evictBefore": {
+        "bytes": 12681408,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 4,
+        "liveRegions": 19,
+        "limitBytes": 67108864,
+        "peakBytes": 13738192,
+        "entries": 12,
+        "builds": 14,
+        "evictions": 0,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 3,
+        "paintMisses": 6,
+        "buildWallMs": 104.161,
+        "recordCpu": {
+          "observed": 14,
+          "retained": 14,
+          "p50Ms": 0.104,
+          "p95Ms": 0.438,
+          "p99Ms": 0.438
+        },
+        "imageAwaitWall": {
+          "observed": 14,
+          "retained": 14,
+          "p50Ms": 4.808,
+          "p95Ms": 28.678,
+          "p99Ms": 28.678
+        },
+        "buildWall": {
+          "observed": 14,
+          "retained": 14,
+          "p50Ms": 4.915,
+          "p95Ms": 28.89,
+          "p99Ms": 28.89
+        },
+        "maxBuildMs": 28.89,
+        "pending": false
+      },
+      "evictionFrames": {
+        "stage": {
+          "observed": 20,
+          "retained": 20,
+          "p50Ms": 1.559,
+          "p95Ms": 16.345,
+          "p99Ms": 33.668
+        },
+        "build": {
+          "observed": 20,
+          "retained": 20,
+          "p50Ms": 0.189,
+          "p95Ms": 5.69,
+          "p99Ms": 8.769
+        },
+        "raster": {
+          "observed": 20,
+          "retained": 20,
+          "p50Ms": 1.559,
+          "p95Ms": 16.345,
+          "p99Ms": 33.668
+        },
+        "totalSpan": {
+          "observed": 20,
+          "retained": 20,
+          "p50Ms": 2.151,
+          "p95Ms": 59.73,
+          "p99Ms": 82.513
+        }
+      },
+      "oldRendererDisposed": true,
+      "oldImagesAfterDispose": 0,
+      "oldParagraphsAfterDispose": 0,
+      "textLayouts": 2000,
+      "tiles": {
+        "bytes": 66577392,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 19,
+        "liveRegions": 64,
+        "limitBytes": 67108864,
+        "peakBytes": 66577392,
+        "entries": 63,
+        "builds": 170,
+        "evictions": 105,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 4,
+        "paintMisses": 25,
+        "buildWallMs": 543.853,
+        "recordCpu": {
+          "observed": 170,
+          "retained": 170,
+          "p50Ms": 0.003,
+          "p95Ms": 0.438,
+          "p99Ms": 2.709
+        },
+        "imageAwaitWall": {
+          "observed": 170,
+          "retained": 170,
+          "p50Ms": 0.624,
+          "p95Ms": 13.103,
+          "p99Ms": 53.273
+        },
+        "buildWall": {
+          "observed": 170,
+          "retained": 170,
+          "p50Ms": 0.628,
+          "p95Ms": 13.304,
+          "p99Ms": 61.201
+        },
+        "maxBuildMs": 62.537,
+        "pending": false
+      },
+      "load": {
+        "fixtureMs": 34.387,
+        "rendererPrepareMs": 86.151,
+        "loadToInteractiveMs": 164.706
+      },
+      "receivedSeconds": 50.696
+    },
+    {
+      "kind": "coldWallAudit",
+      "zoomNormalizedBeforeOpen": true,
+      "lifecycleChanges": 0,
+      "viewportChanged": false,
+      "scene": "normal",
+      "session": 1,
+      "mode": "profile",
+      "recovery": true,
+      "viewport": {
+        "width": 800.0,
+        "height": 346.0,
+        "dpr": 1.0
+      },
+      "openToCacheAndFrameworkPaintMs": 163.687,
+      "openingFrames": {
+        "stage": {
+          "observed": 5,
+          "retained": 5,
+          "p50Ms": 1.119,
+          "p95Ms": 4.387,
+          "p99Ms": 4.387
+        },
+        "build": {
+          "observed": 5,
+          "retained": 5,
+          "p50Ms": 0.582,
+          "p95Ms": 4.131,
+          "p99Ms": 4.131
+        },
+        "raster": {
+          "observed": 5,
+          "retained": 5,
+          "p50Ms": 1.119,
+          "p95Ms": 4.387,
+          "p99Ms": 4.387
+        },
+        "totalSpan": {
+          "observed": 5,
+          "retained": 5,
+          "p50Ms": 6.738,
+          "p95Ms": 84.438,
+          "p99Ms": 84.438
+        }
+      },
+      "operations": [
+        {
+          "operation": "firstZoomBucket",
+          "commandToCacheAndFrameworkPaintMs": 82.6,
+          "frames": {
+            "stage": {
+              "observed": 5,
+              "retained": 5,
+              "p50Ms": 4.648,
+              "p95Ms": 9.566,
+              "p99Ms": 9.566
+            },
+            "build": {
+              "observed": 5,
+              "retained": 5,
+              "p50Ms": 0.507,
+              "p95Ms": 2.422,
+              "p99Ms": 2.422
+            },
+            "raster": {
+              "observed": 5,
+              "retained": 5,
+              "p50Ms": 4.648,
+              "p95Ms": 9.566,
+              "p99Ms": 9.566
+            },
+            "totalSpan": {
+              "observed": 5,
+              "retained": 5,
+              "p50Ms": 6.342,
+              "p95Ms": 13.485,
+              "p99Ms": 13.485
+            }
+          },
+          "before": {
+            "bytes": 2113568,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 0,
+            "liveRegions": 0,
+            "limitBytes": 67108864,
+            "peakBytes": 2113568,
+            "entries": 2,
+            "builds": 2,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 1,
+            "paintMisses": 1,
+            "buildWallMs": 9.879,
+            "recordCpu": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 0.196,
+              "p95Ms": 0.32,
+              "p99Ms": 0.32
+            },
+            "imageAwaitWall": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 3.595,
+              "p95Ms": 5.757,
+              "p99Ms": 5.757
+            },
+            "buildWall": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 3.797,
+              "p95Ms": 6.082,
+              "p99Ms": 6.082
+            },
+            "maxBuildMs": 6.082,
+            "pending": false
+          },
+          "after": {
+            "bytes": 10567840,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 4,
+            "liveRegions": 18,
+            "limitBytes": 67108864,
+            "peakBytes": 10567840,
+            "entries": 10,
+            "builds": 10,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 5,
+            "buildWallMs": 78.079,
+            "recordCpu": {
+              "observed": 10,
+              "retained": 10,
+              "p50Ms": 0.195,
+              "p95Ms": 0.561,
+              "p99Ms": 0.561
+            },
+            "imageAwaitWall": {
+              "observed": 10,
+              "retained": 10,
+              "p50Ms": 5.724,
+              "p95Ms": 13.904,
+              "p99Ms": 13.904
+            },
+            "buildWall": {
+              "observed": 10,
+              "retained": 10,
+              "p50Ms": 6.082,
+              "p95Ms": 14.19,
+              "p99Ms": 14.19
+            },
+            "maxBuildMs": 14.19,
+            "pending": false
+          }
+        },
+        {
+          "operation": "visibleCommitRebuild",
+          "commandToCacheAndFrameworkPaintMs": 14.219,
+          "frames": {
+            "stage": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 3.646,
+              "p95Ms": 3.646,
+              "p99Ms": 3.646
+            },
+            "build": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 0.303,
+              "p95Ms": 0.303,
+              "p99Ms": 0.303
+            },
+            "raster": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 3.646,
+              "p95Ms": 3.646,
+              "p99Ms": 3.646
+            },
+            "totalSpan": {
+              "observed": 1,
+              "retained": 1,
+              "p50Ms": 4.08,
+              "p95Ms": 4.08,
+              "p99Ms": 4.08
+            }
+          },
+          "before": {
+            "bytes": 10567840,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 4,
+            "liveRegions": 18,
+            "limitBytes": 67108864,
+            "peakBytes": 10567840,
+            "entries": 10,
+            "builds": 10,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 5,
+            "buildWallMs": 78.079,
+            "recordCpu": {
+              "observed": 10,
+              "retained": 10,
+              "p50Ms": 0.195,
+              "p95Ms": 0.561,
+              "p99Ms": 0.561
+            },
+            "imageAwaitWall": {
+              "observed": 10,
+              "retained": 10,
+              "p50Ms": 5.724,
+              "p95Ms": 13.904,
+              "p99Ms": 13.904
+            },
+            "buildWall": {
+              "observed": 10,
+              "retained": 10,
+              "p50Ms": 6.082,
+              "p95Ms": 14.19,
+              "p99Ms": 14.19
+            },
+            "maxBuildMs": 14.19,
+            "pending": false
+          },
+          "after": {
+            "bytes": 9511056,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 4,
+            "liveRegions": 18,
+            "limitBytes": 67108864,
+            "peakBytes": 10567840,
+            "entries": 9,
+            "builds": 11,
+            "evictions": 0,
+            "invalidations": 2,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 3,
+            "paintMisses": 5,
+            "buildWallMs": 86.427,
+            "recordCpu": {
+              "observed": 11,
+              "retained": 11,
+              "p50Ms": 0.196,
+              "p95Ms": 0.561,
+              "p99Ms": 0.561
+            },
+            "imageAwaitWall": {
+              "observed": 11,
+              "retained": 11,
+              "p50Ms": 5.757,
+              "p95Ms": 13.904,
+              "p99Ms": 13.904
+            },
+            "buildWall": {
+              "observed": 11,
+              "retained": 11,
+              "p50Ms": 6.32,
+              "p95Ms": 14.19,
+              "p99Ms": 14.19
+            },
+            "maxBuildMs": 14.19,
+            "pending": false
+          }
+        }
+      ],
+      "evictSweepAndReturnWallMs": 364.167,
+      "returnToEvictedViewMs": 21.479,
+      "evictBefore": {
+        "bytes": 9511056,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 4,
+        "liveRegions": 18,
+        "limitBytes": 67108864,
+        "peakBytes": 10567840,
+        "entries": 9,
+        "builds": 11,
+        "evictions": 0,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 3,
+        "paintMisses": 5,
+        "buildWallMs": 86.427,
+        "recordCpu": {
+          "observed": 11,
+          "retained": 11,
+          "p50Ms": 0.196,
+          "p95Ms": 0.561,
+          "p99Ms": 0.561
+        },
+        "imageAwaitWall": {
+          "observed": 11,
+          "retained": 11,
+          "p50Ms": 5.757,
+          "p95Ms": 13.904,
+          "p99Ms": 13.904
+        },
+        "buildWall": {
+          "observed": 11,
+          "retained": 11,
+          "p50Ms": 6.32,
+          "p95Ms": 14.19,
+          "p99Ms": 14.19
+        },
+        "maxBuildMs": 14.19,
+        "pending": false
+      },
+      "evictionFrames": {
+        "stage": {
+          "observed": 19,
+          "retained": 19,
+          "p50Ms": 1.584,
+          "p95Ms": 19.073,
+          "p99Ms": 19.073
+        },
+        "build": {
+          "observed": 19,
+          "retained": 19,
+          "p50Ms": 0.169,
+          "p95Ms": 6.892,
+          "p99Ms": 6.892
+        },
+        "raster": {
+          "observed": 19,
+          "retained": 19,
+          "p50Ms": 1.584,
+          "p95Ms": 19.073,
+          "p99Ms": 19.073
+        },
+        "totalSpan": {
+          "observed": 19,
+          "retained": 19,
+          "p50Ms": 2.389,
+          "p95Ms": 47.597,
+          "p99Ms": 47.597
+        }
+      },
+      "oldRendererDisposed": true,
+      "oldImagesAfterDispose": 0,
+      "oldParagraphsAfterDispose": 0,
+      "textLayouts": 2000,
+      "tiles": {
+        "bytes": 66577392,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 19,
+        "liveRegions": 61,
+        "limitBytes": 67108864,
+        "peakBytes": 66577392,
+        "entries": 63,
+        "builds": 167,
+        "evictions": 102,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 4,
+        "paintMisses": 23,
+        "buildWallMs": 446.989,
+        "recordCpu": {
+          "observed": 167,
+          "retained": 167,
+          "p50Ms": 0.003,
+          "p95Ms": 0.469,
+          "p99Ms": 4.195
+        },
+        "imageAwaitWall": {
+          "observed": 167,
+          "retained": 167,
+          "p50Ms": 0.647,
+          "p95Ms": 10.625,
+          "p99Ms": 30.497
+        },
+        "buildWall": {
+          "observed": 167,
+          "retained": 167,
+          "p50Ms": 0.654,
+          "p95Ms": 11.252,
+          "p99Ms": 33.669
+        },
+        "maxBuildMs": 42.548,
+        "pending": false
+      },
+      "load": {
+        "fixtureMs": 29.629,
+        "rendererPrepareMs": 94.981,
+        "loadToInteractiveMs": 146.959
+      },
+      "receivedSeconds": 55.329
+    },
+    {
+      "kind": "coldWallAudit",
+      "zoomNormalizedBeforeOpen": true,
+      "lifecycleChanges": 0,
+      "viewportChanged": false,
+      "scene": "dense",
+      "session": 0,
+      "mode": "profile",
+      "recovery": true,
+      "viewport": {
+        "width": 800.0,
+        "height": 346.0,
+        "dpr": 1.0
+      },
+      "openToCacheAndFrameworkPaintMs": 581.431,
+      "openingFrames": {
+        "stage": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 12.976,
+          "p95Ms": 64.818,
+          "p99Ms": 64.818
+        },
+        "build": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 0.723,
+          "p95Ms": 11.154,
+          "p99Ms": 11.154
+        },
+        "raster": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 12.976,
+          "p95Ms": 64.818,
+          "p99Ms": 64.818
+        },
+        "totalSpan": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 69.177,
+          "p95Ms": 122.657,
+          "p99Ms": 122.657
+        }
+      },
+      "operations": [
+        {
+          "operation": "firstZoomBucket",
+          "commandToCacheAndFrameworkPaintMs": 514.242,
+          "frames": {
+            "stage": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 19.074,
+              "p95Ms": 89.078,
+              "p99Ms": 89.078
+            },
+            "build": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 4.167,
+              "p95Ms": 9.233,
+              "p99Ms": 9.233
+            },
+            "raster": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 19.074,
+              "p95Ms": 89.078,
+              "p99Ms": 89.078
+            },
+            "totalSpan": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 72.157,
+              "p95Ms": 147.037,
+              "p99Ms": 147.037
+            }
+          },
+          "before": {
+            "bytes": 8454272,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 5,
+            "liveRegions": 15,
+            "limitBytes": 67108864,
+            "peakBytes": 8454272,
+            "entries": 8,
+            "builds": 8,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 1,
+            "paintMisses": 7,
+            "buildWallMs": 428.898,
+            "recordCpu": {
+              "observed": 8,
+              "retained": 8,
+              "p50Ms": 2.684,
+              "p95Ms": 6.298,
+              "p99Ms": 6.298
+            },
+            "imageAwaitWall": {
+              "observed": 8,
+              "retained": 8,
+              "p50Ms": 54.819,
+              "p95Ms": 101.852,
+              "p99Ms": 101.852
+            },
+            "buildWall": {
+              "observed": 8,
+              "retained": 8,
+              "p50Ms": 57.785,
+              "p95Ms": 108.224,
+              "p99Ms": 108.224
+            },
+            "maxBuildMs": 108.224,
+            "pending": false
+          },
+          "after": {
+            "bytes": 16908544,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 12,
+            "liveRegions": 43,
+            "limitBytes": 67108864,
+            "peakBytes": 16908544,
+            "entries": 16,
+            "builds": 16,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 15,
+            "buildWallMs": 940.162,
+            "recordCpu": {
+              "observed": 16,
+              "retained": 16,
+              "p50Ms": 1.817,
+              "p95Ms": 6.298,
+              "p99Ms": 6.298
+            },
+            "imageAwaitWall": {
+              "observed": 16,
+              "retained": 16,
+              "p50Ms": 54.819,
+              "p95Ms": 125.416,
+              "p99Ms": 125.416
+            },
+            "buildWall": {
+              "observed": 16,
+              "retained": 16,
+              "p50Ms": 57.694,
+              "p95Ms": 127.987,
+              "p99Ms": 127.987
+            },
+            "maxBuildMs": 127.987,
+            "pending": false
+          }
+        },
+        {
+          "operation": "visibleCommitRebuild",
+          "commandToCacheAndFrameworkPaintMs": 45.369,
+          "frames": {
+            "stage": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 2.23,
+              "p95Ms": 13.115,
+              "p99Ms": 13.115
+            },
+            "build": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 1.372,
+              "p95Ms": 6.814,
+              "p99Ms": 6.814
+            },
+            "raster": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 2.23,
+              "p95Ms": 13.115,
+              "p99Ms": 13.115
+            },
+            "totalSpan": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 8.066,
+              "p95Ms": 39.117,
+              "p99Ms": 39.117
+            }
+          },
+          "before": {
+            "bytes": 16908544,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 12,
+            "liveRegions": 43,
+            "limitBytes": 67108864,
+            "peakBytes": 16908544,
+            "entries": 16,
+            "builds": 16,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 15,
+            "buildWallMs": 940.162,
+            "recordCpu": {
+              "observed": 16,
+              "retained": 16,
+              "p50Ms": 1.817,
+              "p95Ms": 6.298,
+              "p99Ms": 6.298
+            },
+            "imageAwaitWall": {
+              "observed": 16,
+              "retained": 16,
+              "p50Ms": 54.819,
+              "p95Ms": 125.416,
+              "p99Ms": 125.416
+            },
+            "buildWall": {
+              "observed": 16,
+              "retained": 16,
+              "p50Ms": 57.694,
+              "p95Ms": 127.987,
+              "p99Ms": 127.987
+            },
+            "maxBuildMs": 127.987,
+            "pending": false
+          },
+          "after": {
+            "bytes": 15851760,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 13,
+            "liveRegions": 44,
+            "limitBytes": 67108864,
+            "peakBytes": 16908544,
+            "entries": 15,
+            "builds": 17,
+            "evictions": 0,
+            "invalidations": 2,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 3,
+            "paintMisses": 16,
+            "buildWallMs": 976.613,
+            "recordCpu": {
+              "observed": 17,
+              "retained": 17,
+              "p50Ms": 2.511,
+              "p95Ms": 6.298,
+              "p99Ms": 6.298
+            },
+            "imageAwaitWall": {
+              "observed": 17,
+              "retained": 17,
+              "p50Ms": 54.819,
+              "p95Ms": 125.416,
+              "p99Ms": 125.416
+            },
+            "buildWall": {
+              "observed": 17,
+              "retained": 17,
+              "p50Ms": 57.694,
+              "p95Ms": 127.987,
+              "p99Ms": 127.987
+            },
+            "maxBuildMs": 127.987,
+            "pending": false
+          }
+        }
+      ],
+      "evictSweepAndReturnWallMs": 1947.088,
+      "returnToEvictedViewMs": 451.87,
+      "evictBefore": {
+        "bytes": 15851760,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 13,
+        "liveRegions": 44,
+        "limitBytes": 67108864,
+        "peakBytes": 16908544,
+        "entries": 15,
+        "builds": 17,
+        "evictions": 0,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 3,
+        "paintMisses": 16,
+        "buildWallMs": 976.613,
+        "recordCpu": {
+          "observed": 17,
+          "retained": 17,
+          "p50Ms": 2.511,
+          "p95Ms": 6.298,
+          "p99Ms": 6.298
+        },
+        "imageAwaitWall": {
+          "observed": 17,
+          "retained": 17,
+          "p50Ms": 54.819,
+          "p95Ms": 125.416,
+          "p99Ms": 125.416
+        },
+        "buildWall": {
+          "observed": 17,
+          "retained": 17,
+          "p50Ms": 57.694,
+          "p95Ms": 127.987,
+          "p99Ms": 127.987
+        },
+        "maxBuildMs": 127.987,
+        "pending": false
+      },
+      "evictionFrames": {
+        "stage": {
+          "observed": 32,
+          "retained": 32,
+          "p50Ms": 7.155,
+          "p95Ms": 113.668,
+          "p99Ms": 326.953
+        },
+        "build": {
+          "observed": 32,
+          "retained": 32,
+          "p50Ms": 1.07,
+          "p95Ms": 15.883,
+          "p99Ms": 30.675
+        },
+        "raster": {
+          "observed": 32,
+          "retained": 32,
+          "p50Ms": 7.155,
+          "p95Ms": 113.668,
+          "p99Ms": 326.953
+        },
+        "totalSpan": {
+          "observed": 32,
+          "retained": 32,
+          "p50Ms": 29.9,
+          "p95Ms": 359.221,
+          "p99Ms": 469.143
+        }
+      },
+      "oldRendererDisposed": true,
+      "oldImagesAfterDispose": 0,
+      "oldParagraphsAfterDispose": 0,
+      "textLayouts": 2000,
+      "tiles": {
+        "bytes": 66577392,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 39,
+        "liveRegions": 125,
+        "limitBytes": 67108864,
+        "peakBytes": 66577392,
+        "entries": 63,
+        "builds": 175,
+        "evictions": 110,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 4,
+        "paintMisses": 47,
+        "buildWallMs": 2912.674,
+        "recordCpu": {
+          "observed": 175,
+          "retained": 175,
+          "p50Ms": 0.004,
+          "p95Ms": 2.887,
+          "p99Ms": 6.298
+        },
+        "imageAwaitWall": {
+          "observed": 175,
+          "retained": 175,
+          "p50Ms": 0.639,
+          "p95Ms": 72.022,
+          "p99Ms": 249.877
+        },
+        "buildWall": {
+          "observed": 175,
+          "retained": 175,
+          "p50Ms": 0.646,
+          "p95Ms": 74.861,
+          "p99Ms": 259.154
+        },
+        "maxBuildMs": 355.648,
+        "pending": false
+      },
+      "load": {
+        "fixtureMs": 15.176,
+        "rendererPrepareMs": 83.055,
+        "loadToInteractiveMs": 135.186
+      },
+      "receivedSeconds": 62.431
+    },
+    {
+      "kind": "coldWallAudit",
+      "zoomNormalizedBeforeOpen": true,
+      "lifecycleChanges": 0,
+      "viewportChanged": false,
+      "scene": "dense",
+      "session": 1,
+      "mode": "profile",
+      "recovery": true,
+      "viewport": {
+        "width": 800.0,
+        "height": 346.0,
+        "dpr": 1.0
+      },
+      "openToCacheAndFrameworkPaintMs": 613.378,
+      "openingFrames": {
+        "stage": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 15.303,
+          "p95Ms": 68.446,
+          "p99Ms": 68.446
+        },
+        "build": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 2.403,
+          "p95Ms": 11.869,
+          "p99Ms": 11.869
+        },
+        "raster": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 15.303,
+          "p95Ms": 68.446,
+          "p99Ms": 68.446
+        },
+        "totalSpan": {
+          "observed": 12,
+          "retained": 12,
+          "p50Ms": 105.471,
+          "p95Ms": 139.721,
+          "p99Ms": 139.721
+        }
+      },
+      "operations": [
+        {
+          "operation": "firstZoomBucket",
+          "commandToCacheAndFrameworkPaintMs": 481.209,
+          "frames": {
+            "stage": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 19.435,
+              "p95Ms": 65.949,
+              "p99Ms": 65.949
+            },
+            "build": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 4.493,
+              "p95Ms": 10.406,
+              "p99Ms": 10.406
+            },
+            "raster": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 19.435,
+              "p95Ms": 65.949,
+              "p99Ms": 65.949
+            },
+            "totalSpan": {
+              "observed": 9,
+              "retained": 9,
+              "p50Ms": 66.817,
+              "p95Ms": 140.188,
+              "p99Ms": 140.188
+            }
+          },
+          "before": {
+            "bytes": 6340704,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 5,
+            "liveRegions": 15,
+            "limitBytes": 67108864,
+            "peakBytes": 6340704,
+            "entries": 6,
+            "builds": 6,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 1,
+            "paintMisses": 6,
+            "buildWallMs": 425.634,
+            "recordCpu": {
+              "observed": 6,
+              "retained": 6,
+              "p50Ms": 2.766,
+              "p95Ms": 3.438,
+              "p99Ms": 3.438
+            },
+            "imageAwaitWall": {
+              "observed": 6,
+              "retained": 6,
+              "p50Ms": 61.601,
+              "p95Ms": 109.081,
+              "p99Ms": 109.081
+            },
+            "buildWall": {
+              "observed": 6,
+              "retained": 6,
+              "p50Ms": 64.425,
+              "p95Ms": 112.21,
+              "p99Ms": 112.21
+            },
+            "maxBuildMs": 112.21,
+            "pending": false
+          },
+          "after": {
+            "bytes": 14794976,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 12,
+            "liveRegions": 43,
+            "limitBytes": 67108864,
+            "peakBytes": 14794976,
+            "entries": 14,
+            "builds": 14,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 14,
+            "buildWallMs": 900.019,
+            "recordCpu": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 1.826,
+              "p95Ms": 5.518,
+              "p99Ms": 5.518
+            },
+            "imageAwaitWall": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 54.466,
+              "p95Ms": 109.081,
+              "p99Ms": 109.081
+            },
+            "buildWall": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 60.05,
+              "p95Ms": 112.21,
+              "p99Ms": 112.21
+            },
+            "maxBuildMs": 112.21,
+            "pending": false
+          }
+        },
+        {
+          "operation": "visibleCommitRebuild",
+          "commandToCacheAndFrameworkPaintMs": 29.393,
+          "frames": {
+            "stage": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 1.799,
+              "p95Ms": 7.897,
+              "p99Ms": 7.897
+            },
+            "build": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 0.776,
+              "p95Ms": 5.486,
+              "p99Ms": 5.486
+            },
+            "raster": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 1.799,
+              "p95Ms": 7.897,
+              "p99Ms": 7.897
+            },
+            "totalSpan": {
+              "observed": 2,
+              "retained": 2,
+              "p50Ms": 7.79,
+              "p95Ms": 22.62,
+              "p99Ms": 22.62
+            }
+          },
+          "before": {
+            "bytes": 14794976,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 12,
+            "liveRegions": 43,
+            "limitBytes": 67108864,
+            "peakBytes": 14794976,
+            "entries": 14,
+            "builds": 14,
+            "evictions": 0,
+            "invalidations": 0,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 2,
+            "paintMisses": 14,
+            "buildWallMs": 900.019,
+            "recordCpu": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 1.826,
+              "p95Ms": 5.518,
+              "p99Ms": 5.518
+            },
+            "imageAwaitWall": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 54.466,
+              "p95Ms": 109.081,
+              "p99Ms": 109.081
+            },
+            "buildWall": {
+              "observed": 14,
+              "retained": 14,
+              "p50Ms": 60.05,
+              "p95Ms": 112.21,
+              "p99Ms": 112.21
+            },
+            "maxBuildMs": 112.21,
+            "pending": false
+          },
+          "after": {
+            "bytes": 13738192,
+            "recovery": true,
+            "tileSide": 512,
+            "mixedPaints": 13,
+            "liveRegions": 44,
+            "limitBytes": 67108864,
+            "peakBytes": 14794976,
+            "entries": 13,
+            "builds": 15,
+            "evictions": 0,
+            "invalidations": 2,
+            "discarded": 0,
+            "errors": 0,
+            "paintHits": 3,
+            "paintMisses": 15,
+            "buildWallMs": 926.501,
+            "recordCpu": {
+              "observed": 15,
+              "retained": 15,
+              "p50Ms": 2.63,
+              "p95Ms": 5.518,
+              "p99Ms": 5.518
+            },
+            "imageAwaitWall": {
+              "observed": 15,
+              "retained": 15,
+              "p50Ms": 54.466,
+              "p95Ms": 109.081,
+              "p99Ms": 109.081
+            },
+            "buildWall": {
+              "observed": 15,
+              "retained": 15,
+              "p50Ms": 60.05,
+              "p95Ms": 112.21,
+              "p99Ms": 112.21
+            },
+            "maxBuildMs": 112.21,
+            "pending": false
+          }
+        }
+      ],
+      "evictSweepAndReturnWallMs": 1681.257,
+      "returnToEvictedViewMs": 452.483,
+      "evictBefore": {
+        "bytes": 13738192,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 13,
+        "liveRegions": 44,
+        "limitBytes": 67108864,
+        "peakBytes": 14794976,
+        "entries": 13,
+        "builds": 15,
+        "evictions": 0,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 3,
+        "paintMisses": 15,
+        "buildWallMs": 926.501,
+        "recordCpu": {
+          "observed": 15,
+          "retained": 15,
+          "p50Ms": 2.63,
+          "p95Ms": 5.518,
+          "p99Ms": 5.518
+        },
+        "imageAwaitWall": {
+          "observed": 15,
+          "retained": 15,
+          "p50Ms": 54.466,
+          "p95Ms": 109.081,
+          "p99Ms": 109.081
+        },
+        "buildWall": {
+          "observed": 15,
+          "retained": 15,
+          "p50Ms": 60.05,
+          "p95Ms": 112.21,
+          "p99Ms": 112.21
+        },
+        "maxBuildMs": 112.21,
+        "pending": false
+      },
+      "evictionFrames": {
+        "stage": {
+          "observed": 31,
+          "retained": 31,
+          "p50Ms": 6.427,
+          "p95Ms": 91.08,
+          "p99Ms": 221.371
+        },
+        "build": {
+          "observed": 31,
+          "retained": 31,
+          "p50Ms": 0.995,
+          "p95Ms": 7.334,
+          "p99Ms": 15.24
+        },
+        "raster": {
+          "observed": 31,
+          "retained": 31,
+          "p50Ms": 6.427,
+          "p95Ms": 91.08,
+          "p99Ms": 221.371
+        },
+        "totalSpan": {
+          "observed": 31,
+          "retained": 31,
+          "p50Ms": 28.549,
+          "p95Ms": 242.069,
+          "p99Ms": 463.722
+        }
+      },
+      "oldRendererDisposed": true,
+      "oldImagesAfterDispose": 0,
+      "oldParagraphsAfterDispose": 0,
+      "textLayouts": 2000,
+      "tiles": {
+        "bytes": 66577392,
+        "recovery": true,
+        "tileSide": 512,
+        "mixedPaints": 39,
+        "liveRegions": 126,
+        "limitBytes": 67108864,
+        "peakBytes": 66577392,
+        "entries": 63,
+        "builds": 173,
+        "evictions": 108,
+        "invalidations": 2,
+        "discarded": 0,
+        "errors": 0,
+        "paintHits": 4,
+        "paintMisses": 45,
+        "buildWallMs": 2602.752,
+        "recordCpu": {
+          "observed": 173,
+          "retained": 173,
+          "p50Ms": 0.003,
+          "p95Ms": 3.027,
+          "p99Ms": 5.584
+        },
+        "imageAwaitWall": {
+          "observed": 173,
+          "retained": 173,
+          "p50Ms": 0.65,
+          "p95Ms": 73.393,
+          "p99Ms": 233.721
+        },
+        "buildWall": {
+          "observed": 173,
+          "retained": 173,
+          "p50Ms": 0.654,
+          "p95Ms": 76.943,
+          "p99Ms": 245.855
+        },
+        "maxBuildMs": 247.598,
+        "pending": false
+      },
+      "load": {
+        "fixtureMs": 29.709,
+        "rendererPrepareMs": 100.216,
+        "loadToInteractiveMs": 179.647
+      },
+      "receivedSeconds": 69.247
+    }
+  ],
+  "rssSamples": [
+    {
+      "seconds": 0.002,
+      "rssKiB": 32
+    },
+    {
+      "seconds": 1.049,
+      "rssKiB": 224256
+    },
+    {
+      "seconds": 2.098,
+      "rssKiB": 223312
+    },
+    {
+      "seconds": 3.146,
+      "rssKiB": 223312
+    },
+    {
+      "seconds": 4.191,
+      "rssKiB": 225808
+    },
+    {
+      "seconds": 5.237,
+      "rssKiB": 228256
+    },
+    {
+      "seconds": 6.285,
+      "rssKiB": 230112
+    },
+    {
+      "seconds": 7.336,
+      "rssKiB": 230112
+    },
+    {
+      "seconds": 8.39,
+      "rssKiB": 232544
+    },
+    {
+      "seconds": 9.432,
+      "rssKiB": 232544
+    },
+    {
+      "seconds": 10.477,
+      "rssKiB": 232544
+    },
+    {
+      "seconds": 11.513,
+      "rssKiB": 232688
+    },
+    {
+      "seconds": 12.553,
+      "rssKiB": 232688
+    },
+    {
+      "seconds": 13.597,
+      "rssKiB": 232688
+    },
+    {
+      "seconds": 14.644,
+      "rssKiB": 232688
+    },
+    {
+      "seconds": 15.681,
+      "rssKiB": 232688
+    },
+    {
+      "seconds": 16.723,
+      "rssKiB": 232688
+    },
+    {
+      "seconds": 17.765,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 18.814,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 19.852,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 20.893,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 21.94,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 22.981,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 24.029,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 25.067,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 26.121,
+      "rssKiB": 232640
+    },
+    {
+      "seconds": 27.174,
+      "rssKiB": 232704
+    },
+    {
+      "seconds": 28.222,
+      "rssKiB": 232704
+    },
+    {
+      "seconds": 29.269,
+      "rssKiB": 232704
+    },
+    {
+      "seconds": 30.308,
+      "rssKiB": 232704
+    },
+    {
+      "seconds": 31.351,
+      "rssKiB": 232704
+    },
+    {
+      "seconds": 32.406,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 33.431,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 34.477,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 35.523,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 36.568,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 37.613,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 38.64,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 39.677,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 40.724,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 41.775,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 42.821,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 43.873,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 44.919,
+      "rssKiB": 232656
+    },
+    {
+      "seconds": 45.965,
+      "rssKiB": 228656
+    },
+    {
+      "seconds": 47.052,
+      "rssKiB": 253888
+    },
+    {
+      "seconds": 48.102,
+      "rssKiB": 268704
+    },
+    {
+      "seconds": 49.148,
+      "rssKiB": 269856
+    },
+    {
+      "seconds": 50.198,
+      "rssKiB": 381408
+    },
+    {
+      "seconds": 51.256,
+      "rssKiB": 390112
+    },
+    {
+      "seconds": 52.301,
+      "rssKiB": 398064
+    },
+    {
+      "seconds": 53.348,
+      "rssKiB": 396128
+    },
+    {
+      "seconds": 54.382,
+      "rssKiB": 387200
+    },
+    {
+      "seconds": 55.434,
+      "rssKiB": 404432
+    },
+    {
+      "seconds": 56.509,
+      "rssKiB": 428912
+    },
+    {
+      "seconds": 57.552,
+      "rssKiB": 485232
+    },
+    {
+      "seconds": 58.602,
+      "rssKiB": 472752
+    },
+    {
+      "seconds": 59.641,
+      "rssKiB": 502416
+    },
+    {
+      "seconds": 60.692,
+      "rssKiB": 619120
+    },
+    {
+      "seconds": 61.736,
+      "rssKiB": 616416
+    },
+    {
+      "seconds": 62.82,
+      "rssKiB": 599536
+    },
+    {
+      "seconds": 63.86,
+      "rssKiB": 564832
+    },
+    {
+      "seconds": 64.899,
+      "rssKiB": 573056
+    },
+    {
+      "seconds": 65.95,
+      "rssKiB": 575280
+    },
+    {
+      "seconds": 67.001,
+      "rssKiB": 633392
+    },
+    {
+      "seconds": 68.049,
+      "rssKiB": 636336
+    },
+    {
+      "seconds": 69.085,
+      "rssKiB": 619616
+    }
+  ],
+  "rpcErrors": [],
+  "elapsedSeconds": 69.287
+}

@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-17",
+  "baselineAnalysis": {
+    "executed": true,
+    "result": "No issues found",
+    "log": "baseline-analysis.log"
+  },
+  "baselineHostTests": {
+    "executed": true,
+    "passed": 53,
+    "log": "baseline-host-tests.log"
+  },
+  "existingTileRecoveryTests": {
+    "executed": true,
+    "passed": 16,
+    "log": "repair-existing-tests.log"
+  },
+  "sdk": {
+    "flutter": "3.41.9",
+    "dart": "3.11.5",
+    "upgraded": false
+  },
+  "toolchainDiscovery": {
+    "macos": "available",
+    "chrome": "available, 155.0.8059.82",
+    "xcode": "26.2",
+    "android": "SDK present; licenses partly unaccepted; no connected device",
+    "ios": "Xcode present; no connected device; wireless iPhone discovery code -27",
+    "windows": "unavailable on macOS host",
+    "edge": "not validated",
+    "safari": "not validated"
+  },
+  "backlog": {
+    "uniqueTasks": 246,
+    "verified": 17,
+    "percent": 6.91
+  },
+  "baselineIsProductionPerformance": false
+}

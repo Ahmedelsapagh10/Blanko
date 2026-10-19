@@ -1,0 +1,12 @@
+{
+  "oneOrMany": "One leaf: element-0, alternating world X delta +/-0.25 each Timer.periodic(250ms) callback.",
+  "changes": "Geometry transforms only. Camera independently changes every animation tick over 0.223-4.482x. No text/style/content changes.",
+  "rendering": "Each camera tick queries/culls/sorts viewport. A missing tile in Phase0.2 returns false: renderer records all visible elements. In-flight raster preparation can contend with foreground rendering.",
+  "staticBetweenOperations": false,
+  "measurement": "stage=max(Flutter build,raster). CPU query/paint independent stopwatches. Tile image-await includes engine queue and raster wall time. No isolated GPU or physical frame presentation timing.",
+  "workIncluded": "16 warm+256 timed constructor-reference vs incremental microbenchmarks, 16 renderer cycles, and initial renderer preparation run before stress; not inside its measured window. Stress intentionally includes cold zoom buckets and post-invalidation raster work. Timer also runs warmup/drain; actual counts reported.",
+  "productionRelevance": "Extreme combined navigation plus repeated committed leaf transforms, not a normal drag preview followed by one command. Command engine not present. New fixed-camera single/multi/offscreen workloads complement rather than replace it.",
+  "stallConcentrationBefore": "Historical aggregates show periodic rebuild work (432 invalidations,561 builds; stress P50 3.2/P95 131.5ms), but lack per-frame timestamps, so exact commit/cold-transition correlation is unproven. New paired suite records timestamped frames/commits.",
+  "algorithmAudit": "Matched scene deltas visit changed paint indices only; full sync scan is fallback for nonmatching base token. Chunk directory copy scales with chunks; no full text/path rebuild. Tile invalidation scans bounded resident keys, index updates changed entries. Spatial viewport queries still allocate sets/lists and sort candidates each paint.",
+  "candidate": "Opt-in 256px mixed-region raster/live composition plus 16ms pacing between atomic image jobs. No fidelity reduction; default tile flag false. A hard raster-job frame budget is not guaranteed."
+}

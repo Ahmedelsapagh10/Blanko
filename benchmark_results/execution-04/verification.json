@@ -1,0 +1,42 @@
+{
+  "focusedTests": {
+    "hostPage": 3,
+    "chromePage": 3
+  },
+  "analysis": "No issues found; analysis.log",
+  "historicalFullRegression": "execution-03:109 host/109 Chrome. Not rerun here; Dart compiler metadata only, renderer/document logic unchanged.",
+  "wasmGraphics": {
+    "executedCases": 0,
+    "status": "FAIL_TO_LOAD",
+    "failedSuites": 3,
+    "log": "wasm-graphics.log"
+  },
+  "wasmPureGeometryDiagnostic": {
+    "executedCases": 0,
+    "status": "STOPPED_STALLED_HARNESS",
+    "elapsedSeconds": 608.078,
+    "processExitCode": 0,
+    "exitZeroIsTestPass": false,
+    "evidence": [
+      "wasm-harness-diagnostic.log",
+      "wasm-harness-stop.json"
+    ],
+    "note": "Only owned exact-command/stdout process interrupted; no suite loaded. No SDK edits/upgrade."
+  },
+  "backendProfiles": {
+    "variants": 3,
+    "rowsPerVariant": 4,
+    "strictValidation": true,
+    "negativeFixturesRejected": 12,
+    "renderingGateQualified": false
+  },
+  "startupDiagnostic": {
+    "exitCode": 0,
+    "firstReadyWallMs": 1022.3814580000001,
+    "reproduced63SecondOutlier": false,
+    "findings": "Fresh nonisolated actual single-thread skwasm; external Roboto request~688.5ms, NotoSansArabic pending at first READY. No cause assigned to prior63s outlier. Aborted icon font requests after READY are not asserted as startup failures."
+  },
+  "platformConfigurationPackagesSdkChanged": false,
+  "indexSha256": "b197c24fb16b37a8c120b9709e75474942f021b2a754a0ce4e783fe02b65130a",
+  "finalCheckpoint": "final-checkpoint.json"
+}

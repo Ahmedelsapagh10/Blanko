@@ -1,0 +1,6 @@
+{
+  "excluded": "macos-direct-lifecycle-excluded.json",
+  "reason": "Dense editSingle and editInterleaved each recorded one lifecycle change. Strict validator rejected entire arm; no use in matched performance claims.",
+  "action": "Rebuild direct from unchanged sources and repeat only direct four-row capture; keep vector/layers controls.",
+  "repeatResult": "Repeat normal/editSingle has one lifecycle change; its three dense rows are clean. No full four-row native comparison. Dense-only comparison preserves exclusions explicitly; no further retry in this execution."
+}

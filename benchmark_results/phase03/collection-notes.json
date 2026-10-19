@@ -1,0 +1,32 @@
+{
+  "rejectedSmallTileExperiment": {
+    "file": "web-small-tile-prototype.json",
+    "complete": true,
+    "excludedFromFinalCandidate": true,
+    "reason": "navigation P95 regression despite stress improvement"
+  },
+  "coldLoaderReuseAudit": {
+    "file": "web-cold-loader-reuse.json",
+    "complete": true,
+    "excludedFromFinalColdPair": true,
+    "reason": "reopening prewarmed the next zoom bucket before the explicit zoom; final audit normalizes zoom and asserts new builds"
+  },
+  "nativePrimaryControlWarnings": [
+    {
+      "scene": "dense",
+      "workload": "camera",
+      "variant": "after",
+      "lifecycleChanges": 2
+    },
+    {
+      "scene": "dense",
+      "workload": "staticRedraw",
+      "variant": "after",
+      "lifecycleChanges": 2
+    }
+  ],
+  "initialDiskCompilationFailure": "No space left on device; project-generated caches reclaimed and user freed space before successful builds/tests.",
+  "localServerInterruption": "Connection refused after session interruption; server restarted before final Chrome collection.",
+  "noPhysicalPresentationClaim": true,
+  "primarySourceSnapshotLimitation": "Final working-tree hashes are recorded; intermediate binary source snapshots were not archived. Flags/configuration and raw results are retained."
+}

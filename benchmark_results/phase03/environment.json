@@ -1,0 +1,55 @@
+{
+  "host": "macOS-26.5.1-arm64-arm-64bit",
+  "sourceHashes": {
+    "lib/src/benchmarks/scene_tile_cache.dart": "052aca9d3c8eb09543b5c8d4d7fe95603eb7d1bc07e8b4311accd933754d8a8b",
+    "lib/src/benchmarks/scene_renderer.dart": "399754bae6a26eee93e11058fe5f245770e46a00c4ecb3e682b5142ec570fbce",
+    "lib/src/benchmarks/benchmark_page.dart": "ed4f1859aa3f70550befec133a20d833990183623eb1fb1e86a7a74b09e8dc66",
+    "test/recovery_cache_test.dart": "999f5aa5242dc1981e119c093c3cf36d3a387785855f2d536fb9b3266bc13548",
+    "tool/run_native_benchmark.py": "a51b25decdb1e9901908055ba8c8e20c290130da6719b3af0d4a1a9f1016336f",
+    "tool/summarize_phase03.py": "ee3214fc3a7900fb18888dbab2daab84b6e13741ef7dc35d76572d549f685c4a",
+    "README.md": "f841088eab2f0f7dced678409d5ee9ef1c8d7cbdda8f3e79ed70be7a63165255",
+    "docs/phase-0.2-report.md": "178ec5322935cc51a3f794c86218a4c2811693333ca185229e11042072dfdec2",
+    "docs/phase-0.3-report.md": "f96d895858647bb9cecee63f988074c6d91d22a8495dddecd28b09290b1eda5e",
+    "lib/src/benchmarks/benchmark_canvas.dart": "320a2c06af09699507f4a79be37dde4e6567ad8d81035975f0b15632e6548de8",
+    "lib/src/benchmarks/benchmark_fixtures.dart": "fd06fba9e071da6e3947c1382ec899175c76d38e53eca995c175531ad53947d2",
+    "lib/src/viewport/camera.dart": "640a3ee8db3472a71235dc05a8900b6c1047aa260f76cb092edac47c9b286a53",
+    "lib/src/benchmarks/benchmark_telemetry.dart": "29ff6bd1537ecae0e8856b7d1b9a48ff1310380fc9b1d42e1adcf9a8705ecc82",
+    "lib/src/benchmarks/frame_samples.dart": "e8f81a7a2ae688cf8c40e27130a3252c1002d5cad2143653623289e0b9815d1b"
+  },
+  "historicalResultHashes": {
+    "benchmark_results/phase02/web-after.json": "e9bc1e37365525ec5d274449897cd59cfc7bd7b70ef61defb22b362d1973bc53",
+    "benchmark_results/phase02/web-before.json": "c05e55ff802d8f67d31eb2fb1f9809aaf0bd9820e2dce125468355089bc7f8fa"
+  },
+  "flags": {
+    "PHASE03_SUITE": true,
+    "PHASE02_TILES": true,
+    "PHASE03_RECOVERY": "false reference / true candidate",
+    "PHASE02_SOAK_SECONDS": 180
+  },
+  "tileDefaultEnabled": false,
+  "sourceHashesDescribe": "Final working tree, not archival snapshots of intermediate build sources.",
+  "date": "2026-10-17",
+  "finalCandidate": "512px ready rasters plus union-clipped, deduplicated live missing regions; no smaller tiles or pacing",
+  "sdk": {
+    "frameworkVersion": "3.41.9",
+    "channel": "stable",
+    "repositoryUrl": "https://github.com/flutter/flutter.git",
+    "frameworkRevision": "00b0c91f06209d9e4a41f71b7a512d6eb3b9c694",
+    "frameworkCommitDate": "2026-04-29 10:03:19 -0700",
+    "engineRevision": "42d3d75a56efe1a2e9902f52dc8006099c45d937",
+    "engineCommitDate": "2026-04-28 17:31:55.000Z",
+    "engineContentHash": "9161402dc0e134b3fb5adee5046b6e84b1a5e1c1",
+    "engineBuildDate": "2026-04-28 22:37:18.442",
+    "dartSdkVersion": "3.11.5",
+    "devToolsVersion": "2.54.2",
+    "flutterVersion": "3.41.9",
+    "flutterRoot": "/Users/ahmedelsapagh/development/flutter"
+  },
+  "verifiedUnchangedFromPhase02": [
+    "lib/src/benchmarks/benchmark_canvas.dart",
+    "lib/src/benchmarks/benchmark_fixtures.dart",
+    "lib/src/benchmarks/benchmark_telemetry.dart",
+    "lib/src/benchmarks/frame_samples.dart"
+  ],
+  "sourceSnapshotLimitation": "Intermediate source snapshots and primary web binary were not archived; raw flags and results are retained."
+}

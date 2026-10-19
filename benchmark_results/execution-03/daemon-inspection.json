@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-18",
+  "officialStatusVersion": "9.7.1",
+  "officialStatus": "No registered running daemons at query time",
+  "observedProcessSetChangedDuringInspection": true,
+  "noIdleWorkerConfirmedForStopping": true,
+  "processesStopped": [],
+  "decision": "Do not stop unverified workers; continue serial validation. Exact capacity swings remain unattributed."
+}

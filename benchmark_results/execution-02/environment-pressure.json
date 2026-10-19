@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-18",
+  "evidenceType": "read-only disk/VM audit; no pre-build baseline",
+  "apfsContainerUsedPercent": 99.2,
+  "availableGiBRangeObserved": [
+    0.114,
+    1.9
+  ],
+  "swapAllocatedGiB": 6,
+  "swapUsedGiBRange": [
+    4.43,
+    4.56
+  ],
+  "compressorPhysicalGiBApprox": 6.36,
+  "projectBuildMiB": 417,
+  "projectDartToolMiB": 230,
+  "projectResultsMiB": 25,
+  "dataVolumeSnapshots": 0,
+  "timeMachineLocalSnapshots": 0,
+  "freeSpaceRecoveredWithoutDeletion": true,
+  "attribution": "System-wide VM pressure materially consumes capacity; exact earlier disk delta cannot be attributed without a pre-build baseline. Other writes not excluded.",
+  "performanceQualification": false,
+  "projectOnlyCleanupAfterNativeEnospc": {
+    "paths": [
+      ".dart_tool/flutter_build/ddde1871355e77f35d46b6a8d8baab2d",
+      ".dart_tool/flutter_build/6ef6e58dcaa5a15031bfc0f603f3341e"
+    ],
+    "approximateMiB": 194,
+    "reason": "Old ignored compiler hashes from October17; binaries/provenance/source/evidence retained. No broad clean."
+  },
+  "initialReadOnlyAuditActions": "No deletion, process kills, SDK/package updates or OS changes; builds and collectors serial.",
+  "laterFreeSpaceRecoveryGiB": 8.0,
+  "recoveryAttribution": "Unknown external/system state change; no user apps or unrelated data were closed/deleted by this task.",
+  "nativeBuildFailures": [
+    "ENOSPC before corrected build",
+    "Interrupted current-directory error on first corrected retry"
+  ],
+  "nativeBuildEventuallySucceeded": true,
+  "finalCheckpointEnospc": true,
+  "additionalIgnoredCachesRemovedForCheckpoint": {
+    "paths": [
+      "build/test_cache",
+      ".dart_tool/flutter_build/139df8f6f8f14e836a45a1dcceaabbde"
+    ],
+    "approximateMiB": 202,
+    "reason": "Disk reached zero before saving handoff; test compiler and superseded incorrect-delay native compiler caches only. Profile binaries/source/evidence/index retained."
+  },
+  "freeMiBAfterCheckpointCleanup": 348,
+  "finalValidationFreeMiB": 118
+}

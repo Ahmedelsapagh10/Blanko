@@ -1,0 +1,284 @@
+{
+  "diagnosticOnly": true,
+  "renderingGateQualified": false,
+  "requests": [
+    {
+      "url": "http://127.0.0.1:8765/?phase0=startup-audit",
+      "resourceType": "document",
+      "startMs": 9.028458,
+      "status": 200,
+      "endMs": 21.531833000000006,
+      "timing": {
+        "startTime": 1792406290889.1392,
+        "domainLookupStart": -1,
+        "domainLookupEnd": -1,
+        "connectStart": -1,
+        "secureConnectionStart": -1,
+        "connectEnd": -1,
+        "requestStart": 0.233,
+        "responseStart": 1.043,
+        "responseEnd": 4.598
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/flutter_bootstrap.js",
+      "resourceType": "script",
+      "startMs": 24.167416000000003,
+      "status": 200,
+      "endMs": 31.339624999999955,
+      "timing": {
+        "startTime": 1792406290905.834,
+        "domainLookupStart": 0.25,
+        "domainLookupEnd": 0.259,
+        "connectStart": 0.259,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.476,
+        "requestStart": 0.522,
+        "responseStart": 1.721,
+        "responseEnd": 14.039
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/canvaskit/chromium/canvaskit.wasm",
+      "resourceType": "fetch",
+      "startMs": 44.80387499999995,
+      "status": 200,
+      "endMs": 65.31174999999996,
+      "timing": {
+        "startTime": 1792406290924.7349,
+        "domainLookupStart": 0.203,
+        "domainLookupEnd": 0.209,
+        "connectStart": 0.209,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.379,
+        "requestStart": 0.408,
+        "responseStart": 1.315,
+        "responseEnd": 14.395
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/canvaskit/chromium/canvaskit.js",
+      "resourceType": "script",
+      "startMs": 45.10399999999993,
+      "status": 200,
+      "endMs": 51.90483299999994,
+      "timing": {
+        "startTime": 1792406290924.7751,
+        "domainLookupStart": 0.256,
+        "domainLookupEnd": 0.257,
+        "connectStart": 0.257,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.329,
+        "requestStart": 0.382,
+        "responseStart": 1.282,
+        "responseEnd": 5.561
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/main.dart.js",
+      "resourceType": "script",
+      "startMs": 45.24974999999995,
+      "status": 200,
+      "endMs": 92.06429099999991,
+      "timing": {
+        "startTime": 1792406290924.8582,
+        "domainLookupStart": 0.208,
+        "domainLookupEnd": 0.209,
+        "connectStart": 0.209,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.312,
+        "requestStart": 0.32,
+        "responseStart": 1.724,
+        "responseEnd": 30.406
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/favicon.png",
+      "resourceType": "other",
+      "startMs": 45.771082999999976,
+      "status": 200,
+      "endMs": 51.1814159999999,
+      "timing": {
+        "startTime": 1792406290925.385,
+        "domainLookupStart": 0.082,
+        "domainLookupEnd": 0.083,
+        "connectStart": 0.083,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.187,
+        "requestStart": 0.201,
+        "responseStart": 1.653,
+        "responseEnd": 4.851
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/FontManifest.json",
+      "resourceType": "fetch",
+      "startMs": 178.04995799999995,
+      "status": 200,
+      "endMs": 184.27879099999996,
+      "timing": {
+        "startTime": 1792406291060.418,
+        "domainLookupStart": 0.273,
+        "domainLookupEnd": 0.278,
+        "connectStart": 0.278,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.49,
+        "requestStart": 0.52,
+        "responseStart": 0.953,
+        "responseEnd": 6.182
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/fonts/MaterialIcons-Regular.otf",
+      "resourceType": "fetch",
+      "startMs": 183.4236249999999,
+      "status": 200,
+      "endMs": 185.74537499999997,
+      "timing": {
+        "startTime": 1792406291063.192,
+        "domainLookupStart": 0.098,
+        "domainLookupEnd": 0.102,
+        "connectStart": 0.102,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.217,
+        "requestStart": 0.24,
+        "responseStart": 0.952,
+        "responseEnd": 2.521
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/assets/benchmark_fonts/Roboto-Regular.ttf",
+      "resourceType": "fetch",
+      "startMs": 183.99316599999997,
+      "status": 200,
+      "endMs": 187.256666,
+      "timing": {
+        "startTime": 1792406291063.545,
+        "domainLookupStart": 0.066,
+        "domainLookupEnd": 0.067,
+        "connectStart": 0.067,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.128,
+        "requestStart": 0.138,
+        "responseStart": 0.676,
+        "responseEnd": 3.953
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/packages/cupertino_icons/assets/CupertinoIcons.ttf",
+      "resourceType": "fetch",
+      "startMs": 184.16549999999995,
+      "status": 200,
+      "endMs": 186.123875,
+      "timing": {
+        "startTime": 1792406291063.581,
+        "domainLookupStart": 0.066,
+        "domainLookupEnd": 0.067,
+        "connectStart": 0.067,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.129,
+        "requestStart": 0.142,
+        "responseStart": 0.646,
+        "responseEnd": 2.871
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/assets/benchmark_fonts/Roboto-Regular.ttf",
+      "resourceType": "fetch",
+      "startMs": 219.24870799999997,
+      "status": 200,
+      "endMs": 263.949083,
+      "timing": {
+        "startTime": 1792406291099.965,
+        "domainLookupStart": 0.804,
+        "domainLookupEnd": 0.809,
+        "connectStart": 0.809,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.955,
+        "requestStart": 0.984,
+        "responseStart": 1.436,
+        "responseEnd": 5.752
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/assets/benchmark_fonts/Roboto-Medium.ttf",
+      "resourceType": "fetch",
+      "startMs": 264.3092909999999,
+      "status": 200,
+      "endMs": 267.314125,
+      "timing": {
+        "startTime": 1792406291143.795,
+        "domainLookupStart": 0.091,
+        "domainLookupEnd": 0.096,
+        "connectStart": 0.096,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.236,
+        "requestStart": 0.263,
+        "responseStart": 0.704,
+        "responseEnd": 2.829
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/assets/benchmark_fonts/Roboto-Bold.ttf",
+      "resourceType": "fetch",
+      "startMs": 269.15599999999995,
+      "status": 200,
+      "endMs": 272.051208,
+      "timing": {
+        "startTime": 1792406291148.674,
+        "domainLookupStart": 0.086,
+        "domainLookupEnd": 0.091,
+        "connectStart": 0.091,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.226,
+        "requestStart": 0.251,
+        "responseStart": 0.668,
+        "responseEnd": 3.13
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8765/assets/assets/benchmark_fonts/NotoSansArabic-Regular.ttf",
+      "resourceType": "fetch",
+      "startMs": 272.48962499999993,
+      "status": 200,
+      "endMs": 274.12483299999997,
+      "timing": {
+        "startTime": 1792406291151.926,
+        "domainLookupStart": 0.064,
+        "domainLookupEnd": 0.067,
+        "connectStart": 0.067,
+        "secureConnectionStart": -1,
+        "connectEnd": 0.217,
+        "requestStart": 0.239,
+        "responseStart": 0.539,
+        "responseEnd": 1.606
+      }
+    }
+  ],
+  "console": [],
+  "errors": [],
+  "blockedExternal": [],
+  "firstReady": {
+    "scene": "sparse",
+    "fixtureMs": 33.515,
+    "rendererPrepareMs": 179.095,
+    "fonts": {
+      "manifest": "roboto-3.015-noto-sans-arabic-2.012-v1",
+      "ready": true,
+      "registrationMs": 60.239,
+      "families": [
+        "WhiteboardBenchmarkLatin",
+        "WhiteboardBenchmarkArabic"
+      ],
+      "scope": "fixed benchmark corpus; not arbitrary Unicode coverage"
+    },
+    "loadToInteractiveMs": 263.2,
+    "dartEntryToInteractiveMs": 352.76
+  },
+  "navigationToReadyWallMs": 548.5169579999999,
+  "runtime": {
+    "crossOriginIsolated": true,
+    "skwasmLoaded": false,
+    "skwasmIsMultiThreaded": null
+  }
+}
