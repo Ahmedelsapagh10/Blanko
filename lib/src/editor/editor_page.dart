@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../theme/blanko_brand.dart';
 import 'editor_canvas.dart';
+import 'editor_controls.dart';
+import '../theme/theme_settings.dart';
 import 'text_editor_dialog.dart';
 import 'editor_text.dart';
 import '../document/element.dart';
@@ -82,6 +84,9 @@ class _EditorPageState extends State<EditorPage> {
     controller.focusLost();
     final confirmed = await showDialog<bool>(
       context: context,
+      animationStyle: MediaQuery.disableAnimationsOf(context)
+          ? AnimationStyle.noAnimation
+          : null,
       builder: (context) => AlertDialog(
         title: const Text('Clear this board?'),
         content: const Text(
@@ -136,6 +141,14 @@ class _EditorPageState extends State<EditorPage> {
       controller.deleteSelection();
       return KeyEventResult.handled;
     }
+    if (command && key == LogicalKeyboardKey.keyD) {
+      controller.duplicateSelection();
+      return KeyEventResult.handled;
+    }
+    if (command && key == LogicalKeyboardKey.keyR) {
+      controller.rotateSelection();
+      return KeyEventResult.handled;
+    }
     if (command || HardwareKeyboard.instance.isAltPressed) {
       return KeyEventResult.ignored;
     }
@@ -148,6 +161,7 @@ class _EditorPageState extends State<EditorPage> {
       LogicalKeyboardKey.keyO: EditorTool.ellipse,
       LogicalKeyboardKey.keyT: EditorTool.triangle,
       LogicalKeyboardKey.keyL: EditorTool.line,
+      LogicalKeyboardKey.keyF: EditorTool.containerFrame,
     }[key];
     if (tool != null) {
       controller.setTool(tool);
@@ -156,182 +170,89 @@ class _EditorPageState extends State<EditorPage> {
     return KeyEventResult.ignored;
   }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      leading:
-          widget.leading ??
-          const Padding(
-            padding: EdgeInsets.all(12),
-            child: Center(child: BlankoSymbol(size: 24)),
-          ),
-      title: Text(
-        widget.title,
-        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+  void _shortcuts() => showDialog<void>(
+    context: context,
+    animationStyle: MediaQuery.disableAnimationsOf(context)
+        ? AnimationStyle.noAnimation
+        : null,
+    builder: (context) => AlertDialog(
+      title: const Text('Keyboard & gestures'),
+      content: const SingleChildScrollView(
+        child: Text(
+          'V  Select     P  Pen     E  Object eraser\nR  Rectangle     O  Ellipse     T  Triangle\nL  Line     H / hold Space  Pan\n\n⌘ / Ctrl + Z  Undo\n⌘ / Ctrl + Shift + Z  Redo\n⌘ / Ctrl + D  Duplicate selection\n⌘ / Ctrl + R  Rotate selection\nDelete  Remove selection     Esc  Cancel\n\nScroll / trackpad  Navigate\n⌘ / Ctrl + scroll  Zoom\nTouch: one finger draws, two fingers navigate.',
+        ),
       ),
-      actions: widget.actions.isNotEmpty
-          ? widget.actions
-          : const [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Center(child: Text('Session only · not saved')),
-              ),
-            ],
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Done'),
+        ),
+      ],
     ),
-    body: Focus(
-      focusNode: focusNode,
-      autofocus: true,
-      onKeyEvent: _key,
-      onFocusChange: (focused) {
-        if (!focused) controller.focusLost();
-      },
-      child: Column(
-        children: [
-          ListenableBuilder(
-            listenable: controller.toolbarChanges,
-            builder: (context, child) => Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerLow,
-                border: Border(
-                  bottom: BorderSide(color: Theme.of(context).dividerColor),
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Wrap(
-                spacing: 4,
-                runSpacing: 6,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  for (final item in const [
-                    (EditorTool.select, Icons.near_me_outlined, 'Select (V)'),
-                    (EditorTool.pan, Icons.pan_tool_outlined, 'Pan (H)'),
-                    (EditorTool.pen, Icons.edit_outlined, 'Pen (P)'),
-                    (EditorTool.text, Icons.text_fields, 'Text'),
-                    (
-                      EditorTool.sticky,
-                      Icons.sticky_note_2_outlined,
-                      'Sticky note',
-                    ),
-                    (
-                      EditorTool.eraser,
-                      Icons.auto_fix_normal,
-                      'Object eraser (E)',
-                    ),
-                    (
-                      EditorTool.segmentEraser,
-                      Icons.content_cut,
-                      'Segment eraser',
-                    ),
-                    (
-                      EditorTool.rectangle,
-                      Icons.rectangle_outlined,
-                      'Rectangle (R)',
-                    ),
-                    (EditorTool.ellipse, Icons.circle_outlined, 'Ellipse (O)'),
-                    (EditorTool.triangle, Icons.change_history, 'Triangle (T)'),
-                    (EditorTool.line, Icons.horizontal_rule, 'Line (L)'),
-                  ])
-                    IconButton(
-                      tooltip: item.$3,
-                      isSelected: controller.tool == item.$1,
-                      style: IconButton.styleFrom(
-                        backgroundColor: controller.tool == item.$1
-                            ? BlankoBrand.originBlue.withValues(alpha: 0.12)
-                            : null,
-                        foregroundColor: controller.tool == item.$1
-                            ? BlankoBrand.originBlue
-                            : null,
-                      ),
-                      onPressed: () => controller.setTool(item.$1),
-                      icon: Icon(item.$2),
-                    ),
-                  if (controller.isErasing) ...[
-                    Text('Eraser ${controller.eraserSize.round()} px'),
-                    SizedBox(
-                      width: 120,
-                      child: Slider(
-                        semanticFormatterCallback: (value) =>
-                            '${value.round()} pixels',
-                        value: controller.eraserSize,
-                        min: 4,
-                        max: 120,
-                        onChanged: controller.setEraserSize,
-                      ),
-                    ),
-                  ],
-                  const SizedBox(width: 8),
-                  for (final ink in const [
-                    0xff202d46,
-                    0xff2563eb,
-                    0xffdc2626,
-                    0xff15803d,
-                  ])
-                    IconButton(
-                      tooltip: switch (ink) {
-                        0xff202d46 => 'Ink',
-                        0xff2563eb => 'Blue',
-                        0xffdc2626 => 'Red',
-                        _ => 'Green',
-                      },
-                      onPressed: () => controller.setColor(ink),
-                      icon: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: Color(ink),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: controller.color == ink
-                                ? Colors.white
-                                : Colors.transparent,
-                            width: 3,
-                          ),
-                        ),
-                      ),
-                    ),
-                  DropdownButton<double>(
-                    value: controller.strokeWidth,
-                    hint: const Text('Width'),
-                    items: const [
-                      DropdownMenuItem(value: 2, child: Text('Thin')),
-                      DropdownMenuItem(value: 3, child: Text('Medium')),
-                      DropdownMenuItem(value: 6, child: Text('Thick')),
-                    ],
-                    onChanged: (value) {
-                      if (value != null) controller.setWidth(value);
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    tooltip: 'Undo (⌘/Ctrl Z)',
-                    icon: const Icon(Icons.undo),
-                    onPressed: controller.session.canUndo
-                        ? controller.undo
-                        : null,
-                  ),
-                  IconButton(
-                    tooltip: 'Redo (⌘/Ctrl Shift Z)',
-                    icon: const Icon(Icons.redo),
-                    onPressed: controller.session.canRedo
-                        ? controller.redo
-                        : null,
-                  ),
-                  IconButton(
-                    tooltip: 'Edit text / resize',
-                    icon: const Icon(Icons.edit_note),
-                    onPressed: controller.selectedId != null
-                        ? controller.editSelectedText
-                        : null,
-                  ),
-                  IconButton(
-                    tooltip: 'Delete selection',
-                    icon: const Icon(Icons.delete_outline),
-                    onPressed: controller.selectedId != null
-                        ? controller.deleteSelection
-                        : null,
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
+  );
+
+  Widget _historyButtons() => ListenableBuilder(
+    listenable: controller.toolbarChanges,
+    builder: (context, _) => Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          tooltip: 'Undo (⌘/Ctrl Z)',
+          icon: const Icon(Icons.undo),
+          onPressed:
+              !controller.readOnly &&
+                  controller.inputEnabled &&
+                  controller.session.canUndo
+              ? controller.undo
+              : null,
+        ),
+        IconButton(
+          tooltip: 'Redo (⌘/Ctrl Shift Z)',
+          icon: const Icon(Icons.redo),
+          onPressed:
+              !controller.readOnly &&
+                  controller.inputEnabled &&
+                  controller.session.canRedo
+              ? controller.redo
+              : null,
+        ),
+      ],
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final compact = constraints.maxWidth < 700 || constraints.maxHeight < 500;
+      final colors = Theme.of(context).colorScheme;
+      return Focus(
+        focusNode: focusNode,
+        autofocus: true,
+        onKeyEvent: _key,
+        onFocusChange: (focused) {
+          if (!focused) controller.focusLost();
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            toolbarHeight: compact ? 56 : 64,
+            leadingWidth: 52,
+            leading:
+                widget.leading ?? const Center(child: BlankoSymbol(size: 28)),
+            title: Text(
+              widget.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            actions: [
+              if (!compact) _historyButtons(),
+              ...widget.actions,
+              const ThemeSettingsButton(),
+              if (!compact) ...[
+                ListenableBuilder(
+                  listenable: controller.toolbarChanges,
+                  builder: (context, _) => IconButton(
                     tooltip: 'Clear All',
                     icon: const Icon(Icons.delete_sweep_outlined),
                     onPressed:
@@ -341,56 +262,152 @@ class _EditorPageState extends State<EditorPage> {
                         ? _clearAll
                         : null,
                   ),
-                  IconButton(
-                    tooltip: 'Zoom out',
-                    icon: const Icon(Icons.remove),
-                    onPressed: () => controller.zoom(1 / 1.25),
-                  ),
-                  Text('${(controller.camera.zoom * 100).round()}%'),
-                  IconButton(
-                    tooltip: 'Zoom in',
-                    icon: const Icon(Icons.add),
-                    onPressed: () => controller.zoom(1.25),
-                  ),
-                  IconButton(
-                    tooltip: 'Reset view',
-                    icon: const Icon(Icons.home_outlined),
-                    onPressed: controller.resetCamera,
-                  ),
-                ],
-              ),
-            ),
+                ),
+                IconButton(
+                  tooltip: 'Keyboard shortcuts',
+                  onPressed: _shortcuts,
+                  icon: const Icon(Icons.keyboard_outlined),
+                ),
+              ],
+              const SizedBox(width: 8),
+            ],
           ),
-          Expanded(
-            child: EditorCanvas(controller: controller, focusNode: focusNode),
-          ),
-          ListenableBuilder(
-            listenable: controller.toolbarChanges,
-            builder: (context, child) => Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerLow,
-                border: Border(
-                  top: BorderSide(color: Theme.of(context).dividerColor),
+          bottomNavigationBar: compact
+              ? SafeArea(
+                  top: false,
+                  child: Material(
+                    color: colors.surfaceContainerLowest,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 6,
+                      ),
+                      child: EditorControls(
+                        controller: controller,
+                        onClear: _clearAll,
+                        onHelp: _shortcuts,
+                        mobile: true,
+                      ),
+                    ),
+                  ),
+                )
+              : null,
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: EditorCanvas(
+                  controller: controller,
+                  focusNode: focusNode,
                 ),
               ),
-              child: Text(
-                controller.message ??
-                    (controller.tool == EditorTool.select
-                        ? '${controller.elementCount} elements · Select an outline or stroke, then drag · Delete: remove · Esc: cancel'
-                        : '${controller.elementCount} elements · Drag to draw · Space / hand: pan · Ctrl/⌘ + scroll: zoom · Esc: cancel'),
-                style: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.75),
-                  fontSize: 13,
+              if (!compact) ...[
+                Positioned(
+                  left: 16,
+                  top: 16,
+                  bottom: 64,
+                  width: 60,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: SingleChildScrollView(
+                      child: ToolSurface(
+                        child: EditorControls(
+                          controller: controller,
+                          onClear: _clearAll,
+                          onHelp: _shortcuts,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 92,
+                  right: 24,
+                  top: 16,
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: ToolSurface(
+                      child: EditorProperties(controller: controller),
+                    ),
+                  ),
+                ),
+              ],
+              if (compact)
+                Positioned(
+                  top: 12,
+                  left: 12,
+                  child: ToolSurface(
+                    padding: const EdgeInsets.all(2),
+                    child: _historyButtons(),
+                  ),
+                ),
+              Positioned(
+                right: compact ? 12 : 20,
+                bottom: 16,
+                child: ToolSurface(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 2,
+                  ),
+                  child: ListenableBuilder(
+                    listenable: controller.toolbarChanges,
+                    builder: (context, _) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: 'Zoom out',
+                          icon: const Icon(Icons.remove, size: 20),
+                          onPressed: () => controller.zoom(1 / 1.25),
+                        ),
+                        SizedBox(
+                          width: 48,
+                          child: Text(
+                            '${(controller.camera.zoom * 100).round()}%',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        ),
+                        IconButton(
+                          tooltip: 'Zoom in',
+                          icon: const Icon(Icons.add, size: 20),
+                          onPressed: () => controller.zoom(1.25),
+                        ),
+                        IconButton(
+                          tooltip: 'Reset view',
+                          icon: const Icon(
+                            Icons.center_focus_strong_outlined,
+                            size: 20,
+                          ),
+                          onPressed: controller.resetCamera,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Positioned(
+                left: compact ? 12 : 92,
+                right: compact ? 230 : 300,
+                bottom: 24,
+                child: IgnorePointer(
+                  child: ListenableBuilder(
+                    listenable: controller.toolbarChanges,
+                    builder: (context, _) => Text(
+                      controller.message ??
+                          '${controller.elementCount} elements',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: colors.onSurfaceVariant,
+                        backgroundColor: colors.surfaceContainerLowest,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
+        ),
+      );
+    },
   );
 }

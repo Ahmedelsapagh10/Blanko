@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,14 @@ import '../document/element.dart';
 import '../document/document.dart';
 import '../document/document_settings.dart';
 import '../geometry/geometry.dart';
+import '../persistence/board_store.dart';
 import '../viewport/camera.dart';
 import 'board_session.dart';
 import 'editor_scene.dart';
 import 'stroke_eraser.dart';
 import 'editor_text.dart';
+import 'image_cache_manager.dart';
+import 'image_picker_service.dart';
 
 enum EditorTool {
   select,
@@ -27,41 +31,181 @@ enum EditorTool {
   segmentEraser,
   text,
   sticky,
+  containerFrame,
+  exportFrame,
 }
 
 /// Flutter interaction state; only completed gestures enter the pure session.
 final class EditorCanvasController extends ChangeNotifier {
-  EditorCanvasController({BoardSession? session, this.readOnly = false})
-    : session =
-          session ??
-          BoardSession(
-            document: BoardDocument(
-              id: 'board',
-              title: 'Untitled board',
-              revision: 0,
-              elements: [],
-              assets: [],
-              fontReferences: [],
-              canvasSettings: CanvasSettings(
-                grid: GridSettings(
-                  visible: true,
-                  spacing: 40,
-                  color: 0xffe9edf3,
-                ),
-              ),
-            ),
-          ) {
+  EditorCanvasController({
+    BoardSession? session,
+    this.readOnly = false,
+    this.store,
+  }) : session =
+           session ??
+           BoardSession(
+             document: BoardDocument(
+               id: 'board',
+               title: 'Untitled board',
+               revision: 0,
+               elements: [],
+               assets: [],
+               fontReferences: [],
+               canvasSettings: CanvasSettings(
+                 grid: GridSettings(
+                   visible: true,
+                   spacing: 40,
+                   color: 0xffe9edf3,
+                 ),
+               ),
+             ),
+           ) {
     _refreshScene();
   }
 
   final BoardSession session;
   final bool readOnly;
+  final BoardStore? store;
+  final imageCache = ImageCacheManager();
+  final _requestedAssets = <String>{};
   bool inputEnabled = true;
   final toolbarChanges = ValueNotifier<int>(0);
   late EditorScene scene;
   final paths = <ElementId, Path>{};
   final textLayouts = <ElementId, TextPainter>{};
   void Function(Point2 world, ElementId? id, bool sticky)? onEditText;
+
+  void requestImage(String assetId) {
+    if (_disposed || _requestedAssets.contains(assetId)) return;
+    _requestedAssets.add(assetId);
+    imageCache
+        .load(assetId, () async {
+          return await store?.readAsset(assetId);
+        })
+        .then((image) {
+          if (image != null && !_disposed) {
+            notifyListeners();
+          }
+        });
+  }
+
+  Future<ElementId?> importImage({
+    required Uint8List bytes,
+    required String filename,
+    String? mimeType,
+    Point2? position,
+  }) async {
+    if (_disposed || readOnly || !inputEnabled) return null;
+    try {
+      final buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
+      final descriptor = await ui.ImageDescriptor.encoded(buffer);
+      final origW = descriptor.width;
+      final origH = descriptor.height;
+      descriptor.dispose();
+      buffer.dispose();
+
+      if (origW <= 0 || origH <= 0) return null;
+
+      final assetId =
+          'img-${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}-${math.Random().nextInt(0x7fffffff).toRadixString(36)}';
+      final detectedMime =
+          mimeType ??
+          (filename.toLowerCase().endsWith('.png')
+              ? 'image/png'
+              : 'image/jpeg');
+
+      if (store != null) {
+        await store!.writeAsset(assetId, bytes);
+      }
+
+      const maxInitialSide = 360.0;
+      double width = origW.toDouble();
+      double height = origH.toDouble();
+      if (width > maxInitialSide || height > maxInitialSide) {
+        final scale = maxInitialSide / math.max(width, height);
+        width *= scale;
+        height *= scale;
+      }
+
+      final center = position ?? camera.translation;
+      final bounds = Bounds2(
+        center.x - width / 2,
+        center.y - height / 2,
+        center.x + width / 2,
+        center.y + height / 2,
+      );
+
+      final assetRef = DocumentAssetReference(
+        id: assetId,
+        mimeType: detectedMime,
+        pixelWidth: origW,
+        pixelHeight: origH,
+        byteLength: bytes.length,
+      );
+
+      final content = ImageElementContent(assetId: assetId, bounds: bounds);
+
+      final id = session.insert(content, asset: assetRef);
+
+      selectedId = id;
+      _refreshScene();
+      requestImage(assetId);
+      setTool(EditorTool.select);
+      return id;
+    } on ArgumentError catch (error) {
+      message = 'Could not import image: ${error.message}';
+      _notify(toolbar: true);
+      return null;
+    } on StateError catch (error) {
+      message = 'Could not import image: ${error.message}';
+      _notify(toolbar: true);
+      return null;
+    } catch (_) {
+      message = 'Invalid or unsupported image file.';
+      _notify(toolbar: true);
+      return null;
+    }
+  }
+
+  Future<void> pickAndInsertImage() async {
+    if (_disposed || readOnly || !inputEnabled) return;
+    try {
+      final picked = await pickImageFile();
+      if (picked != null) {
+        await importImage(
+          bytes: picked.bytes,
+          filename: picked.filename,
+          mimeType: picked.mimeType,
+        );
+      }
+    } catch (_) {
+      message = 'Could not select image file.';
+      _notify(toolbar: true);
+    }
+  }
+
+  void rotateSelection([double radians = math.pi / 2]) {
+    if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
+    if (session.rotate(selectedId!, radians)) {
+      _refreshScene();
+    }
+  }
+
+  void duplicateSelection() {
+    if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
+    final dupId = session.duplicate(selectedId!);
+    if (dupId != null) {
+      selectedId = dupId;
+      _refreshScene();
+    }
+  }
+
+  void resizeSelection(Bounds2 newBounds) {
+    if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
+    if (session.resize(selectedId!, newBounds)) {
+      _refreshScene();
+    }
+  }
 
   void setTitle(String title) {
     if (_disposed || readOnly) return;
@@ -195,6 +339,98 @@ final class EditorCanvasController extends ChangeNotifier {
   bool spaceHeld = false;
   String? message;
   Size viewportSize = Size.zero;
+  final _touches = <int, Point2>{};
+  Camera? _touchCamera;
+  Point2? _touchAnchor;
+  double _touchDistance = 1;
+  bool _touchNavigation = false;
+
+  void _startTouchNavigation() {
+    final pair = _touches.values.take(2).toList();
+    _touchCamera = camera;
+    _touchAnchor = (pair[0] + pair[1]) * .5;
+    _touchDistance = math.max(1, pair[0].distanceTo(pair[1]));
+  }
+
+  void pointerCancel(PointerCancelEvent event) {
+    _touches.remove(event.pointer);
+    _touchNavigation = _touches.isNotEmpty;
+    _touchCamera = null;
+    cancelGesture();
+  }
+
+  Point2? _handleAnchor;
+  Transform2? _handleBase;
+  Transform2? _previewWorld;
+  bool _rotatingHandle = false;
+
+  bool get canTransformSelection {
+    final id = selectedId;
+    return tool == EditorTool.select &&
+        id != null &&
+        !readOnly &&
+        inputEnabled &&
+        !scene.isLocked(id) &&
+        session.document.childrenOf(id).isEmpty;
+  }
+
+  bool _beginHandle(Point2 world, bool touch) {
+    if (!canTransformSelection) return false;
+    final bounds = scene
+        .boundsOf(selectedId!)
+        .inflate(camera.worldTolerance(4));
+    final corners = [
+      Point2(bounds.left, bounds.top),
+      Point2(bounds.right, bounds.top),
+      Point2(bounds.right, bounds.bottom),
+      Point2(bounds.left, bounds.bottom),
+    ];
+    final tolerance = camera.worldTolerance(touch ? 20 : 9);
+    final rotation = Point2(
+      bounds.center.x,
+      bounds.top - camera.worldTolerance(24),
+    );
+    final nearestHandle = [
+      rotation,
+      ...corners,
+    ].map(world.distanceTo).reduce(math.min);
+    if (world.distanceTo(bounds.center) < nearestHandle) return false;
+    for (var i = 0; i < 4; i++) {
+      if (world.distanceTo(corners[i]) <= tolerance) {
+        _handleAnchor = corners[(i + 2) % 4];
+        _handleBase = scene.worldTransformOf(selectedId!);
+        return true;
+      }
+    }
+    if (world.distanceTo(rotation) <= tolerance) {
+      _handleAnchor = bounds.center;
+      _handleBase = scene.worldTransformOf(selectedId!);
+      _rotatingHandle = true;
+      return true;
+    }
+    return false;
+  }
+
+  void _updateHandle(Point2 world) {
+    final anchor = _handleAnchor!;
+    final start = _start! - anchor;
+    final end = world - anchor;
+    final scale =
+        (end.distanceTo(Point2.zero) /
+                math.max(1e-8, start.distanceTo(Point2.zero)))
+            .clamp(.05, 100.0)
+            .toDouble();
+    final delta = _rotatingHandle
+        ? Transform2.rotation(
+            math.atan2(end.y, end.x) - math.atan2(start.y, start.x),
+          )
+        : Transform2.scale(scale, scale);
+    _previewWorld =
+        Transform2.translation(anchor.x, anchor.y) *
+        delta *
+        Transform2.translation(-anchor.x, -anchor.y);
+  }
+
   int? _pointer;
   EditorTool? _gestureTool;
   Point2? _start;
@@ -208,7 +444,8 @@ final class EditorCanvasController extends ChangeNotifier {
   bool _disposed = false;
 
   bool get hasGesture => _pointer != null;
-  bool get isNavigating => hasGesture || _trackpadCamera != null;
+  bool get isNavigating =>
+      hasGesture || _trackpadCamera != null || _touchNavigation;
   int get elementCount => session.document.elements.length;
 
   void _notify({bool toolbar = false}) {
@@ -240,6 +477,9 @@ final class EditorCanvasController extends ChangeNotifier {
   void setTool(EditorTool value) {
     cancelGesture(notify: false);
     tool = value;
+    if (value != EditorTool.select && value != EditorTool.pan) {
+      selectedId = null;
+    }
     message = null;
     _notify(toolbar: true);
   }
@@ -262,6 +502,21 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void pointerDown(PointerDownEvent event) {
+    if (_disposed || !inputEnabled) return;
+    if (event.kind == PointerDeviceKind.touch) {
+      _touches[event.pointer] = Point2(
+        event.localPosition.dx,
+        event.localPosition.dy,
+      );
+      if (_touches.length >= 2) {
+        cancelGesture(notify: false);
+        _touchNavigation = true;
+        _startTouchNavigation();
+        _notify(toolbar: true);
+        return;
+      }
+      if (_touchNavigation) return;
+    }
     if (_disposed ||
         !inputEnabled ||
         _pointer != null ||
@@ -284,6 +539,10 @@ final class EditorCanvasController extends ChangeNotifier {
       _erase(_start!, _start!);
       _notify(toolbar: true);
     } else if (_gestureTool == EditorTool.select) {
+      if (_beginHandle(_start!, event.kind == PointerDeviceKind.touch)) {
+        _notify(toolbar: true);
+        return;
+      }
       selectedId = scene.hitTest(
         _start!,
         worldTolerance: camera.worldTolerance(6),
@@ -298,6 +557,27 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void pointerMove(PointerMoveEvent event) {
+    if (event.kind == PointerDeviceKind.touch &&
+        _touches.containsKey(event.pointer)) {
+      _touches[event.pointer] = Point2(
+        event.localPosition.dx,
+        event.localPosition.dy,
+      );
+      if (_touchNavigation) {
+        if (_touches.length >= 2 && _touchCamera != null) {
+          final pair = _touches.values.take(2).toList();
+          final centroid = (pair[0] + pair[1]) * .5;
+          final scale = pair[0].distanceTo(pair[1]) / _touchDistance;
+          camera = _boundedCamera(
+            _touchCamera!
+                .zoomAt(_touchAnchor!, _touchCamera!.zoom * scale)
+                .pan(centroid - _touchAnchor!),
+          );
+          _notify(toolbar: true);
+        }
+        return;
+      }
+    }
     if (event.pointer != _pointer) return;
     final screen = Point2(event.localPosition.dx, event.localPosition.dy);
     final world = _world(event.localPosition);
@@ -309,7 +589,11 @@ final class EditorCanvasController extends ChangeNotifier {
       case EditorTool.pan:
         camera = _boundedCamera(camera.pan(screen - _lastScreen!));
       case EditorTool.select:
-        if (!readOnly && selectedId != null) moveDelta = world - _start!;
+        if (_handleAnchor != null) {
+          _updateHandle(world);
+        } else if (!readOnly && selectedId != null) {
+          moveDelta = world - _start!;
+        }
       case EditorTool.pen:
         final relative = world - _start!;
         if (relative.distanceTo(_points.last) * camera.zoom >= .75) {
@@ -324,7 +608,9 @@ final class EditorCanvasController extends ChangeNotifier {
       case EditorTool.rectangle ||
           EditorTool.ellipse ||
           EditorTool.triangle ||
-          EditorTool.line:
+          EditorTool.line ||
+          EditorTool.containerFrame ||
+          EditorTool.exportFrame:
         previewElement = _shape(_start!, world);
         previewPath = previewElement == null
             ? null
@@ -338,6 +624,26 @@ final class EditorCanvasController extends ChangeNotifier {
 
   DocumentElement? _shape(Point2 start, Point2 end) {
     final dx = end.x - start.x, dy = end.y - start.y;
+    if (_gestureTool == EditorTool.containerFrame ||
+        _gestureTool == EditorTool.exportFrame) {
+      if (dx.abs() * camera.zoom < 2 || dy.abs() * camera.zoom < 2) return null;
+      return DocumentElement(
+        id: ElementId('preview'),
+        transform: Transform2.translation(
+          math.min(start.x, end.x),
+          math.min(start.y, end.y),
+        ),
+        content: _gestureTool == EditorTool.containerFrame
+            ? ContainerFrameElementContent(
+                bounds: Bounds2(0, 0, dx.abs(), dy.abs()),
+                label: 'Frame',
+              )
+            : ExportFrameElementContent(
+                bounds: Bounds2(0, 0, dx.abs(), dy.abs()),
+                label: 'Export',
+              ),
+      );
+    }
     if (_gestureTool == EditorTool.line) {
       if (start.distanceTo(end) * camera.zoom < 2) return null;
       return DocumentElement(
@@ -370,6 +676,19 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void pointerUp(PointerUpEvent event) {
+    if (event.kind == PointerDeviceKind.touch) {
+      _touches.remove(event.pointer);
+      if (_touchNavigation) {
+        if (_touches.isEmpty) {
+          _touchNavigation = false;
+          _touchCamera = null;
+        } else if (_touches.length >= 2) {
+          _startTouchNavigation();
+        }
+        _notify(toolbar: true);
+        return;
+      }
+    }
     if (event.pointer != _pointer) return;
     try {
       if (_gestureTool == EditorTool.text ||
@@ -413,7 +732,15 @@ final class EditorCanvasController extends ChangeNotifier {
           selectedId != null) {
         final delta = _world(event.localPosition) - _start!;
         if (delta.distanceTo(Point2.zero) * camera.zoom >= 2) {
-          session.translate(selectedId!, delta);
+          if (_handleAnchor != null) {
+            _updateHandle(_world(event.localPosition));
+            session.setWorldTransform(
+              selectedId!,
+              _previewWorld! * _handleBase!,
+            );
+          } else {
+            session.translate(selectedId!, delta);
+          }
           _refreshScene();
         }
       } else if (_gestureTool != EditorTool.pan &&
@@ -439,6 +766,10 @@ final class EditorCanvasController extends ChangeNotifier {
 
   void cancelGesture({bool notify = true}) {
     eraseChanges.clear();
+    _handleAnchor = null;
+    _handleBase = null;
+    _previewWorld = null;
+    _rotatingHandle = false;
     _pointer = null;
     _gestureTool = null;
     _start = null;
@@ -542,6 +873,9 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void focusLost() {
+    _touches.clear();
+    _touchNavigation = false;
+    _touchCamera = null;
     spaceHeld = false;
     _trackpadCamera = null;
     cancelGesture();
@@ -553,6 +887,7 @@ final class EditorCanvasController extends ChangeNotifier {
     cancelGesture(notify: false);
     _trackpadCamera = null;
     toolbarChanges.dispose();
+    imageCache.dispose();
     paths.clear();
     for (final layout in textLayouts.values) {
       layout.dispose();
@@ -595,10 +930,14 @@ Path elementPath(ElementContent content) {
       path
         ..moveTo(start.x, start.y)
         ..lineTo(end.x, end.y);
-    case TextElementContent() || StickyNoteElementContent():
+    case TextElementContent() ||
+        StickyNoteElementContent() ||
+        ImageElementContent() ||
+        ContainerFrameElementContent() ||
+        ExportFrameElementContent():
       break;
     default:
-      throw ArgumentError('This editor slice supports pen, shapes and lines.');
+      throw ArgumentError('Unsupported element content in editor.');
   }
   return path;
 }
@@ -615,7 +954,13 @@ class EditorCanvas extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      controller.viewportSize = constraints.biggest;
+      if (controller.viewportSize != constraints.biggest) {
+        controller.cancelGesture(notify: false);
+        controller._touches.clear();
+        controller._touchNavigation = false;
+        controller._touchCamera = null;
+        controller.viewportSize = constraints.biggest;
+      }
       return ListenableBuilder(
         listenable: controller.toolbarChanges,
         builder: (context, child) => MouseRegion(
@@ -638,7 +983,7 @@ class EditorCanvas extends StatelessWidget {
           },
           onPointerMove: controller.pointerMove,
           onPointerUp: controller.pointerUp,
-          onPointerCancel: (_) => controller.cancelGesture(),
+          onPointerCancel: controller.pointerCancel,
           onPointerSignal: controller.pointerSignal,
           onPointerPanZoomStart: controller.trackpadStart,
           onPointerPanZoomUpdate: controller.trackpadUpdate,
@@ -695,7 +1040,9 @@ class _EditorPainter extends CustomPainter {
       _element(
         canvas,
         element,
-        c.scene.worldTransformOf(element.id),
+        element.id == c.selectedId && c._previewWorld != null
+            ? c._previewWorld! * c.scene.worldTransformOf(element.id)
+            : c.scene.worldTransformOf(element.id),
         c.paths[element.id]!,
         origin,
         delta: element.id == c.selectedId ? c.moveDelta : Point2.zero,
@@ -724,20 +1071,49 @@ class _EditorPainter extends CustomPainter {
       _element(canvas, element, element.transform, c.previewPath!, origin);
     }
     final selected = c.selectedId;
-    if (selected != null) {
-      final bounds = c.scene.boundsOf(selected).inflate(4 / c.camera.zoom);
-      canvas.drawRect(
-        Rect.fromLTRB(
-          bounds.left - origin.x + c.moveDelta.x,
-          bounds.top - origin.y + c.moveDelta.y,
-          bounds.right - origin.x + c.moveDelta.x,
-          bounds.bottom - origin.y + c.moveDelta.y,
-        ),
-        Paint()
+    if (selected != null &&
+        (c.tool == EditorTool.select || c.tool == EditorTool.pan)) {
+      final originalBounds = c.scene.boundsOf(selected);
+      final bounds =
+          (c._previewWorld?.mapBounds(originalBounds) ?? originalBounds)
+              .inflate(4 / c.camera.zoom);
+      final l = bounds.left - origin.x + c.moveDelta.x;
+      final t = bounds.top - origin.y + c.moveDelta.y;
+      final r = bounds.right - origin.x + c.moveDelta.x;
+      final b = bounds.bottom - origin.y + c.moveDelta.y;
+      final rect = Rect.fromLTRB(l, t, r, b);
+      final borderPaint = Paint()
+        ..color = const Color(0xFF4464F6)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5 / c.camera.zoom;
+      canvas.drawRect(rect, borderPaint);
+
+      if (c.canTransformSelection) {
+        final handleRadius = 4.0 / c.camera.zoom;
+        final handlePaint = Paint()
+          ..color = Colors.white
+          ..style = PaintingStyle.fill;
+        final handleStroke = Paint()
           ..color = const Color(0xFF4464F6)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5 / c.camera.zoom,
-      );
+          ..strokeWidth = 1.5 / c.camera.zoom;
+
+        for (final corner in [
+          Offset(l, t),
+          Offset(r, t),
+          Offset(r, b),
+          Offset(l, b),
+        ]) {
+          canvas.drawCircle(corner, handleRadius, handlePaint);
+          canvas.drawCircle(corner, handleRadius, handleStroke);
+        }
+
+        final topCenter = Offset((l + r) / 2, t);
+        final rotHandle = Offset((l + r) / 2, t - 16 / c.camera.zoom);
+        canvas.drawLine(topCenter, rotHandle, borderPaint);
+        canvas.drawCircle(rotHandle, handleRadius, handlePaint);
+        canvas.drawCircle(rotHandle, handleRadius, handleStroke);
+      }
     }
     canvas.restore();
     if (c.isErasing && c.eraserPosition != null) {
@@ -776,6 +1152,92 @@ class _EditorPainter extends CustomPainter {
       LineElementContent(:final style) => style,
       _ => null,
     };
+    if (content is ImageElementContent) {
+      final bounds = content.bounds;
+      final image = controller.imageCache.get(content.assetId);
+      final rect = Rect.fromLTRB(
+        bounds.left,
+        bounds.top,
+        bounds.right,
+        bounds.bottom,
+      );
+      if (image != null) {
+        final src = Rect.fromLTWH(
+          0,
+          0,
+          image.width.toDouble(),
+          image.height.toDouble(),
+        );
+        final paint = Paint()
+          ..filterQuality = FilterQuality.medium
+          ..color = Colors.white.withValues(alpha: element.opacity);
+        canvas.drawImageRect(image, src, rect, paint);
+      } else {
+        final paint = Paint()
+          ..style = PaintingStyle.fill
+          ..color = const Color(0xFFF1F3F5).withValues(alpha: element.opacity);
+        canvas.drawRect(rect, paint);
+        final borderPaint = Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.0 / controller.camera.zoom
+          ..color = const Color(0xFFCED4DA).withValues(alpha: element.opacity);
+        canvas.drawRect(rect, borderPaint);
+        controller.requestImage(content.assetId);
+      }
+    }
+    if (content is ContainerFrameElementContent ||
+        content is ExportFrameElementContent) {
+      final bounds = switch (content) {
+        ContainerFrameElementContent() => content.bounds,
+        ExportFrameElementContent() => content.bounds,
+        _ => throw StateError('frame'),
+      };
+      final isExport = content is ExportFrameElementContent;
+      final rect = Rect.fromLTRB(
+        bounds.left,
+        bounds.top,
+        bounds.right,
+        bounds.bottom,
+      );
+      final bgPaint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = (isExport ? const Color(0x064464F6) : const Color(0x04000000))
+            .withValues(alpha: element.opacity);
+      canvas.drawRect(rect, bgPaint);
+      final borderPaint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = (isExport ? 1.5 : 1.0) / controller.camera.zoom
+        ..color = (isExport ? const Color(0xFF4464F6) : const Color(0xFF94A3B8))
+            .withValues(alpha: element.opacity);
+      canvas.drawRect(rect, borderPaint);
+
+      final label = switch (content) {
+        ContainerFrameElementContent(:final label) =>
+          label.isEmpty ? 'Frame' : label,
+        ExportFrameElementContent(:final label) =>
+          label.isEmpty ? 'Export Frame' : label,
+        _ => '',
+      };
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text: label,
+          style: TextStyle(
+            color: isExport ? const Color(0xFF4464F6) : const Color(0xFF64748B),
+            fontSize: math.max(10.0, 12.0 / controller.camera.zoom),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      textPainter.paint(
+        canvas,
+        Offset(
+          bounds.left,
+          bounds.top - textPainter.height - (3 / controller.camera.zoom),
+        ),
+      );
+      textPainter.dispose();
+    }
     if (content is TextElementContent || content is StickyNoteElementContent) {
       final bounds = switch (content) {
         TextElementContent() => content.bounds,

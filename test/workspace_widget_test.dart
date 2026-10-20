@@ -98,8 +98,7 @@ void main() {
     final first = canvas(tester).session.document.id;
     await tester.tap(find.byTooltip('Boards'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'Second board');
-    await tester.tap(find.text('Create a board'));
+    await tester.tap(find.byKey(const ValueKey('create-board-circle-btn')));
     await tester.pumpAndSettle();
     expect(canvas(tester).elementCount, 0);
     await pen(tester, 300);
@@ -112,7 +111,7 @@ void main() {
     expect(canvas(tester).elementCount, 2);
     await tester.tap(find.byTooltip('Boards'));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(ListTile, 'Untitled board'));
+    await tester.tap(find.byKey(ValueKey('board-$first')));
     await tester.pumpAndSettle();
     expect(canvas(tester).session.document.id, first);
     expect(canvas(tester).elementCount, 1);
@@ -134,10 +133,10 @@ void main() {
     expect((await store.readBoard(id))!.document.elements, isEmpty);
     await tester.tap(find.byTooltip('Boards'));
     await tester.pumpAndSettle();
-    expect(find.text('Create a board'), findsNothing);
+    expect(find.byKey(const ValueKey('create-board-circle-btn')), findsNothing);
     expect(canvas(tester).session.document.id, id);
     store.failWrites = false;
-    await tester.tap(find.text('Retry save'));
+    await tester.tap(find.byTooltip('Retry save'));
     await tester.pumpAndSettle();
     expect(find.text('Saved locally'), findsOneWidget);
     expect((await store.readBoard(id))!.document.elements, hasLength(1));
@@ -153,7 +152,7 @@ void main() {
     await pen(tester);
     await tester.tap(find.byTooltip('Boards'));
     await tester.pump();
-    expect(find.text('Create a board'), findsNothing);
+    expect(find.byKey(const ValueKey('create-board-circle-btn')), findsNothing);
     expect(canvas(tester).inputEnabled, isFalse);
     await tester.sendKeyDownEvent(LogicalKeyboardKey.controlLeft);
     await tester.sendKeyEvent(LogicalKeyboardKey.keyZ);
@@ -162,8 +161,11 @@ void main() {
     expect(canvas(tester).elementCount, 1);
     gate.complete();
     await tester.pumpAndSettle();
-    expect(find.text('Create a board'), findsOneWidget);
-    await tester.tap(find.text('Close'));
+    expect(
+      find.byKey(const ValueKey('create-board-circle-btn')),
+      findsOneWidget,
+    );
+    await tester.tap(find.byTooltip('Close board history'));
     await tester.pumpAndSettle();
     expect(find.text('Saved locally'), findsOneWidget);
     expect(canvas(tester).inputEnabled, isTrue);
@@ -192,7 +194,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(await tester.binding.handleRequestAppExit(), AppExitResponse.cancel);
     store.failWrites = false;
-    await tester.tap(find.text('Retry save'));
+    await tester.tap(find.byTooltip('Retry save'));
     await tester.pumpAndSettle();
     await tester.pumpWidget(const SizedBox());
   });
@@ -253,9 +255,9 @@ void main() {
     expect(await tester.binding.handleRequestAppExit(), AppExitResponse.cancel);
     await tester.tap(find.byTooltip('Boards'));
     await tester.pumpAndSettle();
-    expect(find.text('Create a board'), findsNothing);
+    expect(find.byKey(const ValueKey('create-board-circle-btn')), findsNothing);
     store.readOnly = false;
-    await tester.tap(find.text('Retry save'));
+    await tester.tap(find.byTooltip('Retry save'));
     await tester.pumpAndSettle();
     expect(find.text('Saved locally'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
@@ -336,7 +338,7 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('confirm-rename-board')));
       await tester.pumpAndSettle();
       expect(find.text('Alpha Project'), findsNWidgets(2));
-      await tester.tap(find.text('Close'));
+      await tester.tap(find.byTooltip('Close board history'));
       await tester.pumpAndSettle();
       expect(canvas(tester).session.document.title, 'Alpha Project');
       expect(
@@ -379,7 +381,7 @@ void main() {
       expect((await store.listBoards()).length, 1);
       expect(find.text('Alpha Project (Copy)'), findsNothing);
 
-      await tester.tap(find.text('Close'));
+      await tester.tap(find.byTooltip('Close board history'));
       await tester.pumpAndSettle();
       expect(canvas(tester).session.document.title, 'Alpha Project');
       await tester.pumpWidget(const SizedBox());

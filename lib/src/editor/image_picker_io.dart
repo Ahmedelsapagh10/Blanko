@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'image_picker_stub.dart';
 
+bool get supportsImagePicking => Platform.isMacOS;
+
 Future<PickedImage?> pickImageFile() async {
   if (Platform.isMacOS) {
     try {

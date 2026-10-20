@@ -1,5 +1,17 @@
 # Project status
 
+Updated 2026-10-20. **M12 UI/UX implementation delivered; cross-platform/device and assistive-technology qualification remains incomplete. Verified backlog 76/275 (27.64%).** Previous denominator266 omitted the9 MVP-03 tasks; canonical checklist actually contains275 tasks.
+
+New presentation: persisted Light/Dark/System appearance, coherent native Flutter theme tokens, desktop tool rail and contextual properties, compact header/history/zoom controls, dedicated labeled phone toolbar and tool sheets, responsive Board History with immediate blue +, safe rename/duplicate/delete, and accurate compact save/error states. Existing document/Undo/autosave ownership is retained. Two-finger touch navigation cancels a drawing draft; corner resize and rotation handles now commit one transform and support cancel/Undo. Existing document colors are never recolored by appearance changes.
+
+Executed: final68 directly affected host tests (one browser-only case skipped) and57 Chrome tests, plus an earlier235-test host regression checkpoint and real screenshot capture. Store checks include native asset path safety and version1 IndexedDB record preservation. Final analysis and actual app checks recorded in `benchmark_results/ui-ux/verification.json`. Native Light preference recovered after actual process exit/relaunch; Chrome recovered Dark preference plus mixed-script text/note after actual page reload. Phone/tablet screenshots are genuine Flutter widget renders, not device verification.
+
+Limits: Android emulator startup exited1; iOS simulator installed but native mobile build/run not attempted under approximately0.5GiB free disk after project-only cleanup. Safari shell rendered; its synthetic control/pointer actions were inconclusive, so Safari interaction remains pending. Windows/Edge not run. Native Flutter accessibility bridge logs stale AX-tree errors; VoiceOver/TalkBack and native IME need manual/device qualification. Inherited image/frame code is preserved, not newly certified; platform pickers outside macOS/Web are explicitly unavailable. UI adds no board-schema change; inherited IndexedDB assets-store version2 upgrade is retained and tested against version1 records.
+
+Next: free disk space, complete Android/iOS and native accessibility/IME checks, Safari interaction verification, then finish inherited image/frame qualification. No return to stress-rendering optimization.
+
+## Previous checkpoint (retained)
+
 Updated 2026-10-20. **MVP-03A — Eraser & Clear All verified: 5/5. MVP-03B — Text Editing & Sticky Notes verified: 4/4. MVP-02 verified: 8/8. MVP-01 verified: 8/8. M07 text slice verified: 7/7. WB-0911 Board Library operations verified: 1/1. Overall 61/266 tasks = 22.93%.** Clean static analysis (0 errors, 0 warnings). Full host suite (214/214) and Chrome web test suite (83/83) passing.
 
 The normal Editor now provides:

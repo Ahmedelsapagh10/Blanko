@@ -53,6 +53,14 @@ class _WhiteboardAppState extends State<WhiteboardApp> {
         theme: BlankoTheme.light,
         darkTheme: BlankoTheme.dark,
         themeMode: _appearance.mode,
+        themeAnimationDuration:
+            WidgetsBinding
+                .instance
+                .platformDispatcher
+                .accessibilityFeatures
+                .disableAnimations
+            ? Duration.zero
+            : const Duration(milliseconds: 160),
         home: WorkspacePage(store: widget.store),
       ),
     ),

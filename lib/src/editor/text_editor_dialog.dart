@@ -14,6 +14,9 @@ Future<ElementContent?> showBoardTextEditor(
   required int color,
 }) => showDialog<ElementContent>(
   context: context,
+  animationStyle: MediaQuery.disableAnimationsOf(context)
+      ? AnimationStyle.noAnimation
+      : null,
   barrierDismissible: false,
   builder: (context) =>
       _BoardTextEditor(content: content, sticky: sticky, color: color),

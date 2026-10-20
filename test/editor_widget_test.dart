@@ -103,6 +103,10 @@ void main() {
       await tester.tap(find.byTooltip('Redo (⌘/Ctrl Shift Z)'));
       await tester.pump();
       expect(c.session.document.elements, hasLength(1));
+      await keyCommand(tester, LogicalKeyboardKey.keyZ);
+      expect(c.session.document.elements, isEmpty);
+      await keyCommand(tester, LogicalKeyboardKey.keyZ, shift: true);
+      expect(c.session.document.elements, hasLength(1));
       await tester.pumpWidget(const SizedBox());
     },
   );
@@ -117,8 +121,10 @@ void main() {
         'Triangle (T)',
         'Line (L)',
       ]) {
-        await tester.tap(find.byTooltip(name));
-        await tester.pump();
+        await tester.tap(find.byTooltip('Shapes'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(name));
+        await tester.pumpAndSettle();
         await drag(tester, const Offset(320, 250), const Offset(180, 140));
       }
       final elements = controller(tester).session.document.elements;
@@ -149,7 +155,10 @@ void main() {
     'select move preview delete and keyboard undo redo use real editor',
     (tester) async {
       await open(tester);
-      await tester.tap(find.byTooltip('Rectangle (R)'));
+      await tester.tap(find.byTooltip('Shapes'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Rectangle (R)'));
+      await tester.pumpAndSettle();
       await tester.pump();
       await drag(tester, const Offset(100, 100), const Offset(240, 200));
       final c = controller(tester);

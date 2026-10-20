@@ -155,6 +155,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
         EditorCanvasController(
             session: BoardSession(document: snapshot.document),
             readOnly: !_store!.writable,
+            store: _store,
           )
           ..camera = snapshot.camera
           ..inputEnabled = !_busy;
@@ -233,6 +234,9 @@ class _WorkspacePageState extends State<WorkspacePage> {
       _setBusy(false);
       final choice = await showDialog<(String, String)>(
         context: context,
+        animationStyle: MediaQuery.disableAnimationsOf(context)
+            ? AnimationStyle.noAnimation
+            : null,
         builder: (context) => _BoardLibrary(
           boards: boards,
           writable: _store!.writable,
@@ -241,7 +245,11 @@ class _WorkspacePageState extends State<WorkspacePage> {
           currentBoardId: _canvas?.session.document.id,
           onRenameCurrentBoard: (newTitle) async {
             _canvas?.setTitle(newTitle);
-            await _flush();
+            if (!await _flush()) {
+              throw StateError(
+                'Rename is not saved yet. Retry saving before switching boards.',
+              );
+            }
             if (mounted) setState(() {});
           },
         ),
@@ -250,8 +258,10 @@ class _WorkspacePageState extends State<WorkspacePage> {
       if (choice == null) {
         if (_canvas != null) {
           final exists = await _store!.readBoard(_canvas!.session.document.id);
+          if (!mounted) return;
           if (exists == null) {
             final remaining = await _store!.listBoards();
+            if (!mounted) return;
             _setBusy(true);
             final BoardSnapshot replacement;
             if (remaining.isNotEmpty) {
@@ -263,7 +273,8 @@ class _WorkspacePageState extends State<WorkspacePage> {
             if (_store!.writable) {
               await _store!.writeLastBoard(replacement.document.id);
             }
-            if (mounted) _install(replacement);
+            if (!mounted) return;
+            _install(replacement);
             _setBusy(false);
           }
         }
@@ -301,6 +312,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
       // Validate rendering support before changing the last-board pointer.
       final candidate = EditorCanvasController(
         session: BoardSession(document: snapshot.document),
+        store: _store,
       );
       candidate.dispose();
       if (_store!.writable) await _store!.writeLastBoard(snapshot.document.id);
@@ -402,24 +414,18 @@ class _WorkspacePageState extends State<WorkspacePage> {
             IconButton(
               tooltip: 'Boards',
               onPressed: _busy ? null : _library,
-              icon: const Icon(Icons.folder_open),
+              icon: const Icon(Icons.folder_open_outlined),
             ),
             if (save.state == SaveState.failed)
-              TextButton(onPressed: _retry, child: const Text('Retry save')),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Tooltip(
-                  message:
-                      save.error ??
-                      '${_store!.location} · saved generation ${save.acknowledgedVersion}',
-                  child: Text(
-                    status,
-                    key: const ValueKey('save-status'),
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
+              IconButton(
+                tooltip: 'Retry save',
+                onPressed: _retry,
+                icon: const Icon(Icons.refresh),
               ),
+            _SaveStatus(
+              status: status,
+              state: save.state,
+              detail: save.error ?? 'Changes are saved on this device.',
             ),
           ],
         ),
@@ -427,7 +433,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
           Positioned(
             left: 12,
             right: 12,
-            bottom: 45,
+            bottom: MediaQuery.sizeOf(context).width < 700 ? 88 : 72,
             child: Material(
               color: Theme.of(context).colorScheme.errorContainer,
               borderRadius: BorderRadius.circular(8),
@@ -472,30 +478,64 @@ class _BoardLibrary extends StatefulWidget {
 }
 
 class _BoardLibraryState extends State<_BoardLibrary> {
-  final _name = TextEditingController();
   late final List<BoardSnapshot> _boards = List.of(widget.boards);
   bool _activeBoardDeleted = false;
+  bool _actionBusy = false;
+  bool _writing = false;
+  String? _actionError;
 
-  @override
-  void dispose() {
-    _name.dispose();
-    super.dispose();
+  Future<void> _run(Future<void> Function() action) async {
+    if (_actionBusy || !widget.writable) return;
+    setState(() {
+      _actionBusy = true;
+      _actionError = null;
+    });
+    try {
+      await action();
+    } catch (error) {
+      if (mounted) setState(() => _actionError = '$error');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _actionBusy = false;
+          _writing = false;
+        });
+      }
+    }
+  }
+
+  void _close() {
+    if (_actionBusy) return;
+    Navigator.pop(
+      context,
+      _activeBoardDeleted
+          ? ('deleted_current', _boards.firstOrNull?.document.id ?? '')
+          : null,
+    );
   }
 
   Future<void> _rename(BoardSnapshot board) async {
     final newTitle = await showDialog<String>(
       context: context,
+      animationStyle: MediaQuery.disableAnimationsOf(context)
+          ? AnimationStyle.noAnimation
+          : null,
       builder: (context) =>
           _RenameBoardDialog(initialTitle: board.document.title),
     );
-    if (newTitle == null || newTitle == board.document.title) return;
+    if (!mounted || newTitle == null || newTitle == board.document.title) {
+      return;
+    }
 
+    setState(() => _writing = true);
     if (board.document.id == widget.currentBoardId &&
         widget.onRenameCurrentBoard != null) {
       await widget.onRenameCurrentBoard!(newTitle);
       final refreshed = await widget.store.readBoard(board.document.id);
-      final index =
-          _boards.indexWhere((b) => b.document.id == board.document.id);
+      if (!mounted) return;
+      final index = _boards.indexWhere(
+        (b) => b.document.id == board.document.id,
+      );
       if (index >= 0 && refreshed != null) {
         _boards[index] = refreshed;
       }
@@ -519,8 +559,10 @@ class _BoardLibraryState extends State<_BoardLibrary> {
         savedAt: DateTime.now().toUtc(),
       );
       await widget.store.writeBoard(updated, expectedVersion: board.version);
-      final index =
-          _boards.indexWhere((b) => b.document.id == board.document.id);
+      if (!mounted) return;
+      final index = _boards.indexWhere(
+        (b) => b.document.id == board.document.id,
+      );
       if (index >= 0) {
         _boards[index] = updated;
       }
@@ -529,6 +571,7 @@ class _BoardLibraryState extends State<_BoardLibrary> {
   }
 
   Future<void> _duplicate(BoardSnapshot board) async {
+    setState(() => _writing = true);
     final id =
         'board-${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}-${Random.secure().nextInt(0x7fffffff).toRadixString(36)}';
     final title = '${board.document.title} (Copy)';
@@ -551,6 +594,7 @@ class _BoardLibraryState extends State<_BoardLibrary> {
       savedAt: DateTime.now().toUtc(),
     );
     await widget.store.writeBoard(duplicate, expectedVersion: null);
+    if (!mounted) return;
     _boards.insert(0, duplicate);
     if (mounted) setState(() {});
   }
@@ -558,6 +602,9 @@ class _BoardLibraryState extends State<_BoardLibrary> {
   Future<void> _delete(BoardSnapshot board) async {
     final confirmed = await showDialog<bool>(
       context: context,
+      animationStyle: MediaQuery.disableAnimationsOf(context)
+          ? AnimationStyle.noAnimation
+          : null,
       builder: (context) => AlertDialog(
         title: const Text('Delete board?'),
         content: Text(
@@ -580,8 +627,10 @@ class _BoardLibraryState extends State<_BoardLibrary> {
         ],
       ),
     );
-    if (confirmed != true) return;
+    if (!mounted || confirmed != true) return;
+    setState(() => _writing = true);
     await widget.store.deleteBoard(board.document.id);
+    if (!mounted) return;
     _boards.removeWhere((b) => b.document.id == board.document.id);
     if (board.document.id == widget.currentBoardId) {
       _activeBoardDeleted = true;
@@ -589,204 +638,290 @@ class _BoardLibraryState extends State<_BoardLibrary> {
     if (mounted) setState(() {});
   }
 
+  String _savedLabel(BoardSnapshot board) {
+    final saved = board.savedAt.toLocal();
+    final localizations = MaterialLocalizations.of(context);
+    return 'Saved ${localizations.formatShortDate(saved)} · '
+        '${board.document.elements.length} elements';
+  }
+
   @override
-  Widget build(BuildContext context) => AlertDialog(
-    title: const Row(
-      children: [
-        BlankoSymbol(size: 24),
-        SizedBox(width: 10),
-        Text('Blanko Boards', style: TextStyle(fontWeight: FontWeight.w600)),
-      ],
-    ),
-    content: SizedBox(
-      width: 480,
-      height: 380,
-      child: Column(
-        children: [
-          Expanded(
-            child: _boards.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const BlankoSymbol(size: 40),
-                          const SizedBox(height: 16),
-                          Text(
-                            BlankoBrand.emptyStateHeading,
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(fontWeight: FontWeight.w600),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            BlankoBrand.descriptor,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: BlankoBrand.mutedText),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : ListView(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context), colors = Theme.of(context).colorScheme;
+    final available = MediaQuery.sizeOf(context);
+    return PopScope(
+      canPop: !_actionBusy,
+      child: Dialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        clipBehavior: Clip.antiAlias,
+        child: SafeArea(
+          child: SizedBox(
+            width: 640,
+            height: min(600.0, available.height - 80),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 20, 16, 16),
+                  child: Row(
                     children: [
-                      for (final board in _boards)
-                        ListTile(
-                          title: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  board.document.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontWeight:
-                                        board.document.id ==
-                                            widget.currentBoardId
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                              if (board.document.id == widget.currentBoardId)
-                                Container(
-                                  margin: const EdgeInsets.only(left: 8),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: BlankoBrand.originBlue.withValues(
-                                      alpha: 0.12,
-                                    ),
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: const Text(
-                                    'Active',
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: BlankoBrand.originBlue,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                      const BlankoSymbol(size: 26),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Board History',
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
                           ),
-                          subtitle: Text(
-                            '${board.document.elements.length} elements · revision ${board.document.revision}',
-                            style: const TextStyle(
-                              color: BlankoBrand.mutedText,
-                            ),
-                          ),
-                          trailing: widget.writable
-                              ? PopupMenuButton<String>(
-                                  tooltip: 'Board options',
-                                  icon: const Icon(Icons.more_vert, size: 20),
-                                  onSelected: (action) {
-                                    if (action == 'rename') {
-                                      unawaited(_rename(board));
-                                    } else if (action == 'duplicate') {
-                                      unawaited(_duplicate(board));
-                                    } else if (action == 'delete') {
-                                      unawaited(_delete(board));
-                                    }
-                                  },
-                                  itemBuilder: (context) => [
-                                    const PopupMenuItem(
-                                      value: 'rename',
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.edit_outlined, size: 18),
-                                          SizedBox(width: 8),
-                                          Text('Rename'),
-                                        ],
-                                      ),
-                                    ),
-                                    const PopupMenuItem(
-                                      value: 'duplicate',
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.copy_outlined, size: 18),
-                                          SizedBox(width: 8),
-                                          Text('Duplicate'),
-                                        ],
-                                      ),
-                                    ),
-                                    const PopupMenuItem(
-                                      value: 'delete',
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.delete_outline,
-                                            size: 18,
-                                            color: Colors.red,
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'Delete',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : const Icon(Icons.chevron_right),
-                          onTap: () => Navigator.pop(context, (
-                            'open',
-                            board.document.id,
-                          )),
                         ),
+                      ),
+                      if (widget.writable)
+                        IconButton.filled(
+                          key: const ValueKey('create-board-circle-btn'),
+                          tooltip: 'New board',
+                          style: IconButton.styleFrom(
+                            shape: const CircleBorder(),
+                          ),
+                          icon: const Icon(Icons.add),
+                          onPressed: _actionBusy
+                              ? null
+                              : () => Navigator.pop(context, (
+                                  'create',
+                                  BlankoBrand.defaultBoardTitle,
+                                )),
+                        ),
+                      IconButton(
+                        tooltip: 'Close board history',
+                        onPressed: _actionBusy ? null : _close,
+                        icon: const Icon(Icons.close),
+                      ),
                     ],
                   ),
-          ),
-          if (widget.writable)
-            TextField(
-              controller: _name,
-              maxLength: 120,
-              decoration: const InputDecoration(
-                labelText: 'New board name',
-                hintText: BlankoBrand.defaultBoardTitle,
-              ),
+                ),
+                if (_writing)
+                  const LinearProgressIndicator(minHeight: 2)
+                else
+                  Divider(height: 2, color: colors.outlineVariant),
+                if (_actionError != null)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                    child: Material(
+                      color: colors.errorContainer,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          'Could not complete this action. $_actionError',
+                          style: TextStyle(color: colors.onErrorContainer),
+                        ),
+                      ),
+                    ),
+                  ),
+                Expanded(
+                  child: _boards.isEmpty
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.space_dashboard_outlined,
+                                  size: 48,
+                                  color: colors.primary,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'A fresh space for your ideas',
+                                  style: theme.textTheme.titleMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  widget.writable
+                                      ? 'Tap + to start a new board.'
+                                      : 'No local boards yet.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: colors.onSurfaceVariant,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : ListView.separated(
+                          padding: const EdgeInsets.all(12),
+                          itemCount: _boards.length,
+                          separatorBuilder: (_, index) =>
+                              const SizedBox(height: 6),
+                          itemBuilder: (context, index) {
+                            final board = _boards[index];
+                            final active =
+                                board.document.id == widget.currentBoardId;
+                            return Material(
+                              color: active
+                                  ? colors.primaryContainer.withValues(
+                                      alpha: .45,
+                                    )
+                                  : colors.surfaceContainerLow,
+                              borderRadius: BorderRadius.circular(14),
+                              clipBehavior: Clip.antiAlias,
+                              child: ListTile(
+                                key: ValueKey('board-${board.document.id}'),
+                                contentPadding: const EdgeInsets.only(
+                                  left: 16,
+                                  right: 6,
+                                ),
+                                minVerticalPadding: 12,
+                                leading: Icon(
+                                  Icons.dashboard_outlined,
+                                  color: active
+                                      ? colors.primary
+                                      : colors.onSurfaceVariant,
+                                ),
+                                title: Text(
+                                  board.document.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    '${active ? 'Active · ' : ''}${_savedLabel(board)}',
+                                    maxLines: 2,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: colors.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ),
+                                trailing: widget.writable
+                                    ? PopupMenuButton<String>(
+                                        tooltip: 'Board options',
+                                        enabled: !_actionBusy,
+                                        icon: const Icon(Icons.more_horiz),
+                                        onSelected: (action) => unawaited(
+                                          _run(
+                                            () => switch (action) {
+                                              'rename' => _rename(board),
+                                              'duplicate' => _duplicate(board),
+                                              _ => _delete(board),
+                                            },
+                                          ),
+                                        ),
+                                        itemBuilder: (context) => [
+                                          const PopupMenuItem(
+                                            value: 'rename',
+                                            child: Text('Rename'),
+                                          ),
+                                          const PopupMenuItem(
+                                            value: 'duplicate',
+                                            child: Text('Duplicate'),
+                                          ),
+                                          PopupMenuItem(
+                                            value: 'delete',
+                                            child: Text(
+                                              'Delete',
+                                              style: TextStyle(
+                                                color: colors.error,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : const Icon(Icons.chevron_right),
+                                onTap: _actionBusy
+                                    ? null
+                                    : () => Navigator.pop(context, (
+                                        'open',
+                                        board.document.id,
+                                      )),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 12, 24, 20),
+                  child: Text(
+                    'Stored locally on this device',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          Text(
-            widget.location,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: BlankoBrand.mutedText),
           ),
-        ],
-      ),
-    ),
-    actions: [
-      TextButton(
-        onPressed: () {
-          if (_activeBoardDeleted) {
-            Navigator.pop(context, (
-              'deleted_current',
-              _boards.firstOrNull?.document.id ?? '',
-            ));
-          } else {
-            Navigator.pop(context);
-          }
-        },
-        child: const Text('Close'),
-      ),
-      if (widget.writable)
-        FilledButton(
-          onPressed: () => Navigator.pop(context, (
-            'create',
-            _name.text.trim().isEmpty
-                ? BlankoBrand.defaultBoardTitle
-                : _name.text.trim(),
-          )),
-          child: const Text(BlankoBrand.primaryCta),
         ),
-    ],
-  );
+      ),
+    );
+  }
+}
+
+class _SaveStatus extends StatelessWidget {
+  const _SaveStatus({
+    required this.status,
+    required this.state,
+    required this.detail,
+  });
+  final String status, detail;
+  final SaveState state;
+
+  @override
+  Widget build(BuildContext context) {
+    final compact = MediaQuery.sizeOf(context).width < 700;
+    final colors = Theme.of(context).colorScheme;
+    final color = state == SaveState.failed
+        ? colors.error
+        : colors.onSurfaceVariant;
+    final icon = switch (state) {
+      SaveState.failed => Icons.cloud_off_outlined,
+      SaveState.readOnly => Icons.lock_outline,
+      _ => status == 'Saving…' ? Icons.sync : Icons.check_circle_outline,
+    };
+    return Tooltip(
+      message: '$status\n$detail',
+      child: Semantics(
+        label: status,
+        excludeSemantics: true,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: compact ? 4 : 8,
+            right: compact ? 8 : 16,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 18, color: color),
+              if (!compact) ...[
+                const SizedBox(width: 7),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 210),
+                  child: Text(
+                    status,
+                    key: const ValueKey('save-status'),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _RenameBoardDialog extends StatefulWidget {
@@ -820,28 +955,25 @@ class _RenameBoardDialogState extends State<_RenameBoardDialog> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-        title: const Text('Rename board'),
-        content: TextField(
-          key: const ValueKey('rename-board-input'),
-          controller: _controller,
-          autofocus: true,
-          maxLength: 120,
-          decoration: const InputDecoration(
-            labelText: 'Board name',
-          ),
-          onSubmitted: (_) => _submit(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            key: const ValueKey('confirm-rename-board'),
-            onPressed: _submit,
-            child: const Text('Rename'),
-          ),
-        ],
-      );
+    title: const Text('Rename board'),
+    content: TextField(
+      key: const ValueKey('rename-board-input'),
+      controller: _controller,
+      autofocus: true,
+      maxLength: 120,
+      decoration: const InputDecoration(labelText: 'Board name'),
+      onSubmitted: (_) => _submit(),
+    ),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.of(context).pop(),
+        child: const Text('Cancel'),
+      ),
+      FilledButton(
+        key: const ValueKey('confirm-rename-board'),
+        onPressed: _submit,
+        child: const Text('Rename'),
+      ),
+    ],
+  );
 }
-

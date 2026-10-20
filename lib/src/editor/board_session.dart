@@ -123,8 +123,9 @@ final class BoardSession {
 
   bool setWorldTransform(ElementId id, Transform2 worldTransform) {
     final element = _document.byId[id];
-    if (element == null || _isLocked(element) || _hasLockedDescendant(element))
+    if (element == null || _isLocked(element) || _hasLockedDescendant(element)) {
       return false;
+    }
     final parent = element.parentId;
     final local = parent == null
         ? worldTransform

@@ -1,0 +1,180 @@
+{
+  "date": "2026-10-20",
+  "status": "UI implementation delivered; device/accessibility/browser qualification incomplete",
+  "baselineCommit": "5d710b1",
+  "branch": "master",
+  "progress": {
+    "verified": 76,
+    "total": 275,
+    "percent": 27.64
+  },
+  "architecture": "Existing ChangeNotifier/document/command/store ownership retained. No new dependencies or SDK upgrade.",
+  "schema": "Document schema1 unchanged. Working-tree inherited IndexedDB version2 assets upgrade preserved separately; version1 boards and active pointer verified unchanged. Older version1 clients cannot open upgraded databases.",
+  "environment": {
+    "host": "Apple M4 / 16 GiB / macOS26.5.1",
+    "flutter": "3.41.9",
+    "dart": "3.11.5",
+    "chrome": "155.0.8059.85",
+    "buildModes": "Debug app/UI checks; no performance claim."
+  },
+  "executedTests": [
+    {
+      "scope": "Final directly affected host tests",
+      "passed": 68,
+      "skipped": 1,
+      "command": "flutter test --no-pub --concurrency=1 test/adaptive_editor_test.dart test/board_library_ui_test.dart test/theme_preferences_test.dart test/editor_widget_test.dart test/editor_text_test.dart test/editor_eraser_test.dart test/workspace_widget_test.dart test/file_board_store_test.dart test/board_session_test.dart"
+    },
+    {
+      "scope": "Final directly affected Chrome tests",
+      "passed": 57,
+      "command": "CHROME_EXECUTABLE=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" flutter test --no-pub --platform chrome --concurrency=1 test/adaptive_editor_test.dart test/board_library_ui_test.dart test/theme_preferences_test.dart test/editor_widget_test.dart test/editor_text_test.dart test/editor_eraser_test.dart test/workspace_widget_test.dart test/web_board_store_test.dart"
+    },
+    {
+      "scope": "Broad host checkpoint before final handle/focus/path changes",
+      "passed": 235,
+      "skipped": 1,
+      "command": "flutter test --no-pub --concurrency=2 --reporter expanded"
+    },
+    {
+      "scope": "Chrome UI/theme/library/editing workflows",
+      "passed": 48,
+      "command": "CHROME_EXECUTABLE=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" flutter test --no-pub --platform chrome test/theme_preferences_test.dart test/adaptive_editor_test.dart test/board_library_ui_test.dart test/editor_widget_test.dart test/editor_eraser_test.dart test/editor_text_test.dart test/workspace_widget_test.dart"
+    },
+    {
+      "scope": "Final host handles + editor/session regressions",
+      "passed": 31
+    },
+    {
+      "scope": "Chrome updated adaptive/handle checks",
+      "passed": 8
+    },
+    {
+      "scope": "Final keyboard-focus/text regressions",
+      "passed": 9
+    },
+    {
+      "scope": "Final theme/library/adaptive route checks",
+      "passed": 22,
+      "skipped": 1
+    },
+    {
+      "scope": "Native store/asset safety",
+      "passed": 10
+    },
+    {
+      "scope": "Chrome IndexedDB/upgrade safety",
+      "passed": 8
+    },
+    {
+      "scope": "Real phone/tablet Flutter capture",
+      "passed": 1,
+      "command": "BLANKO_CAPTURE_UI=1 flutter test --no-pub test/ui_visual_capture_test.dart"
+    },
+    {
+      "scope": "Selection-affordance follow-up and refreshed real renders",
+      "passed": 18
+    }
+  ],
+  "actualAppChecks": {
+    "macOS": "Built/launched; pen Undo/Redo; immediate new board; Light/Dark; Light after real exit/relaunch; existing33-element board restored; own smoke board bytes unchanged.",
+    "Chrome": "Real multiline Arabic/English text and sticky creation; rename; Dark mode and2 elements recovered after actual reload; IndexedDB writer retained.",
+    "Safari": "Shell rendered. Synthetic pointer/menu actions did not change app state. Interaction test inconclusive, not a pass.",
+    "phoneTablet": "Real Flutter widget renders and simulated gestures, not native-device verification."
+  },
+  "screenshots": {
+    "before-macos-mvp03.jpg": "Historical actual native Editor baseline; retained source.",
+    "desktop-dark.jpg": "Actual running macOS app, Dark.",
+    "desktop-light.jpg": "Actual running macOS app, Light.",
+    "board-history.jpg": "Actual running native Library.",
+    "phone-dark.png": "390x844 actual Flutter widget render.",
+    "phone-light.png": "390x844 actual Flutter widget render.",
+    "tablet-dark.png": "834x1112 actual Flutter widget render.",
+    "tablet-light.png": "834x1112 actual Flutter widget render."
+  },
+  "limitations": [
+    "Android emulator startup exited1; no connected mobile device. iPhone17Pro/iOS26.2 simulator installed but not run under approximately0.5GiB free disk after project-only cleanup.",
+    "Windows and Edge not run. Safari interaction incomplete.",
+    "Flutter native accessibility bridge emitted stale AX-tree errors during automation. VoiceOver/TalkBack and native physical IME remain unqualified.",
+    "Inherited images/frames preserved, not fully certified. Native picker outside macOS is explicitly unavailable. Decode/recovery and original-asset lifecycle require M07/M09 qualification.",
+    "Full10K rendering/performance/device gates remain pending; no benchmarks executed."
+  ],
+  "failedAttempts": [
+    "Initial inherited image cache integer blocked JavaScript compilation; fixed and Chrome tests passed.",
+    "Initial handle compile failed on num/double and exhausted temporary disk; fixed, generated caches cleaned, focused reruns passed.",
+    "Initial capture used test-only placeholder glyphs; harness explicitly loads real bundled fonts/icons, artifacts regenerated and visually reviewed."
+  ],
+  "files": {
+    "lib/main.dart": "Reactive theme scope, persisted mode and reduced motion.",
+    "lib/src/theme/blanko_brand.dart": "Central color/type/spacing/control/dialog/menu/focus tokens; vector brand preserved.",
+    "lib/src/theme/theme_settings.dart": "Appearance menu/controller, ordered saves, failure and retry.",
+    "lib/src/theme/theme_preference_store.dart": "Small independent appearance-store contract.",
+    "lib/src/theme/open_theme_preference_store.dart": "Conditional platform dispatch.",
+    "lib/src/theme/theme_preference_store_io.dart": "Separate atomic native preference file.",
+    "lib/src/theme/theme_preference_store_web.dart": "Separate browser localStorage preference.",
+    "lib/src/theme/theme_preference_store_stub.dart": "Explicit unavailable store for isolated hosts.",
+    "lib/src/editor/editor_controls.dart": "Grouped desktop tools, labeled phone controls, contextual properties and sheets.",
+    "lib/src/editor/editor_page.dart": "Adaptive shell, top actions, keyboard ownership/help and navigation overlays.",
+    "lib/src/editor/workspace_page.dart": "Responsive Board History, immediate creation, guarded operations and compact save feedback.",
+    "lib/src/editor/editor_canvas.dart": "Preserved inherited image/frame rendering; touch navigation, orientation cancellation and handle previews.",
+    "lib/src/editor/board_session.dart": "Preserved inherited asset/frame/resize/duplicate operations; atomic world transform command.",
+    "lib/src/editor/text_editor_dialog.dart": "Reduced-motion route transition; drafts/document behavior unchanged.",
+    "lib/src/editor/image_cache_manager.dart": "Preserved inherited bounded decoder; corrected non-JavaScript-safe eviction sentinel.",
+    "lib/src/editor/image_picker_io.dart": "Preserved inherited macOS picker; explicit availability capability.",
+    "lib/src/editor/image_picker_web.dart": "Preserved inherited browser picker; explicit availability capability.",
+    "lib/src/editor/image_picker_stub.dart": "Preserved inherited result type; explicit unsupported capability.",
+    "lib/src/editor/image_picker_service.dart": "Preserved inherited conditional picker export.",
+    "lib/src/persistence/board_store.dart": "Preserved inherited asset API.",
+    "lib/src/persistence/file_board_store.dart": "Preserved inherited asset files; reject path traversal.",
+    "lib/src/persistence/web_board_store.dart": "Preserved inherited version2 assets-store upgrade.",
+    "test/adaptive_editor_test.dart": "320/390/834/1024/1440 layouts, sheets, touch navigation, orientation and atomic handles.",
+    "test/board_library_ui_test.dart": "Immediate creation, rename/duplicate/delete, pending work and failures.",
+    "test/theme_preferences_test.dart": "Modes, system change, ordered persistence, failures, lifecycle and real browser storage.",
+    "test/ui_visual_capture_test.dart": "Optional real Flutter phone/tablet render capture with explicit real-font aliases.",
+    "test/editor_widget_test.dart": "Grouped shape interactions and keyboard shortcuts after top-bar actions.",
+    "test/workspace_widget_test.dart": "Updated history UX while preserving autosave/recovery assertions.",
+    "test/file_board_store_test.dart": "Native asset roundtrip and traversal rejection.",
+    "test/web_board_store_test.dart": "Version1 board preservation through inherited assets-store upgrade.",
+    "test/board_autosave_test.dart": "Preserved inherited store-interface test support.",
+    "test/support/test_board_store.dart": "Preserved inherited asset test double support."
+  },
+  "next": [
+    "Restore at least3GiB free disk for native simulator builds.",
+    "Complete Android/iOS touch, keyboard/IME and safe-area runs; manual Safari input and native accessibility checks.",
+    "Qualify inherited image/frame paths and remaining import/export UX."
+  ],
+  "analysis": "flutter analyze --no-pub: no issues at final integration check",
+  "codeSha256": {
+    "lib/main.dart": "2658c4dc8700d15c986fe9119ca28ac1d927db4f398cfc315551d25a3fd147bc",
+    "lib/src/theme/blanko_brand.dart": "c2ceab69ab59e61a22151e32a58017d7dbb123a60daa7579f1e50b5e2d30419a",
+    "lib/src/theme/theme_settings.dart": "69dcc49249c00502464515cf575244cecafd49b7112e73499f4d88b18d838227",
+    "lib/src/theme/theme_preference_store.dart": "47209970d60fdd2018f3da10df3d03a96f862ddb0ae18fdd82062fa3b2a9ee87",
+    "lib/src/theme/open_theme_preference_store.dart": "e76024ce2d93ffd97510f102a1f83b924fab6b1ad18d0894be09ac14fca15f55",
+    "lib/src/theme/theme_preference_store_io.dart": "312c993f070626bb7e0fbfeeecdca0ef303cc1d25d6baf5f70b953cb2954d215",
+    "lib/src/theme/theme_preference_store_web.dart": "1c63fa1877542d2fdaa273c3c38d41cbeed826988fa564704ba7a32b643be7fe",
+    "lib/src/theme/theme_preference_store_stub.dart": "bfe4d6787ef74d457d9995370d561eb7d15bad5c1f87da68593c6976397bc96f",
+    "lib/src/editor/editor_controls.dart": "bb54f8aac32456db18c2cb03ffcfbc259b89b5fa37c4214de3ea624640c3ae5b",
+    "lib/src/editor/editor_page.dart": "716af47af04d58e3e4c3b5a2bc7473e42ba663bbc9b214820f20f789739f63cc",
+    "lib/src/editor/workspace_page.dart": "1af199a8649cf037ccd105ff4e5c729c76d1d9cf253b64523261d5a1b96779ae",
+    "lib/src/editor/editor_canvas.dart": "5f4714a5279faf0f7d57345b3267078375faa1e5eed63d6e136f4f2e68be7ce7",
+    "lib/src/editor/board_session.dart": "768b3ca7eae1175e88592a6d855fc16429a33bbd274dbebd5ff8bf312a04e9bd",
+    "lib/src/editor/text_editor_dialog.dart": "17fd0b32479bd4c6ee5e6313e05e8fe34ebc8156fb55e35d8808bc3474915f6a",
+    "lib/src/editor/image_cache_manager.dart": "abb89eb0906b0c180c04293f620ee58be5f7fc74ff5b3e867b66597e6e1e9cc5",
+    "lib/src/editor/image_picker_io.dart": "93b0a4f24849c70b3c0509f892d0a3d894a0455a7cca5f0569220213102be92f",
+    "lib/src/editor/image_picker_web.dart": "c4cfb2e770ef1808ebadffa723bc84eb5334d1a7c90b6ad2b3cdeb6ffb9a2d03",
+    "lib/src/editor/image_picker_stub.dart": "ed176d3ce456d48e8b386c5fd61e428d6c5712773ee6e07152f3ce149fd7203f",
+    "lib/src/editor/image_picker_service.dart": "14d0c5060c42235facce6a5d54706d02f6655113ac7f69d851a64fae5c9fb92b",
+    "lib/src/persistence/board_store.dart": "a29f9fc26e4ce0b9cc2c5b9b3e49ffe2aa1eade2cb08411fd69e7fd04502b338",
+    "lib/src/persistence/file_board_store.dart": "eb3bad9a0271686487362de97d7bfd5aa36c3ac82481db9028ad41e9d77d60cc",
+    "lib/src/persistence/web_board_store.dart": "f263e019c1ffc590e5e55b0ca9135635b28abc6d744b8143a90bc572b90dd702",
+    "test/adaptive_editor_test.dart": "36389c50e3d2f613bbfff724059bd0cd1c0a9d3aa2f0d1ae4bd6025257912285",
+    "test/board_library_ui_test.dart": "4a54cf52cfd7515663f7df38c9c33ad4ec1800b479ce1d65c10fa38a4f875eb0",
+    "test/theme_preferences_test.dart": "e0b74e61468776f8e4ad021d4cfa2e5b3a2c72f27f8648523a0d88873be43444",
+    "test/ui_visual_capture_test.dart": "7ad2e2b4809c491be82d4296bd55e437f15c3b671e99242c5848fef90c57d0e7",
+    "test/editor_widget_test.dart": "2413e479a540374a5c77738ca1860f7bd0a452e05e59c452826e93d9c36bb714",
+    "test/workspace_widget_test.dart": "ab42a932c4540ffde26e62b853db8af7915612c562b2e8cbda910aec7837ea3a",
+    "test/file_board_store_test.dart": "a1c5797cce77f5a85c793622915980acf7ec5924d86c22ef5deb1abb5d67b0a1",
+    "test/web_board_store_test.dart": "ec5bf4aa7a9b031b6c5cab3ab1deb7f08e465f9670eca9bbada0c38614968dc2",
+    "test/board_autosave_test.dart": "93a9d570605461ae7d5f4d47e4b4edc208f55828ccc74b5024837b19369b0550",
+    "test/support/test_board_store.dart": "21b147a19db633d6a153e9e357e5211ace74fd36fde62a2afcaf18c41904e7f8"
+  }
+}

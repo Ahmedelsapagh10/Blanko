@@ -88,6 +88,9 @@ class ThemeSettingsButton extends StatelessWidget {
     final controller = ThemeSettingsScope.maybeOf(context);
     return PopupMenuButton<ThemeMode>(
       tooltip: 'Appearance',
+      popUpAnimationStyle: MediaQuery.disableAnimationsOf(context)
+          ? AnimationStyle.noAnimation
+          : null,
       enabled: controller != null,
       icon: Icon(
         controller?.mode == ThemeMode.dark

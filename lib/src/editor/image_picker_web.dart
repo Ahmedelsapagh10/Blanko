@@ -5,6 +5,8 @@ import 'package:web/web.dart' as web;
 
 import 'image_picker_stub.dart';
 
+const supportsImagePicking = true;
+
 Future<PickedImage?> pickImageFile() async {
   final completer = Completer<PickedImage?>();
   final input = web.document.createElement('input') as web.HTMLInputElement;
@@ -31,11 +33,7 @@ Future<PickedImage?> pickImageFile() async {
         }
         if (!completer.isCompleted) {
           completer.complete(
-            PickedImage(
-              bytes: bytes,
-              filename: name,
-              mimeType: mime,
-            ),
+            PickedImage(bytes: bytes, filename: name, mimeType: mime),
           );
         }
       } catch (_) {

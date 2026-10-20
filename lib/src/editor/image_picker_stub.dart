@@ -12,4 +12,6 @@ final class PickedImage {
   final String mimeType;
 }
 
+const supportsImagePicking = false;
+
 Future<PickedImage?> pickImageFile() async => null;
