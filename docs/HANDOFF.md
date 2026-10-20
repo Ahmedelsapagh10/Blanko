@@ -1,6 +1,12 @@
 # Blanko handoff
 
-2026-10-20. UI refinement delivered; **78/275 checked**. Source commit `d9e6aea`; final evidence commit/push SHA is in delivery chat/Git log. Stop after this UI milestone. Next agent can continue Frames, advanced editing, portable project files and PNG export; no claim of complete V1/platform qualification.
+2026-10-20. UI refinement delivered; **78/275 checked**. Prior commits `d9e6aea` and `4ca4847` were preserved and safely pushed; final follow-up SHA is in delivery chat/Git log. Stop after this UI milestone. Next agent can continue Frames, advanced editing, portable project files and PNG export; no claim of complete V1/platform qualification.
+
+## Final UI follow-up
+
+Evidence: `benchmark_results/ui-completion/verification.json`. Space now activates focused toolbar buttons instead of being swallowed as pan. Text/sticky drafts preview original ink on white/colored paper, fixing dark-mode legibility; named48px color targets, meaningful slider semantics, consistent filled-button typography.14 targeted host+14 Chrome tests pass;9 final brand/accessibility checks pass(5 overlap), analysis clean. Actual phone/tablet widget draft screenshots inspected. No full suite or stress benchmarks repeated.
+
+Android direct launch confirms **insufficient disk space**, not an invented successful emulator run; GPU/system checks pass. Do not shrink/reset the user's AVD to fake a pass. Native mobile/physical screen-reader/IME qualification remains pending. Native draft was externally changed while inspecting it and left untouched; do not discard any open draft on takeover. Web dev server restarted at same8772 origin after debug Surface instance already deleted; full reload releases old debug locks. Original storage untouched.
 
 ## What changed
 

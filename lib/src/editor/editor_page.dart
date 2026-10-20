@@ -117,6 +117,11 @@ class _EditorPageState extends State<EditorPage> {
     if (!controller.inputEnabled) return KeyEventResult.ignored;
     final key = event.logicalKey;
     if (key == LogicalKeyboardKey.space) {
+      if (event is KeyUpEvent && controller.spaceHeld) {
+        controller.spaceHeld = false;
+        return KeyEventResult.handled;
+      }
+      if (!focusNode.hasPrimaryFocus) return KeyEventResult.ignored;
       controller.spaceHeld = event is! KeyUpEvent;
       return KeyEventResult.handled;
     }

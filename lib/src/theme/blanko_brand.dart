@@ -90,7 +90,11 @@ abstract final class BlankoTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            textStyle: const TextStyle(fontWeight: FontWeight.w600),
+            textStyle: const TextStyle(
+              fontFamily: fontFamily,
+              fontFamilyFallback: fontFamilyFallback,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         textButtonTheme: TextButtonThemeData(
@@ -180,7 +184,11 @@ abstract final class BlankoTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            textStyle: const TextStyle(fontWeight: FontWeight.w600),
+            textStyle: const TextStyle(
+              fontFamily: fontFamily,
+              fontFamilyFallback: fontFamilyFallback,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         textButtonTheme: TextButtonThemeData(

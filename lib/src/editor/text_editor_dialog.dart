@@ -138,6 +138,18 @@ class _BoardTextEditorState extends State<_BoardTextEditor> {
     }
   }
 
+  String _colorName(int color) => switch (color) {
+    0xff202d46 => 'Ink',
+    0xff2463eb => 'Blue',
+    0xffdc3545 => 'Red',
+    0xff16844a => 'Green',
+    0xfffff3a3 => 'Yellow',
+    0xffd7f5cf => 'Mint',
+    0xffd9edff => 'Sky blue',
+    0xffffdbe9 => 'Rose',
+    _ => 'Custom',
+  };
+
   Widget _palette(
     String label,
     List<int> colors,
@@ -150,32 +162,39 @@ class _BoardTextEditorState extends State<_BoardTextEditor> {
       Text('$label: '),
       for (final color in colors)
         IconButton(
-          tooltip: '$label ${color.toRadixString(16)}',
+          tooltip: '$label: ${_colorName(color)}',
           isSelected: selected == color,
           onPressed: () => setState(() => select(color)),
           style: IconButton.styleFrom(
-            backgroundColor: Color(color),
-            side: BorderSide(
-              color: selected == color
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
-              width: selected == color ? 3 : 1,
-            ),
-            fixedSize: const Size(32, 32),
-            minimumSize: const Size(32, 32),
-            padding: EdgeInsets.zero,
+            fixedSize: const Size(48, 48),
+            minimumSize: const Size(48, 48),
+            padding: const EdgeInsets.all(12),
           ),
-          icon: selected == color
-              ? Icon(
-                  Icons.check,
-                  size: 16,
-                  color:
-                      ThemeData.estimateBrightnessForColor(Color(color)) ==
-                          Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
-                )
-              : const SizedBox.shrink(),
+          icon: Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              color: Color(color),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selected == color
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.outline,
+                width: selected == color ? 2 : 1,
+              ),
+            ),
+            child: selected == color
+                ? Icon(
+                    Icons.check,
+                    size: 14,
+                    color:
+                        ThemeData.estimateBrightnessForColor(Color(color)) ==
+                            Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  )
+                : null,
+          ),
         ),
     ],
   );
@@ -214,30 +233,43 @@ class _BoardTextEditorState extends State<_BoardTextEditor> {
               ),
               decoration: InputDecoration(
                 labelText: widget.sticky ? 'Note' : 'Text',
+                filled: true,
+                // Preview original ink against its paper, independently of UI theme.
+                fillColor: widget.sticky ? Color(_background) : Colors.white,
+                labelStyle: const TextStyle(color: Color(0xff475467)),
+                floatingLabelStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 alignLabelWithHint: true,
                 border: const OutlineInputBorder(),
               ),
               onChanged: (_) => setState(() {}),
             ),
             Text('Font size: ${_fontSize.toStringAsFixed(0)}'),
-            Slider(
-              key: const ValueKey('board-text-font-size'),
-              value: _fontSize,
-              min: 8,
-              max: 144,
-              divisions: 136,
-              label: _fontSize.toStringAsFixed(0),
-              onChanged: (value) => setState(() => _fontSize = value),
+            MergeSemantics(
+              child: Slider(
+                key: const ValueKey('board-text-font-size'),
+                value: _fontSize,
+                min: 8,
+                max: 144,
+                divisions: 136,
+                label: 'Font size: ${_fontSize.toStringAsFixed(0)}',
+                semanticFormatterCallback: (value) => '${value.round()} points',
+                onChanged: (value) => setState(() => _fontSize = value),
+              ),
             ),
             Text('Width: ${_width.toStringAsFixed(0)}'),
-            Slider(
-              key: const ValueKey('board-text-width'),
-              value: _width,
-              min: 80,
-              max: 1200,
-              divisions: 112,
-              label: _width.toStringAsFixed(0),
-              onChanged: (value) => setState(() => _width = value),
+            MergeSemantics(
+              child: Slider(
+                key: const ValueKey('board-text-width'),
+                value: _width,
+                min: 80,
+                max: 1200,
+                divisions: 112,
+                label: 'Text width: ${_width.toStringAsFixed(0)}',
+                semanticFormatterCallback: (value) => '${value.round()} pixels',
+                onChanged: (value) => setState(() => _width = value),
+              ),
             ),
             _palette(
               'Ink',

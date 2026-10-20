@@ -31,6 +31,7 @@ Future<void> main() async {
   if (Platform.environment['BLANKO_CAPTURE_UI'] == '1') {
     for (final font in const {
       'Inter': 'assets/benchmark_fonts/Roboto-Regular.ttf',
+      'Roboto': 'assets/benchmark_fonts/Roboto-Regular.ttf',
       'MaterialIcons': 'fonts/MaterialIcons-Regular.otf',
     }.entries) {
       final loader = FontLoader(font.key)..addFont(rootBundle.load(font.value));
@@ -89,29 +90,53 @@ Future<void> main() async {
         c.setTool(EditorTool.pen);
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
-        final boundary = tester.renderObject<RenderRepaintBoundary>(
-          find.byKey(const ValueKey('capture')),
+        await _capture(
+          tester,
+          '${size.width < 700 ? 'phone' : 'tablet'}-$mode',
         );
-        await tester.runAsync(() async {
-          final image = await boundary.toImage();
-          try {
-            final data = (await image.toByteData(
-              format: ui.ImageByteFormat.png,
-            ))!;
-            final file = File(
-              '${Platform.environment['BLANKO_UI_CAPTURE_DIR'] ?? 'benchmark_results/ui-ux'}/${size.width < 700 ? 'phone' : 'tablet'}-$mode.png',
-            );
-            await file.parent.create(recursive: true);
-            await file.writeAsBytes(
-              data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-            );
-          } finally {
-            image.dispose();
-          }
-        });
+        if (mode == 'dark') {
+          c.setTool(EditorTool.sticky);
+          final origin = tester.getTopLeft(
+            find.byKey(const ValueKey('board-canvas')),
+          );
+          await tester.tapAt(origin + const Offset(150, 200));
+          await tester.pumpAndSettle();
+          await tester.enterText(
+            find.byKey(const ValueKey('board-text-input')),
+            'Ideas stay readable.\nأفكار واضحة',
+          );
+          await tester.pumpAndSettle();
+          await _capture(
+            tester,
+            '${size.width < 700 ? 'phone' : 'tablet'}-text-dark',
+          );
+          await tester.tap(find.text('Cancel'));
+          await tester.pumpAndSettle();
+        }
         await tester.pumpWidget(const SizedBox());
         await tester.pumpAndSettle();
       }
+    }
+  });
+}
+
+Future<void> _capture(WidgetTester tester, String name) async {
+  final boundary = tester.renderObject<RenderRepaintBoundary>(
+    find.byKey(const ValueKey('capture')),
+  );
+  await tester.runAsync(() async {
+    final image = await boundary.toImage();
+    try {
+      final data = (await image.toByteData(format: ui.ImageByteFormat.png))!;
+      final file = File(
+        '${Platform.environment['BLANKO_UI_CAPTURE_DIR'] ?? 'benchmark_results/ui-ux'}/$name.png',
+      );
+      await file.parent.create(recursive: true);
+      await file.writeAsBytes(
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+      );
+    } finally {
+      image.dispose();
     }
   });
 }

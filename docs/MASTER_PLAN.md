@@ -8,6 +8,8 @@ UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on availab
 
 Product UI checkpoint2026-10-20: Header rename, searchable Board History, direct image import, anchored desktop actions, discoverable Appearance, relevant selection properties and compact error layout verified.38 host tests(1 browser-only skip),39 Chrome tests, actual macOS/Chrome UI and Safari pen/reload smoke; phone/tablet widget captures are not native-device evidence. No additional full platform/accessibility gate checked. Evidence: `benchmark_results/product-ui/verification.json`.
 
+UI completion follow-up2026-10-20: fixed toolbar keyboard Space, dark text/paper preview and touch palette/slider semantics;14 host+14 Chrome focused passes,9 final theme/accessibility passes(5 overlap), clean analysis. `benchmark_results/ui-completion/verification.json`. Android direct launch confirms insufficient disk space. Keep real-device/screen-reader/full-platform items unchecked; stop for next-agent feature work.
+
 ## MVP-03A — Eraser & Clear All (verified)
 
 Priority P0; depends on MVP-02. Acceptance: real-editor gestures are atomic, cancel-safe, zoom-aware, undoable and persisted. Verification: focused command/geometry/widget tests, analysis and macOS/Chrome smoke checks. Extreme performance remains in M14.
