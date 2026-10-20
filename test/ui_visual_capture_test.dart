@@ -99,7 +99,7 @@ Future<void> main() async {
               format: ui.ImageByteFormat.png,
             ))!;
             final file = File(
-              'benchmark_results/ui-ux/${size.width < 700 ? 'phone' : 'tablet'}-$mode.png',
+              '${Platform.environment['BLANKO_UI_CAPTURE_DIR'] ?? 'benchmark_results/ui-ux'}/${size.width < 700 ? 'phone' : 'tablet'}-$mode.png',
             );
             await file.parent.create(recursive: true);
             await file.writeAsBytes(

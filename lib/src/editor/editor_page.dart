@@ -16,11 +16,13 @@ class EditorPage extends StatefulWidget {
     this.controller,
     this.title = BlankoBrand.appName,
     this.leading,
+    this.onRenameBoard,
     this.actions = const [],
   });
   final EditorCanvasController? controller;
   final String title;
   final Widget? leading;
+  final VoidCallback? onRenameBoard;
   final List<Widget> actions;
   @override
   State<EditorPage> createState() => _EditorPageState();
@@ -239,11 +241,41 @@ class _EditorPageState extends State<EditorPage> {
             leadingWidth: 52,
             leading:
                 widget.leading ?? const Center(child: BlankoSymbol(size: 28)),
-            title: Text(
-              widget.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.titleMedium,
+            titleSpacing: 4,
+            title: Tooltip(
+              message: widget.onRenameBoard == null
+                  ? widget.title
+                  : 'Rename board',
+              child: TextButton(
+                key: const ValueKey('rename-board-header'),
+                onPressed: widget.onRenameBoard,
+                style: TextButton.styleFrom(
+                  foregroundColor: colors.onSurface,
+                  alignment: AlignmentDirectional.centerStart,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        widget.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                    if (widget.onRenameBoard != null && !compact) ...[
+                      const SizedBox(width: 6),
+                      Icon(
+                        Icons.edit_outlined,
+                        size: 14,
+                        color: colors.onSurfaceVariant,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
             ),
             actions: [
               if (!compact) _historyButtons(),
@@ -386,8 +418,8 @@ class _EditorPageState extends State<EditorPage> {
               ),
               Positioned(
                 left: compact ? 12 : 92,
-                right: compact ? 230 : 300,
-                bottom: 24,
+                right: compact ? 12 : 300,
+                bottom: compact ? 80 : 24,
                 child: ListenableBuilder(
                   listenable: controller.toolbarChanges,
                   builder: (context, _) => Column(

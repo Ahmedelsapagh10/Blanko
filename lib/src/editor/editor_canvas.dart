@@ -1160,7 +1160,7 @@ class _EditorPainter extends CustomPainter {
         }
 
         final topCenter = Offset((l + r) / 2, t);
-        final rotHandle = Offset((l + r) / 2, t - 16 / c.camera.zoom);
+        final rotHandle = Offset((l + r) / 2, t - 24 / c.camera.zoom);
         canvas.drawLine(topCenter, rotHandle, borderPaint);
         canvas.drawCircle(rotHandle, handleRadius, handlePaint);
         canvas.drawCircle(rotHandle, handleRadius, handleStroke);

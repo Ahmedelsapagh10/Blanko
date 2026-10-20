@@ -219,6 +219,43 @@ class _WorkspacePageState extends State<WorkspacePage> {
     await _save?.retry();
   }
 
+  Future<void> _renameActiveBoard() async {
+    final canvas = _canvas;
+    if (_busy || canvas == null || canvas.readOnly) return;
+    canvas.cancelGesture();
+    _setBusy(true);
+    try {
+      final title = await showDialog<String>(
+        context: context,
+        animationStyle: MediaQuery.disableAnimationsOf(context)
+            ? AnimationStyle.noAnimation
+            : null,
+        builder: (_) =>
+            _RenameBoardDialog(initialTitle: canvas.session.document.title),
+      );
+      if (!mounted || title == null || title == canvas.session.document.title) {
+        return;
+      }
+      canvas.setTitle(title);
+      if (!await _flush()) {
+        throw StateError(
+          'Rename is still in memory. Retry saving before closing.',
+        );
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$error'),
+            duration: const Duration(seconds: 8),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) _setBusy(false);
+    }
+  }
+
   Future<void> _library() async {
     if (_busy) return;
     _canvas?.cancelGesture();
@@ -381,7 +418,10 @@ class _WorkspacePageState extends State<WorkspacePage> {
                     children: [
                       const BlankoSymbol(size: 48),
                       const SizedBox(height: 16),
-                      Text(_error!, textAlign: TextAlign.center),
+                      Semantics(
+                        liveRegion: true,
+                        child: Text(_error!, textAlign: TextAlign.center),
+                      ),
                       const SizedBox(height: 16),
                       FilledButton(
                         onPressed: _busy ? null : _initialize,
@@ -406,6 +446,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
           key: ValueKey(_canvas),
           controller: _canvas,
           title: _canvas!.session.document.title,
+          onRenameBoard: _busy || _canvas!.readOnly ? null : _renameActiveBoard,
           leading: const Padding(
             padding: EdgeInsets.all(12),
             child: Center(child: BlankoSymbol(size: 24)),
@@ -483,6 +524,14 @@ class _BoardLibraryState extends State<_BoardLibrary> {
   bool _actionBusy = false;
   bool _writing = false;
   String? _actionError;
+  bool _searching = false;
+  final _search = TextEditingController();
+
+  @override
+  void dispose() {
+    _search.dispose();
+    super.dispose();
+  }
 
   Future<void> _run(Future<void> Function() action) async {
     if (_actionBusy || !widget.writable) return;
@@ -649,6 +698,10 @@ class _BoardLibraryState extends State<_BoardLibrary> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context), colors = Theme.of(context).colorScheme;
     final available = MediaQuery.sizeOf(context);
+    final query = _search.text.trim().toLowerCase();
+    final visibleBoards = _boards
+        .where((board) => board.document.title.toLowerCase().contains(query))
+        .toList(growable: false);
     return PopScope(
       canPop: !_actionBusy,
       child: Dialog(
@@ -675,6 +728,18 @@ class _BoardLibraryState extends State<_BoardLibrary> {
                           ),
                         ),
                       ),
+                      IconButton(
+                        tooltip: _searching ? 'Close search' : 'Search boards',
+                        onPressed: _actionBusy
+                            ? null
+                            : () => setState(() {
+                                _searching = !_searching;
+                                if (!_searching) _search.clear();
+                              }),
+                        icon: Icon(
+                          _searching ? Icons.search_off : Icons.search,
+                        ),
+                      ),
                       if (widget.writable)
                         IconButton.filled(
                           key: const ValueKey('create-board-circle-btn'),
@@ -698,6 +763,22 @@ class _BoardLibraryState extends State<_BoardLibrary> {
                     ],
                   ),
                 ),
+                if (_searching)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    child: TextField(
+                      key: const ValueKey('board-search-input'),
+                      controller: _search,
+                      autofocus: true,
+                      enabled: !_actionBusy,
+                      decoration: const InputDecoration(
+                        labelText: 'Search boards',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (_) => setState(() {}),
+                    ),
+                  ),
                 if (_writing)
                   const LinearProgressIndicator(minHeight: 2)
                 else
@@ -710,9 +791,12 @@ class _BoardLibraryState extends State<_BoardLibrary> {
                       borderRadius: BorderRadius.circular(12),
                       child: Padding(
                         padding: const EdgeInsets.all(12),
-                        child: Text(
-                          'Could not complete this action. $_actionError',
-                          style: TextStyle(color: colors.onErrorContainer),
+                        child: Semantics(
+                          liveRegion: true,
+                          child: Text(
+                            'Could not complete this action. $_actionError',
+                            style: TextStyle(color: colors.onErrorContainer),
+                          ),
                         ),
                       ),
                     ),
@@ -720,7 +804,7 @@ class _BoardLibraryState extends State<_BoardLibrary> {
                 Expanded(
                   child: _boards.isEmpty
                       ? Center(
-                          child: Padding(
+                          child: SingleChildScrollView(
                             padding: const EdgeInsets.all(24),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -750,13 +834,38 @@ class _BoardLibraryState extends State<_BoardLibrary> {
                             ),
                           ),
                         )
+                      : visibleBoards.isEmpty
+                      ? Center(
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.search_off, size: 40),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'No matching boards',
+                                  style: theme.textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  'Try another name or clear your search.',
+                                ),
+                                TextButton(
+                                  onPressed: () => setState(_search.clear),
+                                  child: const Text('Clear search'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                       : ListView.separated(
                           padding: const EdgeInsets.all(12),
-                          itemCount: _boards.length,
+                          itemCount: visibleBoards.length,
                           separatorBuilder: (_, index) =>
                               const SizedBox(height: 6),
                           itemBuilder: (context, index) {
-                            final board = _boards[index];
+                            final board = visibleBoards[index];
                             final active =
                                 board.document.id == widget.currentBoardId;
                             return Material(
@@ -888,7 +997,8 @@ class _SaveStatus extends StatelessWidget {
     return Tooltip(
       message: '$status\n$detail',
       child: Semantics(
-        label: status,
+        label: '$status. $detail',
+        liveRegion: true,
         excludeSemantics: true,
         child: Padding(
           padding: EdgeInsets.only(

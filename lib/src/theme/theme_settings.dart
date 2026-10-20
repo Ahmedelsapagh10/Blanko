@@ -92,13 +92,6 @@ class ThemeSettingsButton extends StatelessWidget {
           ? AnimationStyle.noAnimation
           : null,
       enabled: controller != null,
-      icon: Icon(
-        controller?.mode == ThemeMode.dark
-            ? Icons.dark_mode_outlined
-            : controller?.mode == ThemeMode.light
-            ? Icons.light_mode_outlined
-            : Icons.brightness_auto_outlined,
-      ),
       initialValue: controller?.mode,
       onSelected: (mode) async {
         await controller!.select(mode);
@@ -134,6 +127,33 @@ class ThemeSettingsButton extends StatelessWidget {
             child: Text('Not saved · choose again to retry'),
           ),
       ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: SizedBox(
+          height: 44,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                controller?.mode == ThemeMode.dark
+                    ? Icons.dark_mode_outlined
+                    : controller?.mode == ThemeMode.light
+                    ? Icons.light_mode_outlined
+                    : Icons.brightness_auto_outlined,
+              ),
+              if (MediaQuery.sizeOf(context).width >= 1100) ...[
+                const SizedBox(width: 8),
+                Text(
+                  'Appearance',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+                const SizedBox(width: 4),
+                const Icon(Icons.expand_more, size: 16),
+              ],
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'editor_canvas.dart';
+import '../document/element.dart';
 import 'image_picker_service.dart' show supportsImagePicking;
 import '../theme/blanko_brand.dart';
 
@@ -231,6 +232,69 @@ class EditorControls extends StatelessWidget {
     );
   }
 
+  Widget _desktopMore(BuildContext context) => PopupMenuButton<String>(
+    tooltip: 'More tools',
+    popUpAnimationStyle: MediaQuery.disableAnimationsOf(context)
+        ? AnimationStyle.noAnimation
+        : null,
+    icon: const Icon(Icons.apps_outlined),
+    onSelected: (action) {
+      controller.focusLost();
+      if (action == 'image') {
+        controller.pickAndInsertImage();
+      } else if (action == 'clear') {
+        onClear();
+      } else if (action == 'help') {
+        onHelp?.call();
+      } else {
+        controller.setTool(EditorTool.values.byName(action));
+      }
+    },
+    itemBuilder: (context) => [
+      for (final tool in [EditorTool.containerFrame, EditorTool.exportFrame])
+        PopupMenuItem(
+          value: tool.name,
+          enabled: writable,
+          child: ListTile(
+            dense: true,
+            leading: Icon(tools.firstWhere((item) => item.$1 == tool).$2),
+            title: Text(tools.firstWhere((item) => item.$1 == tool).$3),
+          ),
+        ),
+      const PopupMenuDivider(),
+      PopupMenuItem(
+        value: 'image',
+        enabled: writable && supportsImagePicking,
+        child: const ListTile(
+          dense: true,
+          leading: Icon(Icons.image_outlined),
+          title: Text('Insert image'),
+        ),
+      ),
+      if (onHelp != null)
+        const PopupMenuItem(
+          value: 'help',
+          child: ListTile(
+            dense: true,
+            leading: Icon(Icons.keyboard_outlined),
+            title: Text('Keyboard & gestures'),
+          ),
+        ),
+      PopupMenuItem(
+        value: 'clear',
+        enabled: writable && controller.elementCount > 0,
+        child: ListTile(
+          dense: true,
+          leading: Icon(
+            Icons.delete_sweep_outlined,
+            color: Theme.of(context).colorScheme.error,
+          ),
+          title: const Text('Clear All'),
+        ),
+      ),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: controller.toolbarChanges,
@@ -295,11 +359,17 @@ class EditorControls extends StatelessWidget {
           _shapes(context),
           _tool(context, EditorTool.text),
           _tool(context, EditorTool.sticky),
+          const SizedBox(width: 28, child: Divider()),
           IconButton(
-            tooltip: 'More tools',
-            onPressed: () => _more(context),
-            icon: const Icon(Icons.apps_outlined),
+            tooltip: supportsImagePicking
+                ? 'Insert image'
+                : 'Image import available on macOS and Web',
+            onPressed: writable && supportsImagePicking
+                ? controller.pickAndInsertImage
+                : null,
+            icon: const Icon(Icons.add_photo_alternate_outlined),
           ),
+          _desktopMore(context),
         ],
       );
     },
@@ -326,7 +396,14 @@ class EditorProperties extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
             selected != null && c.tool == EditorTool.select
-                ? 'Selection'
+                ? switch (selected.content) {
+                    ImageElementContent() => 'Image',
+                    TextElementContent() => 'Text',
+                    StickyNoteElementContent() => 'Sticky note',
+                    ContainerFrameElementContent() => 'Frame',
+                    ExportFrameElementContent() => 'Export frame',
+                    _ => 'Selection',
+                  }
                 : EditorControls.tools
                       .firstWhere((t) => t.$1 == c.tool)
                       .$3
@@ -363,11 +440,15 @@ class EditorProperties extends StatelessWidget {
             ),
           ),
         ] else if (c.tool == EditorTool.select) ...[
-          IconButton(
-            tooltip: 'Edit text / resize',
-            onPressed: writable && selected != null ? c.editSelectedText : null,
-            icon: const Icon(Icons.edit_note),
-          ),
+          if (selected?.content is TextElementContent ||
+              selected?.content is StickyNoteElementContent)
+            IconButton(
+              tooltip: 'Edit text / resize',
+              onPressed: writable && selected != null
+                  ? c.editSelectedText
+                  : null,
+              icon: const Icon(Icons.edit_note),
+            ),
           IconButton(
             tooltip: 'Duplicate (⌘/Ctrl D)',
             onPressed: writable && selected != null
