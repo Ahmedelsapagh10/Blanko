@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:whiteboard/src/document/document.dart';
@@ -74,6 +75,12 @@ final class _Store implements BoardStore {
   Future<String?> readLastBoard() async => null;
   @override
   Future<void> writeLastBoard(String id) async {}
+  @override
+  Future<Uint8List?> readAsset(String assetId) async => null;
+  @override
+  Future<void> writeAsset(String assetId, Uint8List bytes) async {}
+  @override
+  Future<void> deleteAsset(String assetId) async {}
   @override
   Future<void> close() async {}
 }

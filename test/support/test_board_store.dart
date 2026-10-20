@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:whiteboard/src/persistence/board_store.dart';
 
 /// Explicit test double only. Production always opens file storage or IndexedDB.
 class TestBoardStore implements BoardStore {
   final records = <String, String>{};
+  final assets = <String, Uint8List>{};
   String? last;
   bool failWrites = false, failInitialize = false, failLast = false;
   bool closed = false;
@@ -60,6 +62,21 @@ class TestBoardStore implements BoardStore {
     if (!writable) throw StateError('Read only');
     records.remove(id);
     if (last == id) last = null;
+  }
+
+  @override
+  Future<Uint8List?> readAsset(String assetId) async => assets[assetId];
+
+  @override
+  Future<void> writeAsset(String assetId, Uint8List bytes) async {
+    if (!writable) throw StateError('Read only');
+    assets[assetId] = bytes;
+  }
+
+  @override
+  Future<void> deleteAsset(String assetId) async {
+    if (!writable) throw StateError('Read only');
+    assets.remove(assetId);
   }
 
   @override

@@ -48,6 +48,7 @@ final class BoardSession {
     ElementContent content, {
     Transform2 transform = Transform2.identity,
     DocumentFontReference? font,
+    DocumentAssetReference? asset,
   }) {
     var candidate = _nextId;
     late ElementId id;
@@ -63,12 +64,170 @@ final class BoardSession {
       transform: transform,
     );
     _commit(
-      _Change([], [
-        _Positioned(_document.elements.length, element),
-      ], font: font),
+      _Change(
+        [],
+        [_Positioned(_document.elements.length, element)],
+        font: font,
+        asset: asset,
+      ),
     );
     _nextId = candidate;
     return id;
+  }
+
+  bool rotate(ElementId id, double radians) {
+    final element = _document.byId[id];
+    if (element == null ||
+        radians == 0 ||
+        _isLocked(element) ||
+        _hasLockedDescendant(element)) {
+      return false;
+    }
+    final geometry = DocumentGeometry(_document);
+    final localBounds = switch (element.content) {
+      ShapeElementContent(:final bounds) => bounds,
+      TextElementContent(:final bounds) => bounds,
+      StickyNoteElementContent(:final bounds) => bounds,
+      ImageElementContent(:final bounds) => bounds,
+      ContainerFrameElementContent(:final bounds) => bounds,
+      ExportFrameElementContent(:final bounds) => bounds,
+      StrokeElementContent(:final points) => Bounds2.fromPoints(points),
+      LineElementContent(:final start, :final end) => Bounds2.fromPoints([
+        start,
+        end,
+      ]),
+      _ => null,
+    };
+    final localCenter = localBounds?.center ?? Point2.zero;
+    final center = geometry.worldTransformOf(id).apply(localCenter);
+    final parent = element.parentId;
+    final parentWorld = parent == null
+        ? Transform2.identity
+        : geometry.worldTransformOf(parent);
+    final currentWorld = geometry.worldTransformOf(id);
+    final rotation =
+        Transform2.translation(center.x, center.y) *
+        Transform2.rotation(radians) *
+        Transform2.translation(-center.x, -center.y);
+    final newWorld = rotation * currentWorld;
+    final newLocal = newWorld.relativeTo(parentWorld);
+    final index = _document.elements.indexOf(element);
+    _commit(
+      _Change(
+        [_Positioned(index, element)],
+        [_Positioned(index, element.copyWith(transform: newLocal))],
+      ),
+    );
+    return true;
+  }
+
+  bool setWorldTransform(ElementId id, Transform2 worldTransform) {
+    final element = _document.byId[id];
+    if (element == null || _isLocked(element) || _hasLockedDescendant(element))
+      return false;
+    final parent = element.parentId;
+    final local = parent == null
+        ? worldTransform
+        : worldTransform.relativeTo(
+            DocumentGeometry(_document).worldTransformOf(parent),
+          );
+    if (local == element.transform) return false;
+    final index = _document.elements.indexOf(element);
+    _commit(
+      _Change(
+        [_Positioned(index, element)],
+        [_Positioned(index, element.copyWith(transform: local))],
+      ),
+    );
+    return true;
+  }
+
+  bool resize(ElementId id, Bounds2 newBounds) {
+    final element = _document.byId[id];
+    if (element == null ||
+        _isLocked(element) ||
+        _hasLockedDescendant(element)) {
+      return false;
+    }
+    final content = element.content;
+    final ElementContent? updatedContent = switch (content) {
+      ImageElementContent(:final assetId) => ImageElementContent(
+        assetId: assetId,
+        bounds: newBounds,
+      ),
+      ShapeElementContent(:final kind, :final stroke, :final fillColor) =>
+        ShapeElementContent(
+          kind: kind,
+          bounds: newBounds,
+          stroke: stroke,
+          fillColor: fillColor,
+        ),
+      TextElementContent(
+        :final text,
+        :final style,
+        :final direction,
+        :final sizing,
+      ) =>
+        TextElementContent(
+          text: text,
+          bounds: newBounds,
+          style: style,
+          direction: direction,
+          sizing: sizing,
+        ),
+      StickyNoteElementContent(
+        :final text,
+        :final style,
+        :final backgroundColor,
+      ) =>
+        StickyNoteElementContent(
+          text: text,
+          bounds: newBounds,
+          style: style,
+          backgroundColor: backgroundColor,
+        ),
+      ContainerFrameElementContent(:final label) =>
+        ContainerFrameElementContent(bounds: newBounds, label: label),
+      ExportFrameElementContent(:final label) => ExportFrameElementContent(
+        bounds: newBounds,
+        label: label,
+      ),
+      _ => null,
+    };
+    if (updatedContent == null) return false;
+    final index = _document.elements.indexOf(element);
+    _commit(
+      _Change(
+        [_Positioned(index, element)],
+        [_Positioned(index, element.copyWith(content: updatedContent))],
+      ),
+    );
+    return true;
+  }
+
+  ElementId? duplicate(ElementId id, [Point2? offset]) {
+    final element = _document.byId[id];
+    if (element == null) return null;
+    final delta = offset ?? Point2(24, 24);
+    final newId = _allocateId();
+    final newTransform = Transform2(
+      a: element.transform.a,
+      b: element.transform.b,
+      c: element.transform.c,
+      d: element.transform.d,
+      tx: element.transform.tx + delta.x,
+      ty: element.transform.ty + delta.y,
+    );
+    final duplicated = DocumentElement(
+      id: newId,
+      parentId: element.parentId,
+      transform: newTransform,
+      locked: false,
+      opacity: element.opacity,
+      content: element.content,
+    );
+    _commit(_Change([], [_Positioned(_document.elements.length, duplicated)]));
+    return newId;
   }
 
   bool updateContent(ElementId id, ElementContent content) {
@@ -290,8 +449,16 @@ final class BoardSession {
       workspaceId: _document.workspaceId,
       title: _document.title,
       canvasSettings: _document.canvasSettings,
-      assets: _document.assets,
-      // Font declarations remain available to both sides of undo history.
+      // Asset and font declarations remain available to both sides of undo history.
+      assets: change.asset == null
+          ? _document.assets
+          : [
+              ...?_document.assets,
+              if (!(_document.assets ?? <DocumentAssetReference>[]).any(
+                (asset) => asset.id == change.asset!.id,
+              ))
+                change.asset!,
+            ],
       fontReferences: change.font == null
           ? _document.fontReferences
           : [
@@ -311,8 +478,9 @@ final class BoardSession {
 }
 
 final class _Change {
-  _Change(this.before, this.after, {this.font});
+  _Change(this.before, this.after, {this.font, this.asset});
   final DocumentFontReference? font;
+  final DocumentAssetReference? asset;
   final List<_Positioned> before;
   final List<_Positioned> after;
 }

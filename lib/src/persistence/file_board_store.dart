@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
 
@@ -203,6 +204,51 @@ final class FileBoardStore implements BoardStore {
       File('${directory.path}/last-board.json'),
       jsonEncode(id),
     );
+  });
+
+  File _assetFile(String assetId) {
+    if (assetId.isEmpty ||
+        assetId == '.' ||
+        assetId == '..' ||
+        assetId.contains('/') ||
+        assetId.contains('\\') ||
+        assetId.contains('\u0000')) {
+      throw ArgumentError.value(
+        assetId,
+        'assetId',
+        'Expected a local asset identifier.',
+      );
+    }
+    return File('${directory.path}/assets/$assetId');
+  }
+
+  @override
+  Future<Uint8List?> readAsset(String assetId) => _serial(() async {
+    final file = _assetFile(assetId);
+    if (!await file.exists()) return null;
+    return await file.readAsBytes();
+  });
+
+  @override
+  Future<void> writeAsset(String assetId, Uint8List bytes) => _serial(() async {
+    _checkWriter();
+    final assetsDir = Directory('${directory.path}/assets');
+    if (!await assetsDir.exists()) {
+      await assetsDir.create(recursive: true);
+    }
+    final file = _assetFile(assetId);
+    final temp = File('${file.path}.pending-$pid-${_temporarySequence++}');
+    await temp.writeAsBytes(bytes, flush: true);
+    await temp.rename(file.path);
+  });
+
+  @override
+  Future<void> deleteAsset(String assetId) => _serial(() async {
+    _checkWriter();
+    final file = _assetFile(assetId);
+    if (await file.exists()) {
+      await file.delete();
+    }
   });
 
   @override

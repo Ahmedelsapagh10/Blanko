@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import '../document/document.dart';
 import '../document/document_codec.dart';
@@ -95,5 +96,8 @@ abstract interface class BoardStore {
   Future<void> deleteBoard(String id);
   Future<String?> readLastBoard();
   Future<void> writeLastBoard(String id);
+  Future<Uint8List?> readAsset(String assetId);
+  Future<void> writeAsset(String assetId, Uint8List bytes);
+  Future<void> deleteAsset(String assetId);
   Future<void> close();
 }

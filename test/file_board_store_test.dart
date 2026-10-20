@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:whiteboard/src/document/document.dart';
@@ -206,6 +207,7 @@ void main() {
       final writer = await open();
       final probe = File('${directory.path}/lock_probe.dart');
       await probe.writeAsString(r'''import 'dart:io';
+import 'dart:typed_data';
 Future<void> main(List<String> arguments) async {
   final file = await File(arguments.single).open(mode: FileMode.append);
   try {
@@ -256,20 +258,42 @@ Future<void> main(List<String> arguments) async {
     expect(await reopened.readBoard('b'), isNull);
   });
 
-  test('deleteBoard removes persisted board and clears last-board pointer', () async {
-    final store = await open();
-    await store.writeBoard(snapshot('board-1', 1, 0), expectedVersion: null);
-    await store.writeBoard(snapshot('board-2', 1, 0), expectedVersion: null);
-    await store.writeLastBoard('board-1');
-    expect(await store.readLastBoard(), 'board-1');
-    expect(
-      (await store.listBoards()).map((b) => b.document.id),
-      containsAll(['board-1', 'board-2']),
-    );
+  test(
+    'deleteBoard removes persisted board and clears last-board pointer',
+    () async {
+      final store = await open();
+      await store.writeBoard(snapshot('board-1', 1, 0), expectedVersion: null);
+      await store.writeBoard(snapshot('board-2', 1, 0), expectedVersion: null);
+      await store.writeLastBoard('board-1');
+      expect(await store.readLastBoard(), 'board-1');
+      expect(
+        (await store.listBoards()).map((b) => b.document.id),
+        containsAll(['board-1', 'board-2']),
+      );
 
-    await store.deleteBoard('board-1');
-    expect(await store.readBoard('board-1'), isNull);
-    expect(await store.readLastBoard(), isNull);
-    expect((await store.listBoards()).map((b) => b.document.id), ['board-2']);
-  });
+      await store.deleteBoard('board-1');
+      expect(await store.readBoard('board-1'), isNull);
+      expect(await store.readLastBoard(), isNull);
+      expect((await store.listBoards()).map((b) => b.document.id), ['board-2']);
+    },
+  );
+  test(
+    'inherited asset storage roundtrips and rejects escaping the asset folder',
+    () async {
+      final store = await open();
+      final bytes = Uint8List.fromList([1, 2, 3, 4]);
+      await store.writeAsset('sample-image', bytes);
+      expect(await store.readAsset('sample-image'), orderedEquals(bytes));
+      final sentinel = File('${directory.path}/keep.txt');
+      await sentinel.writeAsString('keep');
+      for (final id in ['../keep.txt', '..', 'nested/file', 'nested\\file']) {
+        await expectLater(store.readAsset(id), throwsArgumentError);
+        await expectLater(store.writeAsset(id, bytes), throwsArgumentError);
+        await expectLater(store.deleteAsset(id), throwsArgumentError);
+      }
+      expect(await sentinel.readAsString(), 'keep');
+      await store.deleteAsset('sample-image');
+      expect(await store.readAsset('sample-image'), isNull);
+    },
+  );
 }

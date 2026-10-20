@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:js_interop';
+import 'dart:typed_data';
 
 import 'package:web/web.dart' as web;
 
@@ -70,11 +72,18 @@ final class WebBoardStore implements BoardStore {
 
   Future<web.IDBDatabase> _openDatabase() {
     final completion = Completer<web.IDBDatabase>();
-    final request = web.window.indexedDB.open(databaseName, 1);
+    final request = web.window.indexedDB.open(databaseName, 2);
     request.onupgradeneeded = ((web.Event _) {
       final database = request.result as web.IDBDatabase;
-      database.createObjectStore('boards');
-      database.createObjectStore('settings');
+      if (!database.objectStoreNames.contains('boards')) {
+        database.createObjectStore('boards');
+      }
+      if (!database.objectStoreNames.contains('settings')) {
+        database.createObjectStore('settings');
+      }
+      if (!database.objectStoreNames.contains('assets')) {
+        database.createObjectStore('assets');
+      }
     }).toJS;
     request.onsuccess = ((web.Event _) {
       final database = request.result as web.IDBDatabase;
@@ -341,6 +350,51 @@ final class WebBoardStore implements BoardStore {
       schedule: (store, done, fail) {
         if (id.trim().isEmpty) throw ArgumentError.value(id, 'id');
         store.put(id.toJS, 'last-board'.toJS);
+      },
+    ));
+  @override
+  Future<Uint8List?> readAsset(String assetId) => _serial(
+    () => _transaction<Uint8List?>(
+      'assets',
+      schedule: (store, done, fail) {
+        final request = store.get(assetId.toJS);
+        request.onsuccess = ((web.Event _) {
+          try {
+            final value = request.result;
+            if (value == null) {
+              done(null);
+            } else {
+              final base64String = (value as JSString).toDart;
+              done(base64Decode(base64String));
+            }
+          } catch (error, stack) {
+            fail(error, stack);
+          }
+        }).toJS;
+      },
+    ),
+  );
+
+  @override
+  Future<void> writeAsset(String assetId, Uint8List bytes) => _serial(
+    () => _transaction<void>(
+      'assets',
+      write: true,
+      schedule: (store, done, fail) {
+        final request = store.put(base64Encode(bytes).toJS, assetId.toJS);
+        request.onsuccess = ((web.Event _) => done(null)).toJS;
+      },
+    ),
+  );
+
+  @override
+  Future<void> deleteAsset(String assetId) => _serial(
+    () => _transaction<void>(
+      'assets',
+      write: true,
+      schedule: (store, done, fail) {
+        final request = store.delete(assetId.toJS);
+        request.onsuccess = ((web.Event _) => done(null)).toJS;
       },
     ),
   );

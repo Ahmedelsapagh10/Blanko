@@ -3,6 +3,7 @@ library;
 
 import 'dart:async';
 import 'dart:js_interop';
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:web/web.dart' as web;
@@ -205,16 +206,62 @@ void main() {
     },
   );
 
-  test('deleteBoard removes board from IndexedDB and clears last-board pointer', () async {
-    final store = await open();
-    await store.writeBoard(snapshot('board-1', 1, 0), expectedVersion: null);
-    await store.writeBoard(snapshot('board-2', 1, 0), expectedVersion: null);
-    await store.writeLastBoard('board-1');
-    expect(await store.readLastBoard(), 'board-1');
+  test(
+    'deleteBoard removes board from IndexedDB and clears last-board pointer',
+    () async {
+      final store = await open();
+      await store.writeBoard(snapshot('board-1', 1, 0), expectedVersion: null);
+      await store.writeBoard(snapshot('board-2', 1, 0), expectedVersion: null);
+      await store.writeLastBoard('board-1');
+      expect(await store.readLastBoard(), 'board-1');
 
-    await store.deleteBoard('board-1');
-    expect(await store.readBoard('board-1'), isNull);
-    expect(await store.readLastBoard(), isNull);
-    expect((await store.listBoards()).map((b) => b.document.id), ['board-2']);
-  });
+      await store.deleteBoard('board-1');
+      expect(await store.readBoard('board-1'), isNull);
+      expect(await store.readLastBoard(), isNull);
+      expect((await store.listBoards()).map((b) => b.document.id), ['board-2']);
+    },
+  );
+  test(
+    'inherited assets upgrade preserves version-one boards and active pointer',
+    () async {
+      final original = snapshot('legacy', 1, 7);
+      final opened = Completer<web.IDBDatabase>();
+      final request = web.window.indexedDB.open(databaseName, 1);
+      request.onupgradeneeded = ((web.Event _) {
+        final db = request.result as web.IDBDatabase;
+        db.createObjectStore('boards');
+        db.createObjectStore('settings');
+      }).toJS;
+      request.onsuccess = ((web.Event _) => opened.complete(
+        request.result as web.IDBDatabase,
+      )).toJS;
+      request.onerror = ((web.Event _) => opened.completeError(
+        StateError('Fixture open failed'),
+      )).toJS;
+      final legacy = await opened.future;
+      final completed = Completer<void>();
+      final tx = legacy.transaction(
+        ['boards'.toJS, 'settings'.toJS].toJS,
+        'readwrite',
+      );
+      tx.oncomplete = ((web.Event _) => completed.complete()).toJS;
+      tx.onerror = ((web.Event _) => completed.completeError(
+        StateError('Fixture write failed'),
+      )).toJS;
+      tx.objectStore('boards').put(original.encode().toJS, 'legacy'.toJS);
+      tx.objectStore('settings').put('legacy'.toJS, 'last-board'.toJS);
+      await completed.future;
+      legacy.close();
+      final store = await open();
+      expect((await store.readBoard('legacy'))!.encode(), original.encode());
+      expect(await store.readLastBoard(), 'legacy');
+      final bytes = Uint8List.fromList([7, 8, 9]);
+      await store.writeAsset('sample', bytes);
+      await store.close();
+      final reopened = await open();
+      expect(await reopened.readAsset('sample'), orderedEquals(bytes));
+      await reopened.deleteAsset('sample');
+      expect(await reopened.readAsset('sample'), isNull);
+    },
+  );
 }
