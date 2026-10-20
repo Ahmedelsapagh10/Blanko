@@ -67,63 +67,69 @@ abstract final class BlankoTheme {
       onErrorContainer: Color(0xFF991B1B),
     );
 
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: colorScheme,
-      scaffoldBackgroundColor: BlankoBrand.canvas,
-      dividerColor: BlankoBrand.border,
-      fontFamily: fontFamily,
-      fontFamilyFallback: fontFamilyFallback,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: BlankoBrand.surface,
-        foregroundColor: BlankoBrand.ink,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: false,
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          backgroundColor: BlankoBrand.originBlue,
-          foregroundColor: Colors.white,
+    return _refine(
+      ThemeData(
+        useMaterial3: true,
+        colorScheme: colorScheme,
+        scaffoldBackgroundColor: BlankoBrand.canvas,
+        dividerColor: BlankoBrand.border,
+        fontFamily: fontFamily,
+        fontFamilyFallback: fontFamilyFallback,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: BlankoBrand.surface,
+          foregroundColor: BlankoBrand.ink,
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+          scrolledUnderElevation: 0,
+          centerTitle: false,
         ),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: BlankoBrand.originBlue,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-      ),
-      dialogTheme: DialogThemeData(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: BlankoBrand.border),
-        ),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: BlankoBrand.surface,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: BlankoBrand.border),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: BlankoBrand.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: BlankoBrand.originBlue,
-            width: 1.5,
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: BlankoBrand.originBlue,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
-        labelStyle: const TextStyle(color: BlankoBrand.mutedText),
-        hintStyle: const TextStyle(color: BlankoBrand.mutedText),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: BlankoBrand.originBlue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        dialogTheme: DialogThemeData(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: BlankoBrand.border),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: BlankoBrand.surface,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: BlankoBrand.border),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: BlankoBrand.border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: BlankoBrand.originBlue,
+              width: 1.5,
+            ),
+          ),
+          labelStyle: const TextStyle(color: BlankoBrand.mutedText),
+          hintStyle: const TextStyle(color: BlankoBrand.mutedText),
+        ),
       ),
     );
   }
@@ -145,72 +151,233 @@ abstract final class BlankoTheme {
       surfaceContainerHigh: Color(0xFF2C323D),
       outline: BlankoBrand.darkBorder,
       outlineVariant: BlankoBrand.darkBorder,
-      error: Color(0xFFEF4444),
-      onError: Colors.white,
+      error: Color(0xFFFF8D86),
+      onError: Color(0xFF4C1111),
       errorContainer: Color(0xFF451A1A),
       onErrorContainer: Color(0xFFFCA5A5),
     );
 
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: colorScheme,
-      scaffoldBackgroundColor: BlankoBrand.darkSurface,
-      dividerColor: BlankoBrand.darkBorder,
-      fontFamily: fontFamily,
-      fontFamilyFallback: fontFamilyFallback,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: BlankoBrand.darkSurface,
-        foregroundColor: BlankoBrand.onDark,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: false,
+    return _refine(
+      ThemeData(
+        useMaterial3: true,
+        colorScheme: colorScheme,
+        scaffoldBackgroundColor: BlankoBrand.darkSurface,
+        dividerColor: BlankoBrand.darkBorder,
+        fontFamily: fontFamily,
+        fontFamilyFallback: fontFamilyFallback,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: BlankoBrand.darkSurface,
+          foregroundColor: BlankoBrand.onDark,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          centerTitle: false,
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            backgroundColor: BlankoBrand.originBlue,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: BlankoBrand.originBlue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        dialogTheme: DialogThemeData(
+          backgroundColor: BlankoBrand.darkSurface,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: BlankoBrand.darkBorder),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: BlankoBrand.darkSurfaceContainer,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: BlankoBrand.darkBorder),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: BlankoBrand.darkBorder),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(
+              color: BlankoBrand.originBlue,
+              width: 1.5,
+            ),
+          ),
+          labelStyle: const TextStyle(color: BlankoBrand.darkMutedText),
+          hintStyle: const TextStyle(color: BlankoBrand.darkMutedText),
+        ),
+      ),
+    );
+  }
+
+  static ThemeData _refine(ThemeData theme) {
+    final colors = theme.colorScheme;
+    final dark = theme.brightness == Brightness.dark;
+    final muted = dark ? BlankoBrand.darkMutedText : BlankoBrand.mutedText;
+    final accentText = dark ? const Color(0xFFA6B5FF) : colors.primary;
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(BlankoMetrics.controlRadius),
+    );
+    return theme.copyWith(
+      colorScheme: colors.copyWith(onSurfaceVariant: muted),
+      hoverColor: colors.primary.withValues(alpha: .06),
+      focusColor: colors.primary.withValues(alpha: .14),
+      textTheme: theme.textTheme.copyWith(
+        headlineSmall: theme.textTheme.headlineSmall?.copyWith(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -.5,
+        ),
+        titleLarge: theme.textTheme.titleLarge?.copyWith(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -.3,
+        ),
+        titleMedium: theme.textTheme.titleMedium?.copyWith(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+        ),
+        bodyMedium: theme.textTheme.bodyMedium?.copyWith(
+          fontSize: 14,
+          height: 1.45,
+        ),
+        bodySmall: theme.textTheme.bodySmall?.copyWith(
+          fontSize: 12,
+          height: 1.4,
+          color: muted,
+        ),
+        labelLarge: theme.textTheme.labelLarge?.copyWith(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          minimumSize: const WidgetStatePropertyAll(Size(44, 44)),
+          shape: WidgetStateProperty.resolveWith(
+            (states) => shape.copyWith(
+              side: states.contains(WidgetState.focused)
+                  ? BorderSide(color: accentText, width: 2)
+                  : BorderSide.none,
+            ),
+          ),
+        ),
       ),
       filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          backgroundColor: BlankoBrand.originBlue,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        style: theme.filledButtonTheme.style?.copyWith(
+          minimumSize: const WidgetStatePropertyAll(Size(44, 44)),
+          padding: const WidgetStatePropertyAll(
+            EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: BlankoBrand.originBlue,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          foregroundColor: accentText,
+          minimumSize: const Size(44, 44),
+          shape: shape,
         ),
       ),
-      dialogTheme: DialogThemeData(
-        backgroundColor: BlankoBrand.darkSurface,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colors.onSurface,
+          minimumSize: const Size(44, 44),
+          shape: shape,
+          side: BorderSide(color: colors.outline),
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: colors.surfaceContainerLowest,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(BlankoMetrics.panelRadius),
+          side: BorderSide(color: colors.outline),
+        ),
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: colors.surfaceContainerLow,
         surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: BlankoBrand.darkBorder),
+          borderRadius: BorderRadius.circular(BlankoMetrics.panelRadius),
+          side: BorderSide(color: colors.outline),
+        ),
+        textStyle: theme.textTheme.bodyMedium?.copyWith(
+          color: colors.onSurface,
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: BlankoBrand.darkSurfaceContainer,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: BlankoBrand.darkBorder),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: BlankoBrand.darkBorder),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: BlankoBrand.originBlue,
-            width: 1.5,
+      menuTheme: MenuThemeData(
+        style: MenuStyle(
+          backgroundColor: WidgetStatePropertyAll(colors.surfaceContainerLow),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(BlankoMetrics.panelRadius),
+              side: BorderSide(color: colors.outline),
+            ),
           ),
         ),
-        labelStyle: const TextStyle(color: BlankoBrand.darkMutedText),
-        hintStyle: const TextStyle(color: BlankoBrand.darkMutedText),
+      ),
+      tooltipTheme: TooltipThemeData(
+        waitDuration: const Duration(milliseconds: 450),
+        decoration: BoxDecoration(
+          color: dark ? const Color(0xFFE7EAF0) : BlankoBrand.ink,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        textStyle: TextStyle(
+          fontFamily: fontFamily,
+          fontFamilyFallback: fontFamilyFallback,
+          fontSize: 12,
+          color: dark ? BlankoBrand.ink : Colors.white,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: dark ? const Color(0xFFE7EAF0) : BlankoBrand.ink,
+        contentTextStyle: TextStyle(
+          color: dark ? BlankoBrand.ink : Colors.white,
+        ),
+        actionTextColor: dark
+            ? const Color(0xFF2948D1)
+            : const Color(0xFFBAC5FF),
+        shape: shape,
+      ),
+      dividerTheme: DividerThemeData(
+        color: colors.outline,
+        thickness: 1,
+        space: 1,
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: accentText,
+        selectionColor: colors.primary.withValues(alpha: .25),
+        selectionHandleColor: accentText,
       ),
     );
   }
+}
+
+/// Shared spacing and shape values for the editor and library chrome.
+abstract final class BlankoMetrics {
+  static const double compact = 8;
+  static const double spacing = 12;
+  static const double padding = 16;
+  static const double controlRadius = 8;
+  static const double panelRadius = 12;
 }
 
 /// Official Blanko 'O' Symbol vector widget.
