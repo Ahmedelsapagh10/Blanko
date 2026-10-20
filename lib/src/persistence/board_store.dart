@@ -92,6 +92,7 @@ abstract interface class BoardStore {
     BoardSnapshot snapshot, {
     required int? expectedVersion,
   });
+  Future<void> deleteBoard(String id);
   Future<String?> readLastBoard();
   Future<void> writeLastBoard(String id);
   Future<void> close();

@@ -67,6 +67,10 @@ final class _Store implements BoardStore {
   Future<BoardSnapshot?> readBoard(String id) async =>
       committed.where((entry) => entry.document.id == id).lastOrNull;
   @override
+  Future<void> deleteBoard(String id) async {
+    committed.removeWhere((entry) => entry.document.id == id);
+  }
+  @override
   Future<String?> readLastBoard() async => null;
   @override
   Future<void> writeLastBoard(String id) async {}

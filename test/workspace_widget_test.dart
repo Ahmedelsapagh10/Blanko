@@ -314,4 +314,75 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+
+  testWidgets(
+    'library renames, duplicates and deletes boards with confirmation',
+    (tester) async {
+      final store = TestBoardStore();
+      await open(tester, store);
+      final initialId = canvas(tester).session.document.id;
+
+      // 1. Rename active board
+      await tester.tap(find.byTooltip('Boards'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Board options').first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Rename'));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const ValueKey('rename-board-input')),
+        'Alpha Project',
+      );
+      await tester.tap(find.byKey(const ValueKey('confirm-rename-board')));
+      await tester.pumpAndSettle();
+      expect(find.text('Alpha Project'), findsNWidgets(2));
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+      expect(canvas(tester).session.document.title, 'Alpha Project');
+      expect(
+        (await store.readBoard(initialId))!.document.title,
+        'Alpha Project',
+      );
+
+      // 2. Duplicate board
+      await tester.tap(find.byTooltip('Boards'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Board options').first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Duplicate'));
+      await tester.pumpAndSettle();
+      expect(find.text('Alpha Project (Copy)'), findsOneWidget);
+      final allBoards = await store.listBoards();
+      expect(allBoards.length, 2);
+      expect(
+        allBoards.map((b) => b.document.title),
+        containsAll(['Alpha Project', 'Alpha Project (Copy)']),
+      );
+
+      // 3. Delete duplicated board with cancel then confirm
+      final copyOptions = find.byTooltip('Board options').first;
+      await tester.tap(copyOptions);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+      expect(find.text('Delete board?'), findsOneWidget);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect((await store.listBoards()).length, 2);
+
+      await tester.tap(copyOptions);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('confirm-delete-board')));
+      await tester.pumpAndSettle();
+      expect((await store.listBoards()).length, 1);
+      expect(find.text('Alpha Project (Copy)'), findsNothing);
+
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+      expect(canvas(tester).session.document.title, 'Alpha Project');
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
 }

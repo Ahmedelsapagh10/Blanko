@@ -63,6 +63,12 @@ final class EditorCanvasController extends ChangeNotifier {
   final textLayouts = <ElementId, TextPainter>{};
   void Function(Point2 world, ElementId? id, bool sticky)? onEditText;
 
+  void setTitle(String title) {
+    if (_disposed || readOnly) return;
+    session.setTitle(title);
+    notifyListeners();
+  }
+
   void saveText(ElementContent content, Point2 world, {ElementId? id}) {
     if (_disposed || readOnly || !inputEnabled) return;
     try {

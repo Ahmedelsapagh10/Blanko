@@ -204,4 +204,17 @@ void main() {
       );
     },
   );
+
+  test('deleteBoard removes board from IndexedDB and clears last-board pointer', () async {
+    final store = await open();
+    await store.writeBoard(snapshot('board-1', 1, 0), expectedVersion: null);
+    await store.writeBoard(snapshot('board-2', 1, 0), expectedVersion: null);
+    await store.writeLastBoard('board-1');
+    expect(await store.readLastBoard(), 'board-1');
+
+    await store.deleteBoard('board-1');
+    expect(await store.readBoard('board-1'), isNull);
+    expect(await store.readLastBoard(), isNull);
+    expect((await store.listBoards()).map((b) => b.document.id), ['board-2']);
+  });
 }

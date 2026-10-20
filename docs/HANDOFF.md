@@ -1,6 +1,6 @@
 # Handoff
 
-Updated 2026-10-19. Resume AGENTS → PROJECT_STATUS → MASTER_PLAN → Git/relevant sources/tests. **Blanko Brand Identity v1.0 integrated & verified; MVP-03A erasers and MVP-03B text/notes verified 9/9; MVP-02 verified 8/8; MVP-01 verified 8/8; M07 text slice verified 7/7.** Full host test suite (212/212) and Chrome web test suite (83/83) passing with clean analysis. Ordinary implementation and independent file-owned agents authorized; no new phase approval prompt.
+Updated 2026-10-20. Resume AGENTS → PROJECT_STATUS → MASTER_PLAN → Git/relevant sources/tests. **Blanko Brand Identity v1.0 integrated & verified; MVP-03A erasers and MVP-03B text/notes verified 9/9; MVP-02 verified 8/8; MVP-01 verified 8/8; M07 text slice verified 7/7; WB-0911 board operations verified 1/1.** Full host test suite (214/214) and Chrome web test suite (83/83) passing with clean analysis. Ordinary implementation and independent file-owned agents authorized; no new phase approval prompt.
 
 ## Live application and user data
 
@@ -19,21 +19,23 @@ For browser durability verification, use a normal browser profile and fixed orig
 - WebBoardStore: package:web IndexedDB, strict transaction-complete acknowledgement, CAS in same readwrite transaction, lifetime ifAvailable Web Lock. Secondary handles/tabs read-only. No memory fallback. Backend invalidation makes a formerly writable autosave session FAILED, not safely read-only.
 - BoardAutosave: one in-flight/newest pending snapshot; retries explicit; late old save cannot mark latest Saved. Retains memory on failure, initial read-only ownership immutable, no notification after dispose while accepted writes drain.
 - WorkspacePage: library create/open/last-board restore, complete-command autosave,250ms settled viewport save, accurate status/error/retry; flush and input suppression before switching; validates candidate before replacing old editor. No authored document at startup can exit normally even if opening failed; stale disposed initialization cannot create a default board. Preflight font loader caches loaded TrueType assets and returns `SynchronousFuture` to prevent test-zone stalls.
+- Board Library (WB-0911): `BoardStore.deleteBoard(id)` implemented in `FileBoardStore` (atomic file deletion and active pointer fallback) and `WebBoardStore` (IndexedDB `'boards'` and `'settings'` cleanup). `_BoardLibrary` dialog supports rename, duplicate with `(Copy)` suffix, and delete with modal confirmation. `_RenameBoardDialog` stateful lifecycle isolates `TextEditingController` to prevent post-dismissal disposal exceptions. Active board rename updates `_canvas.setTitle()` and flushes, preventing autosave version conflicts.
 - MainFlutterWindow NSWindowDelegate redirects red Close into existing Flutter termination and returns false, retaining the window until Dart flush permits exit. Native Quit uses AppLifecycleListener. Browser beforeunload warns while dirty; cannot await asynchronous storage on close.
 - StrokeEraser & BoardSession: continuous drag object eraser, segment eraser with geometric polygon/line splitting preserving order and style, and confirm/cancel Clear All dialog with single-undo restoration.
 - EditorText & TextEditorDialog: multiline text and sticky notes with Inter/Roboto/Noto Sans Arabic typography fallback, automatic and explicit LTR/RTL, wrapping width, background colors, and autosave durability.
 
 ## Verified results and failures
 
-Final **212 host + 83 Chrome tests** passing; analysis clean (0 issues), formatted source/diff checks. Tests cover strict serialization, real native files/cross-process locking, real IndexedDB/Web Locks, CAS/rapid writes/Undo, errors/retry, snapshots/camera, full Editor/library/pending switch/exit, writer loss, startup failures/cleanup/disposed initialization, object/segment erasers, clear all, text editing, sticky notes, and Arabic font readiness preflight.
+Final **214 host + 83 Chrome tests** passing; analysis clean (0 issues), formatted source/diff checks. Tests cover strict serialization, real native files/cross-process locking, real IndexedDB/Web Locks, CAS/rapid writes/Undo, errors/retry, snapshots/camera, full Editor/library/pending switch/exit, writer loss, startup failures/cleanup/disposed initialization, object/segment erasers, clear all, text editing, sticky notes, board rename/duplicate/delete, and Arabic font readiness preflight.
 
 ## Exact next actions
 
-1. Maintain Git index cleanly: review diffs and commit verified changes with concise, descriptive commit messages.
-2. Advance Board Library operations: implement board rename, board duplicate, and board delete with confirmation in `_BoardLibrary` dialog and `BoardStore`.
+1. Review Git changes and pull latest commits if any.
+2. Advance Schema Migrations (WB-0912): explicit version migrations and recovery when schema updates occur.
 3. Advance Image and Frame tools (WB-0708 through WB-0713): local image file selection, resolution-aware decoding, and container/export frames.
-4. Keep M09 remaining obligations explicit: image originals/staging/GC, richer corruption/disconnection recovery, and all-device fault checks. Current CAS conflict retains memory but may require access restoration/reopening; no silent overwrite.
-5. Preserve historical 10K/16.7ms work/caps/evidence for M14; no stress optimization before earlier usable features. Current save serializes whole snapshots; 10K save/memory/interaction performance not measured.
+4. Export options: PNG and SVG export (WB-0607, WB-0608).
+5. Keep M09 remaining obligations explicit: image originals/staging/GC, richer corruption/disconnection recovery, and all-device fault checks. Current CAS conflict retains memory but may require access restoration/reopening; no silent overwrite.
+6. Preserve historical 10K/16.7ms work/caps/evidence for M14; no stress optimization before earlier usable features. Current save serializes whole snapshots; 10K save/memory/interaction performance not measured.
 
 ## Commands
 

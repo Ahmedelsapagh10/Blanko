@@ -28,6 +28,22 @@ final class BoardSession {
   bool get canUndo => _undo.isNotEmpty;
   bool get canRedo => _redo.isNotEmpty;
 
+  void setTitle(String title) {
+    if (_document.title == title) return;
+    _document = BoardDocument(
+      id: _document.id,
+      schemaVersion: _document.schemaVersion,
+      revision: _document.revision,
+      workspaceId: _document.workspaceId,
+      title: title,
+      canvasSettings: _document.canvasSettings,
+      assets: _document.assets,
+      fontReferences: _document.fontReferences,
+      metadata: _document.metadata,
+      elements: _document.elements,
+    );
+  }
+
   ElementId insert(
     ElementContent content, {
     Transform2 transform = Transform2.identity,

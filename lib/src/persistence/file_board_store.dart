@@ -151,6 +151,24 @@ final class FileBoardStore implements BoardStore {
     await _atomicWrite(_file(snapshot.document.id), snapshot.encode());
   });
 
+  @override
+  Future<void> deleteBoard(String id) => _serial(() async {
+    _checkWriter();
+    final file = _file(id);
+    if (await file.exists()) {
+      await file.delete();
+    }
+    final lastFile = File('${directory.path}/last-board.json');
+    if (await lastFile.exists()) {
+      try {
+        final value = jsonDecode(await lastFile.readAsString());
+        if (value == id) {
+          await lastFile.delete();
+        }
+      } catch (_) {}
+    }
+  });
+
   Future<void> _atomicWrite(File destination, String value) async {
     final temporary = File(
       '${destination.path}.pending-$pid-${_temporarySequence++}',

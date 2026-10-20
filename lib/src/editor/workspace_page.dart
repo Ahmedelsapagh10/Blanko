@@ -237,14 +237,54 @@ class _WorkspacePageState extends State<WorkspacePage> {
           boards: boards,
           writable: _store!.writable,
           location: _store!.location,
+          store: _store!,
+          currentBoardId: _canvas?.session.document.id,
+          onRenameCurrentBoard: (newTitle) async {
+            _canvas?.setTitle(newTitle);
+            await _flush();
+            if (mounted) setState(() {});
+          },
         ),
       );
-      if (choice == null || !mounted) return;
+      if (!mounted) return;
+      if (choice == null) {
+        if (_canvas != null) {
+          final exists = await _store!.readBoard(_canvas!.session.document.id);
+          if (exists == null) {
+            final remaining = await _store!.listBoards();
+            _setBusy(true);
+            final BoardSnapshot replacement;
+            if (remaining.isNotEmpty) {
+              replacement = remaining.first;
+            } else {
+              replacement = _newSnapshot('Untitled board');
+              await _store!.writeBoard(replacement, expectedVersion: null);
+            }
+            if (_store!.writable) {
+              await _store!.writeLastBoard(replacement.document.id);
+            }
+            if (mounted) _install(replacement);
+            _setBusy(false);
+          }
+        }
+        return;
+      }
       _setBusy(true);
       final BoardSnapshot snapshot;
       if (choice.$1 == 'create') {
         snapshot = _newSnapshot(choice.$2);
         await _store!.writeBoard(snapshot, expectedVersion: null);
+      } else if (choice.$1 == 'deleted_current') {
+        if (choice.$2.isNotEmpty) {
+          final record = await _store!.readBoard(choice.$2);
+          snapshot = record ?? _newSnapshot('Untitled board');
+          if (record == null) {
+            await _store!.writeBoard(snapshot, expectedVersion: null);
+          }
+        } else {
+          snapshot = _newSnapshot('Untitled board');
+          await _store!.writeBoard(snapshot, expectedVersion: null);
+        }
       } else {
         final record = await _store!.readBoard(choice.$2);
         if (record == null) {
@@ -253,7 +293,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
         snapshot = record;
       }
       if (!mounted) return;
-      if (!await _flush()) {
+      if (choice.$1 != 'deleted_current' && !await _flush()) {
         throw StateError(
           'Current work is still unsaved. Retry before switching.',
         );
@@ -416,20 +456,137 @@ class _BoardLibrary extends StatefulWidget {
     required this.boards,
     required this.writable,
     required this.location,
+    required this.store,
+    required this.currentBoardId,
+    this.onRenameCurrentBoard,
   });
   final List<BoardSnapshot> boards;
   final bool writable;
   final String location;
+  final BoardStore store;
+  final String? currentBoardId;
+  final Future<void> Function(String newTitle)? onRenameCurrentBoard;
+
   @override
   State<_BoardLibrary> createState() => _BoardLibraryState();
 }
 
 class _BoardLibraryState extends State<_BoardLibrary> {
   final _name = TextEditingController();
+  late final List<BoardSnapshot> _boards = List.of(widget.boards);
+  bool _activeBoardDeleted = false;
+
   @override
   void dispose() {
     _name.dispose();
     super.dispose();
+  }
+
+  Future<void> _rename(BoardSnapshot board) async {
+    final newTitle = await showDialog<String>(
+      context: context,
+      builder: (context) =>
+          _RenameBoardDialog(initialTitle: board.document.title),
+    );
+    if (newTitle == null || newTitle == board.document.title) return;
+
+    if (board.document.id == widget.currentBoardId &&
+        widget.onRenameCurrentBoard != null) {
+      await widget.onRenameCurrentBoard!(newTitle);
+      final refreshed = await widget.store.readBoard(board.document.id);
+      final index =
+          _boards.indexWhere((b) => b.document.id == board.document.id);
+      if (index >= 0 && refreshed != null) {
+        _boards[index] = refreshed;
+      }
+    } else {
+      final updatedDoc = BoardDocument(
+        id: board.document.id,
+        schemaVersion: board.document.schemaVersion,
+        revision: board.document.revision,
+        workspaceId: board.document.workspaceId,
+        title: newTitle,
+        canvasSettings: board.document.canvasSettings,
+        assets: board.document.assets,
+        fontReferences: board.document.fontReferences,
+        metadata: board.document.metadata,
+        elements: board.document.elements,
+      );
+      final updated = BoardSnapshot(
+        document: updatedDoc,
+        camera: board.camera,
+        version: board.version + 1,
+        savedAt: DateTime.now().toUtc(),
+      );
+      await widget.store.writeBoard(updated, expectedVersion: board.version);
+      final index =
+          _boards.indexWhere((b) => b.document.id == board.document.id);
+      if (index >= 0) {
+        _boards[index] = updated;
+      }
+    }
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _duplicate(BoardSnapshot board) async {
+    final id =
+        'board-${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}-${Random.secure().nextInt(0x7fffffff).toRadixString(36)}';
+    final title = '${board.document.title} (Copy)';
+    final duplicateDoc = BoardDocument(
+      id: id,
+      schemaVersion: board.document.schemaVersion,
+      revision: board.document.revision,
+      workspaceId: board.document.workspaceId,
+      title: title.length > 120 ? title.substring(0, 120) : title,
+      canvasSettings: board.document.canvasSettings,
+      assets: board.document.assets,
+      fontReferences: board.document.fontReferences,
+      metadata: board.document.metadata,
+      elements: board.document.elements,
+    );
+    final duplicate = BoardSnapshot(
+      document: duplicateDoc,
+      camera: board.camera,
+      version: 1,
+      savedAt: DateTime.now().toUtc(),
+    );
+    await widget.store.writeBoard(duplicate, expectedVersion: null);
+    _boards.insert(0, duplicate);
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _delete(BoardSnapshot board) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete board?'),
+        content: Text(
+          'Are you sure you want to delete "${board.document.title}"? This cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            key: const ValueKey('confirm-delete-board'),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    await widget.store.deleteBoard(board.document.id);
+    _boards.removeWhere((b) => b.document.id == board.document.id);
+    if (board.document.id == widget.currentBoardId) {
+      _activeBoardDeleted = true;
+    }
+    if (mounted) setState(() {});
   }
 
   @override
@@ -442,12 +599,12 @@ class _BoardLibraryState extends State<_BoardLibrary> {
       ],
     ),
     content: SizedBox(
-      width: 460,
-      height: 360,
+      width: 480,
+      height: 380,
       child: Column(
         children: [
           Expanded(
-            child: widget.boards.isEmpty
+            child: _boards.isEmpty
                 ? Center(
                     child: Padding(
                       padding: const EdgeInsets.all(24),
@@ -475,16 +632,107 @@ class _BoardLibraryState extends State<_BoardLibrary> {
                   )
                 : ListView(
                     children: [
-                      for (final board in widget.boards)
+                      for (final board in _boards)
                         ListTile(
-                          title: Text(board.document.title),
+                          title: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  board.document.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontWeight:
+                                        board.document.id ==
+                                            widget.currentBoardId
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              if (board.document.id == widget.currentBoardId)
+                                Container(
+                                  margin: const EdgeInsets.only(left: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: BlankoBrand.originBlue.withValues(
+                                      alpha: 0.12,
+                                    ),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: const Text(
+                                    'Active',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: BlankoBrand.originBlue,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                           subtitle: Text(
                             '${board.document.elements.length} elements · revision ${board.document.revision}',
                             style: const TextStyle(
                               color: BlankoBrand.mutedText,
                             ),
                           ),
-                          trailing: const Icon(Icons.chevron_right),
+                          trailing: widget.writable
+                              ? PopupMenuButton<String>(
+                                  tooltip: 'Board options',
+                                  icon: const Icon(Icons.more_vert, size: 20),
+                                  onSelected: (action) {
+                                    if (action == 'rename') {
+                                      unawaited(_rename(board));
+                                    } else if (action == 'duplicate') {
+                                      unawaited(_duplicate(board));
+                                    } else if (action == 'delete') {
+                                      unawaited(_delete(board));
+                                    }
+                                  },
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(
+                                      value: 'rename',
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.edit_outlined, size: 18),
+                                          SizedBox(width: 8),
+                                          Text('Rename'),
+                                        ],
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 'duplicate',
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.copy_outlined, size: 18),
+                                          SizedBox(width: 8),
+                                          Text('Duplicate'),
+                                        ],
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 'delete',
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.delete_outline,
+                                            size: 18,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            'Delete',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : const Icon(Icons.chevron_right),
                           onTap: () => Navigator.pop(context, (
                             'open',
                             board.document.id,
@@ -515,7 +763,16 @@ class _BoardLibraryState extends State<_BoardLibrary> {
     ),
     actions: [
       TextButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () {
+          if (_activeBoardDeleted) {
+            Navigator.pop(context, (
+              'deleted_current',
+              _boards.firstOrNull?.document.id ?? '',
+            ));
+          } else {
+            Navigator.pop(context);
+          }
+        },
         child: const Text('Close'),
       ),
       if (widget.writable)
@@ -531,3 +788,60 @@ class _BoardLibraryState extends State<_BoardLibrary> {
     ],
   );
 }
+
+class _RenameBoardDialog extends StatefulWidget {
+  const _RenameBoardDialog({required this.initialTitle});
+  final String initialTitle;
+
+  @override
+  State<_RenameBoardDialog> createState() => _RenameBoardDialogState();
+}
+
+class _RenameBoardDialogState extends State<_RenameBoardDialog> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialTitle);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final text = _controller.text.trim();
+    final newTitle = text.isEmpty ? BlankoBrand.defaultBoardTitle : text;
+    Navigator.of(context).pop(newTitle);
+  }
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+        title: const Text('Rename board'),
+        content: TextField(
+          key: const ValueKey('rename-board-input'),
+          controller: _controller,
+          autofocus: true,
+          maxLength: 120,
+          decoration: const InputDecoration(
+            labelText: 'Board name',
+          ),
+          onSubmitted: (_) => _submit(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            key: const ValueKey('confirm-rename-board'),
+            onPressed: _submit,
+            child: const Text('Rename'),
+          ),
+        ],
+      );
+}
+

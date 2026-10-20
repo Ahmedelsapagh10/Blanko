@@ -56,6 +56,13 @@ class TestBoardStore implements BoardStore {
   }
 
   @override
+  Future<void> deleteBoard(String id) async {
+    if (!writable) throw StateError('Read only');
+    records.remove(id);
+    if (last == id) last = null;
+  }
+
+  @override
   Future<void> close() async {
     if (failClose) throw StateError('Close denied');
     closed = true;

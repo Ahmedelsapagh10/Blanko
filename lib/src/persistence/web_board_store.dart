@@ -281,6 +281,37 @@ final class WebBoardStore implements BoardStore {
   });
 
   @override
+  Future<void> deleteBoard(String id) => _serial(() async {
+    await _transaction<void>(
+      'boards',
+      write: true,
+      schedule: (store, done, fail) {
+        store.delete(id.toJS);
+        done(null);
+      },
+    );
+    await _transaction<void>(
+      'settings',
+      write: true,
+      schedule: (store, done, fail) {
+        final request = store.get('last-board'.toJS);
+        request.onsuccess = ((web.Event _) {
+          try {
+            final value = request.result;
+            final lastId = value == null ? null : (value as JSString).toDart;
+            if (lastId == id) {
+              store.delete('last-board'.toJS);
+            }
+            done(null);
+          } catch (error, stack) {
+            fail(error, stack);
+          }
+        }).toJS;
+      },
+    );
+  });
+
+  @override
   Future<String?> readLastBoard() => _serial(
     () => _transaction<String?>(
       'settings',

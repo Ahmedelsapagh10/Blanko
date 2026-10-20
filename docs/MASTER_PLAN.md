@@ -736,9 +736,9 @@ Verification contract: Stale-save/retry/quota/disk/permission/crash/reload fault
   - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
   - Acceptance: **Implement safe asset garbage collection**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0911 Implement Board Library operations.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
-  - Acceptance: **Implement Board Library operations**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0911 Implement Board Library operations.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
+  - Acceptance: **Implement Board Library operations** including rename, duplicate, and delete with confirmation dialog; atomic deletion in FileBoardStore and WebBoardStore; lifecycle-bound TextEditingController dialog to prevent post-dismissal disposal exceptions; auto-syncing board session and title without version conflicts; tests: `test/file_board_store_test.dart`, `test/web_board_store_test.dart`, `test/workspace_widget_test.dart`; evidence: 214 host tests and 83 Chrome tests passing with 0 analyzer issues.
 
 - [ ] WB-0912 Implement schema migrations.
   - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
