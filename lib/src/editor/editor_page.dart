@@ -388,19 +388,27 @@ class _EditorPageState extends State<EditorPage> {
                 left: compact ? 12 : 92,
                 right: compact ? 230 : 300,
                 bottom: 24,
-                child: IgnorePointer(
-                  child: ListenableBuilder(
-                    listenable: controller.toolbarChanges,
-                    builder: (context, _) => Text(
-                      controller.message ??
-                          '${controller.elementCount} elements',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: colors.onSurfaceVariant,
-                        backgroundColor: colors.surfaceContainerLowest,
+                child: ListenableBuilder(
+                  listenable: controller.toolbarChanges,
+                  builder: (context, _) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (controller.imageCache.errors.isNotEmpty)
+                        TextButton(
+                          onPressed: controller.retryImages,
+                          child: const Text('Retry images'),
+                        ),
+                      Text(
+                        controller.message ??
+                            '${controller.elementCount} elements',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: colors.onSurfaceVariant,
+                          backgroundColor: colors.surfaceContainerLowest,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),

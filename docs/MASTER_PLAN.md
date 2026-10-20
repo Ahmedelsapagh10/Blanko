@@ -2,7 +2,7 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-19. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the dedicated M12 UI/UX transformation. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the dedicated image-rendering recovery; stop after its delivery. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
 UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on available desktop/browser targets. Native phone/tablet runs, full assistive-technology review and M13 device/input qualification remain unchecked. No claim of full V1 or 10K performance acceptance. See `benchmark_results/ui-ux/verification.json` and `docs/HANDOFF.md`.
 
@@ -585,20 +585,20 @@ Verification contract: RTL/IME/editing widget tests, decode/error/disposal tests
   - Acceptance: **Sticky Note styles and resize**, integrated where applicable under M07/MVP-03B contract with background color presets and auto-height text layout; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
 
 - [ ] WB-0708 Implement image import and display.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Implement image import and display**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0305, WB-0601, WB-0203, WB-0207; actual PNG/JPEG import/display and restart/reload verified on macOS/Chrome; other native platform pickers remain unavailable.
+  - Acceptance: retain full V1 requirement; current evidence: benchmark_results/image-import/verification.json.
 
 - [ ] WB-0709 Implement lazy/resolution-aware image decode.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Implement lazy/resolution-aware image decode**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0305, WB-0601, WB-0203, WB-0207; viewport-lazy reopening and aspect-preserving capped decode verified; adaptive zoom decode and Web transient original-size decoding remain limits.
+  - Acceptance: retain full V1 requirement; current evidence: benchmark_results/image-import/verification.json.
 
-- [ ] WB-0710 Implement bounded image caching.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Implement bounded image caching**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0710 Implement bounded image caching.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
+  - Acceptance: 96 MiB/40-entry decoded cache, 2048px cap, visible-entry pinning and explicit capacity errors prevent endless peer eviction; tests: image_cache_test.dart on host/Chrome. Evidence: benchmark_results/image-import/verification.json.
 
-- [ ] WB-0711 Handle stale async image loading.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Handle stale async image loading**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0711 Handle stale async image loading.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
+  - Acceptance: Per-request invalidation, deleted-image resource release, disposed import guards and board-controller lifetime; tests: image_cache_test.dart, image_pipeline_test.dart on host/Chrome. Evidence: benchmark_results/image-import/verification.json.
 
 - [ ] WB-0712 Implement Export Frame editing.
   - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.

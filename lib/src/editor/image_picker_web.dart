@@ -37,11 +37,15 @@ Future<PickedImage?> pickImageFile() async {
           );
         }
       } catch (_) {
-        if (!completer.isCompleted) completer.complete(null);
+        if (!completer.isCompleted) {
+          completer.completeError(StateError('Could not read selected image.'));
+        }
       }
     }).toJS;
     reader.onerror = ((web.Event _) {
-      if (!completer.isCompleted) completer.complete(null);
+      if (!completer.isCompleted) {
+        completer.completeError(StateError('Could not read selected image.'));
+      }
     }).toJS;
     reader.readAsArrayBuffer(file);
   }).toJS;
@@ -52,7 +56,11 @@ Future<PickedImage?> pickImageFile() async {
 
   web.document.body?.appendChild(input);
   input.click();
-  input.remove();
-
-  return completer.future;
+  try {
+    return await completer.future;
+  } finally {
+    input.onchange = null;
+    input.oncancel = null;
+    input.remove();
+  }
 }

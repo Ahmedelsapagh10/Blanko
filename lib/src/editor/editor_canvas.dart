@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -76,17 +75,37 @@ final class EditorCanvasController extends ChangeNotifier {
   void Function(Point2 world, ElementId? id, bool sticky)? onEditText;
 
   void requestImage(String assetId) {
-    if (_disposed || _requestedAssets.contains(assetId)) return;
+    if (_disposed ||
+        _requestedAssets.contains(assetId) ||
+        imageCache.get(assetId) != null ||
+        imageCache.errors.containsKey(assetId)) {
+      return;
+    }
     _requestedAssets.add(assetId);
-    imageCache
-        .load(assetId, () async {
-          return await store?.readAsset(assetId);
-        })
-        .then((image) {
-          if (image != null && !_disposed) {
-            notifyListeners();
-          }
-        });
+    imageCache.load(assetId, () async => store?.readAsset(assetId)).then((
+      image,
+    ) {
+      _requestedAssets.remove(assetId);
+      if (_disposed ||
+          !scene.paintOrder.any(
+            (element) =>
+                element.content is ImageElementContent &&
+                (element.content as ImageElementContent).assetId == assetId,
+          )) {
+        return;
+      }
+      if (image == null) {
+        message =
+            'Image unavailable: ${imageCache.errors[assetId] ?? "could not load original bytes"}. Use Retry images.';
+      }
+      _notify(toolbar: true);
+    });
+  }
+
+  void retryImages() {
+    imageCache.errors.clear();
+    message = null;
+    _notify(toolbar: true);
   }
 
   Future<ElementId?> importImage({
@@ -96,27 +115,41 @@ final class EditorCanvasController extends ChangeNotifier {
     Point2? position,
   }) async {
     if (_disposed || readOnly || !inputEnabled) return null;
+    if (store == null) {
+      message = 'Image import requires local board storage.';
+      _notify(toolbar: true);
+      return null;
+    }
+    final center =
+        position ??
+        camera.viewportToWorld(
+          Point2(viewportSize.width / 2, viewportSize.height / 2),
+        );
     try {
-      final buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
-      final descriptor = await ui.ImageDescriptor.encoded(buffer);
-      final origW = descriptor.width;
-      final origH = descriptor.height;
-      descriptor.dispose();
-      buffer.dispose();
-
-      if (origW <= 0 || origH <= 0) return null;
-
       final assetId =
           'img-${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}-${math.Random().nextInt(0x7fffffff).toRadixString(36)}';
+      var origW = 0, origH = 0;
+      final decoded = await imageCache.load(
+        assetId,
+        () async => bytes,
+        onDimensions: (width, height) {
+          origW = width;
+          origH = height;
+        },
+      );
+      if (_disposed || !inputEnabled) return null;
+      if (decoded == null || origW <= 0 || origH <= 0) {
+        throw StateError(
+          'Unsupported or damaged image: ${imageCache.errors[assetId]}',
+        );
+      }
       final detectedMime =
           mimeType ??
           (filename.toLowerCase().endsWith('.png')
               ? 'image/png'
               : 'image/jpeg');
-
-      if (store != null) {
-        await store!.writeAsset(assetId, bytes);
-      }
+      await store!.writeAsset(assetId, bytes);
+      if (_disposed || !inputEnabled) return null;
 
       const maxInitialSide = 360.0;
       double width = origW.toDouble();
@@ -127,7 +160,6 @@ final class EditorCanvasController extends ChangeNotifier {
         height *= scale;
       }
 
-      final center = position ?? camera.translation;
       final bounds = Bounds2(
         center.x - width / 2,
         center.y - height / 2,
@@ -153,15 +185,18 @@ final class EditorCanvasController extends ChangeNotifier {
       setTool(EditorTool.select);
       return id;
     } on ArgumentError catch (error) {
+      if (_disposed) return null;
       message = 'Could not import image: ${error.message}';
       _notify(toolbar: true);
       return null;
     } on StateError catch (error) {
+      if (_disposed) return null;
       message = 'Could not import image: ${error.message}';
       _notify(toolbar: true);
       return null;
-    } catch (_) {
-      message = 'Invalid or unsupported image file.';
+    } catch (error) {
+      if (_disposed) return null;
+      message = 'Could not import image: $error';
       _notify(toolbar: true);
       return null;
     }
@@ -178,8 +213,9 @@ final class EditorCanvasController extends ChangeNotifier {
           mimeType: picked.mimeType,
         );
       }
-    } catch (_) {
-      message = 'Could not select image file.';
+    } catch (error) {
+      if (_disposed) return;
+      message = 'Could not select image file: $error';
       _notify(toolbar: true);
     }
   }
@@ -188,6 +224,7 @@ final class EditorCanvasController extends ChangeNotifier {
     if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
     if (session.rotate(selectedId!, radians)) {
       _refreshScene();
+      _notify(toolbar: true);
     }
   }
 
@@ -197,6 +234,7 @@ final class EditorCanvasController extends ChangeNotifier {
     if (dupId != null) {
       selectedId = dupId;
       _refreshScene();
+      _notify(toolbar: true);
     }
   }
 
@@ -204,6 +242,7 @@ final class EditorCanvasController extends ChangeNotifier {
     if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
     if (session.resize(selectedId!, newBounds)) {
       _refreshScene();
+      _notify(toolbar: true);
     }
   }
 
@@ -460,6 +499,10 @@ final class EditorCanvasController extends ChangeNotifier {
     }
     textLayouts.clear();
     scene = EditorScene(session.document);
+    imageCache.retainOnly({
+      for (final element in session.document.elements)
+        if (element.content case ImageElementContent(:final assetId)) assetId,
+    });
     for (final element in scene.paintOrder) {
       if (element.content is TextElementContent ||
           element.content is StickyNoteElementContent) {
@@ -1023,7 +1066,15 @@ class _EditorPainter extends CustomPainter {
     if (grid.visible) _grid(canvas, size, c.camera, grid);
     canvas.save();
     canvas.scale(c.camera.zoom);
-    for (final element in c.scene.visible(view.inflate(6 / c.camera.zoom))) {
+    final visible = c.scene.visible(view.inflate(6 / c.camera.zoom));
+    c.imageCache.updateVisibleAssets(
+      {
+        for (final element in visible)
+          if (element.content case ImageElementContent(:final assetId)) assetId,
+      },
+      (view.left, view.top, view.right, view.bottom),
+    );
+    for (final element in visible) {
       final fragments = c.eraseChanges[element.id];
       if (fragments != null) {
         for (final content in fragments) {
@@ -1182,7 +1233,22 @@ class _EditorPainter extends CustomPainter {
           ..strokeWidth = 1.0 / controller.camera.zoom
           ..color = const Color(0xFFCED4DA).withValues(alpha: element.opacity);
         canvas.drawRect(rect, borderPaint);
-        controller.requestImage(content.assetId);
+        if (controller.imageCache.errors.containsKey(content.assetId)) {
+          final label = TextPainter(
+            text: const TextSpan(
+              text: 'Image unavailable',
+              style: TextStyle(color: Color(0xffb42318), fontSize: 14),
+            ),
+            textDirection: TextDirection.ltr,
+          )..layout(maxWidth: rect.width);
+          canvas.save();
+          canvas.clipRect(rect);
+          label.paint(canvas, rect.topLeft);
+          canvas.restore();
+          label.dispose();
+        } else {
+          controller.requestImage(content.assetId);
+        }
       }
     }
     if (content is ContainerFrameElementContent ||

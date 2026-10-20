@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-20",
+  "scope": "Image rendering recovery only",
+  "baseline": "ccb4176, clean master matching origin/master before edits",
+  "root_causes": [
+    "Native decoder disposed descriptor and encoded buffer before first-frame decode; deterministic valid PNG failed before fix and decoded after retaining resources.",
+    "Flutter3.41.9 Web ImageDescriptor encoded width/height throws UnsupportedError; confirmed in real Chrome and installed SDK implementation.",
+    "Requested-asset set permanently suppressed failed/evicted reloads; errors swallowed.",
+    "Rotate/duplicate/resize helpers committed snapshots but did not notify painter/autosave.",
+    "macOS shell picker returned without a panel; replaced with native sandbox-compatible panel."
+  ],
+  "environment": {
+    "flutter": "3.41.9 stable",
+    "dart": "3.11.5",
+    "macOS": "26.5.1 arm64",
+    "mode": "Debug for functional UI verification; no performance claim"
+  },
+  "changes": {
+    "lib/src/editor/editor_canvas.dart": "Cross-platform decoded dimension import; durable bytes before insert; correct viewport center; stale/error/retry handling; repaint/autosave notifications for rotate/duplicate/resize; visible cache admission and error labels.",
+    "lib/src/editor/editor_page.dart": "Actionable Retry images control beside errors.",
+    "lib/src/editor/image_cache_manager.dart": "Framework decoder ownership; aspect-preserving resolution/byte caps; per-request stale guards; deleted-image cleanup; recoverable errors and pinned visible-cache admission.",
+    "lib/src/editor/image_picker_io.dart": "Replace silent shell picker with native macOS method channel.",
+    "lib/src/editor/image_picker_web.dart": "Keep picker attached until completion; cleanup and explicit read errors.",
+    "macos/Runner/MainFlutterWindow.swift": "Native NSOpenPanel and background original-byte read, security-scope ownership and macOS10.15-compatible fallback.",
+    "macos/Runner/DebugProfile.entitlements": "User-selected read-only file access for native picker.",
+    "macos/Runner/Release.entitlements": "Same user-selected read-only file access in Release.",
+    "test/image_cache_test.dart": "8 decoder/pixel/capacity/retry/stale/disposal/budget tests.",
+    "test/image_pipeline_test.dart": "4 import/center/notify/failure/disposal/autosave/deletion/reopening tests.",
+    "test/image_store_lifecycle_test.dart": "2 actual temporary-file-store reopen/shared-asset/delete/undo tests.",
+    "test/support/image_test_bytes.dart": "Deterministic64x32 RGB PNG independent of browser test font-only asset loader.",
+    "test/fixtures/image-sample.jpg": "Controlled320x320 JPEG derived from existing Blanko icon for real UI verification."
+  },
+  "tests": {
+    "host_batch": {
+      "command": "flutter test test/image_cache_test.dart test/image_pipeline_test.dart test/image_store_lifecycle_test.dart test/adaptive_editor_test.dart test/board_session_test.dart test/file_board_store_test.dart --reporter expanded",
+      "passed": 41
+    },
+    "chrome_batch": {
+      "command": "flutter test --platform chrome test/image_cache_test.dart test/image_pipeline_test.dart test/web_board_store_test.dart --reporter expanded",
+      "passed": 19
+    },
+    "final_cache_followup": {
+      "commands": [
+        "flutter test test/image_cache_test.dart --reporter expanded",
+        "flutter test --platform chrome test/image_cache_test.dart --reporter expanded"
+      ],
+      "passed_each": 8,
+      "note": "Adds removed-image cancellation/release test; overlaps7 tests from prior batches. Unique cases:42host,20Chrome."
+    },
+    "analysis": "flutter analyze: No issues found",
+    "failed_attempts_resolved": [
+      "Initial valid PNG decode reproduction failed.",
+      "Initial native picker build required availability guard for unchanged macOS10.15 target.",
+      "Initial browser test fixtures were rejected by existing font-only asset mock; replaced with embedded deterministic PNG.",
+      "An async fixture gate and existing painter future awaited inside runAsync caused a fake-clock wait; corrected test zone ownership and removed duplicate decoder await."
+    ]
+  },
+  "actual_UI": {
+    "macOS": [
+      "Native picker PNG1024x1024 and JPEG320x320 actual pixels",
+      "Selection, move, corner resize, rotation, overlap z-order, zoom80%, pan",
+      "Delete, Undo, Redo, Undo restores pixels",
+      "Switch to existing board and back: image pixels and viewport restored",
+      "Actual Flutter app process exit (runner Application finished), fresh flutter run -d macos: both images and transforms restored"
+    ],
+    "Chrome": [
+      "Test profile, fixed localhost:8772 origin, real IndexedDB",
+      "Native browser picker PNG1024x1024 and JPEG320x320 actual pixels",
+      "Move, corner resize, rotate90, zoom125%, pan, overlap z-order",
+      "Delete/Undo/Redo/Undo; switch to new empty board and back",
+      "Actual browser reload restores both images, viewport and transforms; Saved locally visible"
+    ]
+  },
+  "persistence": "Original bytes unchanged, stable shared asset IDs; asset write acknowledged before document insert. No schema/storage migration; no user board data deleted. Actual temp-file store tests check shared references after original board deletion.",
+  "screenshots": [
+    "macos-board-reopened.png",
+    "macos-real-restart.png",
+    "chrome-real-reload.png"
+  ],
+  "limits": [
+    "Only macOS and Chrome picker workflows qualified; Windows/Android/iOS pickers remain disabled; Edge/Safari not qualified in this task.",
+    "Retained decoded cache capped96MiB/40entries, longest side2048px; excess visible assets show actionable capacity error rather than endlessly reload. Higher zoom may look soft; viewport-adaptive resolution remains uncheckedWB-0709.",
+    "Installed Web codec helper temporarily decodes original dimensions before its target decode; transient peak original decode memory is not bounded by retained-cache limit. No memory/performance benchmark claimed.",
+    "No asset garbage collection: unreferenced original bytes retained deliberately for shared references/Undo safety; failed/cancelled imports can leave unreferenced bytes.",
+    "Frames preserved; frame descendant duplication/ownership and export clipping not completed or certified.",
+    "Physical mobile/device/accessibility qualification remains separate."
+  ],
+  "next": "STOP after delivery. Next dedicated milestone: UI/device interaction refinement and remaining import/export UI; existing UI transformation already landed before this takeover brief. No unrelated features started.",
+  "git": "Commit/push recorded in final response; no force push.",
+  "sha256": {
+    "lib/src/editor/editor_canvas.dart": "4221b260d5404391893c38c324a4fee08d6849f5ede89f5dcd99be5ab51b1e53",
+    "lib/src/editor/editor_page.dart": "e42f076a42d56936d84cebeeaf39dae19bad6393a917c625916349e8b4cf58e2",
+    "lib/src/editor/image_cache_manager.dart": "909f002d35ad19a56c44c3d3e89b9802c49bbffad146eb94f85671c03a75e065",
+    "lib/src/editor/image_picker_io.dart": "9f3e8544692e16dd76eedb7e7d7210014d23d2edfd146f9426170d5ce10bfc94",
+    "lib/src/editor/image_picker_web.dart": "1debb290d5d2237e42c2b0a6b8fa05124a5f1bf1ec95a0c3839e919c2a9c0c9f",
+    "macos/Runner/MainFlutterWindow.swift": "ab9007c90b44c49a66469d9624e3dd95ad1a7deb5ab07c6ce1aa18ea3b6c0b3c",
+    "macos/Runner/DebugProfile.entitlements": "0a375eb949650f51d569521397237efdd3b75c781a8301a45194eca4e6fed0b8",
+    "macos/Runner/Release.entitlements": "cbb4f988fe05687dcb50a97dd07fe11f152cb9fe5c2100e2d4e25c6ee8ba7109",
+    "test/image_cache_test.dart": "a8839a86b22b95a555d5251514542baf29185f23fca34e3f597fd4b9ee5642ed",
+    "test/image_pipeline_test.dart": "fb753f7e5fe5fbe411348b876145a09bd4de8bae620a8173f840c423ae70f4c5",
+    "test/image_store_lifecycle_test.dart": "c9f9da9aaaec58f7ac048580284dcee5eef30ac3ba7c0a9d298dbb50f8da17bc",
+    "test/support/image_test_bytes.dart": "4de9656fb0ec832123671f583f6b1ed92da0d36c7806bce7bc82708d6ee77ff6",
+    "test/fixtures/image-sample.jpg": "e807a07f0c6eadd09127bb6a14f6b445a82396c5860fb1dda546249a9508e9ad"
+  }
+}

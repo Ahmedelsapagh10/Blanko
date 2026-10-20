@@ -1,4 +1,16 @@
-# Handoff — Blanko UI/UX
+# Handoff — Image import recovery
+
+2026-10-20: **macOS/Chrome PNG/JPEG real workflows verified;78/275 checked.** Stop after this milestone. Exact files,42 unique host/20 Chrome tests, root causes, limits and screenshots: `benchmark_results/image-import/verification.json`. Analysis clean. No SDK/dependency/schema upgrade.
+
+Fix: use framework decode-size callback instead of Web-unsupported descriptor dimensions; fix native source lifetime; explicit image error/retry; stale/deleted-image cleanup; prevent full-cache repaint/redecode loop. Native NSOpenPanel replaces silent shell picker. Rotate/duplicate/resize now repaint/autosave.
+
+Actual app verification: native PNG1024/JPEG320, transforms/Undo/zoom/pan/switch and real exit/relaunch; Chrome same plus real reload at **http://localhost:8772 in test profile**. Current saved test image boards retained, no existing boards deleted. Native test title contains “Image verification PNG + JPEG”; user typed/drawn work in other boards preserved. Own Web server8772 remains running. Earlier8770/8771 origins retain separate data.
+
+Limits:96MiB/40 retained entries/2048px decode; explicit error above capacity; Web transient original decode is not peak-memory-bounded. WB-0708/0709 partial: Windows/mobile pickers disabled, adaptive zoom decode unfinished. Frame hierarchy/export still unchecked. No asset GC (shared originals/Undo safety). About0.6GiB free at last check; avoid simulator build loops.
+
+Run: `flutter run -d macos`; Web: `flutter run -d web-server --web-port=8772 --web-hostname=localhost`. More tools → Insert image. Import PNG/JPEG, wait “Saved locally”, restart/reload at same origin/profile; pixels/transforms should restore. Use Retry images for missing/corrupt/capacity errors after correcting source/viewport. Next dedicated milestone is remaining UI/device and import/export UX refinement; do not start automatically under this takeover request.
+
+## Previous UI handoff (historical)
 
 Updated2026-10-20. **UI implementation delivered; device/accessibility qualification incomplete.76/275 verified (27.64%).** Canonical MASTER_PLAN retains all original tasks. Previous266 denominator omitted9 MVP-03 tasks. No production/performance pass claimed.
 
@@ -31,4 +43,4 @@ Updated2026-10-20. **UI implementation delivered; device/accessibility qualifica
 
 Appearance is in the top bar. Change Light/Dark/System; restart/reload and check the choice. Boards → blue + opens immediately; overflow Rename/Duplicate/Delete retains confirmation. Test pen/erasers, properties and Undo; on a phone-sized layout use the labeled bottom bar and More/Style sheets. Native touch hardware and IME need the checks above.
 
-Git: master. Implementation commits: ac93abd (inherited foundations),53ed90a (appearance),e7135f6 (UI/tests/screenshots). **Push blocked by automatic approval review**: trusted authorization for the default-branch push or an approved user-owned destination could not be verified. `gh` is unavailable, so ownership could not be checked through its authenticated API. Remote has not been changed by this session. A metadata-only handoff commit follows; inspect `git log -4` for its SHA. All implementation is committed locally. Obtain explicit approval before retrying `git push origin master` to `https://github.com/Ahmedelsapagh10/whitebaord.git`; do not bypass review or force-push.
+Git history: previous UI commits through ccb4176 were pushed with explicit approval. Current image milestone commit/push is reported in the delivery message.

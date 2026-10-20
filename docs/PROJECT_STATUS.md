@@ -1,4 +1,14 @@
-# Project status
+# Project status — Image rendering recovery
+
+Updated2026-10-20. **Native macOS and Chrome PNG/JPEG workflows verified.78/275 checked tasks (28.36%).** WB-0710/0711 verified; WB-0708/0709 remain partial because remaining native pickers/adaptive decode are unfinished.
+
+Fixed actual gray-image causes: premature native source disposal; Web-unsupported encoded ImageDescriptor dimensions; permanently suppressed retries. Uses the framework decoder callback with owned cleanup. Native picker now uses NSOpenPanel with user-selected read-only sandbox access. Rotate/duplicate/resize now notify painting and autosave. Original bytes remain unchanged and durable before document commit; no migration or dependency/SDK upgrade.
+
+Executed42 unique host and20 unique Chrome cases across focused batches, clean analysis, real macOS picker/import/transforms/Undo/board switch/application restart, and Chrome picker/import/transforms/Undo/board switch/reload. Actual screenshots and exact changed-file/test map: `benchmark_results/image-import/verification.json`.
+
+Limits: retained decoded cache96MiB/40entries/2048px, explicit capacity errors at admission; Web codec helper may temporarily decode the full original before resizing. No performance claim. Other native pickers remain disabled. Frame tools preserved, not certified; no asset garbage collection or schema change. Stop after this image milestone; next dedicated work is UI/device interaction refinement and outstanding import/export UX.
+
+## Previous UI checkpoint (historical)
 
 Updated 2026-10-20. **M12 UI/UX implementation delivered; cross-platform/device and assistive-technology qualification remains incomplete. Verified backlog 76/275 (27.64%).** Previous denominator266 omitted the9 MVP-03 tasks; canonical checklist actually contains275 tasks.
 
@@ -8,7 +18,7 @@ Executed: final68 directly affected host tests (one browser-only case skipped) a
 
 Limits: Android emulator startup exited1; iOS simulator installed but native mobile build/run not attempted under approximately0.5GiB free disk after project-only cleanup. Safari shell rendered; its synthetic control/pointer actions were inconclusive, so Safari interaction remains pending. Windows/Edge not run. Native Flutter accessibility bridge logs stale AX-tree errors; VoiceOver/TalkBack and native IME need manual/device qualification. Inherited image/frame code is preserved, not newly certified; platform pickers outside macOS/Web are explicitly unavailable. UI adds no board-schema change; inherited IndexedDB assets-store version2 upgrade is retained and tested against version1 records.
 
-Git: implementation committed locally through e7135f6 on master. Automatic approval review blocked the origin/master push; explicit approval is pending. Remote unchanged.
+Historical UI push completed with explicit approval through ccb4176; origin/master matched before this image milestone.
 
 Next: free disk space, complete Android/iOS and native accessibility/IME checks, Safari interaction verification, then finish inherited image/frame qualification. No return to stress-rendering optimization.
 

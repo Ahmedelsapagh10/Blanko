@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -13,11 +14,19 @@ final class ImageCacheManager {
   final int maxBytes;
   final int maxEntries;
 
+  Set<String> _visibleAssets = {};
+  Object? _viewport;
+  static const capacityError =
+      'Decoded image cache is full. Pan or zoom to reduce visible images, then retry.';
+
   final _cache = <String, _CachedImage>{};
+  final _requests = <String, Object>{};
   final _pending = <String, Future<ui.Image?>>{};
   int _currentBytes = 0;
   int _generation = 0;
   bool _disposed = false;
+
+  final errors = <String, String>{};
 
   int get currentBytes => _currentBytes;
   int get cachedCount => _cache.length;
@@ -44,6 +53,7 @@ final class ImageCacheManager {
     Future<Uint8List?> Function() byteSource, {
     int? targetWidth,
     int? targetHeight,
+    void Function(int width, int height)? onDimensions,
   }) {
     if (_disposed) return Future.value(null);
     final existing = get(assetId);
@@ -52,13 +62,18 @@ final class ImageCacheManager {
     final inFlight = _pending[assetId];
     if (inFlight != null) return inFlight;
 
+    errors.remove(assetId);
     final requestGen = _generation;
+    final request = Object();
+    _requests[assetId] = request;
     final future = _decodeAsync(
       assetId,
       byteSource,
       requestGen,
+      request,
       targetWidth: targetWidth,
       targetHeight: targetHeight,
+      onDimensions: onDimensions,
     );
     _pending[assetId] = future;
     return future;
@@ -67,56 +82,63 @@ final class ImageCacheManager {
   Future<ui.Image?> _decodeAsync(
     String assetId,
     Future<Uint8List?> Function() byteSource,
-    int requestGen, {
+    int requestGen,
+    Object request, {
     int? targetWidth,
     int? targetHeight,
+    void Function(int width, int height)? onDimensions,
   }) async {
+    ui.ImmutableBuffer? buffer;
+    ui.Codec? codec;
     try {
       final bytes = await byteSource();
-      if (bytes == null || bytes.isEmpty) return null;
-      if (_disposed || requestGen != _generation) return null;
-
-      final buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
-      final descriptor = await ui.ImageDescriptor.encoded(buffer);
-      if (_disposed || requestGen != _generation) {
-        descriptor.dispose();
-        buffer.dispose();
+      if (_disposed ||
+          requestGen != _generation ||
+          !identical(_requests[assetId], request)) {
         return null;
       }
-
-      // Resolution-aware target constraints (max 2048 in any dimension for safety)
-      int? tw = targetWidth;
-      int? th = targetHeight;
-      const maxDim = 2048;
-      if (descriptor.width > maxDim || descriptor.height > maxDim) {
-        if (descriptor.width >= descriptor.height) {
-          tw = maxDim;
-          th = (descriptor.height * maxDim / descriptor.width).round();
-        } else {
-          th = maxDim;
-          tw = (descriptor.width * maxDim / descriptor.height).round();
-        }
+      if (bytes == null || bytes.isEmpty) {
+        throw StateError('Original image asset is missing.');
       }
-
-      final codec = await descriptor.instantiateCodec(
-        targetWidth: tw,
-        targetHeight: th,
+      buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
+      final source = buffer;
+      buffer = null;
+      codec = await ui.instantiateImageCodecWithSize(
+        source,
+        getTargetSize: (width, height) {
+          onDimensions?.call(width, height);
+          final requestedScale = [
+            1.0,
+            2048 / width,
+            2048 / height,
+            if (targetWidth != null) targetWidth / width,
+            if (targetHeight != null) targetHeight / height,
+            math.sqrt(maxBytes / (width * height * 4)),
+          ].reduce(math.min);
+          return ui.TargetImageSize(
+            width: (width * requestedScale).floor().clamp(1, 2048),
+            height: (height * requestedScale).floor().clamp(1, 2048),
+          );
+        },
       );
-      descriptor.dispose();
-      buffer.dispose();
-
+      // instantiateImageCodecWithSize owns and disposes the immutable buffer.
       final frame = await codec.getNextFrame();
       final image = frame.image;
-      codec.dispose();
-
-      if (_disposed || requestGen != _generation) {
+      if (_disposed ||
+          requestGen != _generation ||
+          !identical(_requests[assetId], request)) {
         image.dispose();
         return null;
       }
-
       final imageBytes = image.width * image.height * 4;
-      _evictToFit(imageBytes);
-
+      if (imageBytes > maxBytes) {
+        image.dispose();
+        throw StateError('Image exceeds decoded memory budget.');
+      }
+      if (!_evictToFit(imageBytes)) {
+        image.dispose();
+        throw StateError(capacityError);
+      }
       _cache[assetId] = _CachedImage(
         image: image,
         bytes: imageBytes,
@@ -124,19 +146,55 @@ final class ImageCacheManager {
       );
       _currentBytes += imageBytes;
       return image;
-    } catch (_) {
+    } catch (error) {
+      if (!_disposed &&
+          requestGen == _generation &&
+          identical(_requests[assetId], request)) {
+        errors[assetId] = error.toString();
+      }
       return null;
     } finally {
-      _pending.remove(assetId);
+      codec?.dispose();
+      buffer?.dispose();
+      if (identical(_requests[assetId], request)) {
+        _pending.remove(assetId);
+        _requests.remove(assetId);
+      }
     }
   }
 
-  void _evictToFit(int newBytes) {
+  void retainOnly(Set<String> assetIds) {
+    for (final id in _cache.keys.toList()) {
+      if (assetIds.contains(id)) continue;
+      final cached = _cache.remove(id)!;
+      _currentBytes -= cached.bytes;
+      cached.image.dispose();
+    }
+    for (final id in _requests.keys.toList()) {
+      if (assetIds.contains(id)) continue;
+      _requests.remove(id);
+      _pending.remove(id);
+    }
+    errors.removeWhere((id, _) => !assetIds.contains(id));
+  }
+
+  void updateVisibleAssets(Set<String> assets, Object viewport) {
+    if (_viewport != viewport ||
+        assets.length != _visibleAssets.length ||
+        !assets.containsAll(_visibleAssets)) {
+      errors.removeWhere((_, error) => error.contains(capacityError));
+    }
+    _viewport = viewport;
+    _visibleAssets = assets;
+  }
+
+  bool _evictToFit(int newBytes) {
     while (_cache.isNotEmpty &&
         (_currentBytes + newBytes > maxBytes || _cache.length >= maxEntries)) {
       String? oldestKey;
       var oldestAccess = _cache.values.first.lastAccess;
       for (final entry in _cache.entries) {
+        if (_visibleAssets.contains(entry.key)) continue;
         if (oldestKey == null || entry.value.lastAccess < oldestAccess) {
           oldestAccess = entry.value.lastAccess;
           oldestKey = entry.key;
@@ -149,9 +207,10 @@ final class ImageCacheManager {
           removed.image.dispose();
         }
       } else {
-        break;
+        return false;
       }
     }
+    return true;
   }
 
   /// Increments the generation and clears the cache, safely disposing all images.
@@ -164,7 +223,11 @@ final class ImageCacheManager {
     }
     _cache.clear();
     _pending.clear();
+    _requests.clear();
+    errors.clear();
     _currentBytes = 0;
+    _visibleAssets = {};
+    _viewport = null;
   }
 
   void dispose() {
