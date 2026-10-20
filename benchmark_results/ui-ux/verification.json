@@ -176,5 +176,16 @@
     "test/web_board_store_test.dart": "ec5bf4aa7a9b031b6c5cab3ab1deb7f08e465f9670eca9bbada0c38614968dc2",
     "test/board_autosave_test.dart": "93a9d570605461ae7d5f4d47e4b4edc208f55828ccc74b5024837b19369b0550",
     "test/support/test_board_store.dart": "21b147a19db633d6a153e9e357e5211ace74fd36fde62a2afcaf18c41904e7f8"
+  },
+  "gitHandoff": {
+    "branch": "master",
+    "implementationCommits": [
+      "ac93abd",
+      "53ed90a",
+      "e7135f6"
+    ],
+    "pushStatus": "Blocked by automatic approval review; remote unchanged by this session",
+    "reason": "Trusted default-branch push authorization or approved user-owned destination could not be verified. GitHub CLI ownership check unavailable (gh not installed).",
+    "approvalNeeded": "Push local implementation and handoff commits to origin/master at https://github.com/Ahmedelsapagh10/whitebaord.git"
   }
 }

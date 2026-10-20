@@ -8,6 +8,8 @@ Executed: final68 directly affected host tests (one browser-only case skipped) a
 
 Limits: Android emulator startup exited1; iOS simulator installed but native mobile build/run not attempted under approximately0.5GiB free disk after project-only cleanup. Safari shell rendered; its synthetic control/pointer actions were inconclusive, so Safari interaction remains pending. Windows/Edge not run. Native Flutter accessibility bridge logs stale AX-tree errors; VoiceOver/TalkBack and native IME need manual/device qualification. Inherited image/frame code is preserved, not newly certified; platform pickers outside macOS/Web are explicitly unavailable. UI adds no board-schema change; inherited IndexedDB assets-store version2 upgrade is retained and tested against version1 records.
 
+Git: implementation committed locally through e7135f6 on master. Automatic approval review blocked the origin/master push; explicit approval is pending. Remote unchanged.
+
 Next: free disk space, complete Android/iOS and native accessibility/IME checks, Safari interaction verification, then finish inherited image/frame qualification. No return to stress-rendering optimization.
 
 ## Previous checkpoint (retained)
