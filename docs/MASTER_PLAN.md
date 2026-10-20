@@ -2,9 +2,11 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-19. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the dedicated image-rendering recovery; stop after its delivery. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is M12 product UI/UX refinement; stop after delivery and provide a neutral handoff. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
 UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on available desktop/browser targets. Native phone/tablet runs, full assistive-technology review and M13 device/input qualification remain unchecked. No claim of full V1 or 10K performance acceptance. See `benchmark_results/ui-ux/verification.json` and `docs/HANDOFF.md`.
+
+Product UI checkpoint2026-10-20: Header rename, searchable Board History, direct image import, anchored desktop actions, discoverable Appearance, relevant selection properties and compact error layout verified.38 host tests(1 browser-only skip),39 Chrome tests, actual macOS/Chrome UI and Safari pen/reload smoke; phone/tablet widget captures are not native-device evidence. No additional full platform/accessibility gate checked. Evidence: `benchmark_results/product-ui/verification.json`.
 
 ## MVP-03A — Eraser & Clear All (verified)
 
@@ -907,7 +909,7 @@ Verification contract: Widget/semantics/responsive/visual tests, keyboard naviga
 
 - [x] WB-1202 Design Board Library.
   - Status: VERIFIED; priority: P1; dependencies: WB-0003, WB-1201; design precedes WB-0911 implementation.
-  - Acceptance: **Design Board Library**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
+  - Acceptance: **Design Board Library**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate. Additional verified refinement: search/no-results and header rename through existing autosave; `benchmark_results/product-ui/verification.json`.
 
 - [x] WB-1203 Design Editor layout.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
@@ -915,11 +917,11 @@ Verification contract: Widget/semantics/responsive/visual tests, keyboard naviga
 
 - [x] WB-1204 Implement desktop toolbar.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
-  - Acceptance: **Implement desktop toolbar**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
+  - Acceptance: **Implement desktop toolbar**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate. Additional verified refinement: direct image import and anchored desktop overflow; `benchmark_results/product-ui/verification.json`.
 
 - [x] WB-1205 Implement contextual properties controls.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
-  - Acceptance: **Implement contextual properties controls**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
+  - Acceptance: **Implement contextual properties controls**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate. Additional verified refinement: type-aware image/text selection actions; `benchmark_results/product-ui/verification.json`.
 
 - [x] WB-1206 Implement mobile adaptive toolbar.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
@@ -927,7 +929,7 @@ Verification contract: Widget/semantics/responsive/visual tests, keyboard naviga
 
 - [x] WB-1207 Implement touch-friendly editing controls.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
-  - Acceptance: **Implement touch-friendly editing controls**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
+  - Acceptance: **Implement touch-friendly editing controls**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate. Additional verified refinement: rotation handle drawing aligned with its touch/mouse hit target; `benchmark_results/product-ui/verification.json`.
 
 - [x] WB-1208 Implement zoom/navigation UI.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
@@ -943,19 +945,19 @@ Verification contract: Widget/semantics/responsive/visual tests, keyboard naviga
 
 - [x] WB-1211 Implement Save/Error/Recovery feedback.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
-  - Acceptance: **Implement Save/Error/Recovery feedback**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
+  - Acceptance: **Implement Save/Error/Recovery feedback**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate. Additional verified refinement: live save/error semantics and compact image error placement; `benchmark_results/product-ui/verification.json`.
 
 - [ ] WB-1212 Implement Import/Export UX.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
-  - Acceptance: **Implement Import/Export UX**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
+  - Acceptance: **Implement Import/Export UX**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: pending. Current evidence: Image import is directly discoverable; project/PNG export UX remains dependent on unimplemented export features. `benchmark_results/product-ui/verification.json`.
 
 - [x] WB-1213 Implement keyboard shortcuts/help.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
   - Acceptance: **Implement keyboard shortcuts/help**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
 
 - [ ] WB-1214 Accessibility and semantics review.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
-  - Acceptance: **Accessibility and semantics review**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
+  - Acceptance: **Accessibility and semantics review**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: pending. Current evidence: Save/error live announcements, scaled labels, keyboard/touch tests and reduced-motion behavior covered; actual VoiceOver/TalkBack/IME review remains pending. `benchmark_results/product-ui/verification.json`.
 
 - [x] WB-1215 Empty/loading/error states.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
@@ -963,7 +965,7 @@ Verification contract: Widget/semantics/responsive/visual tests, keyboard naviga
 
 - [x] WB-1216 Responsive and visual consistency testing.
   - Status: VERIFIED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
-  - Acceptance: **Responsive and visual consistency testing**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
+  - Acceptance: **Responsive and visual consistency testing**, integrated where applicable under M12 contract; tests: M12 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate. Additional verified refinement: 320px scaled-text, adaptive touch/property tests and new actual app/widget screenshots; `benchmark_results/product-ui/verification.json`.
 
 - [ ] WB-1217 Real-device usability refinement.
   - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0604, WB-0702; library WB-0911, feedback WB-0907.
@@ -992,8 +994,8 @@ Verification contract: Windows/macOS/Chrome/Edge/Safari/Android/iOS runs plus re
   - Acceptance: **Edge Web validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1305 Safari Web validation.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **Safari Web validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **Safari Web validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Current evidence: Actual Safari pen stroke/save/reload smoke at8772 verified; full supported-feature/file/IME qualification remains pending. `benchmark_results/product-ui/verification.json`.
 
 - [ ] WB-1306 Android validation.
   - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.

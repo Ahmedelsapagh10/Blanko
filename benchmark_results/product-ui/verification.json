@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-20",
+  "baseline": "404b830, clean master matched origin/master",
+  "implementation_commit": "d9e6aea",
+  "scope": "M12 product UI refinement and available-platform functional checks; no unrelated feature implementation",
+  "changes": {
+    "lib/src/editor/editor_page.dart": "Editable header title, optional guarded rename callback, compact error placement above zoom controls.",
+    "lib/src/editor/workspace_page.dart": "Header rename through existing session/autosave; searchable Board History; safe no-results states and save/error live announcements.",
+    "lib/src/editor/editor_controls.dart": "Direct desktop image import, anchored overflow actions, type-aware selection properties without dead text-edit action on images.",
+    "lib/src/editor/editor_canvas.dart": "Align painted rotation handle offset with its existing hit target; no document/renderer redesign.",
+    "lib/src/theme/theme_settings.dart": "Discoverable labeled Appearance menu on wide layouts; compact icon on narrow layouts; existing persistent System/Light/Dark controller retained.",
+    "test/product_ui_refinement_test.dart": "Desktop menu/image discovery, selection-specific properties and narrow scaled-text error/property tests.",
+    "test/board_library_refinement_test.dart": "Search/no-results/clear, durable header rename and phone keyboard inset tests.",
+    "test/ui_visual_capture_test.dart": "Optional output-directory override to preserve historical captures."
+  },
+  "retained_foundation": [
+    "Blanko brand #4464F6, semantic light/dark tokens and built-in ThemeData",
+    "Existing persisted System/Light/Dark preference; System follows platform brightness; document colors unchanged",
+    "Dedicated phone bottom toolbar/sheets, desktop rail, tablet/narrow layout, reduced-motion tool/menu/theme transitions",
+    "Existing immutable documents, commands, Undo, original image assets, IndexedDB/files and writer coordination"
+  ],
+  "verification": {
+    "analysis": "flutter analyze: No issues found",
+    "host": {
+      "command": "flutter test test/product_ui_refinement_test.dart test/adaptive_editor_test.dart test/theme_preferences_test.dart test/board_library_refinement_test.dart test/board_library_ui_test.dart test/image_pipeline_test.dart test/editor_eraser_test.dart test/editor_text_test.dart --reporter expanded",
+      "passed": 38,
+      "skipped": 1,
+      "note": "Skipped browser-only appearance persistence case; not claimed passed."
+    },
+    "chrome": {
+      "command": "flutter test --platform chrome test/product_ui_refinement_test.dart test/adaptive_editor_test.dart test/theme_preferences_test.dart test/board_library_refinement_test.dart test/board_library_ui_test.dart test/image_pipeline_test.dart test/editor_eraser_test.dart test/editor_text_test.dart --reporter expanded",
+      "passed": 39
+    },
+    "visuals": {
+      "command": "BLANKO_CAPTURE_UI=1 BLANKO_UI_CAPTURE_DIR=benchmark_results/product-ui flutter test test/ui_visual_capture_test.dart --reporter expanded",
+      "passed": 1,
+      "note": "Actual Flutter widget renders390x844 and834x1112, both themes. Harness loads existing Roboto under Inter and MaterialIcons to avoid Ahem glyph substitutions. Not physical device screenshots."
+    },
+    "actual_macOS": [
+      "Compiled UI hot reload on Flutter3.41.9/Dart3.11.5, macOS26.5.1arm64",
+      "Wide1920 editor with existing PNG/JPEG pixels preserved",
+      "Dark/Light menu changes and searchable library appearance inspected",
+      "Anchored desktop actions inspected; header rename dialog opens/cancels safely",
+      "Native CUA typed/paste replacement was inconsistent; actual native text replacement/IME qualification is not claimed from this smoke check. Focused Flutter rename persistence tests pass."
+    ],
+    "actual_Chrome": [
+      "Chrome155 test profile at localhost:8772",
+      "Real page reload restores existing two-image board with125% viewport in new shell",
+      "Focused Chrome tests cover phone touch pinch/draft cancellation/resize, text/notes, erasing, autosave, images, library and themes"
+    ],
+    "actual_Safari": [
+      "Separate new tab localhost:8772; old8771 tab preserved",
+      "Real single pen stroke visible, Saved locally",
+      "Actual Reload restores stroke1; screenshot retained",
+      "Basic smoke only; full image/file/input/IME qualification remains pending."
+    ],
+    "mobile_discovery": [
+      "flutter devices detects macOS and Chrome only; wireless iPhone unavailable(code-27)",
+      "flutter emulators --launch flutter_emulator returned0 with no output, but subsequent device discovery found no Android device",
+      "xcrun simctl list devices booted returned no booted iOS simulator",
+      "Around1.9GiB free; simulator builds not attempted with absent booted target/low headroom"
+    ]
+  },
+  "screenshots": {
+    "actual_macOS": [
+      "desktop-dark.png",
+      "desktop-light.png",
+      "desktop-tools.png",
+      "board-library.png"
+    ],
+    "actual_Chrome": [
+      "chrome-editor.png"
+    ],
+    "actual_Safari": [
+      "safari-reload.png"
+    ],
+    "Flutter_widget_render_not_device": [
+      "phone-dark.png",
+      "phone-light.png",
+      "tablet-dark.png",
+      "tablet-light.png"
+    ]
+  },
+  "regressions_fixed": [
+    "Rotation handle drawing was8screen pixels below the existing hit target; aligned at24px.",
+    "Selected image offered a text-edit button that did nothing; limited to text/sticky types.",
+    "Compact image error area was squeezed beside zoom controls; full-width placement above controls."
+  ],
+  "limits": [
+    "No native Android/iOS build/device-interaction pass; emulated touch/widget layouts are distinct from hardware.",
+    "Windows unavailable, Edge not installed. Safari basic pen/reload smoke is not full platform qualification.",
+    "VoiceOver/TalkBack and real native IME remain incomplete; native CUA text replacement unreliable.",
+    "Existing image cache40entries/96MiB/2048px and Web transient original decode limits unchanged.",
+    "Frame completion, advanced editing, portable projects and PNG export intentionally left for next agent.",
+    "No new packages, SDK/configuration upgrades or storage schema changes."
+  ],
+  "handoff": "STOP after delivery. Next agent: Frame editing/hierarchy completion, followed by advanced editing and portable project/PNG export; device/accessibility qualification remains tracked independently.",
+  "progress": "78/275 checked; no new full platform/accessibility gate claimed.",
+  "sha256": {
+    "lib/src/editor/editor_page.dart": "24c955b43649f5f74297f30133efcee0a99d40a9de382795307c359f1e3f73c7",
+    "lib/src/editor/workspace_page.dart": "9f2bc0491fe5b83620efd8cd67f2d21953a99caf77895e708b76d23ad85b2440",
+    "lib/src/editor/editor_controls.dart": "7759e487d623d88e0e976b6d1829afc997a2caba1368567b9f810d9d58e33346",
+    "lib/src/editor/editor_canvas.dart": "35d5651cddf7f0bf8eb1bce9dd9b981728cc29df9a6a51d2a78f00650b75f6be",
+    "lib/src/theme/theme_settings.dart": "79ab11df7b723832d65c026f88681e6d461ad64b087730abc90495cd3d910ee3",
+    "test/product_ui_refinement_test.dart": "3c593d46639339e0f63972f00071b76f49f22b4ec8c5c96a7238c92685e59d76",
+    "test/board_library_refinement_test.dart": "b73bd58a9b771070e736464c3dfa6360dc429eae501463de123b5ca543cd29d6",
+    "test/ui_visual_capture_test.dart": "a32cb05e30776d77d91c0af0eb3497fcab968cd6e59a4e3155b21055301729dc"
+  }
+}

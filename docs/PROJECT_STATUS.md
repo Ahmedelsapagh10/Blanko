@@ -1,3 +1,15 @@
+# Project status — Product UI refinement
+
+2026-10-20. **Implementation delivered on macOS/Chrome; native mobile/accessibility qualification incomplete.78/275 checked(28.36%).** No new blanket platform gate checked.
+
+Refined clickable board title, searchable Board History, direct desktop image import, anchored tool menu, labeled Appearance on wide layouts, type-aware selection actions, wider phone image-error area and save/error announcements. Rotation handle pixels now match their hit target. Existing brand/theme tokens, persistent System/Light/Dark, adaptive phone/tablet controls and reduced motion retained; no packages, storage schemas or SDK versions changed.
+
+Executed:38 host tests+1 browser-only skip,39 Chrome tests, clean analysis, actual native Dark/Light/library/menu inspection, Chrome reload with saved image pixels, and Safari pen/save/reload smoke. Phone390x844 and tablet834x1112 screenshots are actual Flutter widget renders, **not native device captures**. Exact files/commands/screenshots: `benchmark_results/product-ui/verification.json`.
+
+Remaining: Android launch returned0 but device did not appear; no booted iOS simulator, wireless iPhone unavailable, limited disk headroom. Windows/Edge unavailable; Safari full-feature qualification incomplete. VoiceOver/TalkBack/native IME remain pending; CUA native text replacement was inconsistent, so no physical text-entry pass claimed. Image cache/decode limits and incomplete Frame/export work unchanged. Stop here; neutral next-agent work is Frame completion, advanced editing, portable projects and PNG export.
+
+## Previous image milestone (historical)
+
 # Project status — Image rendering recovery
 
 Updated2026-10-20. **Native macOS and Chrome PNG/JPEG workflows verified.78/275 checked tasks (28.36%).** WB-0710/0711 verified; WB-0708/0709 remain partial because remaining native pickers/adaptive decode are unfinished.
