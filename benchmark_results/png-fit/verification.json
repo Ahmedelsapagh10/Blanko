@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-21",
+  "baseline_commit": "b6cd086578e02ee75c0526e493671db69c7b738b",
+  "root_causes": [
+    "Independent width/sourceWidth and height/sourceHeight canvas scales stretched mismatched aspect ratios.",
+    "Inverse affine Export Frame transform also undid frame scale/shear, distorting otherwise correct world artwork."
+  ],
+  "fix": [
+    "Centered uniform Fit with min(outputWidth/sourceWidth, outputHeight/sourceHeight).",
+    "Clip source rectangle and exact oriented Frame polygon before painting world artwork; padding never includes neighboring artwork.",
+    "Frame view removes rotation/translation only; dialog defaults use visual region bounds.",
+    "Existing full-original decoding, shared artwork painter, lossless PNG, output limits/cancellation/ownership preserved. No document/schema/package changes."
+  ],
+  "verification": {
+    "host": "19 export/render/dialog tests passed",
+    "chrome": "17 passed; 2 native file-gateway cases skipped explicitly",
+    "analysis": "flutter analyze --no-pub: No issues found",
+    "commands": [
+      "flutter test --no-pub test/png_export_test.dart test/png_export_aspect_test.dart test/png_export_dialog_test.dart",
+      "flutter test --no-pub --platform chrome test/png_export_test.dart test/png_export_aspect_test.dart test/png_export_dialog_test.dart",
+      "flutter analyze --no-pub"
+    ],
+    "actual_app_files": {
+      "after-macos-4k.png": "Native Editor: Aspect proof Frame, 4K preset, solid background, saved through macOS Save panel.",
+      "after-chrome-4k.png": "Chrome Editor: same imported Frame, 4K preset, downloaded file verified.",
+      "after-chrome-square.png": "Chrome Editor: Frame custom1000x1000, transparent, downloaded file verified.",
+      "after-chrome-viewport-4k.png": "Chrome Editor: current viewport, 4K preset, downloaded file verified."
+    },
+    "before_provenance": "before-baseline-4k.png reproduces the unchanged baseline exporter on the same fixture in Flutter host test; it is a real PNG, not a stretched/edit-processed after image. It is not labeled as a retained native dialog capture.",
+    "reference_provenance": "reference-600x400.png is source-aspect offscreen reference; canvas-macos.png is actual running Canvas screenshot.",
+    "fixture": "proof.wboard:600x400 source with circle/square, mixed Arabic/English text, sticky,9-world-unit stroke, rotated64x32 PNG rendered at128x64 world units, neighboring red artwork crossing Frame boundary.",
+    "measured": "4K before blue solid interior768x648; actual macOS and Chrome after648x648; custom square199x200 solid interior (raster antialiasing, ideal diameter200); viewport240x240. Full measurements in file-measurements.json.",
+    "limits": "Pixel-perfect antialiasing/font raster equality between engines is not claimed. Original64x32 fixture cannot gain new source detail when enlarged. Crop mode is not introduced; Fit is the explicit export behavior. Existing16MP/8192side/96MiB retained image limits remain."
+  },
+  "environment": {
+    "host": "Apple M4 /16GiB, macOS arm64",
+    "flutter": "3.41.9",
+    "dart": "3.11.5",
+    "browser": "installed Chrome test profile, localhost8772"
+  },
+  "files_changed": [
+    "lib/src/editor/png_export.dart",
+    "lib/src/editor/png_export_dialog.dart",
+    "test/png_export_test.dart",
+    "test/png_export_aspect_test.dart",
+    "docs/MASTER_PLAN.md",
+    "docs/PROJECT_STATUS.md",
+    "docs/HANDOFF.md",
+    "benchmark_results/png-fit/*"
+  ]
+}

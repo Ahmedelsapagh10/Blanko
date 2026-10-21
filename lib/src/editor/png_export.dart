@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -18,6 +19,43 @@ final class PngExportCancelled implements Exception {
   const PngExportCancelled();
   @override
   String toString() => 'PNG export cancelled.';
+}
+
+/// An oriented source region. Frame views remove rotation/translation only;
+/// inverse affine scaling would distort artwork inside a scaled/sheared frame.
+({Bounds2 bounds, Transform2 worldToRegion, List<Point2>? framePolygon})
+resolvePngExportRegion({
+  required BoardDocument document,
+  required Bounds2 bounds,
+  ElementId? frameId,
+}) {
+  if (frameId == null) {
+    return (
+      bounds: bounds,
+      worldToRegion: Transform2.identity,
+      framePolygon: null,
+    );
+  }
+  final content = document.byId[frameId]?.content;
+  if (content is! ExportFrameElementContent) {
+    throw ArgumentError('Select an Export Frame to export a frame region.');
+  }
+  final world = DocumentGeometry(document).worldTransformOf(frameId);
+  final view =
+      Transform2.rotation(-math.atan2(world.b, world.a)) *
+      Transform2.translation(-world.tx, -world.ty);
+  final frameToRegion = view * world;
+  final b = content.bounds;
+  return (
+    bounds: frameToRegion.mapBounds(b),
+    worldToRegion: view,
+    framePolygon: [
+      Point2(b.left, b.top),
+      Point2(b.right, b.top),
+      Point2(b.right, b.bottom),
+      Point2(b.left, b.bottom),
+    ].map(frameToRegion.apply).toList(),
+  );
 }
 
 /// Renders a committed snapshot, independently of editor handles and caches.
@@ -57,15 +95,15 @@ Future<Uint8List> renderBoardPng({
   checkCancelled();
   final geometry = DocumentGeometry(document);
   final scene = EditorScene(document);
-  var region = bounds;
-  var worldToRegion = Transform2.identity;
-  if (frameId != null) {
-    final content = document.byId[frameId]?.content;
-    if (content is! ExportFrameElementContent) {
-      throw ArgumentError('Select an Export Frame to export a frame region.');
-    }
-    region = content.bounds;
-    worldToRegion = geometry.worldTransformOf(frameId).inverse();
+  final source = resolvePngExportRegion(
+    document: document,
+    bounds: bounds,
+    frameId: frameId,
+  );
+  final region = source.bounds;
+  final worldToRegion = source.worldToRegion;
+  if (region.width <= 0 || region.height <= 0) {
+    throw ArgumentError('Export bounds must have positive dimensions.');
   }
   final worldBounds = worldToRegion.inverse().mapBounds(region);
   final candidates = scene.visible(worldBounds);
@@ -181,8 +219,23 @@ Future<Uint8List> renderBoardPng({
     if (backgroundColor != null) {
       canvas.drawColor(Color(backgroundColor), BlendMode.src);
     }
-    canvas.scale(width / region.width, height / region.height);
+    // Fit uses a single pixel/world scale. Letterboxing belongs to the output
+    // background, never to neighboring world artwork outside the source region.
+    final scale = math.min(width / region.width, height / region.height);
+    canvas.translate(
+      (width - region.width * scale) / 2,
+      (height - region.height * scale) / 2,
+    );
+    canvas.scale(scale);
     canvas.translate(-region.left, -region.top);
+    canvas.clipRect(artworkRect(region));
+    if (source.framePolygon case final corners?) {
+      canvas.clipPath(
+        Path()..addPolygon([
+          for (final point in corners) Offset(point.x, point.y),
+        ], true),
+      );
+    }
     canvas.transform(_matrix(worldToRegion));
     final alpha = <ElementId, double>{};
     for (final element in document.preorder) {

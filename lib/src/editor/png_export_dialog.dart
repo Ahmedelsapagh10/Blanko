@@ -63,9 +63,11 @@ class _PngDialogState extends State<_PngDialog> {
     _sizeForRegion();
   }
 
-  Bounds2 get bounds => frameId == null
-      ? viewport
-      : (document.byId[frameId]!.content as ExportFrameElementContent).bounds;
+  Bounds2 get bounds => resolvePngExportRegion(
+    document: document,
+    bounds: viewport,
+    frameId: frameId,
+  ).bounds;
   void _sizeForRegion() {
     final frame = frameId == null
         ? null
@@ -218,7 +220,7 @@ class _PngDialogState extends State<_PngDialog> {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Custom dimensions scale the region to fit the output. Canvas controls and frame guides are excluded.',
+              'Fit preserves proportions with centered padding when the aspect ratios differ. Padding uses the chosen background. Canvas controls and frame guides are excluded.',
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,

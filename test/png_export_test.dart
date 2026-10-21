@@ -95,8 +95,8 @@ void main() {
       final result = await pixels(await render(doc, width: 200, height: 100));
       expect((result.width, result.height), (200, 100));
       expect(at(result.pixels, result.width, 0, 0), [0, 0, 0, 0]);
-      expect(at(result.pixels, result.width, 40, 20), [255, 0, 0, 255]);
-      expect(at(result.pixels, result.width, 80, 40), [0, 0, 255, 255]);
+      expect(at(result.pixels, result.width, 70, 20), [255, 0, 0, 255]);
+      expect(at(result.pixels, result.width, 90, 40), [0, 0, 255, 255]);
       final solid = await pixels(
         await render(doc, backgroundColor: 0xff00ff00),
       );

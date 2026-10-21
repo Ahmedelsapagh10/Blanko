@@ -1,3 +1,11 @@
+# Critical PNG export distortion fixed — 2026-10-21
+
+137/275 unchanged. Export used different X/Y scales and inverse affine Frame transforms. Replaced with centered uniform Fit, rigid Frame view and exact region/polygon clipping. Aspect-mismatched custom/4K output now gets transparent/solid padding; artwork geometry, fonts, original assets and documents are unchanged. Full-original decode and existing memory/cancellation limits retained. No packages/schema changes.
+
+19 focused host tests;17 Chrome passes with2 explicitly native-only skips; analysis clean. Actual macOS4K Save and Chrome4K,1000x1000 transparent and viewport4K downloads verified.4K circle before768x648→after648x648 on both platforms. Evidence and provenance: `benchmark_results/png-fit/verification.json`. Before artifact is an unchanged-baseline renderer reproduction; after artifacts are actual app file output. Remaining: physical-device/export peak-memory/custom-font certification; no broad platform/performance pass. Stop for review.
+
+## Previous Advanced Editing delivery
+
 # Advanced Editing delivery — 2026-10-21
 
 **137/275 checked.** Integrated multi-selection/marquee, shared transforms, grouping/group entry, Copy/Cut/Paste across Boards with owned originals, duplicate/delete, Lock/Unlock, ordering, alignment/distribution and move/resize snapping/guides. Existing UI themes, Frames, PNG/export, project v1 and autosave preserved; no dependency/schema/SDK changes.

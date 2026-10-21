@@ -1,4 +1,7 @@
-# Blanko Advanced Editing handoff
+# Blanko handoff
+
+PNG fix2026-10-21: centered uniform Fit replaces independent X/Y stretch. Padding uses selected background; source rectangle/exact Export Frame polygon clips exclude outside art. Frame view removes only rotation/translation, preserving scaled/sheared world geometry. Dialog defaults reflect visual Frame bounds and explains Fit. Full original-image decode retained; no schema/dependency or artwork changes.19 host/17 Chrome tests pass(2 native-only skips), analysis clean; actual native4K and Chrome4K/custom-square/viewport files verified. Evidence + before reproduction/after app outputs: `benchmark_results/png-fit/verification.json`. Controlled PNG aspect proof Boards added independently on macOS/Chrome; other user Boards untouched.137/275 unchanged. STOP for review after commit/push; no unrelated milestone.
+
 
 2026-10-21. **137/275 checked.** Assigned Advanced Editing integrated; stop for review. Git commit/push details are in the delivery/Git log. No packages, SDK or storage schema changed; existing Boards and original assets retained.
 

@@ -1,0 +1,128 @@
+[
+  {
+    "file": "after-chrome-4k.png",
+    "width": 3840,
+    "height": 2160,
+    "circle_solid_pixel_bounds": [
+      516,
+      432,
+      1164,
+      1080
+    ],
+    "circle_solid_pixel_dimensions": [
+      648,
+      648
+    ],
+    "corner_rgba": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  {
+    "file": "reference-600x400.png",
+    "width": 600,
+    "height": 400,
+    "circle_solid_pixel_bounds": [
+      41,
+      80,
+      159,
+      200
+    ],
+    "circle_solid_pixel_dimensions": [
+      118,
+      120
+    ],
+    "corner_rgba": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  {
+    "file": "before-baseline-4k.png",
+    "width": 3840,
+    "height": 2160,
+    "circle_solid_pixel_bounds": [
+      256,
+      432,
+      1024,
+      1080
+    ],
+    "circle_solid_pixel_dimensions": [
+      768,
+      648
+    ],
+    "corner_rgba": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  {
+    "file": "after-chrome-square.png",
+    "width": 1000,
+    "height": 1000,
+    "circle_solid_pixel_bounds": [
+      67,
+      300,
+      266,
+      500
+    ],
+    "circle_solid_pixel_dimensions": [
+      199,
+      200
+    ],
+    "corner_rgba": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "file": "after-macos-4k.png",
+    "width": 3840,
+    "height": 2160,
+    "circle_solid_pixel_bounds": [
+      516,
+      432,
+      1164,
+      1080
+    ],
+    "circle_solid_pixel_dimensions": [
+      648,
+      648
+    ],
+    "corner_rgba": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  {
+    "file": "after-chrome-viewport-4k.png",
+    "width": 3840,
+    "height": 2160,
+    "circle_solid_pixel_bounds": [
+      280,
+      622,
+      520,
+      862
+    ],
+    "circle_solid_pixel_dimensions": [
+      240,
+      240
+    ],
+    "corner_rgba": [
+      255,
+      255,
+      255,
+      255
+    ]
+  }
+]

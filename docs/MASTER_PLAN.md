@@ -14,6 +14,8 @@ Feature checkpoint2026-10-20: **105/275 checked**. Frames ownership, child-prese
 
 Advanced Editing checkpoint2026-10-21: **137/275 checked**. Multi-selection/marquee, shared move/uniform resize/rotate, Group/Ungroup and group entry, atomic duplication/deletion, owned cross-Board clipboard, locks, stacking, six alignments/two distributions, grid/object snapping and transient guides are integrated. Right-click menu and responsive touch sheet share actions. Real macOS group restart/handles/Undo and Chrome cross-Board original-image paste/reload verified. Targeted tests and exact limits: `benchmark_results/advanced-editing/verification.json`. WB-0814 and physical touch handles/keyboard/IME remain open; WB-0816 dense hardening remains deferred. No blanket M08 or V1 pass.
 
+PNG distortion remediation2026-10-21: fixed M11 export mapping to centered uniform Fit; custom/4K mismatches use background padding, never independent X/Y stretch. Source/Frame polygon clipping excludes neighbors from padding, including scaled/sheared Frames.19 host/17 Chrome export tests pass(2 native-only skips); analysis clean. Actual native4K and Chrome4K/custom-square/viewport downloads inspected and measured. Evidence: `benchmark_results/png-fit/verification.json`.137/275 unchanged; full font/device/export-memory qualification remains open. Stop after this fix.
+
 ## MVP-03A — Eraser & Clear All (verified)
 
 Priority P0; depends on MVP-02. Acceptance: real-editor gestures are atomic, cancel-safe, zoom-aware, undoable and persisted. Verification: focused command/geometry/widget tests, analysis and macOS/Chrome smoke checks. Extreme performance remains in M14.
