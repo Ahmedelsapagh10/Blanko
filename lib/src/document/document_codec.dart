@@ -200,6 +200,8 @@ final class DocumentCodec {
           'kind': content.kind.name,
           'points': [for (final point in content.points) _point(point)],
           'style': _stroke(content.style),
+          if (content.highlighterOpacity != null)
+            'highlighterOpacity': content.highlighterOpacity,
         });
       case LineElementContent():
         result.addAll({
@@ -216,6 +218,7 @@ final class DocumentCodec {
           'style': _stroke(content.style),
           'headLength': content.headLength,
           'headWidth': content.headWidth,
+          if (content.heads != ArrowHeadStyle.end) 'heads': content.heads.name,
         });
       case TextElementContent():
         result.addAll({
@@ -272,9 +275,21 @@ final class DocumentCodec {
     final type = _string(value['type']);
     final keys = switch (type) {
       'shape' => ['kind', 'bounds', 'fillColor', 'stroke'],
-      'stroke' => ['kind', 'points', 'style'],
+      'stroke' => [
+        'kind',
+        'points',
+        'style',
+        if (value.containsKey('highlighterOpacity')) 'highlighterOpacity',
+      ],
       'line' => ['start', 'end', 'style'],
-      'arrow' => ['start', 'end', 'style', 'headLength', 'headWidth'],
+      'arrow' => [
+        'start',
+        'end',
+        'style',
+        'headLength',
+        'headWidth',
+        if (value.containsKey('heads')) 'heads',
+      ],
       'text' => ['text', 'bounds', 'style', 'direction', 'alignment', 'sizing'],
       'stickyNote' => [
         'text',
@@ -311,6 +326,9 @@ final class DocumentCodec {
         kind: _enum(map['kind'], StrokeKind.values),
         points: _readPoints(map['points']),
         style: _readStroke(map['style']),
+        highlighterOpacity: map.containsKey('highlighterOpacity')
+            ? _number(map['highlighterOpacity'])
+            : null,
       ),
       'line' => LineElementContent(
         start: _readPoint(map['start']),
@@ -323,6 +341,9 @@ final class DocumentCodec {
         style: _readStroke(map['style']),
         headLength: _number(map['headLength']),
         headWidth: _number(map['headWidth']),
+        heads: map.containsKey('heads')
+            ? _enum(map['heads'], ArrowHeadStyle.values)
+            : ArrowHeadStyle.end,
       ),
       'text' => TextElementContent(
         text: _string(map['text']),
@@ -473,6 +494,7 @@ final class DocumentCodec {
   static Map<String, Object> _stroke(StrokeStyle style) => {
     'color': style.color,
     'width': style.width,
+    if (style.dashed) 'dashed': true,
   };
   static Map<String, Object> _textStyle(ElementTextStyle style) => {
     'fontId': style.fontId,
@@ -503,10 +525,15 @@ final class DocumentCodec {
   }
 
   static StrokeStyle _readStroke(Object? value) {
-    final map = _object(value, ['color', 'width']);
+    final map = _object(value, [
+      'color',
+      'width',
+      if (value is Map && value.containsKey('dashed')) 'dashed',
+    ]);
     return StrokeStyle(
       color: _integer(map['color']),
       width: _number(map['width']),
+      dashed: map.containsKey('dashed') ? _boolean(map['dashed']) : false,
     );
   }
 

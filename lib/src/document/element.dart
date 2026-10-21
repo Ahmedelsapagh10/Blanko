@@ -36,13 +36,14 @@ enum ElementTextAlignment { start, center, end, left, right }
 enum TextSizing { auto, autoHeight, fixed }
 
 final class StrokeStyle {
-  StrokeStyle({required this.color, required this.width}) {
+  StrokeStyle({required this.color, required this.width, this.dashed = false}) {
     _requireColor(color, 'color');
     _requirePositive(width, 'width');
   }
 
   final int color;
   final double width;
+  final bool dashed;
 }
 
 final class ElementTextStyle {
@@ -92,8 +93,16 @@ final class StrokeElementContent extends ElementContent {
     required Iterable<Point2> points,
     required this.style,
     this.kind = StrokeKind.pen,
+    this.highlighterOpacity,
   }) : points = List.unmodifiable(points) {
     if (this.points.isEmpty) throw ArgumentError('A stroke needs points.');
+    if (highlighterOpacity != null &&
+        (kind != StrokeKind.highlighter ||
+            !highlighterOpacity!.isFinite ||
+            highlighterOpacity! < 0 ||
+            highlighterOpacity! > 1)) {
+      throw ArgumentError.value(highlighterOpacity, 'highlighterOpacity');
+    }
     // Validate the local extent, including overflow between finite points.
     Bounds2.fromPoints(this.points);
   }
@@ -101,6 +110,7 @@ final class StrokeElementContent extends ElementContent {
   final List<Point2> points;
   final StrokeStyle style;
   final StrokeKind kind;
+  final double? highlighterOpacity;
 }
 
 final class LineElementContent extends ElementContent {
@@ -117,6 +127,8 @@ final class LineElementContent extends ElementContent {
   final StrokeStyle style;
 }
 
+enum ArrowHeadStyle { none, start, end, both }
+
 final class ArrowElementContent extends ElementContent {
   ArrowElementContent({
     required this.start,
@@ -124,6 +136,7 @@ final class ArrowElementContent extends ElementContent {
     required this.style,
     required this.headLength,
     required this.headWidth,
+    this.heads = ArrowHeadStyle.end,
   }) {
     _requireEndpoints(start, end);
     _requirePositive(headLength, 'headLength');
@@ -135,6 +148,7 @@ final class ArrowElementContent extends ElementContent {
   final StrokeStyle style;
   final double headLength;
   final double headWidth;
+  final ArrowHeadStyle heads;
 }
 
 final class TextElementContent extends ElementContent {

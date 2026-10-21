@@ -15,6 +15,7 @@ import '../viewport/camera.dart';
 import 'board_session.dart';
 import 'editor_scene.dart';
 import 'stroke_eraser.dart';
+import 'stroke_sampling.dart';
 import 'editor_text.dart';
 import 'image_cache_manager.dart';
 import 'image_picker_service.dart';
@@ -26,10 +27,12 @@ enum EditorTool {
   select,
   pan,
   pen,
+  highlighter,
   rectangle,
   ellipse,
   triangle,
   line,
+  arrow,
   eraser,
   segmentEraser,
   text,
@@ -737,6 +740,78 @@ final class EditorCanvasController extends ChangeNotifier {
 
   int color = 0xff202d46;
   double strokeWidth = 3;
+  int highlighterColor = 0xffffd54f;
+  double highlighterWidth = 24;
+  double highlighterOpacity = .35;
+  double strokeOpacity = 1;
+  int? fillColor;
+  bool dashed = false;
+  ArrowHeadStyle arrowHeads = ArrowHeadStyle.end;
+  double get activeStrokeWidth =>
+      tool == EditorTool.highlighter ? highlighterWidth : strokeWidth;
+  int get activeColor =>
+      tool == EditorTool.highlighter ? highlighterColor : color;
+  int get activeStrokeColor => tool == EditorTool.highlighter
+      ? highlighterColor
+      : withOpacity(color, strokeOpacity);
+  static int withOpacity(int color, double opacity) =>
+      ((opacity.clamp(0, 1) * 255).round() << 24) | (color & 0xffffff);
+  static bool isDrawingContent(ElementContent content) =>
+      content is ShapeElementContent ||
+      content is StrokeElementContent ||
+      content is LineElementContent ||
+      content is ArrowElementContent;
+  ElementContent? get selectedDrawing => scene.paintOrder
+      .where((e) => _selectedTree.contains(e.id) && isDrawingContent(e.content))
+      .firstOrNull
+      ?.content;
+  bool get canStyleSelection => canEditSelection && selectedDrawing != null;
+  void applyDrawingStyle({
+    required int strokeColor,
+    required double width,
+    required double opacity,
+    required int? fill,
+    required bool dash,
+    required ArrowHeadStyle heads,
+    required double markerOpacity,
+    bool applyFill = true,
+    bool applyDash = true,
+    bool applyHeads = true,
+    bool applyMarkerOpacity = true,
+  }) {
+    if (readOnly || !inputEnabled || clipboardBusy || _disposed) return;
+    cancelGesture(notify: false);
+    if (tool == EditorTool.select) {
+      if (!canStyleSelection) return;
+      _command(
+        () => session.styleMany(
+          _selectedIds,
+          strokeColor: withOpacity(strokeColor, opacity),
+          strokeWidth: width,
+          fillColor: applyFill ? fill : null,
+          clearFill: applyFill && fill == null,
+          dashed: applyDash ? dash : null,
+          arrowHeads: applyHeads ? heads : null,
+          highlighterOpacity: applyMarkerOpacity ? markerOpacity : null,
+        ),
+      );
+    } else {
+      if (tool == EditorTool.highlighter) {
+        highlighterColor = strokeColor;
+        highlighterWidth = width;
+        highlighterOpacity = markerOpacity;
+      } else {
+        color = strokeColor;
+        strokeWidth = width;
+        strokeOpacity = opacity;
+        fillColor = fill;
+        dashed = dash;
+        arrowHeads = heads;
+      }
+      _notify(toolbar: true);
+    }
+  }
+
   double eraserSize = 32;
   Point2? eraserPosition;
   final eraseChanges = <ElementId, List<ElementContent>>{};
@@ -788,6 +863,7 @@ final class EditorCanvasController extends ChangeNotifier {
                 points: points,
                 style: content.style,
                 kind: content.kind,
+                highlighterOpacity: content.highlighterOpacity,
               ),
             );
           }
@@ -1019,6 +1095,29 @@ final class EditorCanvasController extends ChangeNotifier {
   Point2? _start;
   Point2? _lastScreen;
   final _points = <Point2>[];
+  StrokeSampler? _sampler;
+  StrokeStyle? _gestureStrokeStyle;
+  double _gestureHighlighterOpacity = .35;
+  Path? _strokeTail;
+  void _appendStrokeSamples(Iterable<Point2> points) {
+    for (final point in points) {
+      if (_points.length >= 50000) {
+        if (message == null) {
+          message = 'This stroke is full. Release and start another.';
+          toolbarChanges.value++;
+        }
+        break;
+      }
+      if (_points.isNotEmpty && _points.last == point) continue;
+      if (_points.isEmpty) {
+        previewPath!.moveTo(point.x, point.y);
+      } else {
+        previewPath!.lineTo(point.x, point.y);
+      }
+      _points.add(point);
+    }
+  }
+
   Path? previewPath;
   DocumentElement? previewElement;
   Point2 moveDelta = Point2.zero;
@@ -1078,13 +1177,21 @@ final class EditorCanvasController extends ChangeNotifier {
 
   void setColor(int value) {
     cancelGesture(notify: false);
-    color = value;
+    if (tool == EditorTool.highlighter) {
+      highlighterColor = value;
+    } else {
+      color = value;
+    }
     _notify(toolbar: true);
   }
 
   void setWidth(double value) {
     cancelGesture(notify: false);
-    strokeWidth = value;
+    if (tool == EditorTool.highlighter) {
+      highlighterWidth = value;
+    } else {
+      strokeWidth = value;
+    }
     _notify(toolbar: true);
   }
 
@@ -1178,10 +1285,17 @@ final class EditorCanvasController extends ChangeNotifier {
         );
       }
       _notify(toolbar: true);
-    } else if (_gestureTool == EditorTool.pen) {
+    } else if (_gestureTool == EditorTool.pen ||
+        _gestureTool == EditorTool.highlighter) {
       selectedId = null;
-      _points.add(Point2.zero);
-      previewPath = Path()..moveTo(0, 0);
+      _sampler = StrokeSampler(tolerance: camera.worldTolerance(.65));
+      _gestureStrokeStyle = StrokeStyle(
+        color: activeStrokeColor,
+        width: activeStrokeWidth,
+      );
+      _gestureHighlighterOpacity = highlighterOpacity;
+      previewPath = Path();
+      _appendStrokeSamples(_sampler!.add(Point2.zero));
       _notify(toolbar: true);
     }
   }
@@ -1229,21 +1343,19 @@ final class EditorCanvasController extends ChangeNotifier {
         } else if (canEditSelection && !_togglingSelection) {
           _updateMove(world - _start!);
         }
-      case EditorTool.pen:
+      case EditorTool.pen || EditorTool.highlighter:
         final relative = world - _start!;
-        if (relative.distanceTo(_points.last) * camera.zoom >= .75) {
-          if (_points.length < 50000) {
-            _points.add(relative);
-            previewPath!.lineTo(relative.x, relative.y);
-          } else if (message == null) {
-            message = 'This stroke is full. Release and start another.';
-            toolbarChanges.value++;
-          }
-        }
+        _appendStrokeSamples(_sampler!.add(relative));
+        _strokeTail = _points.length >= 50000 || relative == _points.last
+            ? null
+            : (Path()
+                ..moveTo(_points.last.x, _points.last.y)
+                ..lineTo(relative.x, relative.y));
       case EditorTool.rectangle ||
           EditorTool.ellipse ||
           EditorTool.triangle ||
           EditorTool.line ||
+          EditorTool.arrow ||
           EditorTool.containerFrame ||
           EditorTool.exportFrame:
         previewElement = _shape(_start!, world);
@@ -1279,16 +1391,33 @@ final class EditorCanvasController extends ChangeNotifier {
               ),
       );
     }
-    if (_gestureTool == EditorTool.line) {
+    if (_gestureTool == EditorTool.line || _gestureTool == EditorTool.arrow) {
       if (start.distanceTo(end) * camera.zoom < 2) return null;
       return DocumentElement(
         id: ElementId('preview'),
         transform: Transform2.translation(start.x, start.y),
-        content: LineElementContent(
-          start: Point2.zero,
-          end: Point2(dx, dy),
-          style: StrokeStyle(color: color, width: strokeWidth),
-        ),
+        content: _gestureTool == EditorTool.arrow
+            ? ArrowElementContent(
+                start: Point2.zero,
+                end: Point2(dx, dy),
+                style: StrokeStyle(
+                  color: activeStrokeColor,
+                  width: strokeWidth,
+                  dashed: dashed,
+                ),
+                headLength: math.max(12, strokeWidth * 4),
+                headWidth: math.max(10, strokeWidth * 3),
+                heads: arrowHeads,
+              )
+            : LineElementContent(
+                start: Point2.zero,
+                end: Point2(dx, dy),
+                style: StrokeStyle(
+                  color: activeStrokeColor,
+                  width: strokeWidth,
+                  dashed: dashed,
+                ),
+              ),
       );
     }
     if (dx.abs() * camera.zoom < 2 || dy.abs() * camera.zoom < 2) return null;
@@ -1305,7 +1434,12 @@ final class EditorCanvasController extends ChangeNotifier {
           _ => ShapeKind.rectangle,
         },
         bounds: Bounds2(0, 0, dx.abs(), dy.abs()),
-        stroke: StrokeStyle(color: color, width: strokeWidth),
+        fillColor: fillColor,
+        stroke: StrokeStyle(
+          color: activeStrokeColor,
+          width: strokeWidth,
+          dashed: dashed,
+        ),
       ),
     );
   }
@@ -1348,16 +1482,21 @@ final class EditorCanvasController extends ChangeNotifier {
           _world(event.localPosition),
         );
         if (session.replaceElements(eraseChanges)) _refreshScene();
-      } else if (_gestureTool == EditorTool.pen) {
-        final world = _world(event.localPosition);
-        final relative = world - _start!;
-        if (_points.length < 50000 && relative != _points.last) {
-          _points.add(relative);
-        }
+      } else if (_gestureTool == EditorTool.pen ||
+          _gestureTool == EditorTool.highlighter) {
+        _appendStrokeSamples(
+          _sampler!.finish(_world(event.localPosition) - _start!),
+        );
         session.insert(
           StrokeElementContent(
             points: _points,
-            style: StrokeStyle(color: color, width: strokeWidth),
+            style: _gestureStrokeStyle!,
+            kind: _gestureTool == EditorTool.highlighter
+                ? StrokeKind.highlighter
+                : StrokeKind.pen,
+            highlighterOpacity: _gestureTool == EditorTool.highlighter
+                ? _gestureHighlighterOpacity
+                : null,
           ),
           transform: Transform2.translation(_start!.x, _start!.y),
         );
@@ -1429,6 +1568,9 @@ final class EditorCanvasController extends ChangeNotifier {
     _start = null;
     _lastScreen = null;
     _points.clear();
+    _sampler = null;
+    _strokeTail = null;
+    _gestureStrokeStyle = null;
     previewPath = null;
     previewElement = null;
     moveDelta = Point2.zero;
@@ -1704,24 +1846,24 @@ class _EditorPainter extends CustomPainter {
         delta: followsSelection ? c.moveDelta : Point2.zero,
       );
     }
-    if (c._gestureTool == EditorTool.pen && c._start != null) {
+    if ((c._gestureTool == EditorTool.pen ||
+            c._gestureTool == EditorTool.highlighter) &&
+        c._start != null) {
       canvas.save();
       canvas.translate(c._start!.x - origin.x, c._start!.y - origin.y);
-      final paint = Paint()
-        ..color = Color(c.color)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = c.strokeWidth
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round;
-      if (c._points.length == 1) {
-        canvas.drawCircle(
-          Offset.zero,
-          c.strokeWidth / 2,
-          paint..style = PaintingStyle.fill,
-        );
-      } else {
-        canvas.drawPath(c.previewPath!, paint);
-      }
+      paintFreehandPath(
+        canvas,
+        c.previewPath!,
+        style: c._gestureStrokeStyle!,
+        highlighter: c._gestureTool == EditorTool.highlighter,
+        opacity: c._gestureTool == EditorTool.highlighter
+            ? c._gestureHighlighterOpacity
+            : 1,
+        tail: c._strokeTail,
+        dot: c._points.length == 1 && c._strokeTail == null
+            ? c._points.first
+            : null,
+      );
       canvas.restore();
     } else if (c.previewElement case final element?) {
       _element(canvas, element, element.transform, c.previewPath!, origin);

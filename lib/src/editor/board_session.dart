@@ -509,6 +509,129 @@ final class BoardSession {
     return roots.every(canEdit) ? roots : null;
   }
 
+  /// Styles eligible drawings in selected ownership subtrees as one operation.
+  /// Geometry, hierarchy and non-drawing content remain unchanged.
+  bool styleMany(
+    Iterable<ElementId> ids, {
+    int? strokeColor,
+    double? strokeWidth,
+    int? fillColor,
+    bool clearFill = false,
+    bool? dashed,
+    ArrowHeadStyle? arrowHeads,
+    double? highlighterOpacity,
+  }) {
+    if (strokeColor != null && (strokeColor < 0 || strokeColor > 0xffffffff)) {
+      throw ArgumentError.value(strokeColor, 'strokeColor');
+    }
+    if (strokeWidth != null && (!strokeWidth.isFinite || strokeWidth <= 0)) {
+      throw ArgumentError.value(strokeWidth, 'strokeWidth');
+    }
+    if (fillColor != null && (fillColor < 0 || fillColor > 0xffffffff)) {
+      throw ArgumentError.value(fillColor, 'fillColor');
+    }
+    if (clearFill && fillColor != null) {
+      throw ArgumentError('Choose a fill color or clear the fill, not both.');
+    }
+    if (highlighterOpacity != null &&
+        (!highlighterOpacity.isFinite ||
+            highlighterOpacity < 0 ||
+            highlighterOpacity > 1)) {
+      throw ArgumentError.value(highlighterOpacity, 'highlighterOpacity');
+    }
+    final roots = _editableRoots(ids);
+    if (roots == null) return false;
+    final members = _subtreeIds(roots);
+    final hasStrokeChange =
+        strokeColor != null || strokeWidth != null || dashed != null;
+    StrokeStyle restyle(StrokeStyle previous) {
+      final color = strokeColor ?? previous.color;
+      final width = strokeWidth ?? previous.width;
+      final dash = dashed ?? previous.dashed;
+      if (color == previous.color &&
+          width == previous.width &&
+          dash == previous.dashed) {
+        return previous;
+      }
+      return StrokeStyle(color: color, width: width, dashed: dash);
+    }
+
+    final changes = <ElementId, DocumentElement>{};
+    for (final element in _document.elements) {
+      if (!members.contains(element.id)) continue;
+      final content = element.content;
+      ElementContent updated = content;
+      switch (content) {
+        case ShapeElementContent():
+          var stroke = content.stroke;
+          if (hasStrokeChange) {
+            stroke = restyle(
+              stroke ??
+                  StrokeStyle(color: content.fillColor ?? 0xff202d46, width: 3),
+            );
+          }
+          final fill = clearFill ? null : (fillColor ?? content.fillColor);
+          if (stroke == null && fill == null) {
+            throw ArgumentError('A shape needs a fill or a stroke.');
+          }
+          if (!identical(stroke, content.stroke) || fill != content.fillColor) {
+            updated = ShapeElementContent(
+              kind: content.kind,
+              bounds: content.bounds,
+              stroke: stroke,
+              fillColor: fill,
+            );
+          }
+        case LineElementContent():
+          final style = restyle(content.style);
+          if (!identical(style, content.style)) {
+            updated = LineElementContent(
+              start: content.start,
+              end: content.end,
+              style: style,
+            );
+          }
+        case ArrowElementContent():
+          final style = restyle(content.style);
+          final heads = arrowHeads ?? content.heads;
+          if (!identical(style, content.style) || heads != content.heads) {
+            updated = ArrowElementContent(
+              start: content.start,
+              end: content.end,
+              style: style,
+              headLength: content.headLength,
+              headWidth: content.headWidth,
+              heads: heads,
+            );
+          }
+        case StrokeElementContent():
+          final style = restyle(content.style);
+          final opacity = content.kind == StrokeKind.highlighter
+              ? (highlighterOpacity ?? content.highlighterOpacity)
+              : content.highlighterOpacity;
+          if (!identical(style, content.style) ||
+              opacity != content.highlighterOpacity) {
+            updated = StrokeElementContent(
+              points: content.points,
+              kind: content.kind,
+              style: style,
+              highlighterOpacity: opacity,
+            );
+          }
+        default:
+          break;
+      }
+      if (!identical(updated, content)) {
+        changes[element.id] = element.copyWith(content: updated);
+      }
+    }
+    if (changes.isEmpty) return false;
+    _commitElements([
+      for (final element in _document.elements) changes[element.id] ?? element,
+    ]);
+    return true;
+  }
+
   bool transformMany(Iterable<ElementId> ids, Transform2 worldDelta) {
     final roots = _editableRoots(ids);
     if (roots == null || worldDelta == Transform2.identity) return false;

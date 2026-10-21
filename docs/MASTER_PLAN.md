@@ -2,7 +2,7 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-21. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Advanced Editing milestone; preserve the completed Frames/PNG/portable and M12 UI work, then stop for review after Advanced Editing. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Drawing Tools completion; preserve the completed Advanced Editing, Frames/PNG/portable and M12 UI work, then stop for review. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
 UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on available desktop/browser targets. Native phone/tablet runs, full assistive-technology review and M13 device/input qualification remain unchecked. No claim of full V1 or 10K performance acceptance. See `benchmark_results/ui-ux/verification.json` and `docs/HANDOFF.md`.
 
@@ -15,6 +15,8 @@ Feature checkpoint2026-10-20: **105/275 checked**. Frames ownership, child-prese
 Advanced Editing checkpoint2026-10-21: **137/275 checked**. Multi-selection/marquee, shared move/uniform resize/rotate, Group/Ungroup and group entry, atomic duplication/deletion, owned cross-Board clipboard, locks, stacking, six alignments/two distributions, grid/object snapping and transient guides are integrated. Right-click menu and responsive touch sheet share actions. Real macOS group restart/handles/Undo and Chrome cross-Board original-image paste/reload verified. Targeted tests and exact limits: `benchmark_results/advanced-editing/verification.json`. WB-0814 and physical touch handles/keyboard/IME remain open; WB-0816 dense hardening remains deferred. No blanket M08 or V1 pass.
 
 PNG distortion remediation2026-10-21: fixed M11 export mapping to centered uniform Fit; custom/4K mismatches use background padding, never independent X/Y stretch. Source/Frame polygon clipping excludes neighbors from padding, including scaled/sheared Frames.19 host/17 Chrome export tests pass(2 native-only skips); analysis clean. Actual native4K and Chrome4K/custom-square/viewport downloads inspected and measured. Evidence: `benchmark_results/png-fit/verification.json`.137/275 unchanged; full font/device/export-memory qualification remains open. Stop after this fix.
+
+Drawing Tools checkpoint2026-10-21: **152/275 checked**. Incremental pen smoothing, separate Highlighter with single-layer opacity, four arrowhead modes and contextual persisted shape styling integrated.72 distinct host/35 Chrome focused cases pass across checkpoints; analysis clean. Real macOS drawing/style/Undo/restart and native→Chrome portable transfer/reload verified; actual 3840×2160 PNG files inspected. Available-target implementation tasks WB-0501–0515 checked; inherited active-drawing profile and physical Chrome/mobile input qualification remain open, so M05 is not fully accepted. Evidence: `benchmark_results/drawing-tools/verification.json`. No dependency/SDK change; current reader loads legacy documents, older strict readers safely reject documents using new optional style fields. Stop for review.
 
 ## MVP-03A — Eraser & Clear All (verified)
 
@@ -438,65 +440,65 @@ Acceptance contract: Requested tools emit correct commands; previews avoid per-p
 
 Verification contract: Stroke/splitting/eraser/shape invariants, widget commit/cancel/undo tests and active drawing profile.
 
-- [ ] WB-0501 Implement Pen.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Pen**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0501 Implement Pen.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Pen**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0502 Implement stroke smoothing/sampling.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement stroke smoothing/sampling**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0502 Implement stroke smoothing/sampling.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement stroke smoothing/sampling**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0503 Implement Highlighter.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Highlighter**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0503 Implement Highlighter.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Highlighter**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0504 Validate alpha blending.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Validate alpha blending**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0504 Validate alpha blending.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Validate alpha blending**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0505 Implement Object Eraser.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Object Eraser**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0505 Implement Object Eraser.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Object Eraser**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0506 Implement Segment Eraser.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Segment Eraser**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0506 Implement Segment Eraser.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Segment Eraser**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0507 Implement stroke splitting geometry.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement stroke splitting geometry**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0507 Implement stroke splitting geometry.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement stroke splitting geometry**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0508 Implement Rectangle.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Rectangle**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0508 Implement Rectangle.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Rectangle**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0509 Implement Ellipse.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Ellipse**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0509 Implement Ellipse.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Ellipse**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0510 Implement Triangle.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Triangle**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0510 Implement Triangle.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Triangle**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0511 Implement Line.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Line**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0511 Implement Line.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Line**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0512 Implement Free Arrow.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Implement Free Arrow**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0512 Implement Free Arrow.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Implement Free Arrow**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0513 Add configurable colors/widths/styles.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Add configurable colors/widths/styles**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0513 Add configurable colors/widths/styles.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Add configurable colors/widths/styles**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0514 Integrate all tools with Commands.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Integrate all tools with Commands**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0514 Integrate all tools with Commands.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Integrate all tools with Commands**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
-- [ ] WB-0515 Add drawing/eraser geometry tests.
-  - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
-  - Acceptance: **Add drawing/eraser geometry tests**, integrated where applicable under M05 contract; tests: M05 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0515 Add drawing/eraser geometry tests.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0401, WB-0409, WB-0303.
+  - Acceptance: **Add drawing/eraser geometry tests**, integrated where applicable under M05 contract; tests: focused drawing/session/eraser/widget/codec/PNG tests on host and Chrome; evidence: `benchmark_results/drawing-tools/verification.json`. Available-target implementation verified; physical input and WB-0516 profile remain separate open gates.
 
 - [ ] WB-0516 Benchmark active drawing performance.
   - Status: PLANNED; priority: P1; dependencies: WB-0401, WB-0409, WB-0303.

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../document/element.dart';
 import '../geometry/geometry.dart';
+import 'drawing_geometry.dart';
 
 Rect artworkRect(Bounds2 bounds) =>
     Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom);
@@ -35,30 +36,35 @@ Path artworkPath(ElementContent content) {
       path
         ..moveTo(start.x, start.y)
         ..lineTo(end.x, end.y);
-    case ArrowElementContent(
-      :final start,
-      :final end,
-      :final headLength,
-      :final headWidth,
-    ):
-      final angle = math.atan2(end.y - start.y, end.x - start.x);
-      final dx = math.cos(angle), dy = math.sin(angle);
-      path
-        ..moveTo(start.x, start.y)
-        ..lineTo(end.x, end.y)
-        ..moveTo(
-          end.x - dx * headLength - dy * headWidth / 2,
-          end.y - dy * headLength + dx * headWidth / 2,
-        )
-        ..lineTo(end.x, end.y)
-        ..lineTo(
-          end.x - dx * headLength + dy * headWidth / 2,
-          end.y - dy * headLength - dx * headWidth / 2,
-        );
+    case ArrowElementContent():
+      for (final segment in arrowSegments(content)) {
+        path
+          ..moveTo(segment.start.x, segment.start.y)
+          ..lineTo(segment.end.x, segment.end.y);
+      }
     default:
       break;
   }
   return path;
+}
+
+/// Deterministic local distances: four stroke widths on, two off.
+Path dashedArtworkPath(Path source, double width) {
+  final result = Path();
+  final metrics = source.computeMetrics().toList(growable: false);
+  final length = metrics.fold(0.0, (sum, metric) => sum + metric.length);
+  // Coarsen only extreme paths; never allocate millions of tiny dash pieces.
+  final period = math.max(width * 6, length / 4096);
+  final dash = period * (2 / 3);
+  for (final metric in metrics) {
+    for (var distance = 0.0; distance < metric.length; distance += period) {
+      result.addPath(
+        metric.extractPath(distance, (distance + dash).clamp(0, metric.length)),
+        Offset.zero,
+      );
+    }
+  }
+  return result;
 }
 
 /// Paints one element in its local space. The caller owns all supplied resources
@@ -125,23 +131,70 @@ void paintElementArtwork(
     _ => null,
   };
   if (style == null) return;
+  if (content is StrokeElementContent) {
+    final highlighter = content.kind == StrokeKind.highlighter;
+    paintFreehandPath(
+      canvas,
+      shapePath,
+      style: style,
+      opacity: alpha * (highlighter ? (content.highlighterOpacity ?? .28) : 1),
+      highlighter: highlighter,
+      dot: content.points.length == 1 ? content.points.single : null,
+    );
+    return;
+  }
+  canvas.drawPath(
+    style.dashed ? dashedArtworkPath(shapePath, style.width) : shapePath,
+    Paint()
+      ..color = Color(
+        style.color,
+      ).withValues(alpha: Color(style.color).a * alpha)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = style.width
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round,
+  );
+}
+
+/// Preview and committed strokes share one opacity/compositing implementation.
+/// For highlighters, [opacity] includes the configured highlighter strength.
+void paintFreehandPath(
+  Canvas canvas,
+  Path path, {
+  required StrokeStyle style,
+  double opacity = 1,
+  bool highlighter = false,
+  Point2? dot,
+  Path? tail,
+}) {
+  if (opacity <= 0) return;
   final color = Color(style.color);
-  final highlighter =
-      content is StrokeElementContent && content.kind == StrokeKind.highlighter;
+  final layered = highlighter || color.a * opacity < 1;
   final paint = Paint()
-    ..color = color.withValues(alpha: color.a * alpha * (highlighter ? .28 : 1))
+    ..color = color.withValues(alpha: layered ? 1 : color.a * opacity)
     ..style = PaintingStyle.stroke
     ..strokeWidth = style.width
     ..strokeCap = StrokeCap.round
     ..strokeJoin = StrokeJoin.round;
-  if (content is StrokeElementContent && content.points.length == 1) {
-    final point = content.points.single;
+  if (layered) {
+    var extent = dot == null
+        ? path.getBounds()
+        : Rect.fromLTWH(dot.x, dot.y, 0, 0);
+    if (tail != null) extent = extent.expandToInclude(tail.getBounds());
+    canvas.saveLayer(
+      extent.inflate(style.width / 2 + 1),
+      Paint()..color = Colors.white.withValues(alpha: color.a * opacity),
+    );
+  }
+  if (dot != null) {
     canvas.drawCircle(
-      Offset(point.x, point.y),
+      Offset(dot.x, dot.y),
       style.width / 2,
       paint..style = PaintingStyle.fill,
     );
   } else {
-    canvas.drawPath(shapePath, paint);
+    canvas.drawPath(path, paint);
   }
+  if (tail != null) canvas.drawPath(tail, paint..style = PaintingStyle.stroke);
+  if (layered) canvas.restore();
 }

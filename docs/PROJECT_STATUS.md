@@ -1,3 +1,7 @@
+# Drawing Tools delivery — 2026-10-21
+
+Drawing Tools checkpoint2026-10-21: **152/275 checked**. Incremental pen smoothing, separate Highlighter with single-layer opacity, four arrowhead modes and contextual persisted shape styling integrated.72 distinct host/35 Chrome focused cases pass across checkpoints; analysis clean. Real macOS drawing/style/Undo/restart and native→Chrome portable transfer/reload verified; actual 3840×2160 PNG files inspected. Available-target implementation tasks WB-0501–0515 checked; inherited active-drawing profile and physical Chrome/mobile input qualification remain open, so M05 is not fully accepted. Evidence: `benchmark_results/drawing-tools/verification.json`. No dependency/SDK change; current reader loads legacy documents, older strict readers safely reject documents using new optional style fields. Stop for review.
+
 # Critical PNG export distortion fixed — 2026-10-21
 
 137/275 unchanged. Export used different X/Y scales and inverse affine Frame transforms. Replaced with centered uniform Fit, rigid Frame view and exact region/polygon clipping. Aspect-mismatched custom/4K output now gets transparent/solid padding; artwork geometry, fonts, original assets and documents are unchanged. Full-original decode and existing memory/cancellation limits retained. No packages/schema changes.

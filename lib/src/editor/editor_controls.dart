@@ -1,4 +1,5 @@
 import 'advanced_editor_actions.dart';
+import 'drawing_style_dialog.dart';
 import 'package:flutter/material.dart';
 import 'editor_canvas.dart';
 import '../document/element.dart';
@@ -44,12 +45,14 @@ class EditorControls extends StatelessWidget {
     (EditorTool.select, Icons.near_me_outlined, 'Select (V)'),
     (EditorTool.pan, Icons.pan_tool_outlined, 'Pan (H)'),
     (EditorTool.pen, Icons.edit_outlined, 'Pen (P)'),
+    (EditorTool.highlighter, Icons.border_color_outlined, 'Highlighter (M)'),
     (EditorTool.eraser, Icons.cleaning_services_outlined, 'Object eraser (E)'),
     (EditorTool.segmentEraser, Icons.content_cut_outlined, 'Segment eraser'),
     (EditorTool.rectangle, Icons.rectangle_outlined, 'Rectangle (R)'),
     (EditorTool.ellipse, Icons.circle_outlined, 'Ellipse (O)'),
     (EditorTool.triangle, Icons.change_history_outlined, 'Triangle (T)'),
     (EditorTool.line, Icons.horizontal_rule, 'Line (L)'),
+    (EditorTool.arrow, Icons.north_east, 'Arrow (A)'),
     (EditorTool.text, Icons.text_fields, 'Text'),
     (EditorTool.sticky, Icons.sticky_note_2_outlined, 'Sticky note'),
     (EditorTool.containerFrame, Icons.crop_portrait_outlined, 'Frame (F)'),
@@ -118,6 +121,7 @@ class EditorControls extends StatelessWidget {
             EditorTool.ellipse,
             EditorTool.triangle,
             EditorTool.line,
+            EditorTool.arrow,
           ].contains(controller.tool)
           ? Theme.of(context).colorScheme.primary
           : null,
@@ -131,6 +135,7 @@ class EditorControls extends StatelessWidget {
           EditorTool.ellipse,
           EditorTool.triangle,
           EditorTool.line,
+          EditorTool.arrow,
         ].contains(t.$1),
       ))
         PopupMenuItem(
@@ -171,6 +176,7 @@ class EditorControls extends StatelessWidget {
                   children: [
                     for (final tool in [
                       EditorTool.pan,
+                      EditorTool.highlighter,
                       EditorTool.segmentEraser,
                       EditorTool.text,
                       EditorTool.sticky,
@@ -356,6 +362,7 @@ class EditorControls extends StatelessWidget {
             _tool(context, tool),
           const SizedBox(width: 28, child: Divider()),
           _tool(context, EditorTool.pen),
+          _tool(context, EditorTool.highlighter),
           _tool(context, EditorTool.eraser),
           _tool(context, EditorTool.segmentEraser),
           _shapes(context),
@@ -446,6 +453,14 @@ class EditorProperties extends StatelessWidget {
           ),
         ] else if (c.tool == EditorTool.select) ...[
           AdvancedEditorActions(controller: c),
+          if (c.selectedDrawing != null)
+            IconButton(
+              tooltip: 'Drawing style',
+              icon: const Icon(Icons.palette_outlined),
+              onPressed: c.canStyleSelection
+                  ? () => showDrawingStyleDialog(context, c)
+                  : null,
+            ),
           if (selected?.content is ContainerFrameElementContent ||
               selected?.content is ExportFrameElementContent)
             IconButton(
@@ -516,6 +531,13 @@ class EditorProperties extends StatelessWidget {
           EditorTool.text,
           EditorTool.sticky,
         ].contains(c.tool)) ...[
+          IconButton(
+            tooltip: 'Drawing style',
+            icon: const Icon(Icons.palette_outlined),
+            onPressed: writable
+                ? () => showDrawingStyleDialog(context, c)
+                : null,
+          ),
           for (final ink in const [
             0xff202d46,
             0xff2563eb,
@@ -537,19 +559,37 @@ class EditorProperties extends StatelessWidget {
                   color: Color(ink),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: c.color == ink ? colors.primary : colors.outline,
-                    width: c.color == ink ? 3 : 1,
+                    color: c.activeColor == ink
+                        ? colors.primary
+                        : colors.outline,
+                    width: c.activeColor == ink ? 3 : 1,
                   ),
                 ),
               ),
             ),
           DropdownButton<double>(
-            value: c.strokeWidth,
+            value: c.activeStrokeWidth,
             underline: const SizedBox(),
-            items: const [
-              DropdownMenuItem(value: 2, child: Text('Thin')),
-              DropdownMenuItem(value: 3, child: Text('Medium')),
-              DropdownMenuItem(value: 6, child: Text('Thick')),
+            items: [
+              for (final w
+                  in (c.tool == EditorTool.highlighter
+                          ? <double>{12, 24, 40, c.activeStrokeWidth}
+                          : <double>{2, 3, 6, c.activeStrokeWidth})
+                      .toList()
+                    ..sort())
+                DropdownMenuItem(
+                  value: w,
+                  child: Text(
+                    c.tool == EditorTool.highlighter
+                        ? '${w.round()} px'
+                        : switch (w) {
+                            2 => 'Thin',
+                            3 => 'Medium',
+                            6 => 'Thick',
+                            _ => '${w.round()} px',
+                          },
+                  ),
+                ),
             ],
             onChanged: writable
                 ? (v) {

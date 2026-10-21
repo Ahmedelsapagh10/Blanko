@@ -90,7 +90,7 @@ void main() {
           final data = (await image.toByteData(
             format: ui.ImageByteFormat.rawRgba,
           ))!;
-          final index = (130 * image.width + 160) * 4;
+          final index = (115 * image.width + 130) * 4;
           expect(data.getUint8(index), lessThan(80));
           expect(data.getUint8(index + 3), 255);
         } finally {

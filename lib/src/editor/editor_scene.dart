@@ -5,6 +5,7 @@ import '../document/document_geometry.dart';
 import '../document/element.dart';
 import '../geometry/geometry.dart';
 import '../spatial/spatial_grid.dart';
+import 'drawing_geometry.dart';
 
 /// Geometry and broad-phase lookup owned by one committed document snapshot.
 /// Pointer previews and camera changes do not rebuild this scene.
@@ -120,17 +121,7 @@ Bounds2? _localBounds(ElementContent content) => switch (content) {
   ).inflate(style.width / 2),
   LineElementContent(:final start, :final end, :final style) =>
     Bounds2.fromPoints([start, end]).inflate(style.width / 2),
-  ArrowElementContent(
-    :final start,
-    :final end,
-    :final style,
-    :final headLength,
-    :final headWidth,
-  ) =>
-    Bounds2.fromPoints([
-      start,
-      end,
-    ]).inflate(math.max(style.width / 2, math.max(headLength, headWidth))),
+  ArrowElementContent() => arrowBounds(content),
   TextElementContent(:final bounds) => bounds,
   StickyNoteElementContent(:final bounds) => bounds,
   ImageElementContent(:final bounds) => bounds,
@@ -190,10 +181,8 @@ bool _hits(ElementContent content, Point2 point, double tolerance) {
           _segmentDistance(point, content.start, content.end) <=
               content.style.width / 2 + tolerance;
     case ArrowElementContent():
-      // The first slice creates lines, not arrows; existing arrow bounds are
-      // retained conservatively until arrowhead editing is implemented.
       return _visibleColor(content.style.color) &&
-          _localBounds(content)!.inflate(tolerance).contains(point);
+          arrowHits(content, point, tolerance);
     case GroupElementContent():
       return false;
     case ContainerFrameElementContent(:final bounds):

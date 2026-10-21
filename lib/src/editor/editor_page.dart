@@ -254,6 +254,8 @@ class _EditorPageState extends State<EditorPage> {
       LogicalKeyboardKey.keyV: EditorTool.select,
       LogicalKeyboardKey.keyH: EditorTool.pan,
       LogicalKeyboardKey.keyP: EditorTool.pen,
+      LogicalKeyboardKey.keyM: EditorTool.highlighter,
+      LogicalKeyboardKey.keyA: EditorTool.arrow,
       LogicalKeyboardKey.keyR: EditorTool.rectangle,
       LogicalKeyboardKey.keyO: EditorTool.ellipse,
       LogicalKeyboardKey.keyT: EditorTool.triangle,
@@ -276,7 +278,7 @@ class _EditorPageState extends State<EditorPage> {
       title: const Text('Keyboard & gestures'),
       content: const SingleChildScrollView(
         child: Text(
-          'V  Select     P  Pen     E  Object eraser\nR  Rectangle     O  Ellipse     T  Triangle\nL  Line     H / hold Space  Pan\n\n⌘ / Ctrl + Z  Undo\n⌘ / Ctrl + Shift + Z  Redo\n⌘ / Ctrl + D  Duplicate selection\n⌘ / Ctrl + R  Rotate selection\n⌘ / Ctrl + A  Select all\n⌘ / Ctrl + G / Shift G  Group / Ungroup\n⌘ / Ctrl + C / X / V  Copy / Cut / Paste\nShift + click  Toggle selection\nDrag empty canvas  Marquee\nDelete  Remove selection     Esc  Cancel\n\nScroll / trackpad  Navigate\n⌘ / Ctrl + scroll  Zoom\nTouch: one finger draws, two fingers navigate.',
+          'V  Select     P  Pen     M  Highlighter\nA  Arrow     E  Object eraser\nR  Rectangle     O  Ellipse     T  Triangle\nL  Line     H / hold Space  Pan\n\n⌘ / Ctrl + Z  Undo\n⌘ / Ctrl + Shift + Z  Redo\n⌘ / Ctrl + D  Duplicate selection\n⌘ / Ctrl + R  Rotate selection\n⌘ / Ctrl + A  Select all\n⌘ / Ctrl + G / Shift G  Group / Ungroup\n⌘ / Ctrl + C / X / V  Copy / Cut / Paste\nShift + click  Toggle selection\nDrag empty canvas  Marquee\nDelete  Remove selection     Esc  Cancel\n\nScroll / trackpad  Navigate\n⌘ / Ctrl + scroll  Zoom\nTouch: one finger draws, two fingers navigate.',
         ),
       ),
       actions: [

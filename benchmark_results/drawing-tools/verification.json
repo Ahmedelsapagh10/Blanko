@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-21",
+  "environment": {
+    "host": "Apple M4 / 16 GiB macOS",
+    "flutter": "3.41.9 stable",
+    "dart": "3.11.5",
+    "targets": [
+      "macOS debug app smoke (not performance)",
+      "Chrome localhost8772 and browser test runner"
+    ]
+  },
+  "checks": {
+    "analysis": "flutter analyze --no-pub: no issues",
+    "host": {
+      "integration_passed": 71,
+      "final_focused_passed": 12,
+      "distinct_cases": 72,
+      "integration_files": [
+        "drawing_tools_widget_test",
+        "drawing_geometry_test",
+        "drawing_style_session_test",
+        "stroke_sampling_test",
+        "editor_widget_test",
+        "editor_eraser_test",
+        "editor_frames_test",
+        "document_codec_test",
+        "png_export_aspect_test",
+        "portable_project_test"
+      ]
+    },
+    "chrome": {
+      "integration_passed": 34,
+      "final_focused_passed": 12,
+      "distinct_cases": 35,
+      "integration_files": [
+        "drawing_tools_widget_test",
+        "drawing_geometry_test",
+        "drawing_style_session_test",
+        "stroke_sampling_test",
+        "png_export_aspect_test"
+      ]
+    },
+    "final_focused_files": [
+      "test/drawing_geometry_test.dart",
+      "test/drawing_tools_widget_test.dart"
+    ],
+    "commands": [
+      "flutter test --no-pub <integration_files with test/ prefix and .dart suffix>",
+      "flutter test --no-pub --platform chrome <Chrome integration_files with test/ prefix and .dart suffix>",
+      "flutter test --no-pub test/drawing_geometry_test.dart test/drawing_tools_widget_test.dart",
+      "flutter test --no-pub --platform chrome test/drawing_geometry_test.dart test/drawing_tools_widget_test.dart"
+    ],
+    "git_diff_check": "clean"
+  },
+  "actual_app": {
+    "macOS": "Created pen/highlighter/arrow; changed arrow to dashed Both; Undo/Redo; saved independent proof board13 elements; real process restart restored artwork and Saved locally.",
+    "Chrome": "Imported native-drawing.wboard including original image and style fields; downloaded real4K PNG; actual Reload restored14elements including extra test dot outside export Frame. Continuous automation drag produced dots; no physical drag pass.",
+    "portable": "Actual native Save As file imported in Chrome; source fixture10elements, native saved13; original image64x32 displayed128x64.",
+    "PNG": "Both app-produced3840x2160 Frame exports inspected visually: circle remains432x432, Arabic/English/notes/image/alpha/dashes/arrowheads intact; no controls/handles. Engine antialias/color rounding differs by about one channel value."
+  },
+  "simulated_checks": [
+    "Widget autosave/reopen after segment erase",
+    "Portable codec round-trip with original asset bytes",
+    "Phone tool menu and touch cancellation (widget, not physical device)"
+  ],
+  "limits": [
+    "No physical Chrome continuous-drag qualification; automation yielded dots.",
+    "No native Android/iOS, hardware stylus pressure/IME or drawing profile certification.",
+    "32 curve subdivisions/event;50000 samples/stroke; extreme dash intervals coarsened to about4096.",
+    "Old strict readers reject new nondefault optional style fields safely; no destructive migration.",
+    "No full-suite or performance benchmark claim."
+  ],
+  "artifacts": {
+    "native-4k.png": {
+      "width": 3840,
+      "height": 2160,
+      "bytes": 176942
+    },
+    "chrome-4k.png": {
+      "width": 3840,
+      "height": 2160,
+      "bytes": 178847
+    },
+    "native-reopened.png": {
+      "width": 4718592,
+      "height": 4292935756,
+      "bytes": 67271
+    },
+    "chrome-reopened.png": {
+      "width": 4718592,
+      "height": 4292935756,
+      "bytes": 112910
+    }
+  },
+  "changed_files": [
+    "benchmark_results/drawing-tools/chrome-4k.png",
+    "benchmark_results/drawing-tools/chrome-reopened.png",
+    "benchmark_results/drawing-tools/native-4k.png",
+    "benchmark_results/drawing-tools/native-drawing.wboard",
+    "benchmark_results/drawing-tools/native-reopened.png",
+    "benchmark_results/drawing-tools/proof.wboard",
+    "docs/HANDOFF.md",
+    "docs/MASTER_PLAN.md",
+    "docs/PROJECT_STATUS.md",
+    "lib/src/document/document_codec.dart",
+    "lib/src/document/element.dart",
+    "lib/src/editor/artwork_painter.dart",
+    "lib/src/editor/board_session.dart",
+    "lib/src/editor/drawing_geometry.dart",
+    "lib/src/editor/drawing_style_dialog.dart",
+    "lib/src/editor/editor_canvas.dart",
+    "lib/src/editor/editor_controls.dart",
+    "lib/src/editor/editor_page.dart",
+    "lib/src/editor/editor_scene.dart",
+    "lib/src/editor/stroke_sampling.dart",
+    "test/drawing_geometry_test.dart",
+    "test/drawing_style_session_test.dart",
+    "test/drawing_tools_widget_test.dart",
+    "test/editor_widget_test.dart",
+    "test/stroke_sampling_test.dart",
+    "test/support/drawing_tools_fixture.dart"
+  ]
+}
