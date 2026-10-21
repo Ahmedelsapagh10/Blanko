@@ -9,6 +9,8 @@ import 'text_editor_dialog.dart';
 import 'editor_text.dart';
 import '../document/element.dart';
 import '../geometry/geometry.dart';
+import 'png_export_dialog.dart';
+import 'project_file_gateway.dart';
 
 class EditorPage extends StatefulWidget {
   const EditorPage({
@@ -17,12 +19,16 @@ class EditorPage extends StatefulWidget {
     this.title = BlankoBrand.appName,
     this.leading,
     this.onRenameBoard,
+    this.onSaveProject,
+    this.onImportProject,
     this.actions = const [],
   });
   final EditorCanvasController? controller;
   final String title;
   final Widget? leading;
   final VoidCallback? onRenameBoard;
+  final VoidCallback? onSaveProject;
+  final VoidCallback? onImportProject;
   final List<Widget> actions;
   @override
   State<EditorPage> createState() => _EditorPageState();
@@ -284,6 +290,34 @@ class _EditorPageState extends State<EditorPage> {
             ),
             actions: [
               if (!compact) _historyButtons(),
+              PopupMenuButton<String>(
+                tooltip: 'Files & export',
+                enabled: supportsProductFiles && controller.inputEnabled,
+                icon: const Icon(Icons.file_download_outlined),
+                onSelected: (action) {
+                  controller.focusLost();
+                  if (action == 'png') {
+                    showPngExportDialog(context, controller);
+                  } else if (action == 'save') {
+                    widget.onSaveProject?.call();
+                  } else {
+                    widget.onImportProject?.call();
+                  }
+                },
+                itemBuilder: (_) => [
+                  const PopupMenuItem(value: 'png', child: Text('Export PNG')),
+                  if (widget.onSaveProject != null)
+                    const PopupMenuItem(
+                      value: 'save',
+                      child: Text('Save As .wboard'),
+                    ),
+                  if (widget.onImportProject != null)
+                    const PopupMenuItem(
+                      value: 'import',
+                      child: Text('Import .wboard'),
+                    ),
+                ],
+              ),
               ...widget.actions,
               const ThemeSettingsButton(),
               if (!compact) ...[

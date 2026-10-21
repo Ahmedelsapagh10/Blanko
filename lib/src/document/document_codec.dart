@@ -251,6 +251,9 @@ final class DocumentCodec {
           'type': 'exportFrame',
           'bounds': _bounds(content.bounds),
           'label': content.label,
+          if (content.outputWidth != null) 'outputWidth': content.outputWidth,
+          if (content.outputHeight != null)
+            'outputHeight': content.outputHeight,
         });
       case ContainerFrameElementContent():
         result.addAll({
@@ -284,7 +287,16 @@ final class DocumentCodec {
       ],
       'image' => ['assetId', 'bounds'],
       'group' => <String>[],
-      'exportFrame' || 'containerFrame' => ['bounds', 'label'],
+      'exportFrame' => [
+        'bounds',
+        'label',
+        if (value.containsKey('outputWidth') ||
+            value.containsKey('outputHeight')) ...[
+          'outputWidth',
+          'outputHeight',
+        ],
+      ],
+      'containerFrame' => ['bounds', 'label'],
       _ => throw FormatException('Unsupported content type: $type'),
     };
     final map = _object(value, ['type', ...keys]);
@@ -337,6 +349,12 @@ final class DocumentCodec {
       'exportFrame' => ExportFrameElementContent(
         bounds: _readBounds(map['bounds']),
         label: _string(map['label']),
+        outputWidth: map.containsKey('outputWidth')
+            ? _integer(map['outputWidth'])
+            : null,
+        outputHeight: map.containsKey('outputHeight')
+            ? _integer(map['outputHeight'])
+            : null,
       ),
       'containerFrame' => ContainerFrameElementContent(
         bounds: _readBounds(map['bounds']),

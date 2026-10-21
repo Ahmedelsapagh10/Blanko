@@ -3,6 +3,7 @@ import 'editor_canvas.dart';
 import '../document/element.dart';
 import 'image_picker_service.dart' show supportsImagePicking;
 import '../theme/blanko_brand.dart';
+import 'frame_properties_dialog.dart';
 
 class ToolSurface extends StatelessWidget {
   const ToolSurface({
@@ -440,6 +441,44 @@ class EditorProperties extends StatelessWidget {
             ),
           ),
         ] else if (c.tool == EditorTool.select) ...[
+          if (selected?.content is ContainerFrameElementContent ||
+              selected?.content is ExportFrameElementContent)
+            IconButton(
+              tooltip: 'Frame properties',
+              onPressed: writable
+                  ? () => showFrameProperties(context, c)
+                  : null,
+              icon: const Icon(Icons.tune),
+            ),
+          if (selected != null)
+            PopupMenuButton<ElementId?>(
+              tooltip: 'Place in frame',
+              enabled: writable,
+              icon: const Icon(Icons.drive_file_move_outline),
+              onSelected: c.reparentSelection,
+              itemBuilder: (context) => [
+                PopupMenuItem<ElementId?>(
+                  value: null,
+                  onTap: () => c.reparentSelection(null),
+                  child: const Text('Move to canvas (detach)'),
+                ),
+                for (final frame in c.session.document.elements)
+                  if (frame.content is ContainerFrameElementContent &&
+                      !c.scene.isLocked(frame.id) &&
+                      !c.scene.belongsTo(frame.id, selected.id))
+                    PopupMenuItem(
+                      value: frame.id,
+                      child: Text(
+                        (frame.content as ContainerFrameElementContent)
+                                .label
+                                .isEmpty
+                            ? 'Frame · ${frame.id.value}'
+                            : (frame.content as ContainerFrameElementContent)
+                                  .label,
+                      ),
+                    ),
+              ],
+            ),
           if (selected?.content is TextElementContent ||
               selected?.content is StickyNoteElementContent)
             IconButton(

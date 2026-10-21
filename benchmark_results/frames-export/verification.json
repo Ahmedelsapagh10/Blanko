@@ -1,0 +1,255 @@
+{
+  "date": "2026-10-20",
+  "baseCommit": "2da1d6b657cb716a514e4e02eb5f4bb68ed26d52",
+  "scope": "Frames, composed PNG output and independent portable projects; preserve UI and local data",
+  "files": [
+    "benchmark_results/frames-export/chrome-4k-images.png",
+    "benchmark_results/frames-export/chrome-final-editor.png",
+    "benchmark_results/frames-export/chrome-frame-output.png",
+    "benchmark_results/frames-export/chrome-frames.png",
+    "benchmark_results/frames-export/macos-4k-transparent.png",
+    "benchmark_results/frames-export/macos-frame-output.png",
+    "benchmark_results/frames-export/macos-frames-reopened.png",
+    "benchmark_results/frames-export/macos-import-restart.png",
+    "benchmark_results/frames-export/verification.json",
+    "docs/HANDOFF.md",
+    "docs/MASTER_PLAN.md",
+    "docs/PROJECT_STATUS.md",
+    "lib/src/document/document_codec.dart",
+    "lib/src/document/element.dart",
+    "lib/src/editor/artwork_painter.dart",
+    "lib/src/editor/board_session.dart",
+    "lib/src/editor/editor_canvas.dart",
+    "lib/src/editor/editor_controls.dart",
+    "lib/src/editor/editor_page.dart",
+    "lib/src/editor/editor_scene.dart",
+    "lib/src/editor/frame_properties_dialog.dart",
+    "lib/src/editor/png_export.dart",
+    "lib/src/editor/png_export_dialog.dart",
+    "lib/src/editor/project_file_gateway.dart",
+    "lib/src/editor/project_file_gateway_io.dart",
+    "lib/src/editor/project_file_gateway_stub.dart",
+    "lib/src/editor/project_file_gateway_web.dart",
+    "lib/src/editor/project_image_validation.dart",
+    "lib/src/editor/workspace_page.dart",
+    "lib/src/persistence/portable_project.dart",
+    "macos/Runner/DebugProfile.entitlements",
+    "macos/Runner/MainFlutterWindow.swift",
+    "macos/Runner/Release.entitlements",
+    "test/editor_frames_test.dart",
+    "test/frame_session_test.dart",
+    "test/png_export_dialog_test.dart",
+    "test/png_export_test.dart",
+    "test/portable_project_test.dart",
+    "test/project_file_gateway_test.dart",
+    "test/project_image_validation_test.dart",
+    "test/workspace_project_files_test.dart"
+  ],
+  "environment": {
+    "macOS": "26.5.1",
+    "architecture": "arm64",
+    "flutter": "3.41.9 stable",
+    "dart": "3.11.5",
+    "chrome": "155.0.8059.85",
+    "mode": "Debug UI/functional tests; no performance acceptance claim"
+  },
+  "checks": [
+    {
+      "command": "flutter analyze",
+      "result": "No issues found",
+      "log": "/tmp/blanko-final-analyze.log"
+    },
+    {
+      "command": "flutter test test/editor_widget_test.dart test/editor_scene_test.dart test/adaptive_editor_test.dart test/image_pipeline_test.dart test/frame_session_test.dart test/editor_frames_test.dart test/png_export_test.dart test/png_export_dialog_test.dart test/portable_project_test.dart test/project_image_validation_test.dart test/project_file_gateway_test.dart test/workspace_project_files_test.dart",
+      "result": "71 passed",
+      "log": "/tmp/blanko-feature-final-host.log"
+    },
+    {
+      "command": "flutter test --platform chrome test/editor_widget_test.dart test/editor_scene_test.dart test/adaptive_editor_test.dart test/image_pipeline_test.dart test/frame_session_test.dart test/editor_frames_test.dart test/png_export_test.dart test/png_export_dialog_test.dart test/portable_project_test.dart test/project_image_validation_test.dart",
+      "result": "62 passed; 1 native-only skip",
+      "log": "/tmp/blanko-feature-final-chrome.log"
+    },
+    {
+      "command": "flutter test test/frame_session_test.dart test/board_session_test.dart test/document_codec_test.dart",
+      "result": "29 passed; 7 frame cases overlap integration checkpoint",
+      "log": "/tmp/blanko-frame-command-tests.log"
+    },
+    {
+      "command": "flutter test test/editor_frames_test.dart --plain-name rotated",
+      "result": "1 host and 1 Chrome passed after final rotated handle correction",
+      "logs": [
+        "/tmp/blanko-rotated-frame-host.log",
+        "/tmp/blanko-rotated-frame-chrome.log"
+      ]
+    }
+  ],
+  "realUI": [
+    "macOS native Frame creation, border selection, membership/detach control, parent move with one child while independent stroke stays fixed, frame properties, selected ExportFrame PNG and native Save panel",
+    "macOS Chrome-created .wboard import through native Open panel; 2 originals retained and rendered; actual process quit/rebuild/relaunch restores pixels/camera; original 4-element Frame board reopens from Library",
+    "Chrome native-created .wboard import through actual picker; independent board, parent movement, frame rename Portable frame and resize to700x350, ExportFrame name PNG region/output1280x720; native Reload restores document",
+    "Chrome actual 3840x2160 image viewport download and1280x720 selectedFrame download show Done and verified real PNG files",
+    "Chrome SaveAs .wboard contains2original assets of34210and9616bytes; actual native import validates checksum and original dimensions"
+  ],
+  "unresolvedUI": "Repeated CUA native-automation Chrome draw gestures did not consistently publish a new frame. Two valid frames were created during temporary pointer diagnostics, and final Chrome widget menu/draw tests pass. Temporary diagnostics and ineffective notification experiment removed; physical browser creation qualification remains unchecked WB-0712. Native CUA letter injection unreliable; native physical text/IME not certified.",
+  "outputs": [
+    {
+      "file": "chrome-4k-images.png",
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 214862,
+      "sha256": "97a3c849fa9f300e9aa1a6024638e6ced0f6df9cafa635816346bd4d910e578d"
+    },
+    {
+      "file": "chrome-final-editor.png",
+      "pixels": [
+        4718592,
+        4292935744
+      ],
+      "bytes": 207539,
+      "sha256": "e84e153defb6666fcd932523d5632665ba38908d4f49cafab597bc8907eab703"
+    },
+    {
+      "file": "chrome-frame-output.png",
+      "pixels": [
+        1280,
+        720
+      ],
+      "bytes": 14850,
+      "sha256": "1fdfc268af5557b491b62e6280e7e161f92cbd108e81b8936cd7f4155bc6cf15"
+    },
+    {
+      "file": "chrome-frames.png",
+      "pixels": [
+        4718592,
+        4292935744
+      ],
+      "bytes": 207028,
+      "sha256": "6ce28e0545cb55927b1ae4e146616ff2f6af618e961850ab9e5fd6ba940bc959"
+    },
+    {
+      "file": "macos-4k-transparent.png",
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 46918,
+      "sha256": "d7d89d071ed4a5ac43cd95dd6d8431400578bbdd776c9c747d3c81bb4c4e47ff"
+    },
+    {
+      "file": "macos-frame-output.png",
+      "pixels": [
+        400,
+        190
+      ],
+      "bytes": 1372,
+      "sha256": "da5037aea6ba70d1691278df505006df7e818d497e8e27aa5a530b69b3521255"
+    },
+    {
+      "file": "macos-frames-reopened.png",
+      "pixels": [
+        4718592,
+        4292935744
+      ],
+      "bytes": 81914,
+      "sha256": "dd00e966f3b28c811091dab5dc2ec8e97e8914c0f8107ea2e73468550fcd0c65"
+    },
+    {
+      "file": "macos-import-restart.png",
+      "pixels": [
+        4718592,
+        4292935744
+      ],
+      "bytes": 61280,
+      "sha256": "1a67f897bee42fe31f7fc9179559d5a2702a19a73fd79e5415bc7d99f2e51f80"
+    }
+  ],
+  "format": {
+    "name": "blanko.project",
+    "version": 1,
+    "container": "uncompressed JSON envelope + JSON payload/base64 originals",
+    "checksums": "CRC32 envelope and originals; corruption detection, not authenticity",
+    "limits": "64MiB file;32MiB total originals;16MiB each;64M original pixels; built-in editor fonts only",
+    "importSafety": "validate codec/geometry/references/checksums/decoded dimensions before new assets/board; fresh independent boardId and remapped asset IDs; no current-board overwrite or lastBoard mutation on validation failure",
+    "compatibility": "old local schema1 Frame records read with absent optional outputWidth/outputHeight; new fields strictly rejected by old readers; unknown portable versions/custom fonts/SHA256 declarations rejected explicitly"
+  },
+  "limitations": [
+    "PNG <=8192side and16000000pixels,96MiB retained decoded originals; Web original decode/CPU transfer/GPU/output peak memory unmeasured",
+    "file gateways available macOS/Web only; Windows/Android/iOS/Edge/Safari full file qualification pending",
+    "failed staged import can leave unattached originals; no asset GC",
+    "arbitrary selection/custom-area export outside Frames, custom font packaging, future migrations and device peak-time/memory qualification remain backlog",
+    "Undo/Redo remains session-only; no full regression suite or benchmark loop repeated"
+  ],
+  "manualSteps": [
+    "More tools > Frame or Export frame, draw; Select the border > Frame properties. Set label, canvas size and export pixels. Select artwork > Place in frame; move the parent and verify child follows. Resize parent and verify child stays in world position. Undo/Redo. Wait Saved locally then restart/reload and reopen.",
+    "Files & export > Export PNG; choose viewport or named ExportFrame, transparency/solid and HD/4K/custom. Save native panel or check browser Downloads. Open actual PNG and verify clipping/artwork without handles.",
+    "Files & export > Save As .wboard, then Import .wboard. Verify a separate local board with original image pixels. Alter imported copy; original board remains independent. Corrupt/unsupported input must show error and retain current board."
+  ],
+  "resumedOn": "2026-10-21",
+  "resumeChecks": [
+    {
+      "command": "flutter analyze",
+      "result": "No issues found",
+      "log": "/private/tmp/blanko-resume-analyze.log"
+    },
+    {
+      "command": "flutter test test/editor_frames_test.dart test/png_export_test.dart test/portable_project_test.dart test/workspace_project_files_test.dart",
+      "result": "25 passed; final rotated-frame implementation included",
+      "log": "/private/tmp/blanko-resume-host.log"
+    },
+    {
+      "command": "flutter test --platform chrome test/editor_frames_test.dart test/png_export_test.dart test/portable_project_test.dart test/project_image_validation_test.dart",
+      "result": "25 passed; final rotated-frame implementation included",
+      "log": "/private/tmp/blanko-resume-chrome.log"
+    }
+  ],
+  "resumeUI": "Fresh normal Chrome page at preserved localhost8772 restored all saved Frames and image-independent boards. Keyboard F from canvas created another ContainerFrame (5\u21926 elements) without diagnostics. Menu-driven ExportFrame native-automation drag remained inconclusive (no new committed element). Native CUA sometimes shortens/drops drags; no physical mouse qualification claimed. WB-0712 remains open. Ineffective focus-restoration experiment removed; final source has no diagnostics.",
+  "reviewNotes": [
+    "Previous automatic approval review ran out of account quota and did not execute two final rechecks; those are not recorded as passed. Current resume analyze and25host/25Chrome tests actually executed.",
+    "Format is additive local schema1 fields and a new independent portable v1 envelope. Older strict document readers reject unfamiliar fields safely. No SDK/package upgrade."
+  ],
+  "fileChanges": {
+    "lib/src/document/element.dart": "Optional paired ExportFrame output pixel dimensions with validation.",
+    "lib/src/document/document_codec.dart": "Strict backward-reading codec for optional output dimensions; legacy Frame records retained.",
+    "lib/src/editor/board_session.dart": "Atomic frame properties, world-preserving reparent, subtree duplication and coherent inverse history; resize preserves text/frame metadata.",
+    "lib/src/editor/editor_canvas.dart": "Frame properties/membership commands, descendant movement previews, actual transformed resize corners, shared artwork painting and translucent guides.",
+    "lib/src/editor/editor_scene.dart": "Own frame rectangle bounds and border hit testing; hierarchy membership helper; editing remains unclipped.",
+    "lib/src/editor/editor_controls.dart": "Theme-aware Frame properties and Place in frame/detach selection actions.",
+    "lib/src/editor/editor_page.dart": "Responsive Files & export menu for PNG and workspace project actions.",
+    "lib/src/editor/workspace_page.dart": "Guarded Save As/import, current-save flush, image/geometry validation, fresh board publication and recoverable feedback.",
+    "lib/src/editor/artwork_painter.dart": "Shared local artwork paths/painter independent of canvas controls and guides.",
+    "lib/src/editor/frame_properties_dialog.dart": "Responsive atomic label/canvas-size/output-size draft editing and validation.",
+    "lib/src/editor/png_export.dart": "Owned offscreen artwork composition, transform/clipping/opacity, original images, CPU transfer on Web, bounded output and cancellation cleanup.",
+    "lib/src/editor/png_export_dialog.dart": "Viewport/named frame, transparency, presets/custom output, cancellation and honest native/browser status.",
+    "lib/src/editor/project_image_validation.dart": "Decode originals before import publication, verify dimensions and cap original pixels with owned resources.",
+    "lib/src/persistence/portable_project.dart": "Versioned independent JSON/base64 projects with CRC32, bounded strict validation and remapped staged originals.",
+    "macos/Runner/MainFlutterWindow.swift": "Serialized native Open/Save panels, user-selected security scope, bounded input and atomic output.",
+    "macos/Runner/DebugProfile.entitlements": "User-selected read-write sandbox access for explicit Save panels.",
+    "macos/Runner/Release.entitlements": "Same narrow user-selected file output entitlement.",
+    "docs/MASTER_PLAN.md": "Verified task checkboxes and explicitly unfinished feature/device qualifications.",
+    "docs/PROJECT_STATUS.md": "Measured implementation/platform results and known limitations.",
+    "docs/HANDOFF.md": "Launch/manual steps, data safety and exact remaining work.",
+    "benchmark_results/frames-export/chrome-4k-images.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/chrome-final-editor.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/chrome-frame-output.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/chrome-frames.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/macos-4k-transparent.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/macos-frame-output.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/macos-frames-reopened.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/macos-import-restart.png": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "benchmark_results/frames-export/verification.json": "Real running-editor/file-output evidence, hashes or concise executed-verification manifest.",
+    "lib/src/editor/project_file_gateway.dart": "Conditional native/Web file IO gateway; explicit unsupported native platforms and cancellation/error handling.",
+    "lib/src/editor/project_file_gateway_io.dart": "Conditional native/Web file IO gateway; explicit unsupported native platforms and cancellation/error handling.",
+    "lib/src/editor/project_file_gateway_stub.dart": "Conditional native/Web file IO gateway; explicit unsupported native platforms and cancellation/error handling.",
+    "lib/src/editor/project_file_gateway_web.dart": "Conditional native/Web file IO gateway; explicit unsupported native platforms and cancellation/error handling.",
+    "test/editor_frames_test.dart": "Focused executable coverage for editor frames.",
+    "test/frame_session_test.dart": "Focused executable coverage for frame session.",
+    "test/png_export_dialog_test.dart": "Focused executable coverage for png export dialog.",
+    "test/png_export_test.dart": "Focused executable coverage for png export.",
+    "test/portable_project_test.dart": "Focused executable coverage for portable project.",
+    "test/project_file_gateway_test.dart": "Focused executable coverage for project file gateway.",
+    "test/project_image_validation_test.dart": "Focused executable coverage for project image validation.",
+    "test/workspace_project_files_test.dart": "Focused executable coverage for workspace project files."
+  }
+}

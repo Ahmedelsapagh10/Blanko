@@ -199,12 +199,27 @@ final class GroupElementContent extends ElementContent {
 
 /// Defines an export area independently of element ownership.
 final class ExportFrameElementContent extends ElementContent {
-  ExportFrameElementContent({required this.bounds, this.label = ''}) {
+  ExportFrameElementContent({
+    required this.bounds,
+    this.label = '',
+    this.outputWidth,
+    this.outputHeight,
+  }) {
     _requireArea(bounds);
+    if ((outputWidth == null) != (outputHeight == null) ||
+        (outputWidth != null && (outputWidth! < 1 || outputWidth! > 16384)) ||
+        (outputHeight != null &&
+            (outputHeight! < 1 || outputHeight! > 16384))) {
+      throw ArgumentError(
+        'Export dimensions must be paired integers from 1 to 16384.',
+      );
+    }
   }
 
   final Bounds2 bounds;
   final String label;
+  final int? outputWidth;
+  final int? outputHeight;
 }
 
 /// Children retain membership outside these bounds; export applies clipping.

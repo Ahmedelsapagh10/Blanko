@@ -123,7 +123,9 @@ final class BoardSession {
 
   bool setWorldTransform(ElementId id, Transform2 worldTransform) {
     final element = _document.byId[id];
-    if (element == null || _isLocked(element) || _hasLockedDescendant(element)) {
+    if (element == null ||
+        _isLocked(element) ||
+        _hasLockedDescendant(element)) {
       return false;
     }
     final parent = element.parentId;
@@ -145,9 +147,7 @@ final class BoardSession {
 
   bool resize(ElementId id, Bounds2 newBounds) {
     final element = _document.byId[id];
-    if (element == null ||
-        _isLocked(element) ||
-        _hasLockedDescendant(element)) {
+    if (element == null || _isLocked(element)) {
       return false;
     }
     final content = element.content;
@@ -167,6 +167,7 @@ final class BoardSession {
         :final text,
         :final style,
         :final direction,
+        :final alignment,
         :final sizing,
       ) =>
         TextElementContent(
@@ -174,25 +175,39 @@ final class BoardSession {
           bounds: newBounds,
           style: style,
           direction: direction,
+          alignment: alignment,
           sizing: sizing,
         ),
       StickyNoteElementContent(
         :final text,
         :final style,
         :final backgroundColor,
+        :final direction,
+        :final alignment,
+        :final sizing,
       ) =>
         StickyNoteElementContent(
           text: text,
           bounds: newBounds,
           style: style,
           backgroundColor: backgroundColor,
+          direction: direction,
+          alignment: alignment,
+          sizing: sizing,
         ),
       ContainerFrameElementContent(:final label) =>
         ContainerFrameElementContent(bounds: newBounds, label: label),
-      ExportFrameElementContent(:final label) => ExportFrameElementContent(
-        bounds: newBounds,
-        label: label,
-      ),
+      ExportFrameElementContent(
+        :final label,
+        :final outputWidth,
+        :final outputHeight,
+      ) =>
+        ExportFrameElementContent(
+          bounds: newBounds,
+          label: label,
+          outputWidth: outputWidth,
+          outputHeight: outputHeight,
+        ),
       _ => null,
     };
     if (updatedContent == null) return false;
@@ -210,25 +225,123 @@ final class BoardSession {
     final element = _document.byId[id];
     if (element == null) return null;
     final delta = offset ?? Point2(24, 24);
-    final newId = _allocateId();
-    final newTransform = Transform2(
-      a: element.transform.a,
-      b: element.transform.b,
-      c: element.transform.c,
-      d: element.transform.d,
-      tx: element.transform.tx + delta.x,
-      ty: element.transform.ty + delta.y,
-    );
-    final duplicated = DocumentElement(
-      id: newId,
-      parentId: element.parentId,
-      transform: newTransform,
-      locked: false,
+    final subtree = <ElementId>{};
+    final pending = [element];
+    while (pending.isNotEmpty) {
+      final current = pending.removeLast();
+      subtree.add(current.id);
+      pending.addAll(_document.childrenOf(current.id));
+    }
+    final ids = {for (final oldId in subtree) oldId: _allocateId()};
+    final geometry = DocumentGeometry(_document);
+    final world =
+        Transform2.translation(delta.x, delta.y) *
+        geometry.worldTransformOf(id);
+    final transform = element.parentId == null
+        ? world
+        : world.relativeTo(geometry.worldTransformOf(element.parentId!));
+    final after = <_Positioned>[];
+    for (final current in _document.elements) {
+      if (!subtree.contains(current.id)) continue;
+      after.add(
+        _Positioned(
+          _document.elements.length + after.length,
+          DocumentElement(
+            id: ids[current.id]!,
+            parentId: current.id == id
+                ? current.parentId
+                : ids[current.parentId],
+            transform: current.id == id ? transform : current.transform,
+            locked: current.id == id ? false : current.locked,
+            opacity: current.opacity,
+            content: current.content,
+          ),
+        ),
+      );
+    }
+    _commit(_Change([], after));
+    return ids[id];
+  }
+
+  /// Updates frame metadata as one undoable operation; omitted values persist.
+  bool updateFrame(
+    ElementId id, {
+    String? label,
+    Bounds2? bounds,
+    int? outputWidth,
+    int? outputHeight,
+  }) {
+    final content = _document.byId[id]?.content;
+    final ElementContent updated;
+    if (content is ExportFrameElementContent) {
+      final frame = ExportFrameElementContent(
+        bounds: bounds ?? content.bounds,
+        label: label ?? content.label,
+        outputWidth: outputWidth ?? content.outputWidth,
+        outputHeight: outputHeight ?? content.outputHeight,
+      );
+      if (frame.bounds == content.bounds &&
+          frame.label == content.label &&
+          frame.outputWidth == content.outputWidth &&
+          frame.outputHeight == content.outputHeight) {
+        return false;
+      }
+      updated = frame;
+    } else if (content is ContainerFrameElementContent) {
+      if (outputWidth != null || outputHeight != null) return false;
+      final frame = ContainerFrameElementContent(
+        bounds: bounds ?? content.bounds,
+        label: label ?? content.label,
+      );
+      if (frame.bounds == content.bounds && frame.label == content.label) {
+        return false;
+      }
+      updated = frame;
+    } else {
+      return false;
+    }
+    return updateContent(id, updated);
+  }
+
+  /// Changes ownership without changing world geometry or relative source order.
+  bool reparent(ElementId id, ElementId? parentId) {
+    final element = _document.byId[id];
+    if (element == null ||
+        element.parentId == parentId ||
+        _isLocked(element) ||
+        _hasLockedDescendant(element)) {
+      return false;
+    }
+    if (parentId != null) {
+      final owner = _document.byId[parentId];
+      if (owner == null || !owner.content.canOwnChildren || _isLocked(owner)) {
+        return false;
+      }
+      DocumentElement? ancestor = owner;
+      while (ancestor != null) {
+        if (ancestor.id == id) return false;
+        ancestor = _document.byId[ancestor.parentId];
+      }
+    }
+    final geometry = DocumentGeometry(_document);
+    final world = geometry.worldTransformOf(id);
+    final local = parentId == null
+        ? world
+        : world.relativeTo(geometry.worldTransformOf(parentId));
+    final index = _document.elements.indexOf(element);
+    final updated = DocumentElement(
+      id: id,
+      parentId: parentId,
+      transform: local,
+      locked: element.locked,
       opacity: element.opacity,
+      revision: element.revision,
       content: element.content,
     );
-    _commit(_Change([], [_Positioned(_document.elements.length, duplicated)]));
-    return newId;
+    _commit(
+      _Change([_Positioned(index, element)], [_Positioned(index, updated)]),
+    );
+    return true;
   }
 
   bool updateContent(ElementId id, ElementContent content) {

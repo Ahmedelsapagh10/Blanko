@@ -26,7 +26,9 @@ final class EditorScene {
     for (final element in document.preorder.reversed) {
       final bounds = _bounds[element.id];
       final parent = element.parentId;
-      if (bounds != null && parent != null) {
+      if (bounds != null &&
+          parent != null &&
+          document.byId[parent]!.content is GroupElementContent) {
         _bounds[parent] = _union(_bounds[parent], bounds);
       }
     }
@@ -57,6 +59,15 @@ final class EditorScene {
   ];
 
   bool isLocked(ElementId id) => _locked[id] ?? true;
+
+  bool belongsTo(ElementId id, ElementId ancestor) {
+    ElementId? current = id;
+    while (current != null) {
+      if (current == ancestor) return true;
+      current = document.byId[current]?.parentId;
+    }
+    return false;
+  }
 
   Iterable<ElementId> eraserHits(Point2 world, double radius) sync* {
     final area = Bounds2(world.x, world.y, world.x, world.y).inflate(radius);
@@ -179,6 +190,13 @@ bool _hits(ElementContent content, Point2 point, double tolerance) {
           _localBounds(content)!.inflate(tolerance).contains(point);
     case GroupElementContent():
       return false;
+    case ContainerFrameElementContent(:final bounds):
+    case ExportFrameElementContent(:final bounds):
+      return bounds.inflate(tolerance).contains(point) &&
+          ((point.x - bounds.left).abs() <= tolerance ||
+              (point.x - bounds.right).abs() <= tolerance ||
+              (point.y - bounds.top).abs() <= tolerance ||
+              (point.y - bounds.bottom).abs() <= tolerance);
     default:
       return _localBounds(content)!.inflate(tolerance).contains(point);
   }

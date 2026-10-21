@@ -1,3 +1,19 @@
+# Frames, PNG and portable project delivery — 2026-10-20
+
+**105/275 checked.** Implemented atomic frame properties/export dimensions, world-preserving membership, descendant movement/duplication, child-stable rectangle resizing and safe ownership. Shared artwork painter feeds the editor and independent PNG output; export clips frame descendants and omits guides/controls. Original image bytes, mixed Arabic text and notes remain supported.
+
+Real macOS saved3840×2160 transparent viewport and400×190 Frame files; Chrome downloaded3840×2160 image artwork and1280×720 named Frame output. Independent `.wboard` transfers worked Chrome→macOS with2 original images and macOS→Chrome withFrame ownership. Native process restart restored imported image pixels and original4-element Frame board; Chrome reload restored renamed/resized Frames. Existing user boards/assets preserved.
+
+Executed focused71host/62Chrome integration checkpoint(1native-only Chrome skip), additional session/codec contracts and final rotated-frame checks; exact counts/commands in evidence. Analysis clean. No performance benchmarks/full regression loop.
+
+Limits: native automation inconsistently delivers Chrome creation drags; real Frame creation was observed during diagnosis but repeated final-browser creation qualification stays unchecked(WB-0712). Native automated text replacement remains unreliable; Chrome text/geometry fields and widget Undo/Redo pass. External/custom fonts, future format migrations, non-macOS native file gateways, Safari/Edge and device/export peak-memory certification remain unfinished. File format64MiB/32MiB originals total/16MiB each, CRC32 accidental-corruption detection; failed imports retain the current board and can leave unattached originals. No silent font substitution or unsupported-version import.
+
+Stop for review. Evidence/screenshots: `benchmark_results/frames-export/verification.json`.
+
+Resume2026-10-21: final rotated handles included in25host+25Chrome passing checks; fresh analysis clean. Fresh normal Chrome restored saved Frames and keyboard F created a ContainerFrame without diagnostics. Menu-driven ExportFrame CUA drag remains inconclusive, so WB-0712 stays open; no physical input pass. All failed experiments were removed. Complete feature handoff/push; no further milestone work until review.
+
+## Previous UI handoff (historical)
+
 # UI implementation completion follow-up
 
 2026-10-20: Previous UI commits preserved and safely pushed. Remaining implementation defects fixed: focused toolbar Space activation, dark text/sticky paper preview,48px named color targets, descriptive slider semantics and filled-button typography. **14 host+14 Chrome focused cases pass;9 final brand/accessibility cases pass(5 overlap); analysis clean.** Real phone/tablet widget captures inspected; no native-device claim. Evidence: `benchmark_results/ui-completion/verification.json`.

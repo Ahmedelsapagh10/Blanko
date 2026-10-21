@@ -1,14 +1,16 @@
 # Master execution plan
 
-Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-19. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
+Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-21. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is M12 product UI/UX refinement; stop after delivery and provide a neutral handoff. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Frames, PNG export and portable project milestone; preserve the completed M12 UI and stop after the assigned feature handoff. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
 UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on available desktop/browser targets. Native phone/tablet runs, full assistive-technology review and M13 device/input qualification remain unchecked. No claim of full V1 or 10K performance acceptance. See `benchmark_results/ui-ux/verification.json` and `docs/HANDOFF.md`.
 
 Product UI checkpoint2026-10-20: Header rename, searchable Board History, direct image import, anchored desktop actions, discoverable Appearance, relevant selection properties and compact error layout verified.38 host tests(1 browser-only skip),39 Chrome tests, actual macOS/Chrome UI and Safari pen/reload smoke; phone/tablet widget captures are not native-device evidence. No additional full platform/accessibility gate checked. Evidence: `benchmark_results/product-ui/verification.json`.
 
 UI completion follow-up2026-10-20: fixed toolbar keyboard Space, dark text/paper preview and touch palette/slider semantics;14 host+14 Chrome focused passes,9 final theme/accessibility passes(5 overlap), clean analysis. `benchmark_results/ui-completion/verification.json`. Android direct launch confirms insufficient disk space. Keep real-device/screen-reader/full-platform items unchecked; stop for next-agent feature work.
+
+Feature checkpoint2026-10-20: **105/275 checked**. Frames ownership, child-preserving resize, PNG file output and independent `.wboard` import/Save As implemented using the existing UI/document/store. Actual macOS/Chrome files and cross-target transfers verified; WB-0712 remains unchecked for inconsistent native-automation Chrome drawing, WB-1110 for wider fidelity qualification. No new dependencies or SDK upgrades. Portable v1 is bounded JSON/base64+CRC32, with built-in editor fonts only; future-version migrations/custom-font packaging remain unchecked. PNG output is capped at16M pixels/8192side with96MiB retained originals; transient codec/GPU peaks are unqualified. Evidence: `benchmark_results/frames-export/verification.json`. Resume2026-10-21: final25host/25Chrome checks and analysis pass; fresh Chrome keyboard Frame creation works. Menu-driven native automation remains inconclusive; WB-0712 stays open.
 
 ## MVP-03A — Eraser & Clear All (verified)
 
@@ -270,17 +272,17 @@ Verification contract: Nested transform/ID/order/cycle/orphan/±1e9/property tes
   - Status: PLANNED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
   - Acceptance: **Implement hierarchical Groups**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0206 Implement Export Frame geometry.
-  - Status: PLANNED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
-  - Acceptance: **Implement Export Frame geometry**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0206 Implement Export Frame geometry.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
+  - Acceptance: **Implement Export Frame geometry**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-0207 Implement Container Frame ownership.
-  - Status: PLANNED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
-  - Acceptance: **Implement Container Frame ownership**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0207 Implement Container Frame ownership.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
+  - Acceptance: **Implement Container Frame ownership**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-0208 Implement safe reparenting.
-  - Status: PLANNED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
-  - Acceptance: **Implement safe reparenting**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0208 Implement safe reparenting.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
+  - Acceptance: **Implement safe reparenting**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-0209 Implement geometry validation.
   - Status: PLANNED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
@@ -605,16 +607,18 @@ Verification contract: RTL/IME/editing widget tests, decode/error/disposal tests
   - Acceptance: Per-request invalidation, deleted-image resource release, disposed import guards and board-controller lifetime; tests: image_cache_test.dart, image_pipeline_test.dart on host/Chrome. Evidence: benchmark_results/image-import/verification.json.
 
 - [ ] WB-0712 Implement Export Frame editing.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
   - Acceptance: **Implement Export Frame editing**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0713 Implement Container Frame editing.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Implement Container Frame editing**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+  - Current evidence: Frame properties/creation integrated; native create/move/resize/reopen and Chrome properties/movement/export/reload verified. Repeated native-automation Chrome draw gestures remain inconsistent, so physical browser creation qualification is incomplete. `benchmark_results/frames-export/verification.json`.
 
-- [ ] WB-0714 Preserve frame/group hierarchy invariants.
-  - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
-  - Acceptance: **Preserve frame/group hierarchy invariants**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0713 Implement Container Frame editing.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
+  - Acceptance: **Implement Container Frame editing**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
+
+- [x] WB-0714 Preserve frame/group hierarchy invariants.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
+  - Acceptance: **Preserve frame/group hierarchy invariants**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-0715 Verify fonts and licensing.
   - Status: IN_PROGRESS; priority: P1; dependencies: WB-0003; font/license research is independent of commands and selection.
@@ -730,13 +734,15 @@ Verification contract: Stale-save/retry/quota/disk/permission/crash/reload fault
   - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
   - Acceptance: **Implement honest save status**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0908 Implement original asset storage.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
-  - Acceptance: **Implement original asset storage**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0908 Implement original asset storage.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
+  - Acceptance: **Implement original asset storage**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-0909 Implement asset staging/commit.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
+  - Status: IN_PROGRESS; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
   - Acceptance: **Implement asset staging/commit**, integrated where applicable under M09 contract; tests: M09 verification scoped to this deliverable; evidence: pending.
+
+  - Current evidence: Import validates fully and stages originals under fresh IDs before publishing an independent board. Interrupted writes can leave unattached originals; garbage collection and broader crash qualification remain incomplete. `benchmark_results/frames-export/verification.json`.
 
 - [ ] WB-0910 Implement safe asset garbage collection.
   - Status: PLANNED; priority: P0; dependencies: WB-0201, MVP-0106 (current editor); full command expansion tracked under WB-0311.
@@ -781,57 +787,57 @@ Acceptance contract: Independent versioned snapshots/imports include validated c
 
 Verification contract: Cross-platform round trip, malformed/fuzz/size/path/checksum/schema cases, interrupted import and Save As independence.
 
-- [ ] WB-1001 Define `.wboard` versioned format.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Define `.wboard` versioned format**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1001 Define `.wboard` versioned format.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Define `.wboard` versioned format**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1002 Implement Manifest.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Implement Manifest**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1002 Implement Manifest.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Implement Manifest**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1003 Implement document serialization.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Implement document serialization**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1003 Implement document serialization.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Implement document serialization**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1004 Include original assets.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Include original assets**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1004 Include original assets.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Include original assets**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-1005 Implement font references/assets legally.
   - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
   - Acceptance: **Implement font references/assets legally**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1006 Implement Checksums.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Implement Checksums**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1006 Implement Checksums.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Implement Checksums**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1007 Implement safe archive validation.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Implement safe archive validation**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1007 Implement safe archive validation.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Implement safe archive validation**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1008 Protect against malformed/oversized archives.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Protect against malformed/oversized archives**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1008 Protect against malformed/oversized archives.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Protect against malformed/oversized archives**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1009 Implement independent Project Import.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Implement independent Project Import**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1009 Implement independent Project Import.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Implement independent Project Import**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1010 Implement Save As independent snapshot.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Implement Save As independent snapshot**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1010 Implement Save As independent snapshot.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Implement Save As independent snapshot**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-1011 Implement format migrations.
   - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
   - Acceptance: **Implement format migrations**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1012 Test cross-platform round-trip.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Test cross-platform round-trip**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1012 Test cross-platform round-trip.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Test cross-platform round-trip**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1013 Test interrupted imports and corrupt projects.
-  - Status: PLANNED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
-  - Acceptance: **Test interrupted imports and corrupt projects**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1013 Test interrupted imports and corrupt projects.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0904, WB-0908, WB-0912.
+  - Acceptance: **Test interrupted imports and corrupt projects**, integrated where applicable under M10 contract; tests: M10 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 ## M11 — PNG Export
 
@@ -839,61 +845,63 @@ Acceptance contract: Independent offscreen PNG respects bounds/frame clipping/ba
 
 Verification contract: Dimensions/alpha/clipping/text/image pixels, 4K/custom limits and device export peak memory/time.
 
-- [ ] WB-1101 Define export bounds model.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Define export bounds model**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1101 Define export bounds model.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Define export bounds model**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1102 Implement independent offscreen rendering.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Implement independent offscreen rendering**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1102 Implement independent offscreen rendering.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Implement independent offscreen rendering**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1103 Viewport export.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Viewport export**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1103 Viewport export.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Viewport export**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-1104 Selection export.
   - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
   - Acceptance: **Selection export**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1105 Frame export with clipping.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Frame export with clipping**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1105 Frame export with clipping.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Frame export with clipping**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-1106 Custom area export.
   - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
   - Acceptance: **Custom area export**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1107 Transparent and solid backgrounds.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Transparent and solid backgrounds**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1107 Transparent and solid backgrounds.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Transparent and solid backgrounds**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1108 Resolution presets including 4K.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Resolution presets including 4K**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1108 Resolution presets including 4K.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Resolution presets including 4K**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1109 Custom width/height.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Custom width/height**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1109 Custom width/height.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Custom width/height**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-1110 Image/Font rendering fidelity.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
   - Acceptance: **Image/Font rendering fidelity**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1111 Implement memory-aware export limits.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Implement memory-aware export limits**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+  - Current evidence: Original image RGB and bundled Arabic/text/note pixels verified in host/Chrome output; wider font/device fidelity qualification remains incomplete. `benchmark_results/frames-export/verification.json`.
+
+- [x] WB-1111 Implement memory-aware export limits.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Implement memory-aware export limits**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-1112 Investigate tiling/streaming if necessary.
   - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
   - Acceptance: **Investigate tiling/streaming if necessary**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1113 Implement cancellation/error recovery.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Implement cancellation/error recovery**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1113 Implement cancellation/error recovery.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Implement cancellation/error recovery**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
-- [ ] WB-1114 Test dimensions, clipping, transparency.
-  - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
-  - Acceptance: **Test dimensions, clipping, transparency**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1114 Test dimensions, clipping, transparency.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.
+  - Acceptance: **Test dimensions, clipping, transparency**, integrated where applicable under M11 contract; tests: M11 verification scoped to this deliverable; evidence: `benchmark_results/frames-export/verification.json` (focused host/Chrome checks and actual macOS/Chrome file workflows; available-target scope).
 
 - [ ] WB-1115 Benchmark export memory/time on supported devices.
   - Status: PLANNED; priority: P1; dependencies: WB-0211, WB-0712, WB-0715; offscreen contract before integration.

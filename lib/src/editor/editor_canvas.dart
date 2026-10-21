@@ -17,6 +17,7 @@ import 'stroke_eraser.dart';
 import 'editor_text.dart';
 import 'image_cache_manager.dart';
 import 'image_picker_service.dart';
+import 'artwork_painter.dart';
 
 enum EditorTool {
   select,
@@ -246,6 +247,33 @@ final class EditorCanvasController extends ChangeNotifier {
     }
   }
 
+  void updateSelectedFrame({
+    String? label,
+    Bounds2? bounds,
+    int? outputWidth,
+    int? outputHeight,
+  }) {
+    if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
+    if (session.updateFrame(
+      selectedId!,
+      label: label,
+      bounds: bounds,
+      outputWidth: outputWidth,
+      outputHeight: outputHeight,
+    )) {
+      _refreshScene();
+      _notify(toolbar: true);
+    }
+  }
+
+  void reparentSelection(ElementId? parent) {
+    if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
+    if (session.reparent(selectedId!, parent)) {
+      _refreshScene();
+      _notify(toolbar: true);
+    }
+  }
+
   void setTitle(String title) {
     if (_disposed || readOnly) return;
     session.setTitle(title);
@@ -401,6 +429,9 @@ final class EditorCanvasController extends ChangeNotifier {
   Point2? _handleAnchor;
   Transform2? _handleBase;
   Transform2? _previewWorld;
+  Bounds2? _frameBaseBounds;
+  Bounds2? _framePreviewBounds;
+  Point2? _frameResizeAnchor;
   bool _rotatingHandle = false;
 
   bool get canTransformSelection {
@@ -409,8 +440,28 @@ final class EditorCanvasController extends ChangeNotifier {
         id != null &&
         !readOnly &&
         inputEnabled &&
-        !scene.isLocked(id) &&
-        session.document.childrenOf(id).isEmpty;
+        !scene.isLocked(id);
+  }
+
+  List<Point2>? _frameHandleCorners() {
+    final content = session.document.byId[selectedId]?.content;
+    final bounds =
+        _framePreviewBounds ??
+        switch (content) {
+          ContainerFrameElementContent(:final bounds) => bounds,
+          ExportFrameElementContent(:final bounds) => bounds,
+          _ => null,
+        };
+    if (bounds == null || selectedId == null) return null;
+    final world =
+        (_previewWorld ?? Transform2.identity) *
+        scene.worldTransformOf(selectedId!);
+    return [
+      Point2(bounds.left, bounds.top),
+      Point2(bounds.right, bounds.top),
+      Point2(bounds.right, bounds.bottom),
+      Point2(bounds.left, bounds.bottom),
+    ].map((p) => world.apply(p) + moveDelta).toList();
   }
 
   bool _beginHandle(Point2 world, bool touch) {
@@ -418,12 +469,14 @@ final class EditorCanvasController extends ChangeNotifier {
     final bounds = scene
         .boundsOf(selectedId!)
         .inflate(camera.worldTolerance(4));
-    final corners = [
-      Point2(bounds.left, bounds.top),
-      Point2(bounds.right, bounds.top),
-      Point2(bounds.right, bounds.bottom),
-      Point2(bounds.left, bounds.bottom),
-    ];
+    final corners =
+        _frameHandleCorners() ??
+        [
+          Point2(bounds.left, bounds.top),
+          Point2(bounds.right, bounds.top),
+          Point2(bounds.right, bounds.bottom),
+          Point2(bounds.left, bounds.bottom),
+        ];
     final tolerance = camera.worldTolerance(touch ? 20 : 9);
     final rotation = Point2(
       bounds.center.x,
@@ -438,6 +491,20 @@ final class EditorCanvasController extends ChangeNotifier {
       if (world.distanceTo(corners[i]) <= tolerance) {
         _handleAnchor = corners[(i + 2) % 4];
         _handleBase = scene.worldTransformOf(selectedId!);
+        final content = session.document.byId[selectedId!]!.content;
+        _frameBaseBounds = switch (content) {
+          ContainerFrameElementContent(:final bounds) => bounds,
+          ExportFrameElementContent(:final bounds) => bounds,
+          _ => null,
+        };
+        if (_frameBaseBounds case final b?) {
+          _frameResizeAnchor = [
+            Point2(b.right, b.bottom),
+            Point2(b.left, b.bottom),
+            Point2(b.left, b.top),
+            Point2(b.right, b.top),
+          ][i];
+        }
         return true;
       }
     }
@@ -451,6 +518,19 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void _updateHandle(Point2 world) {
+    if (_frameBaseBounds != null && !_rotatingHandle) {
+      final local = _handleBase!.inverse().apply(world);
+      final anchor = _frameResizeAnchor!;
+      if ((local.x - anchor.x).abs() >= 1 && (local.y - anchor.y).abs() >= 1) {
+        _framePreviewBounds = Bounds2(
+          math.min(local.x, anchor.x),
+          math.min(local.y, anchor.y),
+          math.max(local.x, anchor.x),
+          math.max(local.y, anchor.y),
+        );
+      }
+      return;
+    }
     final anchor = _handleAnchor!;
     final start = _start! - anchor;
     final end = world - anchor;
@@ -777,10 +857,14 @@ final class EditorCanvasController extends ChangeNotifier {
         if (delta.distanceTo(Point2.zero) * camera.zoom >= 2) {
           if (_handleAnchor != null) {
             _updateHandle(_world(event.localPosition));
-            session.setWorldTransform(
-              selectedId!,
-              _previewWorld! * _handleBase!,
-            );
+            if (_framePreviewBounds case final bounds?) {
+              session.resize(selectedId!, bounds);
+            } else if (_previewWorld != null) {
+              session.setWorldTransform(
+                selectedId!,
+                _previewWorld! * _handleBase!,
+              );
+            }
           } else {
             session.translate(selectedId!, delta);
           }
@@ -812,6 +896,9 @@ final class EditorCanvasController extends ChangeNotifier {
     _handleAnchor = null;
     _handleBase = null;
     _previewWorld = null;
+    _frameBaseBounds = null;
+    _framePreviewBounds = null;
+    _frameResizeAnchor = null;
     _rotatingHandle = false;
     _pointer = null;
     _gestureTool = null;
@@ -942,48 +1029,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 }
 
-Path elementPath(ElementContent content) {
-  final path = Path();
-  switch (content) {
-    case ShapeElementContent(:final kind, :final bounds):
-      final rect = Rect.fromLTRB(
-        bounds.left,
-        bounds.top,
-        bounds.right,
-        bounds.bottom,
-      );
-      switch (kind) {
-        case ShapeKind.rectangle:
-          path.addRect(rect);
-        case ShapeKind.ellipse:
-          path.addOval(rect);
-        case ShapeKind.triangle:
-          path
-            ..moveTo(bounds.center.x, bounds.top)
-            ..lineTo(bounds.right, bounds.bottom)
-            ..lineTo(bounds.left, bounds.bottom)
-            ..close();
-      }
-    case StrokeElementContent(:final points):
-      path.moveTo(points.first.x, points.first.y);
-      for (final point in points.skip(1)) {
-        path.lineTo(point.x, point.y);
-      }
-    case LineElementContent(:final start, :final end):
-      path
-        ..moveTo(start.x, start.y)
-        ..lineTo(end.x, end.y);
-    case TextElementContent() ||
-        StickyNoteElementContent() ||
-        ImageElementContent() ||
-        ContainerFrameElementContent() ||
-        ExportFrameElementContent():
-      break;
-    default:
-      throw ArgumentError('Unsupported element content in editor.');
-  }
-  return path;
-}
+Path elementPath(ElementContent content) => artworkPath(content);
 
 class EditorCanvas extends StatelessWidget {
   const EditorCanvas({
@@ -1066,7 +1112,18 @@ class _EditorPainter extends CustomPainter {
     if (grid.visible) _grid(canvas, size, c.camera, grid);
     canvas.save();
     canvas.scale(c.camera.zoom);
-    final visible = c.scene.visible(view.inflate(6 / c.camera.zoom));
+    var visible = c.scene.visible(view.inflate(6 / c.camera.zoom));
+    if (c.selectedId != null &&
+        (c.moveDelta != Point2.zero || c._previewWorld != null)) {
+      final visibleIds = visible.map((e) => e.id).toSet();
+      visible = c.scene.paintOrder
+          .where(
+            (e) =>
+                visibleIds.contains(e.id) ||
+                c.scene.belongsTo(e.id, c.selectedId!),
+          )
+          .toList();
+    }
     c.imageCache.updateVisibleAssets(
       {
         for (final element in visible)
@@ -1088,15 +1145,39 @@ class _EditorPainter extends CustomPainter {
         }
         continue;
       }
+      final followsSelection =
+          c.selectedId != null && c.scene.belongsTo(element.id, c.selectedId!);
+      var rendered = element;
+      if (element.id == c.selectedId && c._framePreviewBounds != null) {
+        final bounds = c._framePreviewBounds!;
+        rendered = element.copyWith(
+          content: switch (element.content) {
+            ContainerFrameElementContent(:final label) =>
+              ContainerFrameElementContent(bounds: bounds, label: label),
+            ExportFrameElementContent(
+              :final label,
+              :final outputWidth,
+              :final outputHeight,
+            ) =>
+              ExportFrameElementContent(
+                bounds: bounds,
+                label: label,
+                outputWidth: outputWidth,
+                outputHeight: outputHeight,
+              ),
+            _ => element.content,
+          },
+        );
+      }
       _element(
         canvas,
-        element,
-        element.id == c.selectedId && c._previewWorld != null
+        rendered,
+        followsSelection && c._previewWorld != null
             ? c._previewWorld! * c.scene.worldTransformOf(element.id)
             : c.scene.worldTransformOf(element.id),
         c.paths[element.id]!,
         origin,
-        delta: element.id == c.selectedId ? c.moveDelta : Point2.zero,
+        delta: followsSelection ? c.moveDelta : Point2.zero,
       );
     }
     if (c._gestureTool == EditorTool.pen && c._start != null) {
@@ -1124,7 +1205,11 @@ class _EditorPainter extends CustomPainter {
     final selected = c.selectedId;
     if (selected != null &&
         (c.tool == EditorTool.select || c.tool == EditorTool.pan)) {
-      final originalBounds = c.scene.boundsOf(selected);
+      final originalBounds = c._framePreviewBounds == null
+          ? c.scene.boundsOf(selected)
+          : c.scene
+                .worldTransformOf(selected)
+                .mapBounds(c._framePreviewBounds!);
       final bounds =
           (c._previewWorld?.mapBounds(originalBounds) ?? originalBounds)
               .inflate(4 / c.camera.zoom);
@@ -1149,12 +1234,13 @@ class _EditorPainter extends CustomPainter {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.5 / c.camera.zoom;
 
-        for (final corner in [
-          Offset(l, t),
-          Offset(r, t),
-          Offset(r, b),
-          Offset(l, b),
-        ]) {
+        final frameCorners = c._frameHandleCorners();
+        for (final corner
+            in frameCorners == null
+                ? [Offset(l, t), Offset(r, t), Offset(r, b), Offset(l, b)]
+                : frameCorners.map(
+                    (p) => Offset(p.x - origin.x, p.y - origin.y),
+                  )) {
           canvas.drawCircle(corner, handleRadius, handlePaint);
           canvas.drawCircle(corner, handleRadius, handleStroke);
         }
@@ -1197,173 +1283,98 @@ class _EditorPainter extends CustomPainter {
     canvas.save();
     canvas.transform(_matrix);
     final content = element.content;
-    final StrokeStyle? style = switch (content) {
-      ShapeElementContent(:final stroke) => stroke,
-      StrokeElementContent(:final style) => style,
-      LineElementContent(:final style) => style,
-      _ => null,
-    };
-    if (content is ImageElementContent) {
-      final bounds = content.bounds;
-      final image = controller.imageCache.get(content.assetId);
-      final rect = Rect.fromLTRB(
-        bounds.left,
-        bounds.top,
-        bounds.right,
-        bounds.bottom,
+    var opacity = element.opacity;
+    var parent = controller.session.document.byId[element.parentId];
+    while (parent != null) {
+      opacity *= parent.opacity;
+      parent = controller.session.document.byId[parent.parentId];
+    }
+    final image = content is ImageElementContent
+        ? controller.imageCache.get(content.assetId)
+        : null;
+    if (content is ImageElementContent && image == null) {
+      final rect = artworkRect(content.bounds);
+      canvas.drawRect(
+        rect,
+        Paint()..color = const Color(0xfff1f3f5).withValues(alpha: opacity),
       );
-      if (image != null) {
-        final src = Rect.fromLTWH(
-          0,
-          0,
-          image.width.toDouble(),
-          image.height.toDouble(),
-        );
-        final paint = Paint()
-          ..filterQuality = FilterQuality.medium
-          ..color = Colors.white.withValues(alpha: element.opacity);
-        canvas.drawImageRect(image, src, rect, paint);
-      } else {
-        final paint = Paint()
-          ..style = PaintingStyle.fill
-          ..color = const Color(0xFFF1F3F5).withValues(alpha: element.opacity);
-        canvas.drawRect(rect, paint);
-        final borderPaint = Paint()
+      canvas.drawRect(
+        rect,
+        Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.0 / controller.camera.zoom
-          ..color = const Color(0xFFCED4DA).withValues(alpha: element.opacity);
-        canvas.drawRect(rect, borderPaint);
-        if (controller.imageCache.errors.containsKey(content.assetId)) {
-          final label = TextPainter(
-            text: const TextSpan(
-              text: 'Image unavailable',
-              style: TextStyle(color: Color(0xffb42318), fontSize: 14),
-            ),
-            textDirection: TextDirection.ltr,
-          )..layout(maxWidth: rect.width);
-          canvas.save();
-          canvas.clipRect(rect);
-          label.paint(canvas, rect.topLeft);
-          canvas.restore();
-          label.dispose();
-        } else {
-          controller.requestImage(content.assetId);
-        }
+          ..strokeWidth = 1 / controller.camera.zoom
+          ..color = const Color(0xffced4da).withValues(alpha: opacity),
+      );
+      if (controller.imageCache.errors.containsKey(content.assetId)) {
+        final label = TextPainter(
+          text: const TextSpan(
+            text: 'Image unavailable',
+            style: TextStyle(color: Color(0xffb42318), fontSize: 14),
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout(maxWidth: rect.width);
+        canvas.save();
+        canvas.clipRect(rect);
+        label.paint(canvas, rect.topLeft);
+        canvas.restore();
+        label.dispose();
+      } else {
+        controller.requestImage(content.assetId);
       }
     }
     if (content is ContainerFrameElementContent ||
         content is ExportFrameElementContent) {
-      final bounds = switch (content) {
-        ContainerFrameElementContent() => content.bounds,
-        ExportFrameElementContent() => content.bounds,
+      final (bounds, name) = switch (content) {
+        ContainerFrameElementContent() => (content.bounds, content.label),
+        ExportFrameElementContent() => (content.bounds, content.label),
         _ => throw StateError('frame'),
       };
       final isExport = content is ExportFrameElementContent;
-      final rect = Rect.fromLTRB(
-        bounds.left,
-        bounds.top,
-        bounds.right,
-        bounds.bottom,
+      final rect = artworkRect(bounds);
+      canvas.drawRect(
+        rect,
+        Paint()
+          ..color =
+              (isExport ? const Color(0x064464f6) : const Color(0x04000000))
+                  .withValues(alpha: (isExport ? 6 / 255 : 4 / 255) * opacity),
       );
-      final bgPaint = Paint()
-        ..style = PaintingStyle.fill
-        ..color = (isExport ? const Color(0x064464F6) : const Color(0x04000000))
-            .withValues(alpha: element.opacity);
-      canvas.drawRect(rect, bgPaint);
-      final borderPaint = Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = (isExport ? 1.5 : 1.0) / controller.camera.zoom
-        ..color = (isExport ? const Color(0xFF4464F6) : const Color(0xFF94A3B8))
-            .withValues(alpha: element.opacity);
-      canvas.drawRect(rect, borderPaint);
-
-      final label = switch (content) {
-        ContainerFrameElementContent(:final label) =>
-          label.isEmpty ? 'Frame' : label,
-        ExportFrameElementContent(:final label) =>
-          label.isEmpty ? 'Export Frame' : label,
-        _ => '',
-      };
-      final textPainter = TextPainter(
+      canvas.drawRect(
+        rect,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = (isExport ? 1.5 : 1) / controller.camera.zoom
+          ..color =
+              (isExport ? const Color(0xff4464f6) : const Color(0xff94a3b8))
+                  .withValues(alpha: opacity),
+      );
+      final label = TextPainter(
         text: TextSpan(
-          text: label,
+          text: name.isEmpty ? (isExport ? 'Export frame' : 'Frame') : name,
           style: TextStyle(
-            color: isExport ? const Color(0xFF4464F6) : const Color(0xFF64748B),
-            fontSize: math.max(10.0, 12.0 / controller.camera.zoom),
+            color: isExport ? const Color(0xff4464f6) : const Color(0xff64748b),
+            fontSize: math.max(10, 12 / controller.camera.zoom),
             fontWeight: FontWeight.w600,
           ),
         ),
-        textDirection: TextDirection.ltr,
+        textDirection: elementTextDirection(name, ElementTextDirection.auto),
       )..layout();
-      textPainter.paint(
+      label.paint(
         canvas,
         Offset(
           bounds.left,
-          bounds.top - textPainter.height - (3 / controller.camera.zoom),
+          bounds.top - label.height - 3 / controller.camera.zoom,
         ),
       );
-      textPainter.dispose();
+      label.dispose();
     }
-    if (content is TextElementContent || content is StickyNoteElementContent) {
-      final bounds = switch (content) {
-        TextElementContent() => content.bounds,
-        StickyNoteElementContent() => content.bounds,
-        _ => throw StateError('text'),
-      };
-      final padding = content is StickyNoteElementContent ? 12.0 : 0.0;
-      canvas.saveLayer(
-        Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom),
-        Paint()..color = Colors.white.withValues(alpha: element.opacity),
-      );
-      if (content is StickyNoteElementContent) {
-        canvas.drawRect(
-          Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom),
-          Paint()..color = Color(content.backgroundColor),
-        );
-      }
-      canvas.clipRect(
-        Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom),
-      );
-      controller.textLayouts[element.id]?.paint(
-        canvas,
-        Offset(bounds.left + padding, bounds.top + padding),
-      );
-      canvas.restore();
-    }
-    if (content is ShapeElementContent && content.fillColor != null) {
-      canvas.drawPath(
-        path,
-        Paint()
-          ..color = Color(
-            content.fillColor!,
-          ).withValues(alpha: Color(content.fillColor!).a * element.opacity),
-      );
-    }
-    if (style != null) {
-      final color = Color(style.color);
-      final alpha =
-          element.opacity *
-          (content is StrokeElementContent &&
-                  content.kind == StrokeKind.highlighter
-              ? .28
-              : 1);
-      final paint = Paint()
-        ..color = color.withValues(alpha: color.a * alpha)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = style.width
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round;
-      if (content is StrokeElementContent && content.points.length == 1) {
-        final point = content.points.single;
-        canvas.drawCircle(
-          Offset(point.x, point.y),
-          style.width / 2,
-          paint..style = PaintingStyle.fill,
-        );
-      } else {
-        canvas.drawPath(path, paint);
-      }
-    }
+    paintElementArtwork(
+      canvas,
+      element,
+      path: path,
+      textLayout: controller.textLayouts[element.id],
+      image: image,
+      opacity: opacity,
+    );
     canvas.restore();
   }
 

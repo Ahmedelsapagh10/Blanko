@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui' show AppExitResponse;
 import 'dart:math';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,9 @@ import 'editor_canvas.dart';
 import 'editor_page.dart';
 import 'editor_text.dart';
 import '../theme/blanko_brand.dart';
+import '../persistence/portable_project.dart';
+import 'project_file_gateway.dart';
+import 'project_image_validation.dart';
 
 /// Owns the workspace connection and the lifetime of its one open editor.
 class WorkspacePage extends StatefulWidget {
@@ -368,6 +372,80 @@ class _WorkspacePageState extends State<WorkspacePage> {
     }
   }
 
+  Future<void> _projectFile({required bool importing}) async {
+    if (_busy || _canvas == null || _store == null) return;
+    final controller = _canvas!;
+    controller.focusLost();
+    _setBusy(true);
+    try {
+      if (!await _flush()) {
+        throw StateError(
+          'Current work is unsaved. Retry saving before using project files.',
+        );
+      }
+      if (!mounted) return;
+      if (importing) {
+        final bytes = await pickProjectFile();
+        if (bytes == null || !mounted) return;
+        final project = decodePortableProject(bytes);
+        await validatePortableImages(project);
+        if (!mounted || !identical(controller, _canvas)) return;
+        // Validate the renderer before publishing any imported snapshot.
+        final candidate = EditorCanvasController(
+          session: BoardSession(document: project.snapshot.document),
+        );
+        candidate.dispose();
+        final token =
+            '${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}-${Random.secure().nextInt(0x7fffffff).toRadixString(36)}';
+        final snapshot = await importPortableProject(
+          project,
+          _store!,
+          boardId: 'board-$token',
+          assetPrefix: 'import-$token',
+        );
+        if (!mounted) return;
+        await _store!.writeLastBoard(snapshot.document.id);
+        if (!mounted) return;
+        _install(snapshot);
+        _fileMessage('Project imported as an independent board.');
+      } else {
+        final snapshot = BoardSnapshot(
+          document: controller.session.document,
+          camera: controller.camera,
+          version: 1,
+          savedAt: DateTime.now().toUtc(),
+        );
+        final bytes = await exportPortableProject(snapshot, _store!);
+        if (!mounted || !identical(controller, _canvas)) return;
+        final saved = await saveProductFile(
+          bytes: bytes,
+          suggestedName: snapshot.document.title.isEmpty
+              ? 'Blanko'
+              : snapshot.document.title,
+          extension: 'wboard',
+        );
+        if (mounted && saved) {
+          _fileMessage(
+            kIsWeb ? 'Project download started.' : 'Project file saved.',
+          );
+        }
+      }
+    } catch (error) {
+      if (mounted) {
+        _fileMessage(
+          'Could not ${importing ? 'import' : 'save'} project: $error',
+        );
+      }
+    } finally {
+      if (mounted) _setBusy(false);
+    }
+  }
+
+  void _fileMessage(String message) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message), duration: const Duration(seconds: 8)),
+      );
+
   @override
   void dispose() {
     _lifecycle.dispose();
@@ -447,6 +525,10 @@ class _WorkspacePageState extends State<WorkspacePage> {
           controller: _canvas,
           title: _canvas!.session.document.title,
           onRenameBoard: _busy || _canvas!.readOnly ? null : _renameActiveBoard,
+          onSaveProject: _busy ? null : () => _projectFile(importing: false),
+          onImportProject: _busy || _canvas!.readOnly
+              ? null
+              : () => _projectFile(importing: true),
           leading: const Padding(
             padding: EdgeInsets.all(12),
             child: Center(child: BlankoSymbol(size: 24)),

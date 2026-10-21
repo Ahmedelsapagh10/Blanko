@@ -1,33 +1,31 @@
 # Blanko handoff
 
-2026-10-20. UI refinement delivered; **78/275 checked**. Prior commits `d9e6aea` and `4ca4847` were preserved and safely pushed; final follow-up SHA is in delivery chat/Git log. Stop after this UI milestone. Next agent can continue Frames, advanced editing, portable project files and PNG export; no claim of complete V1/platform qualification.
+2026-10-20. Assigned Frames→PNG→portable product work implemented; **105/275 checked**. Stop for review. Commit/push status in delivery/Git log. Existing UI, boards, assets and histories retained; no package/SDK upgrade. Native user-selected sandbox entitlement changes read-only→read-write for explicit Save panels.
 
-## Final UI follow-up
+Resume2026-10-21: final rotated handles included in25host+25Chrome passing checks; fresh analysis clean. Fresh normal Chrome restored saved Frames and keyboard F created a ContainerFrame without diagnostics. Menu-driven ExportFrame CUA drag remains inconclusive, so WB-0712 stays open; no physical input pass. All failed experiments were removed. Complete feature handoff/push; no further milestone work until review.
 
-Evidence: `benchmark_results/ui-completion/verification.json`. Space now activates focused toolbar buttons instead of being swallowed as pan. Text/sticky drafts preview original ink on white/colored paper, fixing dark-mode legibility; named48px color targets, meaningful slider semantics, consistent filled-button typography.14 targeted host+14 Chrome tests pass;9 final brand/accessibility checks pass(5 overlap), analysis clean. Actual phone/tablet widget draft screenshots inspected. No full suite or stress benchmarks repeated.
-
-Android direct launch confirms **insufficient disk space**, not an invented successful emulator run; GPU/system checks pass. Do not shrink/reset the user's AVD to fake a pass. Native mobile/physical screen-reader/IME qualification remains pending. Native draft was externally changed while inspecting it and left untouched; do not discard any open draft on takeover. Web dev server restarted at same8772 origin after debug Surface instance already deleted; full reload releases old debug locks. Original storage untouched.
-
-## What changed
-
-Header title opens existing guarded rename flow; searchable Board History retains blue immediate-create+, per-board options/confirmation; direct desktop image import and anchored More menu; type-aware selection properties; labeled Appearance on wide screens; phone errors above zoom; live save/error announcements; rotation handle pixels aligned with24px hit offset. Existing brand/tokens, persistent System/Light/Dark, phone bottom tools/sheets, touch navigation and reduced-motion behavior retained. No new dependency, SDK/configuration or document/storage migration.
-
-Exact changed files,38 host passes(1 browser-only skip),39 Chrome passes, analysis and screenshots: `benchmark_results/product-ui/verification.json`. Real native Dark/Light/library/menu captures; real Chrome saved-image reload; real Safari pen/save/reload. Phone/tablet PNGs are actual Flutter widget renders, not devices. Initial analysis issues were corrected before clean final run.
-
-## Data and launch
-
-Preserve all user boards/assets, old browser tabs/profiles and origins. Native current test image board still has2 images; its title includes “Image verification PNG + JPEG” with an automation-inserted space. Normal native user boards remain present. Chrome test profile localhost8772 has2-image board and separate blank test board. Safari separate8772 tab has1 saved pen stroke; original8771 tab untouched. Earlier8765/8766/8770/8771 stores are separate and must not be cleared.
+## Use
 
 `flutter run -d macos`
 
 `flutter run -d web-server --web-port=8772 --web-hostname=localhost`
 
-Own8772 server/native app remain available for review. Full Web reload after debug hot restart releases old Web Locks. Theme preferences are separate from board content; no user-content recoloring.
+More tools→Frame/Export frame, drag a rectangle; Select its border. Frame properties edits label/canvas size/output pixels atomically. Select artwork→Place in frame chooses membership or detach, preserving world position. Move parent with children; corner resize changes its rectangle, never scales children. Editing remains unclipped. Undo/Redo session-only, committed edits autosave.
 
-## Limits / next actions
+Header Files & export→Export PNG: viewport/named Export Frame, solid canvas color or transparency, HD/4K/custom pixels. Save As .wboard includes original image assets; Import creates a new local board and remapped assets without replacing the current board. Local autosave target remains independent of the project file.
 
-- Android launcher returned0 but no device detected; iOS simulators installed but none booted, wireless iPhone code-27. About1.9GiB free at final discovery. No native phone/tablet build/hardware pass. Recover headroom before builds.
-- Windows unavailable; Edge absent. Safari basic drawing/reload is verified, full file/image/IME/lifecycle matrix remains pending.
-- Actual VoiceOver/TalkBack/native IME and text-entry qualification remain pending. Native CUA typed/paste replacement inconsistent; tested Flutter rename/keyboard behavior passes. Do not infer a physical input pass.
-- Inherited image limits:40 retained entries/96MiB/2048px; explicit capacity errors; Web transient full-original decode and adaptive zoom decode unresolved. Original bytes durable, no asset GC/shared-asset deletion.
-- Frame duplication currently does not certify descendant ownership; export clipping/PNG/portable projects unfinished. Complete relevant document/command contracts and tests before wiring new tools. Keep dense rendering hardening backlog; no speculative benchmark loop.
+## Evidence and limits
+
+`benchmark_results/frames-export/verification.json` lists exact files/checks/real screenshots.71host/62Chrome integration passes(1native-only skip), extra contract/rotated checks and clean analysis. Actual macOS native save/open panels and restart, Chrome downloaded files and reload, bidirectional project transfer verified. Real4K PNGs inspected; no performance claim.
+
+WB-0712 stays unchecked: repeated native-automation Chrome draw gestures were inconsistent despite passing Chrome widgets and real creation during diagnosis. Do a physical Chrome Frame-create smoke/reproduce before checking it; Frame properties/movement/export/reload work in real Chrome. Native CUA text injection remains unreliable; do not infer a native IME pass. All temporary diagnostics removed.
+
+Portable v1 is bounded uncompressed JSON/base64+CRC32, not ZIP; no extraction/traversal/bomb path.64MiB file/32MiB originals total/16MiB each; declared+actual image dimensions checked,64M original pixels max. Only existing bundled editor font references supported; custom/font assets/SHA256 declarations/newer versions reject safely. No incompatible local schema migration; old Frame records read without new optional fields, old strict readers reject new fields safely. Failed staged imports may leave unattached originals; no asset GC.
+
+PNG max8192side/16M pixels/96MiB retained decoded images. Web needs owned CPU pixel transfer for offscreen image fidelity. Web helper may transiently decode full originals; GPU/codec/output peak memory and device time remain unqualified. Selection/custom-area export beyond frames, tiling, custom fonts, migrations and other native file platforms remain backlog.
+
+## Data / next
+
+Normal native store unchanged; Arabic34-element user board still present. Native separate Frame test board4elements and Chrome-imported2-image board preserved. Chrome test profile localhost8772 imported Frame board has additional diagnostic-created valid Frames; original2-image board remains independent. Original8770/8771/etc stores untouched. Own temporary output files under /private/tmp/blanko-native-*; browser files Untitled board*.png/.wboard in Downloads. Do not clear profiles/containers to release locks; full page reload after debug restart releases old page locks.
+
+Next: physical Chrome drawing qualification, then remaining platform file gateways and format/device certification. Keep dense/stress hardening separate; no speculative benchmark restart.
