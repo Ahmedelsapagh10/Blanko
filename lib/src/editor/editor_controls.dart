@@ -1,3 +1,4 @@
+import 'advanced_editor_actions.dart';
 import 'package:flutter/material.dart';
 import 'editor_canvas.dart';
 import '../document/element.dart';
@@ -390,14 +391,17 @@ class EditorProperties extends StatelessWidget {
     listenable: controller.toolbarChanges,
     builder: (context, _) {
       final c = controller, colors = Theme.of(context).colorScheme;
-      final writable = !c.readOnly && c.inputEnabled;
+      final writable = !c.readOnly && c.inputEnabled && !c.clipboardBusy;
       final selected = c.session.document.byId[c.selectedId];
       final children = <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
-            selected != null && c.tool == EditorTool.select
+            c.selectedIds.length > 1 && c.tool == EditorTool.select
+                ? '${c.selectedIds.length} selected'
+                : selected != null && c.tool == EditorTool.select
                 ? switch (selected.content) {
+                    GroupElementContent() => 'Group',
                     ImageElementContent() => 'Image',
                     TextElementContent() => 'Text',
                     StickyNoteElementContent() => 'Sticky note',
@@ -441,6 +445,7 @@ class EditorProperties extends StatelessWidget {
             ),
           ),
         ] else if (c.tool == EditorTool.select) ...[
+          AdvancedEditorActions(controller: c),
           if (selected?.content is ContainerFrameElementContent ||
               selected?.content is ExportFrameElementContent)
             IconButton(
@@ -453,7 +458,7 @@ class EditorProperties extends StatelessWidget {
           if (selected != null)
             PopupMenuButton<ElementId?>(
               tooltip: 'Place in frame',
-              enabled: writable,
+              enabled: c.canEditSelection,
               icon: const Icon(Icons.drive_file_move_outline),
               onSelected: c.reparentSelection,
               itemBuilder: (context) => [
@@ -490,21 +495,17 @@ class EditorProperties extends StatelessWidget {
             ),
           IconButton(
             tooltip: 'Duplicate (⌘/Ctrl D)',
-            onPressed: writable && selected != null
-                ? c.duplicateSelection
-                : null,
+            onPressed: c.canEditSelection ? c.duplicateSelection : null,
             icon: const Icon(Icons.content_copy_outlined),
           ),
           IconButton(
             tooltip: 'Rotate 90° (⌘/Ctrl R)',
-            onPressed: writable && selected != null
-                ? () => c.rotateSelection()
-                : null,
+            onPressed: c.canEditSelection ? () => c.rotateSelection() : null,
             icon: const Icon(Icons.rotate_right),
           ),
           IconButton(
             tooltip: 'Delete selection',
-            onPressed: writable && selected != null ? c.deleteSelection : null,
+            onPressed: c.canEditSelection ? c.deleteSelection : null,
             icon: Icon(
               Icons.delete_outline,
               color: selected != null ? colors.error : null,

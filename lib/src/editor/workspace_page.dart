@@ -1,3 +1,4 @@
+import 'editor_clipboard.dart';
 import 'dart:async';
 import 'dart:ui' show AppExitResponse;
 import 'dart:math';
@@ -31,6 +32,7 @@ class WorkspacePage extends StatefulWidget {
 }
 
 class _WorkspacePageState extends State<WorkspacePage> {
+  final _clipboard = EditorClipboard();
   BoardStore? _store;
   EditorCanvasController? _canvas;
   BoardAutosave? _save;
@@ -160,6 +162,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
             session: BoardSession(document: snapshot.document),
             readOnly: !_store!.writable,
             store: _store,
+            clipboard: _clipboard,
           )
           ..camera = snapshot.camera
           ..inputEnabled = !_busy;
@@ -468,6 +471,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
       save.dispose();
     }
     _canvas?.dispose();
+    _clipboard.dispose();
     super.dispose();
   }
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -18,6 +19,8 @@ import 'editor_text.dart';
 import 'image_cache_manager.dart';
 import 'image_picker_service.dart';
 import 'artwork_painter.dart';
+import 'editor_clipboard.dart';
+import 'selection_snapping.dart';
 
 enum EditorTool {
   select,
@@ -41,7 +44,10 @@ final class EditorCanvasController extends ChangeNotifier {
     BoardSession? session,
     this.readOnly = false,
     this.store,
-  }) : session =
+    EditorClipboard? clipboard,
+  }) : clipboard = clipboard ?? EditorClipboard(),
+       _ownsClipboard = clipboard == null,
+       session =
            session ??
            BoardSession(
              document: BoardDocument(
@@ -61,8 +67,12 @@ final class EditorCanvasController extends ChangeNotifier {
              ),
            ) {
     _refreshScene();
+    this.clipboard.addListener(_clipboardChanged);
   }
 
+  final EditorClipboard clipboard;
+  final bool _ownsClipboard;
+  void _clipboardChanged() => _notify(toolbar: true);
   final BoardSession session;
   final bool readOnly;
   final BoardStore? store;
@@ -222,20 +232,213 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void rotateSelection([double radians = math.pi / 2]) {
-    if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
-    if (session.rotate(selectedId!, radians)) {
-      _refreshScene();
-      _notify(toolbar: true);
-    }
+    if (!canEditSelection) return;
+    final center = selectionBounds!.center;
+    _command(
+      () => session.transformMany(
+        _selectedIds,
+        Transform2.translation(center.x, center.y) *
+            Transform2.rotation(radians) *
+            Transform2.translation(-center.x, -center.y),
+      ),
+    );
   }
 
   void duplicateSelection() {
-    if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
-    final dupId = session.duplicate(selectedId!);
-    if (dupId != null) {
-      selectedId = dupId;
-      _refreshScene();
+    if (!canEditSelection) return;
+    _command(() {
+      final ids = session.duplicateMany(_selectedIds);
+      _setSelection(ids);
+      return ids.isNotEmpty;
+    });
+  }
+
+  void _command(bool Function() action) {
+    if (_disposed) return;
+    cancelGesture(notify: false);
+    try {
+      if (action()) _refreshScene();
+    } on ArgumentError catch (error) {
+      message = '$error';
+    } on StateError catch (error) {
+      message = error.message;
+    }
+    _notify(toolbar: true);
+  }
+
+  void groupSelection() {
+    if (!canEditSelection) return;
+    if (!session.canGroup(_selectedIds)) {
+      message = 'Select at least two elements in the same frame or group.';
       _notify(toolbar: true);
+      return;
+    }
+    _command(() {
+      final id = session.group(_selectedIds);
+      if (id != null) _setSelection([id]);
+      return id != null;
+    });
+  }
+
+  void ungroupSelection() {
+    if (!canEditSelection) return;
+    _command(() {
+      final revision = session.document.revision;
+      final ids = session.ungroup(_selectedIds);
+      if (session.document.revision != revision) _setSelection(ids);
+      return session.document.revision != revision;
+    });
+  }
+
+  void lockSelection(bool locked) {
+    if (readOnly || !inputEnabled || clipboardBusy) return;
+    _command(() => session.setLockedMany(_selectedIds, locked));
+  }
+
+  void unlockElement(ElementId id) {
+    if (readOnly || !inputEnabled || clipboardBusy) return;
+    _command(() => session.setLockedMany([id], false));
+  }
+
+  void reorderSelection(String action) {
+    if (canEditSelection) {
+      _command(() => session.reorderMany(_selectedIds, action));
+    }
+  }
+
+  void layoutSelection(String action) {
+    if (!canEditSelection) return;
+    final parents = _selectedIds
+        .map((id) => session.document.byId[id]!.parentId)
+        .toSet();
+    if (parents.length > 1) {
+      message = 'Align elements within the same frame or group.';
+      _notify(toolbar: true);
+      return;
+    }
+    _command(
+      () => session.translateMany(
+        selectionLayout({
+          for (final id in _selectedIds) id: scene.boundsOf(id),
+        }, action),
+      ),
+    );
+  }
+
+  void exitGroup() {
+    editingGroupId = null;
+    _setSelection([]);
+    _notify(toolbar: true);
+  }
+
+  void toggleSnapping({required bool objects}) {
+    if (objects) {
+      objectSnapping = !objectSnapping;
+    } else {
+      gridSnapping = !gridSnapping;
+    }
+    _notify(toolbar: true);
+  }
+
+  void enterGroup() {
+    if (session.document.byId[selectedId]?.content is! GroupElementContent) {
+      return;
+    }
+    editingGroupId = selectedId;
+    _setSelection([]);
+    _notify(toolbar: true);
+  }
+
+  Future<void> copySelection({bool cut = false}) async {
+    if (_disposed ||
+        !inputEnabled ||
+        clipboardBusy ||
+        !hasSelection ||
+        (cut && !canEditSelection)) {
+      return;
+    }
+    final document = session.document;
+    final ids = _selectedIds.toList();
+    clipboardBusy = true;
+    cancelGesture(notify: false);
+    _notify(toolbar: true);
+    try {
+      await clipboard.copy(document, ids, store);
+      if (_disposed) return;
+      if (cut && inputEnabled && identical(document, session.document)) {
+        session.deleteMany(ids);
+        _refreshScene();
+      }
+    } catch (error) {
+      if (!_disposed) message = 'Could not copy selection: $error';
+    } finally {
+      clipboardBusy = false;
+      if (!_disposed) _notify(toolbar: true);
+    }
+  }
+
+  Future<void> pasteSelection() async {
+    if (_disposed ||
+        readOnly ||
+        !inputEnabled ||
+        clipboardBusy ||
+        !clipboard.hasContent) {
+      return;
+    }
+    final document = session.document;
+    clipboardBusy = true;
+    cancelGesture(notify: false);
+    _notify(toolbar: true);
+    try {
+      final fragment = await clipboard.preparePaste(
+        store,
+        isCancelled: () =>
+            _disposed ||
+            !inputEnabled ||
+            !identical(document, session.document),
+      );
+      if (_disposed ||
+          !inputEnabled ||
+          !identical(document, session.document)) {
+        return;
+      }
+      final fragmentScene = EditorScene(fragment);
+      Bounds2? bounds;
+      for (final element in fragment.elements.where(
+        (e) => e.parentId == null,
+      )) {
+        final b = fragmentScene.boundsOf(element.id);
+        bounds = bounds == null
+            ? b
+            : Bounds2(
+                math.min(bounds.left, b.left),
+                math.min(bounds.top, b.top),
+                math.max(bounds.right, b.right),
+                math.max(bounds.bottom, b.bottom),
+              );
+      }
+      final center = camera.viewportToWorld(
+        Point2(viewportSize.width / 2, viewportSize.height / 2),
+      );
+      final sourceCenter = bounds?.center ?? Point2.zero;
+      final view = camera.worldViewport(
+        viewportSize.width,
+        viewportSize.height,
+      );
+      final base = view.contains(sourceCenter) ? sourceCenter : center;
+      final step = 24 * (++_pasteCount % 8 + 1) / camera.zoom;
+      final ids = session.insertFragment(
+        fragment,
+        offset: base + Point2(step, step) - sourceCenter,
+      );
+      _setSelection(ids);
+      _refreshScene();
+      tool = EditorTool.select;
+    } catch (error) {
+      if (!_disposed) message = 'Could not paste: $error';
+    } finally {
+      clipboardBusy = false;
+      if (!_disposed) _notify(toolbar: true);
     }
   }
 
@@ -324,7 +527,214 @@ final class EditorCanvasController extends ChangeNotifier {
 
   Camera camera = Camera(translation: Point2(80, 80));
   EditorTool tool = EditorTool.pen;
-  ElementId? selectedId;
+  final _selectedIds = <ElementId>{};
+  final _selectedTree = <ElementId>{};
+  Set<ElementId> get selectedIds => Set.unmodifiable(_selectedIds);
+  ElementId? get selectedId =>
+      _selectedIds.length == 1 ? _selectedIds.single : null;
+  set selectedId(ElementId? id) => _setSelection(id == null ? [] : [id]);
+  bool get hasSelection => _selectedIds.isNotEmpty;
+  bool multiSelectMode = false;
+  ElementId? editingGroupId;
+  bool clipboardBusy = false;
+  int _pasteCount = 0;
+  bool objectSnapping = true;
+  bool gridSnapping = false;
+  List<SnapGuide> snapGuides = const [];
+  Timer? _longPressTimer;
+  void Function(Offset global)? onContextMenu;
+  Bounds2? marqueeBounds;
+  Point2? _marqueeStart;
+  Set<ElementId> _marqueeBase = {};
+  Set<ElementId> _selectionBeforeGesture = {};
+  Point2? _pressScreen;
+  bool _togglingSelection = false;
+  Bounds2? _gestureSelectionBounds;
+  List<Bounds2> _snapCandidates = const [];
+
+  void _setSelection(Iterable<ElementId> ids) {
+    final roots = session.selectionRoots(ids);
+    _selectedIds
+      ..clear()
+      ..addAll(roots);
+    _selectedTree.clear();
+    final pending = [..._selectedIds];
+    while (pending.isNotEmpty) {
+      final id = pending.removeLast();
+      if (!_selectedTree.add(id)) continue;
+      pending.addAll(session.document.childrenOf(id).map((e) => e.id));
+    }
+  }
+
+  Bounds2? get selectionBounds {
+    Bounds2? result;
+    for (final id in _selectedIds) {
+      final b = scene.boundsOf(id);
+      result = result == null
+          ? b
+          : Bounds2(
+              math.min(result.left, b.left),
+              math.min(result.top, b.top),
+              math.max(result.right, b.right),
+              math.max(result.bottom, b.bottom),
+            );
+    }
+    return result;
+  }
+
+  bool get canEditSelection =>
+      !readOnly &&
+      inputEnabled &&
+      !clipboardBusy &&
+      hasSelection &&
+      _selectedIds.every(session.canEdit);
+
+  ElementId _selectionTarget(ElementId id) {
+    var target = id;
+    var parent = session.document.byId[id]?.parentId;
+    while (parent != null && parent != editingGroupId) {
+      if (session.document.byId[parent]!.content is GroupElementContent) {
+        target = parent;
+      }
+      parent = session.document.byId[parent]!.parentId;
+    }
+    return target;
+  }
+
+  void selectAll() {
+    cancelGesture(notify: false);
+    _setSelection(
+      scene.paintOrder
+          .map((e) => _selectionTarget(e.id))
+          .where(
+            (id) =>
+                session.canEdit(id) &&
+                (editingGroupId == null ||
+                    scene.belongsTo(id, editingGroupId!)),
+          ),
+    );
+    _notify(toolbar: true);
+  }
+
+  void escapeSelection() {
+    if (hasGesture) {
+      final previous = _marqueeStart == null
+          ? null
+          : _selectionBeforeGesture.toList();
+      cancelGesture(notify: false);
+      if (previous != null) _setSelection(previous);
+      _notify(toolbar: true);
+      return;
+    }
+    if (hasSelection) {
+      _setSelection([]);
+    } else {
+      editingGroupId = null;
+    }
+    _notify(toolbar: true);
+  }
+
+  void toggleMultiSelect() {
+    cancelGesture(notify: false);
+    multiSelectMode = !multiSelectMode;
+    _notify(toolbar: true);
+  }
+
+  void contextAt(Offset local, Offset global) {
+    cancelGesture(notify: false);
+    var hit = scene.hitTest(
+      _world(local),
+      worldTolerance: camera.worldTolerance(6),
+      includeLocked: true,
+    );
+    if (hit != null &&
+        editingGroupId != null &&
+        !scene.belongsTo(hit, editingGroupId!)) {
+      hit = null;
+    }
+    if (hit != null) {
+      var target = _selectionTarget(hit);
+      var current = session.document.byId[hit];
+      while (current != null) {
+        if (current.locked) target = current.id;
+        current = session.document.byId[current.parentId];
+      }
+      if (!_selectedTree.contains(hit)) _setSelection([target]);
+    }
+    _notify(toolbar: true);
+    onContextMenu?.call(global);
+  }
+
+  void _prepareSnapping() {
+    _gestureSelectionBounds = selectionBounds;
+    final parents = _selectedIds
+        .map((id) => session.document.byId[id]!.parentId)
+        .toSet();
+    final ids = scene
+        .visible(
+          camera
+              .worldViewport(viewportSize.width, viewportSize.height)
+              .inflate(camera.worldTolerance(64)),
+        )
+        .map((e) => _selectionTarget(e.id))
+        .toSet();
+    _snapCandidates = ids
+        .where(
+          (id) =>
+              !_selectedTree.contains(id) &&
+              parents.contains(session.document.byId[id]!.parentId),
+        )
+        .take(128)
+        .map(scene.boundsOf)
+        .toList();
+  }
+
+  void _updateMove(Point2 delta) {
+    final result = snapMove(
+      movingBounds: _gestureSelectionBounds ?? selectionBounds!,
+      delta: delta,
+      candidates: objectSnapping ? _snapCandidates : const [],
+      tolerance: camera.worldTolerance(6),
+      gridSpacing: gridSnapping
+          ? session.document.canvasSettings.grid.spacing
+          : null,
+    );
+    moveDelta = result.delta;
+    snapGuides = result.guides;
+  }
+
+  void _updateMarquee(Point2 point) {
+    final start = _marqueeStart!;
+    final area = Bounds2(
+      math.min(start.x, point.x),
+      math.min(start.y, point.y),
+      math.max(start.x, point.x),
+      math.max(start.y, point.y),
+    );
+    marqueeBounds = area;
+    final ids = scene.visible(area).map((e) => _selectionTarget(e.id)).toSet();
+    _setSelection({
+      ..._marqueeBase,
+      ...ids.where((id) {
+        if (!session.canEdit(id) ||
+            (editingGroupId != null && !scene.belongsTo(id, editingGroupId!))) {
+          return false;
+        }
+        final content = session.document.byId[id]!.content;
+        if (content is ContainerFrameElementContent ||
+            content is ExportFrameElementContent) {
+          final b = scene.boundsOf(id);
+          return area.left <= b.left &&
+              area.top <= b.top &&
+              area.right >= b.right &&
+              area.bottom >= b.bottom;
+        }
+        return true;
+      }),
+    });
+    _notify(toolbar: true);
+  }
+
   int color = 0xff202d46;
   double strokeWidth = 3;
   double eraserSize = 32;
@@ -397,7 +807,12 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void clearAll() {
-    if (readOnly || !inputEnabled) return;
+    if (readOnly || !inputEnabled || clipboardBusy) return;
+    if (session.document.elements.any((e) => e.locked)) {
+      message = 'Unlock locked items before clearing the board.';
+      _notify(toolbar: true);
+      return;
+    }
     cancelGesture(notify: false);
     if (session.clearAll()) _refreshScene();
     _notify(toolbar: true);
@@ -423,7 +838,12 @@ final class EditorCanvasController extends ChangeNotifier {
     _touches.remove(event.pointer);
     _touchNavigation = _touches.isNotEmpty;
     _touchCamera = null;
-    cancelGesture();
+    final previous = _marqueeStart == null
+        ? null
+        : _selectionBeforeGesture.toList();
+    cancelGesture(notify: false);
+    if (previous != null) _setSelection(previous);
+    _notify(toolbar: true);
   }
 
   Point2? _handleAnchor;
@@ -435,12 +855,7 @@ final class EditorCanvasController extends ChangeNotifier {
   bool _rotatingHandle = false;
 
   bool get canTransformSelection {
-    final id = selectedId;
-    return tool == EditorTool.select &&
-        id != null &&
-        !readOnly &&
-        inputEnabled &&
-        !scene.isLocked(id);
+    return tool == EditorTool.select && canEditSelection;
   }
 
   List<Point2>? _frameHandleCorners() {
@@ -466,9 +881,7 @@ final class EditorCanvasController extends ChangeNotifier {
 
   bool _beginHandle(Point2 world, bool touch) {
     if (!canTransformSelection) return false;
-    final bounds = scene
-        .boundsOf(selectedId!)
-        .inflate(camera.worldTolerance(4));
+    final bounds = selectionBounds!.inflate(camera.worldTolerance(4));
     final corners =
         _frameHandleCorners() ??
         [
@@ -490,8 +903,10 @@ final class EditorCanvasController extends ChangeNotifier {
     for (var i = 0; i < 4; i++) {
       if (world.distanceTo(corners[i]) <= tolerance) {
         _handleAnchor = corners[(i + 2) % 4];
-        _handleBase = scene.worldTransformOf(selectedId!);
-        final content = session.document.byId[selectedId!]!.content;
+        _handleBase = selectedId == null
+            ? Transform2.identity
+            : scene.worldTransformOf(selectedId!);
+        final content = session.document.byId[selectedId]?.content;
         _frameBaseBounds = switch (content) {
           ContainerFrameElementContent(:final bounds) => bounds,
           ExportFrameElementContent(:final bounds) => bounds,
@@ -510,7 +925,9 @@ final class EditorCanvasController extends ChangeNotifier {
     }
     if (world.distanceTo(rotation) <= tolerance) {
       _handleAnchor = bounds.center;
-      _handleBase = scene.worldTransformOf(selectedId!);
+      _handleBase = selectedId == null
+          ? Transform2.identity
+          : scene.worldTransformOf(selectedId!);
       _rotatingHandle = true;
       return true;
     }
@@ -519,6 +936,17 @@ final class EditorCanvasController extends ChangeNotifier {
 
   void _updateHandle(Point2 world) {
     if (_frameBaseBounds != null && !_rotatingHandle) {
+      final snap = snapMove(
+        movingBounds: Bounds2(world.x, world.y, world.x, world.y),
+        delta: Point2.zero,
+        candidates: objectSnapping ? _snapCandidates : const [],
+        tolerance: camera.worldTolerance(6),
+        gridSpacing: gridSnapping
+            ? session.document.canvasSettings.grid.spacing
+            : null,
+      );
+      world = world + snap.delta;
+      snapGuides = snap.guides;
       final local = _handleBase!.inverse().apply(world);
       final anchor = _frameResizeAnchor!;
       if ((local.x - anchor.x).abs() >= 1 && (local.y - anchor.y).abs() >= 1) {
@@ -532,6 +960,42 @@ final class EditorCanvasController extends ChangeNotifier {
       return;
     }
     final anchor = _handleAnchor!;
+    if (!_rotatingHandle) {
+      final snap = snapMove(
+        movingBounds: Bounds2(world.x, world.y, world.x, world.y),
+        delta: Point2.zero,
+        candidates: objectSnapping ? _snapCandidates : const [],
+        tolerance: camera.worldTolerance(6),
+        gridSpacing: gridSnapping
+            ? session.document.canvasSettings.grid.spacing
+            : null,
+      );
+      final start = _start! - anchor;
+      final vertical = snap.guides.any((g) => g.vertical);
+      final horizontal = snap.guides.any((g) => !g.vertical);
+      final xScale = start.x == 0
+          ? null
+          : (world.x + snap.delta.x - anchor.x) / start.x;
+      final yScale = start.y == 0
+          ? null
+          : (world.y + snap.delta.y - anchor.y) / start.y;
+      final scale = vertical
+          ? xScale
+          : horizontal
+          ? yScale
+          : gridSnapping && snap.delta != Point2.zero
+          ? xScale
+          : null;
+      if (scale != null && scale >= .05 && scale <= 100) {
+        _previewWorld =
+            Transform2.translation(anchor.x, anchor.y) *
+            Transform2.scale(scale, scale) *
+            Transform2.translation(-anchor.x, -anchor.y);
+        snapGuides = snap.guides.where((g) => g.vertical == vertical).toList();
+        return;
+      }
+      snapGuides = const [];
+    }
     final start = _start! - anchor;
     final end = world - anchor;
     final scale =
@@ -594,7 +1058,12 @@ final class EditorCanvasController extends ChangeNotifier {
       ..addEntries(
         scene.paintOrder.map((e) => MapEntry(e.id, elementPath(e.content))),
       );
-    if (!session.document.byId.containsKey(selectedId)) selectedId = null;
+    _setSelection(
+      _selectedIds.where(session.document.byId.containsKey).toList(),
+    );
+    if (!session.document.byId.containsKey(editingGroupId)) {
+      editingGroupId = null;
+    }
   }
 
   void setTool(EditorTool value) {
@@ -625,7 +1094,11 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void pointerDown(PointerDownEvent event) {
-    if (_disposed || !inputEnabled) return;
+    if (_disposed || !inputEnabled || clipboardBusy) return;
+    if (event.buttons & kSecondaryMouseButton != 0) {
+      contextAt(event.localPosition, event.position);
+      return;
+    }
     if (event.kind == PointerDeviceKind.touch) {
       _touches[event.pointer] = Point2(
         event.localPosition.dx,
@@ -646,6 +1119,8 @@ final class EditorCanvasController extends ChangeNotifier {
         event.buttons & (kPrimaryMouseButton | kMiddleMouseButton) == 0) {
       return;
     }
+    _selectionBeforeGesture = {..._selectedIds};
+    _pressScreen = Point2(event.localPosition.dx, event.localPosition.dy);
     _pointer = event.pointer;
     _gestureTool =
         (readOnly && tool != EditorTool.select) ||
@@ -663,13 +1138,45 @@ final class EditorCanvasController extends ChangeNotifier {
       _notify(toolbar: true);
     } else if (_gestureTool == EditorTool.select) {
       if (_beginHandle(_start!, event.kind == PointerDeviceKind.touch)) {
+        _prepareSnapping();
         _notify(toolbar: true);
         return;
       }
-      selectedId = scene.hitTest(
+      final hit = scene.hitTest(
         _start!,
         worldTolerance: camera.worldTolerance(6),
       );
+      final target =
+          hit == null ||
+              (editingGroupId != null && !scene.belongsTo(hit, editingGroupId!))
+          ? null
+          : _selectionTarget(hit);
+      final additive =
+          HardwareKeyboard.instance.isShiftPressed || multiSelectMode;
+      if (target == null) {
+        _marqueeStart = _start;
+        _marqueeBase = {..._selectedIds};
+        if (!additive) _marqueeBase = {};
+        if (!additive) _setSelection([]);
+      } else if (additive) {
+        final next = {..._selectedIds};
+        if (!next.remove(target)) next.add(target);
+        _setSelection(next);
+        _togglingSelection = true;
+      } else if (!_selectedIds.contains(target)) {
+        _setSelection([target]);
+      }
+      _gestureSelectionBounds = selectionBounds;
+      if (canEditSelection && _gestureSelectionBounds != null) {
+        _prepareSnapping();
+      }
+      if (event.kind == PointerDeviceKind.touch) {
+        final local = event.localPosition, global = event.position;
+        _longPressTimer = Timer(
+          const Duration(milliseconds: 500),
+          () => contextAt(local, global),
+        );
+      }
       _notify(toolbar: true);
     } else if (_gestureTool == EditorTool.pen) {
       selectedId = null;
@@ -703,6 +1210,9 @@ final class EditorCanvasController extends ChangeNotifier {
     }
     if (event.pointer != _pointer) return;
     final screen = Point2(event.localPosition.dx, event.localPosition.dy);
+    if (_pressScreen != null && screen.distanceTo(_pressScreen!) > 6) {
+      _longPressTimer?.cancel();
+    }
     final world = _world(event.localPosition);
     switch (_gestureTool) {
       case EditorTool.text || EditorTool.sticky:
@@ -712,10 +1222,12 @@ final class EditorCanvasController extends ChangeNotifier {
       case EditorTool.pan:
         camera = _boundedCamera(camera.pan(screen - _lastScreen!));
       case EditorTool.select:
-        if (_handleAnchor != null) {
+        if (_marqueeStart != null) {
+          _updateMarquee(world);
+        } else if (_handleAnchor != null) {
           _updateHandle(world);
-        } else if (!readOnly && selectedId != null) {
-          moveDelta = world - _start!;
+        } else if (canEditSelection && !_togglingSelection) {
+          _updateMove(world - _start!);
         }
       case EditorTool.pen:
         final relative = world - _start!;
@@ -850,25 +1362,28 @@ final class EditorCanvasController extends ChangeNotifier {
           transform: Transform2.translation(_start!.x, _start!.y),
         );
         _refreshScene();
-      } else if (!readOnly &&
-          _gestureTool == EditorTool.select &&
-          selectedId != null) {
-        final delta = _world(event.localPosition) - _start!;
-        if (delta.distanceTo(Point2.zero) * camera.zoom >= 2) {
-          if (_handleAnchor != null) {
-            _updateHandle(_world(event.localPosition));
-            if (_framePreviewBounds case final bounds?) {
-              session.resize(selectedId!, bounds);
-            } else if (_previewWorld != null) {
-              session.setWorldTransform(
-                selectedId!,
-                _previewWorld! * _handleBase!,
+      } else if (_gestureTool == EditorTool.select) {
+        if (_marqueeStart != null) {
+          _updateMarquee(_world(event.localPosition));
+        } else if (canEditSelection && !_togglingSelection) {
+          final delta = _world(event.localPosition) - _start!;
+          if (delta.distanceTo(Point2.zero) * camera.zoom >= 2) {
+            if (_handleAnchor != null) {
+              _updateHandle(_world(event.localPosition));
+              if (_framePreviewBounds != null && selectedId != null) {
+                session.resize(selectedId!, _framePreviewBounds!);
+              } else if (_previewWorld != null) {
+                session.transformMany(_selectedIds, _previewWorld!);
+              }
+            } else {
+              _updateMove(delta);
+              session.transformMany(
+                _selectedIds,
+                Transform2.translation(moveDelta.x, moveDelta.y),
               );
             }
-          } else {
-            session.translate(selectedId!, delta);
+            _refreshScene();
           }
-          _refreshScene();
         }
       } else if (_gestureTool != EditorTool.pan &&
           _gestureTool != EditorTool.select) {
@@ -893,6 +1408,15 @@ final class EditorCanvasController extends ChangeNotifier {
 
   void cancelGesture({bool notify = true}) {
     eraseChanges.clear();
+    _longPressTimer?.cancel();
+    _longPressTimer = null;
+    marqueeBounds = null;
+    _marqueeStart = null;
+    _marqueeBase = {};
+    _togglingSelection = false;
+    _gestureSelectionBounds = null;
+    _snapCandidates = const [];
+    snapGuides = const [];
     _handleAnchor = null;
     _handleBase = null;
     _previewWorld = null;
@@ -914,19 +1438,19 @@ final class EditorCanvasController extends ChangeNotifier {
   void deleteSelection() {
     if (readOnly || !inputEnabled) return;
     cancelGesture(notify: false);
-    if (selectedId != null && session.delete(selectedId!)) _refreshScene();
+    if (canEditSelection && session.deleteMany(_selectedIds)) _refreshScene();
     _notify(toolbar: true);
   }
 
   void undo() {
-    if (readOnly || !inputEnabled) return;
+    if (readOnly || !inputEnabled || clipboardBusy) return;
     cancelGesture(notify: false);
     if (session.undo()) _refreshScene();
     _notify(toolbar: true);
   }
 
   void redo() {
-    if (readOnly || !inputEnabled) return;
+    if (readOnly || !inputEnabled || clipboardBusy) return;
     cancelGesture(notify: false);
     if (session.redo()) _refreshScene();
     _notify(toolbar: true);
@@ -1018,6 +1542,9 @@ final class EditorCanvasController extends ChangeNotifier {
     _trackpadCamera = null;
     toolbarChanges.dispose();
     imageCache.dispose();
+    clipboard.removeListener(_clipboardChanged);
+    if (_ownsClipboard) clipboard.dispose();
+    onContextMenu = null;
     paths.clear();
     for (final layout in textLayouts.values) {
       layout.dispose();
@@ -1113,14 +1640,12 @@ class _EditorPainter extends CustomPainter {
     canvas.save();
     canvas.scale(c.camera.zoom);
     var visible = c.scene.visible(view.inflate(6 / c.camera.zoom));
-    if (c.selectedId != null &&
+    if (c.hasSelection &&
         (c.moveDelta != Point2.zero || c._previewWorld != null)) {
       final visibleIds = visible.map((e) => e.id).toSet();
       visible = c.scene.paintOrder
           .where(
-            (e) =>
-                visibleIds.contains(e.id) ||
-                c.scene.belongsTo(e.id, c.selectedId!),
+            (e) => visibleIds.contains(e.id) || c._selectedTree.contains(e.id),
           )
           .toList();
     }
@@ -1145,8 +1670,7 @@ class _EditorPainter extends CustomPainter {
         }
         continue;
       }
-      final followsSelection =
-          c.selectedId != null && c.scene.belongsTo(element.id, c.selectedId!);
+      final followsSelection = c._selectedTree.contains(element.id);
       var rendered = element;
       if (element.id == c.selectedId && c._framePreviewBounds != null) {
         final bounds = c._framePreviewBounds!;
@@ -1202,11 +1726,74 @@ class _EditorPainter extends CustomPainter {
     } else if (c.previewElement case final element?) {
       _element(canvas, element, element.transform, c.previewPath!, origin);
     }
+    if (c.selectedIds.length > 1) {
+      final paint = Paint()
+        ..color = const Color(0x994464f6)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1 / c.camera.zoom;
+      for (final id in c.selectedIds) {
+        final b = c.scene.boundsOf(id);
+        final preview = c._previewWorld?.mapBounds(b) ?? b;
+        canvas.drawRect(
+          Rect.fromLTRB(
+            preview.left - origin.x + c.moveDelta.x,
+            preview.top - origin.y + c.moveDelta.y,
+            preview.right - origin.x + c.moveDelta.x,
+            preview.bottom - origin.y + c.moveDelta.y,
+          ),
+          paint,
+        );
+      }
+    }
+    final locked = <ElementId>{};
+    for (final element in visible) {
+      DocumentElement? current = element;
+      while (current != null) {
+        if (current.locked) locked.add(current.id);
+        current = c.session.document.byId[current.parentId];
+      }
+    }
+    final unit = 1 / c.camera.zoom;
+    for (final id in locked) {
+      final bounds = c.scene.boundsOf(id);
+      final center = Offset(bounds.right - origin.x, bounds.top - origin.y);
+      canvas.drawCircle(
+        center,
+        10 * unit,
+        Paint()..color = const Color(0xff4464f6),
+      );
+      final stroke = Paint()
+        ..color = Colors.white
+        ..strokeWidth = 1.5 * unit
+        ..style = PaintingStyle.stroke;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromCenter(
+            center: center + Offset(0, 2 * unit),
+            width: 9 * unit,
+            height: 7 * unit,
+          ),
+          Radius.circular(unit),
+        ),
+        stroke,
+      );
+      canvas.drawArc(
+        Rect.fromCenter(
+          center: center - Offset(0, 2 * unit),
+          width: 6 * unit,
+          height: 7 * unit,
+        ),
+        math.pi,
+        math.pi,
+        false,
+        stroke,
+      );
+    }
     final selected = c.selectedId;
-    if (selected != null &&
+    if (c.hasSelection &&
         (c.tool == EditorTool.select || c.tool == EditorTool.pan)) {
-      final originalBounds = c._framePreviewBounds == null
-          ? c.scene.boundsOf(selected)
+      final originalBounds = c._framePreviewBounds == null || selected == null
+          ? c.selectionBounds!
           : c.scene
                 .worldTransformOf(selected)
                 .mapBounds(c._framePreviewBounds!);
@@ -1251,6 +1838,36 @@ class _EditorPainter extends CustomPainter {
         canvas.drawCircle(rotHandle, handleRadius, handlePaint);
         canvas.drawCircle(rotHandle, handleRadius, handleStroke);
       }
+    }
+    if (c.marqueeBounds case final b?) {
+      final rect = Rect.fromLTRB(
+        b.left - origin.x,
+        b.top - origin.y,
+        b.right - origin.x,
+        b.bottom - origin.y,
+      );
+      canvas.drawRect(rect, Paint()..color = const Color(0x224464f6));
+      canvas.drawRect(
+        rect,
+        Paint()
+          ..color = const Color(0xff4464f6)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1 / c.camera.zoom,
+      );
+    }
+    final guidePaint = Paint()
+      ..color = const Color(0xffe34e9a)
+      ..strokeWidth = 1 / c.camera.zoom;
+    for (final guide in c.snapGuides) {
+      canvas.drawLine(
+        guide.vertical
+            ? Offset(guide.position - origin.x, guide.start - origin.y)
+            : Offset(guide.start - origin.x, guide.position - origin.y),
+        guide.vertical
+            ? Offset(guide.position - origin.x, guide.end - origin.y)
+            : Offset(guide.end - origin.x, guide.position - origin.y),
+        guidePaint,
+      );
     }
     canvas.restore();
     if (c.isErasing && c.eraserPosition != null) {

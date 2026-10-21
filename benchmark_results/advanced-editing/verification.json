@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-21",
+  "scope": "Advanced Editing; available-target functionality, not V1 or performance certification",
+  "environment": {
+    "host": "Apple M4 / 16 GiB / macOS arm64",
+    "flutter": "3.41.9",
+    "dart": "3.11.5",
+    "browser": "installed Google Chrome, native UI at localhost:8772"
+  },
+  "checks": {
+    "host_integration": {
+      "passed": 80,
+      "files": [
+        "advanced_editor_test",
+        "advanced_session_test",
+        "editor_clipboard_test",
+        "selection_snapping_test",
+        "editor_widget_test",
+        "editor_frames_test",
+        "editor_eraser_test",
+        "workspace_widget_test",
+        "portable_project_test",
+        "png_export_dialog_test"
+      ]
+    },
+    "final_host_advanced_ui": {
+      "passed": 8,
+      "overlap_with_integration": 7
+    },
+    "host_scene": {
+      "passed": 10
+    },
+    "additional_agent_session_frame": {
+      "passed": 17,
+      "advanced_tests_excluded_to_avoid_double_counting": 16
+    },
+    "chrome_advanced": {
+      "passed": 38,
+      "files": [
+        "advanced_editor_test",
+        "advanced_session_test",
+        "editor_clipboard_test",
+        "selection_snapping_test"
+      ]
+    },
+    "final_chrome_advanced_ui": {
+      "passed": 8,
+      "overlap": 7
+    },
+    "analysis": "flutter analyze --no-pub: No issues found",
+    "diff": "git diff --check clean"
+  },
+  "actual_ui": [
+    "macOS: isolated Board pen/marquee/group/move; clean quit/relaunch retained three-element Group; shared resize/rotate and toolbar Undo/Redo",
+    "Chrome: select-all/group/copy/paste/lock; Reload button retained six elements and lock badge",
+    "Chrome: copied original PNG/JPEG from independent two-image Board to advanced Board; eight elements and original image pixels survived actual Reload"
+  ],
+  "simulated": [
+    "injected TestBoardStore autosave/reopening + portable encode/decode preserve grouping/order/locks; no crash kill claimed",
+    "phone390x844 touch bottom sheet/multi-select widget interaction, not native device"
+  ],
+  "screenshots": [
+    "macos-group-transform.png",
+    "chrome-reopened-images.png"
+  ],
+  "limitations": [
+    "Physical modifier shortcuts/IME and Chrome drags need manual qualification; native automation inconsistent",
+    "Android/iOS touch and assistive technologies not verified",
+    "Uniform artwork resize; Frame rectangle resize retains child transforms",
+    "Clipboard internal/app-session; originals16MiB each/32MiB total; failed staging may leave unattached assets",
+    "No dense performance run; no full M08/V1 platform certification"
+  ],
+  "changes": "No dependency, SDK, local schema or portable version upgrade",
+  "tracked_progress": "137/275",
+  "files_changed": [
+    "benchmark_results/advanced-editing/chrome-reopened-images.png",
+    "benchmark_results/advanced-editing/macos-group-transform.png",
+    "benchmark_results/advanced-editing/verification.json",
+    "docs/HANDOFF.md",
+    "docs/MASTER_PLAN.md",
+    "docs/PROJECT_STATUS.md",
+    "lib/src/editor/advanced_editor_actions.dart",
+    "lib/src/editor/board_session.dart",
+    "lib/src/editor/editor_canvas.dart",
+    "lib/src/editor/editor_clipboard.dart",
+    "lib/src/editor/editor_controls.dart",
+    "lib/src/editor/editor_page.dart",
+    "lib/src/editor/editor_scene.dart",
+    "lib/src/editor/selection_snapping.dart",
+    "lib/src/editor/workspace_page.dart",
+    "test/advanced_editor_test.dart",
+    "test/advanced_session_test.dart",
+    "test/editor_clipboard_test.dart",
+    "test/selection_snapping_test.dart"
+  ]
+}

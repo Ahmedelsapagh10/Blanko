@@ -1,3 +1,4 @@
+import 'advanced_editor_actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -42,6 +43,60 @@ class _EditorPageState extends State<EditorPage> {
   void initState() {
     super.initState();
     controller.onEditText = _editText;
+    controller.onContextMenu = _contextMenu;
+  }
+
+  Future<void> _contextMenu(Offset position) async {
+    final source = controller.session.document;
+    controller.focusLost();
+    final entries = AdvancedEditorActions.entries(controller);
+    final mobile = MediaQuery.sizeOf(context).width < 720;
+    final String? action;
+    if (mobile) {
+      action = await showModalBottomSheet<String>(
+        context: context,
+        showDragHandle: true,
+        isScrollControlled: true,
+        builder: (context) => SafeArea(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * .65,
+            child: ListView(
+              children: [
+                for (final entry in entries)
+                  if (entry is PopupMenuItem<String>)
+                    ListTile(
+                      enabled: entry.enabled,
+                      title: entry.child,
+                      onTap: entry.enabled
+                          ? () => Navigator.pop(context, entry.value)
+                          : null,
+                    )
+                  else
+                    const Divider(),
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      final overlay =
+          Overlay.of(context).context.findRenderObject()! as RenderBox;
+      final local = overlay.globalToLocal(position);
+      action = await showMenu<String>(
+        context: context,
+        position: RelativeRect.fromRect(
+          Rect.fromLTWH(local.dx, local.dy, 1, 1),
+          Offset.zero & overlay.size,
+        ),
+        constraints: const BoxConstraints(minWidth: 320, maxWidth: 360),
+        items: entries,
+      );
+    }
+    if (!mounted) return;
+    if (action != null && identical(source, controller.session.document)) {
+      await AdvancedEditorActions.perform(context, controller, action);
+    }
+    if (mounted) focusNode.requestFocus();
   }
 
   bool _editingText = false;
@@ -75,6 +130,7 @@ class _EditorPageState extends State<EditorPage> {
   @override
   void dispose() {
     controller.onEditText = null;
+    controller.onContextMenu = null;
     focusNode.dispose();
     if (widget.controller == null) controller.dispose();
     super.dispose();
@@ -131,13 +187,41 @@ class _EditorPageState extends State<EditorPage> {
       controller.spaceHeld = event is! KeyUpEvent;
       return KeyEventResult.handled;
     }
-    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+    if (event is! KeyDownEvent ||
+        !focusNode.hasPrimaryFocus ||
+        controller.clipboardBusy) {
+      return KeyEventResult.ignored;
+    }
     final command =
         HardwareKeyboard.instance.isControlPressed ||
         HardwareKeyboard.instance.isMetaPressed;
     if (key == LogicalKeyboardKey.escape) {
-      controller.cancelGesture();
+      controller.escapeSelection();
       return KeyEventResult.handled;
+    }
+    if (command) {
+      if (key == LogicalKeyboardKey.keyA) {
+        controller.selectAll();
+        return KeyEventResult.handled;
+      }
+      if (key == LogicalKeyboardKey.keyC) {
+        controller.copySelection();
+        return KeyEventResult.handled;
+      }
+      if (key == LogicalKeyboardKey.keyX) {
+        controller.copySelection(cut: true);
+        return KeyEventResult.handled;
+      }
+      if (key == LogicalKeyboardKey.keyV) {
+        controller.pasteSelection();
+        return KeyEventResult.handled;
+      }
+      if (key == LogicalKeyboardKey.keyG) {
+        HardwareKeyboard.instance.isShiftPressed
+            ? controller.ungroupSelection()
+            : controller.groupSelection();
+        return KeyEventResult.handled;
+      }
     }
     if (command && key == LogicalKeyboardKey.keyZ) {
       HardwareKeyboard.instance.isShiftPressed
@@ -192,7 +276,7 @@ class _EditorPageState extends State<EditorPage> {
       title: const Text('Keyboard & gestures'),
       content: const SingleChildScrollView(
         child: Text(
-          'V  Select     P  Pen     E  Object eraser\nR  Rectangle     O  Ellipse     T  Triangle\nL  Line     H / hold Space  Pan\n\n⌘ / Ctrl + Z  Undo\n⌘ / Ctrl + Shift + Z  Redo\n⌘ / Ctrl + D  Duplicate selection\n⌘ / Ctrl + R  Rotate selection\nDelete  Remove selection     Esc  Cancel\n\nScroll / trackpad  Navigate\n⌘ / Ctrl + scroll  Zoom\nTouch: one finger draws, two fingers navigate.',
+          'V  Select     P  Pen     E  Object eraser\nR  Rectangle     O  Ellipse     T  Triangle\nL  Line     H / hold Space  Pan\n\n⌘ / Ctrl + Z  Undo\n⌘ / Ctrl + Shift + Z  Redo\n⌘ / Ctrl + D  Duplicate selection\n⌘ / Ctrl + R  Rotate selection\n⌘ / Ctrl + A  Select all\n⌘ / Ctrl + G / Shift G  Group / Ungroup\n⌘ / Ctrl + C / X / V  Copy / Cut / Paste\nShift + click  Toggle selection\nDrag empty canvas  Marquee\nDelete  Remove selection     Esc  Cancel\n\nScroll / trackpad  Navigate\n⌘ / Ctrl + scroll  Zoom\nTouch: one finger draws, two fingers navigate.',
         ),
       ),
       actions: [
@@ -215,6 +299,7 @@ class _EditorPageState extends State<EditorPage> {
           onPressed:
               !controller.readOnly &&
                   controller.inputEnabled &&
+                  !controller.clipboardBusy &&
                   controller.session.canUndo
               ? controller.undo
               : null,
@@ -225,6 +310,7 @@ class _EditorPageState extends State<EditorPage> {
           onPressed:
               !controller.readOnly &&
                   controller.inputEnabled &&
+                  !controller.clipboardBusy &&
                   controller.session.canRedo
               ? controller.redo
               : null,

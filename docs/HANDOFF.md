@@ -1,10 +1,6 @@
-# Blanko handoff
+# Blanko Advanced Editing handoff
 
-2026-10-20. Assigned Frames→PNG→portable product work implemented; **105/275 checked**. Stop for review. Commit/push status in delivery/Git log. Existing UI, boards, assets and histories retained; no package/SDK upgrade. Native user-selected sandbox entitlement changes read-only→read-write for explicit Save panels.
-
-Resume2026-10-21: final rotated handles included in25host+25Chrome passing checks; fresh analysis clean. Fresh normal Chrome restored saved Frames and keyboard F created a ContainerFrame without diagnostics. Menu-driven ExportFrame CUA drag remains inconclusive, so WB-0712 stays open; no physical input pass. All failed experiments were removed. Complete feature handoff/push; no further milestone work until review.
-
-PNG success follow-up2026-10-21: successful PNG saves now close export settings and show a separate confirmation with Done. Browser wording confirms download initiation only; cancellation/failure keeps settings open. Four focused dialog tests passed; analysis clean.
+2026-10-21. **137/275 checked.** Assigned Advanced Editing integrated; stop for review. Git commit/push details are in the delivery/Git log. No packages, SDK or storage schema changed; existing Boards and original assets retained.
 
 ## Use
 
@@ -12,22 +8,20 @@ PNG success follow-up2026-10-21: successful PNG saves now close export settings 
 
 `flutter run -d web-server --web-port=8772 --web-hostname=localhost`
 
-More tools→Frame/Export frame, drag a rectangle; Select its border. Frame properties edits label/canvas size/output pixels atomically. Select artwork→Place in frame chooses membership or detach, preserving world position. Move parent with children; corner resize changes its rectangle, never scales children. Editing remains unclipped. Undo/Redo session-only, committed edits autosave.
+Select(V): Shift-click toggles; drag empty canvas for intersecting marquee; Esc restores pre-marquee selection or clears selection; Ctrl/Cmd+A selects eligible roots. Shared corners uniformly resize artwork/groups; rotation handle and toolbar rotate use shared pivot. Single Frame corners change rectangle only. Group via Ctrl/Cmd+G; Shift+Ctrl/Cmd+G ungroups. Select→Selection actions/right-click exposes Copy/Cut/Paste, Group entry/exit, ordering, six alignments/two distributions, lock discovery, snapping and touch multi-select. Long-press in Select opens context actions; phone layout uses bottom sheet. Text dialogs retain native editing shortcuts.
 
-Header Files & export→Export PNG: viewport/named Export Frame, solid canvas color or transparency, HD/4K/custom pixels. Save As .wboard includes original image assets; Import creates a new local board and remapped assets without replacing the current board. Local autosave target remains independent of the project file.
+Semantics: Groups act as units until Edit group contents. Marquee intersects visual AABBs; Frames require full enclosure so a marquee inside a Frame can select children. Selected ancestors normalize away descendants. Grouping only same-parent siblings, at the frontmost selected sibling's layer; selected relative order/world appearance survives. Alignment/distribution require same parent and preserve sizes. Paste retains source-world layout near viewport or with visible offset. Clipboard belongs to Workspace, survives Board switching and source deletion, ends on app restart. Originals staged under fresh IDs before one insert revision; stale/disposed destination cannot publish. No OS clipboard promise. Locks inherit; any locked descendant protects its owner from bulk transforms/deletion. Locked items menu finds offscreen locks; unlock ancestors first. Clear All refuses locked content. Guides/handles/lock badges are editor-only and never export.
 
-## Evidence and limits
+## Implementation / verification
 
-`benchmark_results/frames-export/verification.json` lists exact files/checks/real screenshots.71host/62Chrome integration passes(1native-only skip), extra contract/rotated checks and clean analysis. Actual macOS native save/open panels and restart, Chrome downloaded files and reload, bidirectional project transfer verified. Real4K PNGs inspected; no performance claim.
+Pure BoardSession owns atomic commands/revisions/history; EditorScene resolves Group bounds; controller owns normalized selection/previews and bounded spatial snap candidates. Shared action menu reuses themes. No pointer-move document writes. Clipboard owns one immutable forest and private original bytes (16MiB each/32MiB total); embedded font declarations remap safely, but portable files still only support existing bundled fonts. Failed staging may leave unattached originals; no new asset GC. Existing portable v1 and older local documents remain compatible.
 
-WB-0712 stays unchecked: repeated native-automation Chrome draw gestures were inconsistent despite passing Chrome widgets and real creation during diagnosis. Do a physical Chrome Frame-create smoke/reproduce before checking it; Frame properties/movement/export/reload work in real Chrome. Native CUA text injection remains unreliable; do not infer a native IME pass. All temporary diagnostics removed.
+`benchmark_results/advanced-editing/verification.json`: 91 distinct root host checks across integration/focused runs;39 distinct Chrome advanced checks. Additional17 agent session/frame regressions pass. Analysis clean. Real native restart retained Group; resize/rotation/Undo/Redo exercised. Real Chrome reload retained Group locks and copied original PNG/JPEG after Board switching. Widget reopen/portable checks are simulations, separately recorded. Screenshots are actual running apps.
 
-Portable v1 is bounded uncompressed JSON/base64+CRC32, not ZIP; no extraction/traversal/bomb path.64MiB file/32MiB originals total/16MiB each; declared+actual image dimensions checked,64M original pixels max. Only existing bundled editor font references supported; custom/font assets/SHA256 declarations/newer versions reject safely. No incompatible local schema migration; old Frame records read without new optional fields, old strict readers reject new fields safely. Failed staged imports may leave unattached originals; no asset GC.
-
-PNG max8192side/16M pixels/96MiB retained decoded images. Web needs owned CPU pixel transfer for offscreen image fidelity. Web helper may transiently decode full originals; GPU/codec/output peak memory and device time remain unqualified. Selection/custom-area export beyond frames, tiling, custom fonts, migrations and other native file platforms remain backlog.
+Remaining: WB-0814 native mobile contextual/device testing; WB-0610 physical touch handle qualification; WB-0407/0408 physical modifier/IME checks. Native CUA modifier injection was unreliable (some chords reached plain-letter shortcuts); no hardware pass. CUA Chrome drags sometimes produced dots/no marquee; browser widget interaction tests pass, manual physical Chrome drag check still needed. M08/WB-0816 dense performance remains unverified; no benchmarks run. Wider platform PNG/project gateways and accessibility/device gates remain inherited backlog.
 
 ## Data / next
 
-Normal native store unchanged; Arabic34-element user board still present. Native separate Frame test board4elements and Chrome-imported2-image board preserved. Chrome test profile localhost8772 imported Frame board has additional diagnostic-created valid Frames; original2-image board remains independent. Original8770/8771/etc stores untouched. Own temporary output files under /private/tmp/blanko-native-*; browser files Untitled board*.png/.wboard in Downloads. Do not clear profiles/containers to release locks; full page reload after debug restart releases old page locks.
+Original native Arabic board and12-element active user board were untouched. A new native test Board contains a transformed three-element Group. Chrome localhost8772 new advanced test Board has8 elements including pasted original PNG/JPEG and a locked Group; source two-image Board and older Frame test Board retained. Never clear profiles/containers/assets to release locks. If resuming after source hot reload, full browser Reload avoids old controller field state.
 
-Next: physical Chrome drawing qualification, then remaining platform file gateways and format/device certification. Keep dense/stress hardening separate; no speculative benchmark restart.
+Next: review this editing milestone, then qualify physical Chrome/macOS shortcuts/drag and Android/iOS touch/IME; fix reproduced issues before unrelated features. Existing 10K requirement stays in Production Hardening.

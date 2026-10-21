@@ -2,7 +2,7 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-21. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Frames, PNG export and portable project milestone; preserve the completed M12 UI and stop after the assigned feature handoff. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Advanced Editing milestone; preserve the completed Frames/PNG/portable and M12 UI work, then stop for review after Advanced Editing. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
 UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on available desktop/browser targets. Native phone/tablet runs, full assistive-technology review and M13 device/input qualification remain unchecked. No claim of full V1 or 10K performance acceptance. See `benchmark_results/ui-ux/verification.json` and `docs/HANDOFF.md`.
 
@@ -11,6 +11,8 @@ Product UI checkpoint2026-10-20: Header rename, searchable Board History, direct
 UI completion follow-up2026-10-20: fixed toolbar keyboard Space, dark text/paper preview and touch palette/slider semantics;14 host+14 Chrome focused passes,9 final theme/accessibility passes(5 overlap), clean analysis. `benchmark_results/ui-completion/verification.json`. Android direct launch confirms insufficient disk space. Keep real-device/screen-reader/full-platform items unchecked; stop for next-agent feature work.
 
 Feature checkpoint2026-10-20: **105/275 checked**. Frames ownership, child-preserving resize, PNG file output and independent `.wboard` import/Save As implemented using the existing UI/document/store. Actual macOS/Chrome files and cross-target transfers verified; WB-0712 remains unchecked for inconsistent native-automation Chrome drawing, WB-1110 for wider fidelity qualification. No new dependencies or SDK upgrades. Portable v1 is bounded JSON/base64+CRC32, with built-in editor fonts only; future-version migrations/custom-font packaging remain unchecked. PNG output is capped at16M pixels/8192side with96MiB retained originals; transient codec/GPU peaks are unqualified. Evidence: `benchmark_results/frames-export/verification.json`. Resume2026-10-21: final25host/25Chrome checks and analysis pass; fresh Chrome keyboard Frame creation works. Menu-driven native automation remains inconclusive; WB-0712 stays open.
+
+Advanced Editing checkpoint2026-10-21: **137/275 checked**. Multi-selection/marquee, shared move/uniform resize/rotate, Group/Ungroup and group entry, atomic duplication/deletion, owned cross-Board clipboard, locks, stacking, six alignments/two distributions, grid/object snapping and transient guides are integrated. Right-click menu and responsive touch sheet share actions. Real macOS group restart/handles/Undo and Chrome cross-Board original-image paste/reload verified. Targeted tests and exact limits: `benchmark_results/advanced-editing/verification.json`. WB-0814 and physical touch handles/keyboard/IME remain open; WB-0816 dense hardening remains deferred. No blanket M08 or V1 pass.
 
 ## MVP-03A — Eraser & Clear All (verified)
 
@@ -268,9 +270,9 @@ Verification contract: Nested transform/ID/order/cycle/orphan/±1e9/property tes
   - Status: VERIFIED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
   - Acceptance: **Implement local/world coordinate transforms**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: `benchmark_results/execution-02/verification.json`, `test/document_geometry_test.dart` (nine coordinate/property/overflow/deep-tree cases in 90 host/90 Chrome).
 
-- [ ] WB-0205 Implement hierarchical Groups.
-  - Status: PLANNED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
-  - Acceptance: **Implement hierarchical Groups**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0205 Implement hierarchical Groups.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
+  - Acceptance: **Implement hierarchical Groups**, integrated where applicable under M02 contract; tests: M02 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 - [x] WB-0206 Implement Export Frame geometry.
   - Status: VERIFIED; priority: P0; dependencies: WB-0003 for independent contracts/tests; WB-0114 before renderer integration.
@@ -326,25 +328,25 @@ Verification contract: Execute/undo/redo round trips, failed transaction rollbac
   - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
   - Acceptance: **Add/Delete/Update commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0304 Move/Resize/Rotate commands.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
-  - Acceptance: **Move/Resize/Rotate commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0304 Move/Resize/Rotate commands.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
+  - Acceptance: **Move/Resize/Rotate commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 - [ ] WB-0305 Style/Text update commands.
   - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
   - Acceptance: **Style/Text update commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0306 Group/Ungroup/Reparent commands.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
-  - Acceptance: **Group/Ungroup/Reparent commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0306 Group/Ungroup/Reparent commands.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
+  - Acceptance: **Group/Ungroup/Reparent commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0307 Z-order and lock commands.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
-  - Acceptance: **Z-order and lock commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0307 Z-order and lock commands.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
+  - Acceptance: **Z-order and lock commands**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0308 Implement session-only Undo/Redo.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
-  - Acceptance: **Implement session-only Undo/Redo**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0308 Implement session-only Undo/Redo.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
+  - Acceptance: **Implement session-only Undo/Redo**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 - [ ] WB-0309 Implement command coalescing.
   - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
@@ -354,9 +356,9 @@ Verification contract: Execute/undo/redo round trips, failed transaction rollbac
   - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
   - Acceptance: **Bound Undo/Redo memory**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0311 Implement document revision ordering.
-  - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
-  - Acceptance: **Implement document revision ordering**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0311 Implement document revision ordering.
+  - Status: VERIFIED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214.
+  - Acceptance: **Implement document revision ordering**, integrated where applicable under M03 contract; tests: M03 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 - [ ] WB-0312 Integrate incremental rendering updates.
   - Status: PLANNED; priority: P0; dependencies: WB-0201, WB-0202, WB-0209, WB-0214, WB-0114, WB-0302, WB-0311.
@@ -401,11 +403,11 @@ Verification contract: Pointer/keyboard/widget sequences, multi-touch/cancel/dis
   - Acceptance: **Handle multi-touch transitions**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-0407 Implement keyboard shortcuts.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
   - Acceptance: **Implement keyboard shortcuts**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-0408 Handle focus and IME conflicts.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
   - Acceptance: **Handle focus and IME conflicts**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-0409 Implement Commit/Cancel interaction lifecycle.
@@ -504,57 +506,57 @@ Acceptance contract: Selection/handles/transforms honor overlap order, locks and
 
 Verification contract: Overlap/rotation/marquee/group/lock tests, cancel/undo round trips and mouse/touch checks.
 
-- [ ] WB-0601 Single selection.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Single selection**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0601 Single selection.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Single selection**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0602 Multi-selection.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Multi-selection**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0602 Multi-selection.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Multi-selection**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0603 Marquee selection.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Marquee selection**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0603 Marquee selection.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Marquee selection**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0604 Selection overlay.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Selection overlay**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0604 Selection overlay.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Selection overlay**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0605 Hit testing for overlaps/rotation.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Hit testing for overlaps/rotation**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0605 Hit testing for overlaps/rotation.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Hit testing for overlaps/rotation**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0606 Move selected elements.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Move selected elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0606 Move selected elements.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Move selected elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0607 Resize selected elements.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Resize selected elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0607 Resize selected elements.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Resize selected elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0608 Rotate selected elements.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Rotate selected elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0608 Rotate selected elements.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Rotate selected elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0609 Preserve group-relative transforms.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Preserve group-relative transforms**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0609 Preserve group-relative transforms.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Preserve group-relative transforms**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 - [ ] WB-0610 Add screen-space selection handles.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
   - Acceptance: **Add screen-space selection handles**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0611 Respect locked elements.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Respect locked elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0611 Respect locked elements.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Respect locked elements**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0612 Integrate Undo/Redo.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Integrate Undo/Redo**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0612 Integrate Undo/Redo.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Integrate Undo/Redo**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0613 Add transform interaction tests.
-  - Status: PLANNED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
-  - Acceptance: **Add transform interaction tests**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0613 Add transform interaction tests.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0409, WB-0304, WB-0211.
+  - Acceptance: **Add transform interaction tests**, integrated where applicable under M06 contract; tests: M06 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 ## M07 — Text, Sticky Notes, Images & Frames
 
@@ -634,65 +636,65 @@ Acceptance contract: Advanced operations preserve nested transforms/order/locks/
 
 Verification contract: Nested operation+undo, clipboard asset validation, deterministic snapping/alignment and dense profile.
 
-- [ ] WB-0801 Group/Ungroup UI.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Group/Ungroup UI**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0801 Group/Ungroup UI.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Group/Ungroup UI**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0802 Enter/Exit Group editing.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Enter/Exit Group editing**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0802 Enter/Exit Group editing.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Enter/Exit Group editing**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0803 Alignment.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Alignment**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0803 Alignment.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Alignment**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0804 Distribution.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Distribution**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0804 Distribution.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Distribution**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0805 Grid snapping.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Grid snapping**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0805 Grid snapping.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Grid snapping**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0806 Object snapping.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Object snapping**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0806 Object snapping.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Object snapping**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0807 Alignment guides.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Alignment guides**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0807 Alignment guides.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Alignment guides**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0808 Z-order controls.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Z-order controls**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0808 Z-order controls.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Z-order controls**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0809 Lock/Unlock.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Lock/Unlock**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0809 Lock/Unlock.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Lock/Unlock**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0810 Duplicate.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Duplicate**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0810 Duplicate.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Duplicate**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0811 Internal Copy/Cut/Paste.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Internal Copy/Cut/Paste**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0811 Internal Copy/Cut/Paste.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Internal Copy/Cut/Paste**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0812 Safe clipboard asset references.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Safe clipboard asset references**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0812 Safe clipboard asset references.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Safe clipboard asset references**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
-- [ ] WB-0813 Desktop context menus.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Desktop context menus**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0813 Desktop context menus.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Desktop context menus**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 - [ ] WB-0814 Mobile contextual actions.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
   - Acceptance: **Mobile contextual actions**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0815 Verify nested editing and Undo/Redo.
-  - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
-  - Acceptance: **Verify nested editing and Undo/Redo**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0815 Verify nested editing and Undo/Redo.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.
+  - Acceptance: **Verify nested editing and Undo/Redo**, integrated where applicable under M08 contract; tests: M08 verification scoped to this deliverable; evidence: `benchmark_results/advanced-editing/verification.json` (available macOS/Chrome editor scope; targeted command/widget checks and real UI smoke, not full M08/device/performance certification).
 
 - [ ] WB-0816 Benchmark dense advanced editing.
   - Status: PLANNED; priority: P1; dependencies: WB-0306, WB-0307, WB-0612.

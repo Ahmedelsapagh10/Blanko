@@ -25,11 +25,13 @@ final class EditorScene {
     // callers inspecting an existing hierarchy. Descendants remain paint targets.
     for (final element in document.preorder.reversed) {
       final bounds = _bounds[element.id];
-      final parent = element.parentId;
-      if (bounds != null &&
-          parent != null &&
-          document.byId[parent]!.content is GroupElementContent) {
-        _bounds[parent] = _union(_bounds[parent], bounds);
+      var parent = element.parentId;
+      while (bounds != null && parent != null) {
+        final owner = document.byId[parent]!;
+        if (owner.content is GroupElementContent) {
+          _bounds[parent] = _union(_bounds[parent], bounds);
+        }
+        parent = owner.parentId;
       }
     }
     paintOrder = List.unmodifiable(order);
@@ -81,7 +83,11 @@ final class EditorScene {
     }
   }
 
-  ElementId? hitTest(Point2 world, {required double worldTolerance}) {
+  ElementId? hitTest(
+    Point2 world, {
+    required double worldTolerance,
+    bool includeLocked = false,
+  }) {
     if (!worldTolerance.isFinite || worldTolerance < 0) {
       throw ArgumentError.value(worldTolerance, 'worldTolerance');
     }
@@ -93,7 +99,7 @@ final class EditorScene {
     ).inflate(worldTolerance);
     for (final index in _index.query(area).reversed) {
       final element = paintOrder[index];
-      if (_locked[element.id]!) continue;
+      if (!includeLocked && _locked[element.id]!) continue;
       final local = _geometry.worldToLocal(element.id, world);
       // Exact for similarity transforms; conservative for non-uniform scale or
       // shear so a thin transformed stroke remains accessible with the mouse.

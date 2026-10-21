@@ -1,3 +1,15 @@
+# Advanced Editing delivery — 2026-10-21
+
+**137/275 checked.** Integrated multi-selection/marquee, shared transforms, grouping/group entry, Copy/Cut/Paste across Boards with owned originals, duplicate/delete, Lock/Unlock, ordering, alignment/distribution and move/resize snapping/guides. Existing UI themes, Frames, PNG/export, project v1 and autosave preserved; no dependency/schema/SDK changes.
+
+Executed: 80-test host integration checkpoint, eight final advanced UI checks (seven overlap), ten scene regressions; 38 Chrome advanced checks plus eight final UI checks (seven overlap). Clean analysis. Agents additionally ran17 existing session/frame command checks. Real macOS drawing/marquee/group/move/restart/resize/rotate/Undo/Redo; real Chrome group/copy/paste/lock/reload and original PNG/JPEG cross-Board copy/paste/reload. No production-performance claim.
+
+Limits: native/mobile device qualification, physical modifier shortcuts/IME and assistive technology remain pending. CUA Chrome drags sometimes deliver only pointer down; Chrome drag semantics pass browser widgets but are not a physical input pass. Desktop menus and touch sheet are scrollable. Clipboard is app-session internal, originals capped16MiB each/32MiB total; failed staging can leave unattached originals. Uniform artwork selection resizing; Frame rectangle resize keeps children unchanged. Dense/stress editing remains M14/WB-0816.
+
+Evidence/screenshots: `benchmark_results/advanced-editing/verification.json`. Stop for review; next recommended milestone is input/device qualification and remaining editing defects, then outstanding V1 tools. Historical reports follow.
+
+## Previous Frames/PNG/portable delivery (historical)
+
 # Frames, PNG and portable project delivery — 2026-10-20
 
 **105/275 checked.** Implemented atomic frame properties/export dimensions, world-preserving membership, descendant movement/duplication, child-stable rectangle resizing and safe ownership. Shared artwork painter feeds the editor and independent PNG output; export clips frame descendants and omits guides/controls. Original image bytes, mixed Arabic text and notes remain supported.
