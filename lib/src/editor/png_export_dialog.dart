@@ -9,11 +9,32 @@ import 'project_file_gateway.dart';
 Future<void> showPngExportDialog(
   BuildContext context,
   EditorCanvasController controller,
-) => showDialog<void>(
-  context: context,
-  barrierDismissible: false,
-  builder: (_) => _PngDialog(controller: controller),
-);
+) async {
+  final exported = await showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => _PngDialog(controller: controller),
+  );
+  if (exported != true || !context.mounted) return;
+  await showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      icon: const Icon(Icons.check_circle_outline),
+      title: Text(kIsWeb ? 'Download started' : 'Export complete'),
+      content: Text(
+        kIsWeb
+            ? 'Your PNG download has started. Check your browser downloads.'
+            : 'PNG saved.',
+      ),
+      actions: [
+        FilledButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Done'),
+        ),
+      ],
+    ),
+  );
+}
 
 class _PngDialog extends StatefulWidget {
   const _PngDialog({required this.controller});
@@ -102,18 +123,19 @@ class _PngDialogState extends State<_PngDialog> {
         extension: 'png',
       );
       if (mounted) {
-        setState(
-          () => message = saved
-              ? (kIsWeb ? 'PNG download started.' : 'PNG saved.')
-              : 'Save cancelled.',
-        );
+        if (saved) {
+          cancelled = true;
+          Navigator.pop(context, true);
+        } else {
+          setState(() => message = 'Save cancelled.');
+        }
       }
     } catch (error) {
       if (mounted && !cancelled) {
         setState(() => message = 'Could not export PNG: $error');
       }
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted && !cancelled) setState(() => busy = false);
     }
   }
 

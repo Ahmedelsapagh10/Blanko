@@ -4,6 +4,8 @@
 
 Resume2026-10-21: final rotated handles included in25host+25Chrome passing checks; fresh analysis clean. Fresh normal Chrome restored saved Frames and keyboard F created a ContainerFrame without diagnostics. Menu-driven ExportFrame CUA drag remains inconclusive, so WB-0712 stays open; no physical input pass. All failed experiments were removed. Complete feature handoff/push; no further milestone work until review.
 
+PNG success follow-up2026-10-21: successful PNG saves now close export settings and show a separate confirmation with Done. Browser wording confirms download initiation only; cancellation/failure keeps settings open. Four focused dialog tests passed; analysis clean.
+
 ## Use
 
 `flutter run -d macos`

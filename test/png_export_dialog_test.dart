@@ -206,12 +206,62 @@ void main() {
           codec.dispose();
         }
       });
+      expect(find.text('Export complete'), findsOneWidget);
       expect(find.text('PNG saved.'), findsOneWidget);
+      expect(_field('Width (px)'), findsNothing);
+      expect(find.widgetWithText(FilledButton, 'Export PNG'), findsNothing);
       expect(c.session.document, same(before));
       expect(store.writes, 0);
-      await tester.tap(find.text('Close'));
+      await tester.tap(find.text('Done'));
       await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsNothing);
       expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+    },
+    skip: kIsWeb,
+  );
+
+  testWidgets(
+    'native save cancellation or failure keeps export settings open',
+    (tester) async {
+      const channel = MethodChannel('blanko/project_files');
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+      final c = await _open(tester, TestBoardStore());
+      for (final fail in [false, true]) {
+        var called = false;
+        messenger.setMockMethodCallHandler(channel, (_) async {
+          called = true;
+          if (fail) {
+            throw PlatformException(code: 'write_failed', message: 'Disk full');
+          }
+          return false;
+        });
+        await _dialog(tester, c);
+        await tester.enterText(_field('Width (px)'), '64');
+        await tester.enterText(_field('Height (px)'), '36');
+        await tester.runAsync(() async {
+          await tester.tap(find.widgetWithText(FilledButton, 'Export PNG'));
+          for (var i = 0; i < 100 && !called; i++) {
+            await Future<void>.delayed(const Duration(milliseconds: 20));
+          }
+        });
+        await tester.pumpAndSettle();
+        expect(called, isTrue);
+        expect(_value(tester, 'Width (px)'), '64');
+        expect(find.text('Export complete'), findsNothing);
+        expect(
+          find.text('Save cancelled.'),
+          fail ? findsNothing : findsOneWidget,
+        );
+        if (fail) {
+          expect(find.textContaining('Could not export PNG:'), findsOneWidget);
+        }
+        await tester.tap(find.text('Close'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      }
       await tester.pumpWidget(const SizedBox());
     },
     skip: kIsWeb,
