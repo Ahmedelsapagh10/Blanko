@@ -471,6 +471,435 @@ final class BoardSession {
     return true;
   }
 
+  /// Top-level selection roots in paint order; selecting an owner never applies
+  /// a second transform to one of its already-selected descendants.
+  List<ElementId> selectionRoots(Iterable<ElementId> ids) {
+    final selected = ids.where(_document.byId.containsKey).toSet();
+    return [
+      for (final element in _document.preorder)
+        if (selected.contains(element.id) &&
+            !_hasSelectedAncestor(element, selected))
+          element.id,
+    ];
+  }
+
+  bool _hasSelectedAncestor(DocumentElement element, Set<ElementId> selected) {
+    var parent = element.parentId;
+    while (parent != null) {
+      if (selected.contains(parent)) return true;
+      parent = _document.byId[parent]!.parentId;
+    }
+    return false;
+  }
+
+  bool canEdit(ElementId id) {
+    final element = _document.byId[id];
+    return element != null &&
+        !_isLocked(element) &&
+        !_hasLockedDescendant(element);
+  }
+
+  List<ElementId>? _editableRoots(Iterable<ElementId> ids) {
+    final requested = ids.toSet();
+    if (requested.isEmpty ||
+        requested.any((id) => !_document.byId.containsKey(id))) {
+      return null;
+    }
+    final roots = selectionRoots(requested);
+    return roots.every(canEdit) ? roots : null;
+  }
+
+  bool transformMany(Iterable<ElementId> ids, Transform2 worldDelta) {
+    final roots = _editableRoots(ids);
+    if (roots == null || worldDelta == Transform2.identity) return false;
+    final geometry = DocumentGeometry(_document);
+    final changes = <ElementId, DocumentElement>{};
+    for (final id in roots) {
+      final element = _document.byId[id]!;
+      final world = worldDelta * geometry.worldTransformOf(id);
+      final local = element.parentId == null
+          ? world
+          : world.relativeTo(geometry.worldTransformOf(element.parentId!));
+      if (local != element.transform) {
+        changes[id] = element.copyWith(transform: local);
+      }
+    }
+    if (changes.isEmpty) return false;
+    _commitElements([
+      for (final element in _document.elements) changes[element.id] ?? element,
+    ]);
+    return true;
+  }
+
+  bool translateMany(Map<ElementId, Point2> worldDeltas) {
+    final roots = _editableRoots(worldDeltas.keys);
+    if (roots == null) return false;
+    final geometry = DocumentGeometry(_document);
+    final changes = <ElementId, DocumentElement>{};
+    for (final id in roots) {
+      final delta = worldDeltas[id]!;
+      if (delta == Point2.zero) continue;
+      final element = _document.byId[id]!;
+      final world =
+          Transform2.translation(delta.x, delta.y) *
+          geometry.worldTransformOf(id);
+      final local = element.parentId == null
+          ? world
+          : world.relativeTo(geometry.worldTransformOf(element.parentId!));
+      if (local != element.transform) {
+        changes[id] = element.copyWith(transform: local);
+      }
+    }
+    if (changes.isEmpty) return false;
+    _commitElements([
+      for (final element in _document.elements) changes[element.id] ?? element,
+    ]);
+    return true;
+  }
+
+  bool deleteMany(Iterable<ElementId> ids) {
+    final roots = _editableRoots(ids);
+    if (roots == null) return false;
+    final removed = _subtreeIds(roots);
+    _commitElements([
+      for (final element in _document.elements)
+        if (!removed.contains(element.id)) element,
+    ]);
+    return true;
+  }
+
+  Set<ElementId> _subtreeIds(Iterable<ElementId> roots) {
+    final result = <ElementId>{};
+    final pending = roots.toList();
+    while (pending.isNotEmpty) {
+      final id = pending.removeLast();
+      if (!result.add(id)) continue;
+      pending.addAll(_document.childrenOf(id).map((element) => element.id));
+    }
+    return result;
+  }
+
+  List<ElementId> duplicateMany(
+    Iterable<ElementId> ids, [
+    Point2? worldOffset,
+  ]) {
+    final roots = _editableRoots(ids);
+    if (roots == null) return const [];
+    final members = _subtreeIds(roots);
+    final rootSet = roots.toSet();
+    final remap = {for (final id in members) id: _allocateId()};
+    final geometry = DocumentGeometry(_document);
+    final offset = worldOffset ?? Point2(24, 24);
+    final translation = Transform2.translation(offset.x, offset.y);
+    final copies = <DocumentElement>[];
+    for (final element in _document.elements) {
+      if (!members.contains(element.id)) continue;
+      var transform = element.transform;
+      if (rootSet.contains(element.id)) {
+        final world = translation * geometry.worldTransformOf(element.id);
+        transform = element.parentId == null
+            ? world
+            : world.relativeTo(geometry.worldTransformOf(element.parentId!));
+      }
+      copies.add(
+        DocumentElement(
+          id: remap[element.id]!,
+          parentId: rootSet.contains(element.id)
+              ? element.parentId
+              : remap[element.parentId],
+          transform: transform,
+          content: element.content,
+          locked: element.locked,
+          opacity: element.opacity,
+        ),
+      );
+    }
+    _commitElements([..._document.elements, ...copies]);
+    return [for (final id in roots) remap[id]!];
+  }
+
+  bool canGroup(Iterable<ElementId> ids) {
+    final roots = _editableRoots(ids);
+    if (roots == null || roots.length < 2) return false;
+    final parent = _document.byId[roots.first]!.parentId;
+    return roots.every((id) => _document.byId[id]!.parentId == parent);
+  }
+
+  /// The new group occupies the frontmost selected sibling's layer. Selected
+  /// siblings keep their relative order; cross-owner grouping is rejected.
+  ElementId? group(Iterable<ElementId> ids) {
+    final roots = selectionRoots(ids);
+    if (!canGroup(ids)) return null;
+    final selected = roots.toSet();
+    final parent = _document.byId[roots.first]!.parentId;
+    final groupId = _allocateId();
+    var last = 0;
+    final elements = <DocumentElement>[];
+    for (var i = 0; i < _document.elements.length; i++) {
+      final element = _document.elements[i];
+      if (selected.contains(element.id)) {
+        last = i;
+        elements.add(_withParent(element, groupId, element.transform));
+      } else {
+        elements.add(element);
+      }
+    }
+    elements.insert(
+      last + 1,
+      DocumentElement(
+        id: groupId,
+        parentId: parent,
+        content: const GroupElementContent(),
+      ),
+    );
+    _commitElements(elements);
+    return groupId;
+  }
+
+  List<ElementId> ungroup(Iterable<ElementId> ids) {
+    final roots = _editableRoots(ids);
+    if (roots == null ||
+        roots.any(
+          (id) => _document.byId[id]!.content is! GroupElementContent,
+        )) {
+      return const [];
+    }
+    var elements = _document.elements.toList();
+    final selected = <ElementId>[];
+    for (final id in roots) {
+      final group = _document.byId[id]!;
+      final children = _document.childrenOf(id);
+      final removed = {id, ...children.map((element) => element.id)};
+      final groupIndex = elements.indexWhere((element) => element.id == id);
+      final insertion = elements
+          .take(groupIndex)
+          .where((element) => !removed.contains(element.id))
+          .length;
+      elements = elements
+          .where((element) => !removed.contains(element.id))
+          .toList();
+      elements.insertAll(
+        insertion,
+        children.map(
+          (child) => _withParent(
+            child,
+            group.parentId,
+            group.transform * child.transform,
+            opacity: group.opacity * child.opacity,
+          ),
+        ),
+      );
+      selected.addAll(children.map((element) => element.id));
+    }
+    _commitElements(elements);
+    return selected;
+  }
+
+  bool setLockedMany(Iterable<ElementId> ids, bool locked) {
+    final requested = ids.toSet();
+    if (requested.isEmpty ||
+        requested.any((id) => !_document.byId.containsKey(id))) {
+      return false;
+    }
+    final roots = selectionRoots(requested);
+    for (final id in roots) {
+      final parent = _document.byId[id]!.parentId;
+      if (parent != null && _isLocked(_document.byId[parent]!)) return false;
+    }
+    var changed = false;
+    final selected = roots.toSet();
+    final next = <DocumentElement>[];
+    for (final element in _document.elements) {
+      if (selected.contains(element.id) && element.locked != locked) {
+        changed = true;
+        next.add(element.copyWith(locked: locked));
+      } else {
+        next.add(element);
+      }
+    }
+    if (!changed) return false;
+    _commitElements(next);
+    return true;
+  }
+
+  bool reorderMany(Iterable<ElementId> ids, String action) {
+    if (!const {'front', 'back', 'forward', 'backward'}.contains(action)) {
+      throw ArgumentError.value(action, 'action');
+    }
+    final roots = _editableRoots(ids);
+    if (roots == null) return false;
+    final selected = roots.toSet();
+    final parents = roots.map((id) => _document.byId[id]!.parentId).toSet();
+    final replacements = <int, DocumentElement>{};
+    for (final parent in parents) {
+      final positions = <int>[];
+      final siblings = <DocumentElement>[];
+      for (var i = 0; i < _document.elements.length; i++) {
+        if (_document.elements[i].parentId == parent) {
+          positions.add(i);
+          siblings.add(_document.elements[i]);
+        }
+      }
+      final ordered = siblings.toList();
+      if (action == 'front' || action == 'back') {
+        final chosen = siblings.where(
+          (element) => selected.contains(element.id),
+        );
+        final others = siblings.where(
+          (element) => !selected.contains(element.id),
+        );
+        ordered
+          ..clear()
+          ..addAll(action == 'front' ? others : chosen)
+          ..addAll(action == 'front' ? chosen : others);
+      } else if (action == 'forward') {
+        for (var i = ordered.length - 2; i >= 0; i--) {
+          if (selected.contains(ordered[i].id) &&
+              !selected.contains(ordered[i + 1].id)) {
+            final previous = ordered[i];
+            ordered[i] = ordered[i + 1];
+            ordered[i + 1] = previous;
+          }
+        }
+      } else {
+        for (var i = 1; i < ordered.length; i++) {
+          if (selected.contains(ordered[i].id) &&
+              !selected.contains(ordered[i - 1].id)) {
+            final previous = ordered[i];
+            ordered[i] = ordered[i - 1];
+            ordered[i - 1] = previous;
+          }
+        }
+      }
+      for (var i = 0; i < ordered.length; i++) {
+        if (ordered[i].id != siblings[i].id) {
+          replacements[positions[i]] = ordered[i];
+        }
+      }
+    }
+    if (replacements.isEmpty) return false;
+    _commitElements([
+      for (var i = 0; i < _document.elements.length; i++)
+        replacements[i] ?? _document.elements[i],
+    ]);
+    return true;
+  }
+
+  /// Inserts a validated world-rooted forest. Asset bytes must already be durable
+  /// in the receiving store; this command only owns immutable declarations.
+  List<ElementId> insertFragment(
+    BoardDocument fragment, {
+    required Point2 offset,
+  }) {
+    DocumentGeometry(fragment);
+    final assets = fragment.assets ?? const <DocumentAssetReference>[];
+    final fonts = fragment.fontReferences ?? const <DocumentFontReference>[];
+    for (final incoming in assets) {
+      final current = _document.assets
+          ?.where((asset) => asset.id == incoming.id)
+          .firstOrNull;
+      if (current != null && !_sameAsset(current, incoming)) {
+        throw ArgumentError('Conflicting asset declaration: ${incoming.id}');
+      }
+    }
+    for (final incoming in fonts) {
+      final current = _document.fontReferences
+          ?.where((font) => font.id == incoming.id)
+          .firstOrNull;
+      if (current != null &&
+          (current.family != incoming.family ||
+              current.assetId != incoming.assetId)) {
+        throw ArgumentError('Conflicting font declaration: ${incoming.id}');
+      }
+    }
+    if (fragment.elements.isEmpty) return const [];
+    final remap = {
+      for (final element in fragment.elements) element.id: _allocateId(),
+    };
+    final translation = Transform2.translation(offset.x, offset.y);
+    final copies = [
+      for (final element in fragment.elements)
+        DocumentElement(
+          id: remap[element.id]!,
+          parentId: element.parentId == null ? null : remap[element.parentId],
+          transform: element.parentId == null
+              ? translation * element.transform
+              : element.transform,
+          content: element.content,
+          opacity: element.opacity,
+          locked: element.locked,
+        ),
+    ];
+    _commitElements(
+      [..._document.elements, ...copies],
+      assets: assets,
+      fonts: fonts,
+    );
+    return [
+      for (final element in fragment.childrenOf(null)) remap[element.id]!,
+    ];
+  }
+
+  bool _sameAsset(DocumentAssetReference a, DocumentAssetReference b) =>
+      a.mimeType == b.mimeType &&
+      a.pixelWidth == b.pixelWidth &&
+      a.pixelHeight == b.pixelHeight &&
+      a.byteLength == b.byteLength &&
+      a.sha256 == b.sha256;
+
+  DocumentElement _withParent(
+    DocumentElement element,
+    ElementId? parent,
+    Transform2 transform, {
+    double? opacity,
+  }) => DocumentElement(
+    id: element.id,
+    parentId: parent,
+    transform: transform,
+    content: element.content,
+    locked: element.locked,
+    revision: element.revision,
+    opacity: opacity ?? element.opacity,
+  );
+
+  void _commitElements(
+    List<DocumentElement> next, {
+    List<DocumentAssetReference> assets = const [],
+    List<DocumentFontReference> fonts = const [],
+  }) {
+    final previousIndex = {
+      for (var i = 0; i < _document.elements.length; i++)
+        _document.elements[i].id: i,
+    };
+    final nextIndex = {for (var i = 0; i < next.length; i++) next[i].id: i};
+    final affected = <ElementId>{};
+    for (var i = 0; i < _document.elements.length; i++) {
+      final element = _document.elements[i];
+      final index = nextIndex[element.id];
+      if (index == null || index != i || !identical(element, next[index])) {
+        affected.add(element.id);
+      }
+    }
+    for (final element in next) {
+      if (!previousIndex.containsKey(element.id)) affected.add(element.id);
+    }
+    _commit(
+      _Change(
+        [
+          for (var i = 0; i < _document.elements.length; i++)
+            if (affected.contains(_document.elements[i].id))
+              _Positioned(i, _document.elements[i]),
+        ],
+        [
+          for (var i = 0; i < next.length; i++)
+            if (affected.contains(next[i].id)) _Positioned(i, next[i]),
+        ],
+        assets: assets,
+        fonts: fonts,
+      ),
+    );
+  }
+
   ElementId _allocateId() {
     while (_nextId <= maximumDocumentRevision) {
       final id = ElementId('element-${_nextId++}');
@@ -564,23 +993,31 @@ final class BoardSession {
       title: _document.title,
       canvasSettings: _document.canvasSettings,
       // Asset and font declarations remain available to both sides of undo history.
-      assets: change.asset == null
+      assets: change.asset == null && change.assets.isEmpty
           ? _document.assets
           : [
               ...?_document.assets,
-              if (!(_document.assets ?? <DocumentAssetReference>[]).any(
-                (asset) => asset.id == change.asset!.id,
-              ))
-                change.asset!,
+              for (final asset in [
+                if (change.asset != null) change.asset!,
+                ...change.assets,
+              ])
+                if (!(_document.assets ?? const <DocumentAssetReference>[]).any(
+                  (current) => current.id == asset.id,
+                ))
+                  asset,
             ],
-      fontReferences: change.font == null
+      fontReferences: change.font == null && change.fonts.isEmpty
           ? _document.fontReferences
           : [
               ...?_document.fontReferences,
-              if (!(_document.fontReferences ?? <DocumentFontReference>[]).any(
-                (font) => font.id == change.font!.id,
-              ))
-                change.font!,
+              for (final font in [
+                if (change.font != null) change.font!,
+                ...change.fonts,
+              ])
+                if (!(_document.fontReferences ??
+                        const <DocumentFontReference>[])
+                    .any((current) => current.id == font.id))
+                  font,
             ],
       metadata: _document.metadata,
       elements: elements,
@@ -592,7 +1029,16 @@ final class BoardSession {
 }
 
 final class _Change {
-  _Change(this.before, this.after, {this.font, this.asset});
+  _Change(
+    this.before,
+    this.after, {
+    this.font,
+    this.asset,
+    this.assets = const [],
+    this.fonts = const [],
+  });
+  final List<DocumentAssetReference> assets;
+  final List<DocumentFontReference> fonts;
   final DocumentFontReference? font;
   final DocumentAssetReference? asset;
   final List<_Positioned> before;
