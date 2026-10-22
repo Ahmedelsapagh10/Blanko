@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../document/element.dart';
+import 'color_picker_widget.dart';
 import 'editor_canvas.dart';
 
 Future<void> showDrawingStyleDialog(
@@ -59,20 +60,19 @@ Future<void> showDrawingStyleDialog(
         builder: (context, setState) => AlertDialog(
           title: Text(marker ? 'Highlighter style' : 'Drawing style'),
           content: SizedBox(
-            width: 350,
+            width: 380,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
+                  ColorPickerWidget(
                     controller: strokeHex,
-                    decoration: InputDecoration(
-                      labelText: 'Stroke color (RRGGBB)',
-                      prefixText: '#',
-                      errorText: error,
-                    ),
+                    labelText: 'Stroke color (RRGGBB)',
+                    errorText: error,
+                    isHighlighter: marker,
+                    onColorChanged: (_) => setState(() => error = null),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text('Width: ${width.toStringAsFixed(1)}'),
                   Slider(
                     min: 1,
@@ -102,14 +102,14 @@ Future<void> showDrawingStyleDialog(
                       onChanged: (v) => setState(() => fill = v),
                     ),
                     if (fill) ...[
-                      TextField(
+                      ColorPickerWidget(
                         controller: fillHex,
-                        decoration: InputDecoration(
-                          labelText: 'Fill color (RRGGBB)',
-                          prefixText: '#',
-                          errorText: error,
-                        ),
+                        labelText: 'Fill color (RRGGBB)',
+                        errorText: error,
+                        isHighlighter: false,
+                        onColorChanged: (_) => setState(() => error = null),
                       ),
+                      const SizedBox(height: 8),
                       Text('Fill opacity: ${(fillOpacity * 100).round()}%'),
                       Slider(
                         value: fillOpacity,
