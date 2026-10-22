@@ -1,0 +1,112 @@
+{
+  "date": "2026-10-22",
+  "status": "IN_PROGRESS; iPhone native Files workflows and restart verified; Android emulator Offline",
+  "baseline": "bca28fc0a61da11e0b265f9d84fb8369524c002d",
+  "progress": "158/275; six available-target M04 implementation tasks checked; broad mobile/platform gates remain unchecked",
+  "environment": {
+    "host": "Apple M4/16GiB, macOS26.5.1",
+    "flutter": "3.41.9 stable",
+    "dart": "3.11.5",
+    "xcode": "26.2",
+    "iOS": "iPhone17Pro simulator, iOS26.2",
+    "Android": "flutter_emulator, emulator36.1.9, SDK36.1.0-rc1; adb Offline after initial detection",
+    "modes": "Debug functional/build checks only"
+  },
+  "builds": {
+    "Android": "flutter build apk --debug --no-pub: PASS (final8.3s)",
+    "iOS": "flutter build ios --simulator --debug --no-pub: PASS (final13.1s)",
+    "iOS_launch": "flutter run -d 1A551A7C-6EF7-4445-897F-B68674068240 --use-application-binary build/ios/iphonesimulator/Runner.app --no-pub: launched; real UI inspected",
+    "Android_launch": "Attempt failed: no supported device emulator-5554; adb Offline. No launch pass."
+  },
+  "automated": {
+    "host_distinct": 50,
+    "host_focused": 16,
+    "host_regressions": 34,
+    "Chrome_distinct": 24,
+    "analysis": "No issues",
+    "commands": [
+      "flutter test --no-pub test/mobile_gesture_test.dart test/mobile_file_gateway_test.dart test/project_file_gateway_test.dart",
+      "flutter test --no-pub test/editor_widget_test.dart test/editor_eraser_test.dart test/advanced_editor_test.dart test/workspace_widget_test.dart test/editor_text_test.dart",
+      "flutter test --no-pub --platform chrome test/mobile_gesture_test.dart test/editor_widget_test.dart test/advanced_editor_test.dart",
+      "flutter analyze --no-pub"
+    ],
+    "simulated_not_hardware": [
+      "Multi-touch and pinch focal invariants, cancellation/rebasing, stylus/finger ownership,48px handle resize, lifecycle/viewport cancellation.",
+      "Native file-channel success/cancel/error tests use mocked MethodChannels on host; not actual file-provider verification."
+    ]
+  },
+  "actual_iPhone": [
+    "Independent second Board; continuous finger Pen, Rectangle, Highlighter;3elements.",
+    "Native software Arabic and English keyboards typed مرحبا then BLANKO on second line; keyboard avoids dialog Save/Cancel. Initial synthesized text input dropped characters, canceled without saving; software keys worked.",
+    "Home→Blanko retained uncommitted mixed-language text draft; Save produced4elements and rendered both lines.",
+    "Touch shape move, multi-select and Group5elements; Rotate/duplicate8elements; Undo5/Redo8; Saved locally displayed.",
+    "After unlock: imported controlled .wboard as independent10-element Board; exported600x400 Frame PNG via native Files, success dialog then Done returns to Editor; saved .wboard and reimported independent10-element Board. User added one stroke (11); native original64x32 PNG import produced12elements; actual process terminate/launch restored12elements, image and Saved locally. Landscape layout inspected."
+  ],
+  "files": {
+    "native_bridges": "Android compiled only; iOS actual native Files image import, .wboard import/export/reimport and PNG output verified.",
+    "limits": "Mobile import image16MiB/project64MiB; save128MiB; no broad storage permissions",
+    "iOS_public_documents": "UIFileSharingEnabled and LSSupportsOpeningDocumentsInPlace; Documents/Exports public, Application Support private store retained",
+    "fixture": "Only public Blanko-Test/sample.png64x32/137bytes and sample.wboard seeded; controlled bytes from drawing-tools proof",
+    "references": [
+      "https://developer.android.com/training/data-storage/shared/documents-files",
+      "https://developer.apple.com/documentation/uikit/uidocumentpickerviewcontroller",
+      "https://developer.apple.com/documentation/bundleresources/information-property-list/uifilesharingenabled",
+      "https://developer.apple.com/documentation/bundleresources/information-property-list/lssupportsopeningdocumentsinplace"
+    ]
+  },
+  "cleanup": {
+    "authorized": "User: وفر مساحه ع اللاب",
+    "inactive_gradle_cache_versions": [
+      "8.12",
+      "9.7.1",
+      "8.14.3",
+      "9.2.0"
+    ],
+    "approximate_removed_GiB": 9.7,
+    "retained": "Active8.14 cache, SDKs/wrapper distributions/AVD and all user files/Boards/assets; only regenerable project caches additionally removed."
+  },
+  "limitations": [
+    "Milestone incomplete: Android actual device/provider, iPad/tablet, physical multi-touch/stylus and full IME qualification remain open.",
+    "Android APK compiles; existing AVD Offline through reconnect and data-preserving cold boot; stopped owned test emulator gracefully.",
+    "iPad/Android tablet/physical devices not tested.",
+    "Variable pressure width/tilt not implemented; stylus fixed-width fallback, no physical stylus/palm-rejection claim.",
+    "iOS imports use Files, not direct Photos.",
+    "IME composition/caret selection/device low-memory/export peak-memory/Android lifecycle not certified.",
+    "No new physical Chrome continuous-drag or macOS real-app regression pass this checkpoint; host and Chrome automated regressions passed.",
+    "Unrelated color-picker edits remain untouched and excluded from checkpoint."
+  ],
+  "artifacts": {
+    "ios-frame-export.png": {
+      "bytes": 20261,
+      "sha256": "a8ea1d0716bb6b92e44ad97fc3fe075a88c4b2536ed7f3bdb6986e916d4f883c",
+      "dimensions": [
+        600,
+        400
+      ]
+    },
+    "ios-arabic-keyboard.png": {
+      "bytes": 78802,
+      "sha256": "985e0a4bb1ed92905c935aa9289c4d26401b818f767e0ae842b6eb6c0eaef9ea",
+      "dimensions": [
+        4718592,
+        4292935744
+      ]
+    },
+    "ios-reopened-project.png": {
+      "bytes": 64814,
+      "sha256": "b3f733712ca54824d85cfc549736ff0f42cb5dde5a010408eb86d86c32ee1c46",
+      "dimensions": [
+        4718592,
+        4292935744
+      ]
+    },
+    "ios-landscape.png": {
+      "bytes": 58432,
+      "sha256": "68df903d6938d0a77371ba7c592b9690b08d45c2d52623f8f04af015639f3655",
+      "dimensions": [
+        4718592,
+        4292935744
+      ]
+    }
+  }
+}

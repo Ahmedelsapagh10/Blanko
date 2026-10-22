@@ -2,7 +2,7 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-21. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Advanced Editing completion; preserve the completed Advanced Editing, Frames/PNG/portable and M12 UI work, then stop for review. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Mobile & Touch milestone; preserve the completed Advanced Editing, Frames/PNG/portable and M12 UI work, then stop for review. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
 UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on available desktop/browser targets. Native phone/tablet runs, full assistive-technology review and M13 device/input qualification remain unchecked. No claim of full V1 or 10K performance acceptance. See `benchmark_results/ui-ux/verification.json` and `docs/HANDOFF.md`.
 
@@ -19,6 +19,8 @@ PNG distortion remediation2026-10-21: fixed M11 export mapping to centered unifo
 Drawing Tools checkpoint2026-10-21: **152/275 checked**. Incremental pen smoothing, separate Highlighter with single-layer opacity, four arrowhead modes and contextual persisted shape styling integrated.72 distinct host/35 Chrome focused cases pass across checkpoints; analysis clean. Real macOS drawing/style/Undo/restart and native→Chrome portable transfer/reload verified; actual 3840×2160 PNG files inspected. Available-target implementation tasks WB-0501–0515 checked; inherited active-drawing profile and physical Chrome/mobile input qualification remain open, so M05 is not fully accepted. Evidence: `benchmark_results/drawing-tools/verification.json`. No dependency/SDK change; current reader loads legacy documents, older strict readers safely reject documents using new optional style fields. Stop for review.
 
 Advanced Editing completion2026-10-22: **152/275 checked, unchanged**. Existing selection, transforms, groups, clipboard, layers, layout and snapping retained. Closed command-layer Clear All lock bypass; incompatible-parent alignment/distribution now disabled. Added direct touch multi-select, visible group exit/lock state and correct disabled Delete styling. Fixed Chrome's duplicate browser/Blanko context menus with serialized, reference-counted Editor ownership.74 distinct host and30 Chrome focused tests pass across checkpoints (two browser-only host skips); analysis clean. Actual native move/resize/rotate/copy/paste/duplicate/layers/lock/Undo/restart and Chrome import/reopen/unlock/ungroup/Undo/Redo verified; actual4K PNGs preserve transformed artwork. Evidence: `benchmark_results/advanced-completion/verification.json`. Physical Chrome drag remains inconclusive under CUA; mobile/IME/device and dense gates remain unchecked. No M08-wide production certification; stop for review.
+
+Mobile & Touch checkpoint2026-10-22 — IN_PROGRESS. **158/275 checked.** Pointer ownership/cancellation, navigation rebasing after touch cancellation, pre-marquee restoration, background draft cancellation and48px touch handle targets integrated. Native Android/iOS image/project/PNG file channels added without new packages or broad permissions; iOS public export folder stays separate from private Application Support Boards.50 host/24 Chrome focused checks pass, analysis clean; Android debug APK and iOS simulator app compile. Actual iPhone17Pro/iOS26.2 touch drawing, Highlighter, shape move, Group/rotate/duplicate/Undo/Redo, native Arabic+English keyboard, keyboard avoidance and background/resume draft retention verified. Actual iOS Files image import, .wboard export/reimport as independent Board,600×400 Frame PNG output and process restart/reopening12elements with imported image verified; landscape inspected. Android emulator remained Offline after reconnect and data-preserving cold boot; no Android app launch pass. Pressure widths remain unimplemented; physical stylus/palm rejection, multi-touch hardware, iPad/tablet and wider targets unverified. Evidence: `benchmark_results/mobile-touch/verification.json`. Do not call this milestone or V1 production-ready; remaining device qualification stays open.
 
 ## MVP-03A — Eraser & Clear All (verified)
 
@@ -388,25 +390,25 @@ Verification contract: Pointer/keyboard/widget sequences, multi-touch/cancel/dis
   - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
   - Acceptance: **Define interaction state machine**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0402 Implement pointer ownership.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Implement pointer ownership**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0402 Implement pointer ownership.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Implement pointer ownership**, integrated where applicable under M04 contract; tests: focused host/Chrome pointer and lifecycle checks, actual iPhone simulator single-touch/background smoke; evidence: `benchmark_results/mobile-touch/verification.json`. Available-target implementation only; physical multi-touch/stylus and Android/tablet qualification remain open.
 
 - [ ] WB-0403 Implement mouse input.
   - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
   - Acceptance: **Implement mouse input**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0404 Implement touch input.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Implement touch input**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0404 Implement touch input.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Implement touch input**, integrated where applicable under M04 contract; tests: focused host/Chrome pointer and lifecycle checks, actual iPhone simulator single-touch/background smoke; evidence: `benchmark_results/mobile-touch/verification.json`. Available-target implementation only; physical multi-touch/stylus and Android/tablet qualification remain open.
 
 - [ ] WB-0405 Implement pan and zoom gestures.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Implement pan and zoom gestures**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Implement pan and zoom gestures**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-0406 Handle multi-touch transitions.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Handle multi-touch transitions**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Handle multi-touch transitions**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-0407 Implement keyboard shortcuts.
   - Status: IN_PROGRESS; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
@@ -416,25 +418,25 @@ Verification contract: Pointer/keyboard/widget sequences, multi-touch/cancel/dis
   - Status: IN_PROGRESS; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
   - Acceptance: **Handle focus and IME conflicts**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0409 Implement Commit/Cancel interaction lifecycle.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Implement Commit/Cancel interaction lifecycle**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0409 Implement Commit/Cancel interaction lifecycle.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Implement Commit/Cancel interaction lifecycle**, integrated where applicable under M04 contract; tests: focused host/Chrome pointer and lifecycle checks, actual iPhone simulator single-touch/background smoke; evidence: `benchmark_results/mobile-touch/verification.json`. Available-target implementation only; physical multi-touch/stylus and Android/tablet qualification remain open.
 
-- [ ] WB-0410 Handle tool switching safely.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Handle tool switching safely**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0410 Handle tool switching safely.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Handle tool switching safely**, integrated where applicable under M04 contract; tests: focused host/Chrome pointer and lifecycle checks, actual iPhone simulator single-touch/background smoke; evidence: `benchmark_results/mobile-touch/verification.json`. Available-target implementation only; physical multi-touch/stylus and Android/tablet qualification remain open.
 
-- [ ] WB-0411 Handle screen disposal and lifecycle changes.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Handle screen disposal and lifecycle changes**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0411 Handle screen disposal and lifecycle changes.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Handle screen disposal and lifecycle changes**, integrated where applicable under M04 contract; tests: focused host/Chrome pointer and lifecycle checks, actual iPhone simulator single-touch/background smoke; evidence: `benchmark_results/mobile-touch/verification.json`. Available-target implementation only; physical multi-touch/stylus and Android/tablet qualification remain open.
 
 - [ ] WB-0412 Prevent duplicate/stale commands.
   - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
   - Acceptance: **Prevent duplicate/stale commands**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-0413 Add deterministic interaction tests.
-  - Status: PLANNED; priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
-  - Acceptance: **Add deterministic interaction tests**, integrated where applicable under M04 contract; tests: M04 verification scoped to this deliverable; evidence: pending.
+- [x] WB-0413 Add deterministic interaction tests.
+  - Status: VERIFIED (available-target implementation); priority: P1; dependencies: WB-0301, WB-0302, WB-0312.
+  - Acceptance: **Add deterministic interaction tests**, integrated where applicable under M04 contract; tests: focused host/Chrome pointer and lifecycle checks, actual iPhone simulator single-touch/background smoke; evidence: `benchmark_results/mobile-touch/verification.json`. Available-target implementation only; physical multi-touch/stylus and Android/tablet qualification remain open.
 
 ## M05 — Drawing Tools
 
@@ -1016,32 +1018,32 @@ Verification contract: Windows/macOS/Chrome/Edge/Safari/Android/iOS runs plus re
   - Acceptance: **Safari Web validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Current evidence: Actual Safari pen stroke/save/reload smoke at8772 verified; full supported-feature/file/IME qualification remains pending. `benchmark_results/product-ui/verification.json`.
 
 - [ ] WB-1306 Android validation.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **Android validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **Android validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-1307 iOS validation.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **iOS validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **iOS validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-1308 Mouse/trackpad interaction checks.
   - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
   - Acceptance: **Mouse/trackpad interaction checks**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1309 Touch gesture checks.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **Touch gesture checks**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **Touch gesture checks**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-1310 Keyboard/IME/RTL checks.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **Keyboard/IME/RTL checks**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **Keyboard/IME/RTL checks**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-1311 File Picker/Save behavior.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **File Picker/Save behavior**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **File Picker/Save behavior**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-1312 App lifecycle and background/resume.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **App lifecycle and background/resume**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **App lifecycle and background/resume**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-1313 Storage compatibility.
   - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.

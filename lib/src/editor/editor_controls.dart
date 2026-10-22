@@ -213,7 +213,7 @@ class EditorControls extends StatelessWidget {
                   title: const Text('Insert image'),
                   subtitle: supportsImagePicking
                       ? null
-                      : const Text('Available on macOS and Web'),
+                      : const Text('Available on Android, iOS, macOS and Web'),
                   enabled: writable && supportsImagePicking,
                   onTap: () {
                     Navigator.pop(context);
@@ -372,7 +372,7 @@ class EditorControls extends StatelessWidget {
           IconButton(
             tooltip: supportsImagePicking
                 ? 'Insert image'
-                : 'Image import available on macOS and Web',
+                : 'Image import available on Android, iOS, macOS and Web',
             onPressed: writable && supportsImagePicking
                 ? controller.pickAndInsertImage
                 : null,

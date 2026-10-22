@@ -921,14 +921,19 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void pointerCancel(PointerCancelEvent event) {
-    _touches.remove(event.pointer);
-    _touchNavigation = _touches.isNotEmpty;
-    _touchCamera = null;
-    final previous = _marqueeStart == null
-        ? null
-        : _selectionBeforeGesture.toList();
-    cancelGesture(notify: false);
-    if (previous != null) _setSelection(previous);
+    final trackedTouch = _touches.remove(event.pointer) != null;
+    if (_touchNavigation && trackedTouch) {
+      if (_touches.length >= 2) {
+        _startTouchNavigation();
+      } else {
+        _touchCamera = null;
+        _touchNavigation = _touches.isNotEmpty;
+      }
+      _notify(toolbar: true);
+      return;
+    }
+    if (event.pointer != _pointer) return;
+    cancelGesture(notify: false, restoreSelection: true);
     _notify(toolbar: true);
   }
 
@@ -976,7 +981,7 @@ final class EditorCanvasController extends ChangeNotifier {
           Point2(bounds.right, bounds.bottom),
           Point2(bounds.left, bounds.bottom),
         ];
-    final tolerance = camera.worldTolerance(touch ? 20 : 9);
+    final tolerance = camera.worldTolerance(touch ? 24 : 9);
     final rotation = Point2(
       bounds.center.x,
       bounds.top - camera.worldTolerance(24),
@@ -1101,6 +1106,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   int? _pointer;
+  PointerDeviceKind? _pointerKind;
   EditorTool? _gestureTool;
   Point2? _start;
   Point2? _lastScreen;
@@ -1176,7 +1182,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void setTool(EditorTool value) {
-    cancelGesture(notify: false);
+    cancelGesture(notify: false, restoreSelection: true);
     tool = value;
     if (value != EditorTool.select && value != EditorTool.pan) {
       selectedId = null;
@@ -1217,12 +1223,18 @@ final class EditorCanvasController extends ChangeNotifier {
       return;
     }
     if (event.kind == PointerDeviceKind.touch) {
+      // A finger/palm must not take ownership of an active pen stroke.
+      // Hardware palm rejection still belongs to the OS/device.
+      if (_pointerKind == PointerDeviceKind.stylus ||
+          _pointerKind == PointerDeviceKind.invertedStylus) {
+        return;
+      }
       _touches[event.pointer] = Point2(
         event.localPosition.dx,
         event.localPosition.dy,
       );
       if (_touches.length >= 2) {
-        cancelGesture(notify: false);
+        cancelGesture(notify: false, restoreSelection: true);
         _touchNavigation = true;
         _startTouchNavigation();
         _notify(toolbar: true);
@@ -1239,6 +1251,7 @@ final class EditorCanvasController extends ChangeNotifier {
     _selectionBeforeGesture = {..._selectedIds};
     _pressScreen = Point2(event.localPosition.dx, event.localPosition.dy);
     _pointer = event.pointer;
+    _pointerKind = event.kind;
     _gestureTool =
         (readOnly && tool != EditorTool.select) ||
             spaceHeld ||
@@ -1555,7 +1568,10 @@ final class EditorCanvasController extends ChangeNotifier {
     }
   }
 
-  void cancelGesture({bool notify = true}) {
+  void cancelGesture({bool notify = true, bool restoreSelection = false}) {
+    if (restoreSelection && _marqueeStart != null) {
+      _setSelection(_selectionBeforeGesture.toList());
+    }
     eraseChanges.clear();
     _longPressTimer?.cancel();
     _longPressTimer = null;
@@ -1574,6 +1590,7 @@ final class EditorCanvasController extends ChangeNotifier {
     _frameResizeAnchor = null;
     _rotatingHandle = false;
     _pointer = null;
+    _pointerKind = null;
     _gestureTool = null;
     _start = null;
     _lastScreen = null;
@@ -1656,7 +1673,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void trackpadStart(PointerPanZoomStartEvent event) {
-    cancelGesture(notify: false);
+    cancelGesture(notify: false, restoreSelection: true);
     _trackpadCamera = camera;
     _trackpadAnchor = Point2(event.localPosition.dx, event.localPosition.dy);
     _notify();
@@ -1684,7 +1701,8 @@ final class EditorCanvasController extends ChangeNotifier {
     _touchCamera = null;
     spaceHeld = false;
     _trackpadCamera = null;
-    cancelGesture();
+    cancelGesture(notify: false, restoreSelection: true);
+    _notify(toolbar: true);
   }
 
   @override
@@ -1723,7 +1741,7 @@ class EditorCanvas extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
       if (controller.viewportSize != constraints.biggest) {
-        controller.cancelGesture(notify: false);
+        controller.cancelGesture(notify: false, restoreSelection: true);
         controller._touches.clear();
         controller._touchNavigation = false;
         controller._touchCamera = null;

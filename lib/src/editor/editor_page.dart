@@ -39,6 +39,7 @@ class EditorPage extends StatefulWidget {
 class _EditorPageState extends State<EditorPage> {
   late final controller = widget.controller ?? EditorCanvasController();
   final focusNode = FocusNode(debugLabel: 'Blanko canvas');
+  late final AppLifecycleListener _interactionLifecycle;
 
   // Serialize global browser state across rapid Editor route replacements.
   static Future<void>? _browserMenuUpdates;
@@ -70,6 +71,9 @@ class _EditorPageState extends State<EditorPage> {
   void initState() {
     super.initState();
     _setBrowserMenu(false);
+    _interactionLifecycle = AppLifecycleListener(
+      onInactive: controller.focusLost,
+    );
     controller.onEditText = _editText;
     controller.onContextMenu = _contextMenu;
   }
@@ -157,6 +161,7 @@ class _EditorPageState extends State<EditorPage> {
 
   @override
   void dispose() {
+    _interactionLifecycle.dispose();
     _setBrowserMenu(true);
     controller.onEditText = null;
     controller.onContextMenu = null;

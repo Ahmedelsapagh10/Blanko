@@ -5,12 +5,13 @@ import 'package:flutter/services.dart';
 const _channel = MethodChannel('blanko/project_files');
 const _maximumBytes = 128 * 1024 * 1024;
 
-bool get supportsProductFiles => Platform.isMacOS;
+bool get supportsProductFiles =>
+    Platform.isMacOS || Platform.isAndroid || Platform.isIOS;
 
 Future<Uint8List?> pickProjectFile() async {
   if (!supportsProductFiles) {
     throw UnsupportedError(
-      'Project import is currently available on macOS and Web.',
+      'Project import is currently available on Android, iOS, macOS and Web.',
     );
   }
   final bytes = await _channel.invokeMethod<Uint8List>('pickProject');
@@ -27,7 +28,7 @@ Future<bool> saveProductFile({
 }) async {
   if (!supportsProductFiles) {
     throw UnsupportedError(
-      'File saving is currently available on macOS and Web.',
+      'File saving is currently available on Android, iOS, macOS and Web.',
     );
   }
   if (bytes.isEmpty || bytes.length > _maximumBytes) {
