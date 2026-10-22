@@ -452,6 +452,32 @@ class EditorProperties extends StatelessWidget {
             ),
           ),
         ] else if (c.tool == EditorTool.select) ...[
+          IconButton(
+            tooltip: 'Touch multi-select',
+            isSelected: c.multiSelectMode,
+            icon: const Icon(Icons.checklist_outlined),
+            selectedIcon: const Icon(Icons.checklist),
+            onPressed: writable ? c.toggleMultiSelect : null,
+          ),
+          if (c.editingGroupId != null)
+            TextButton.icon(
+              onPressed: c.inputEnabled ? c.exitGroup : null,
+              icon: const Icon(Icons.arrow_upward, size: 18),
+              label: const Text('Exit group'),
+            ),
+          if (c.hasSelection &&
+              c.selectedIds.any((id) => !c.session.canEdit(id)))
+            const Tooltip(
+              message:
+                  'Selection or its contents are locked. Use Locked items to unlock.',
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: Icon(
+                  Icons.lock_outline,
+                  semanticLabel: 'Locked selection',
+                ),
+              ),
+            ),
           AdvancedEditorActions(controller: c),
           if (c.selectedDrawing != null)
             IconButton(
@@ -521,10 +547,8 @@ class EditorProperties extends StatelessWidget {
           IconButton(
             tooltip: 'Delete selection',
             onPressed: c.canEditSelection ? c.deleteSelection : null,
-            icon: Icon(
-              Icons.delete_outline,
-              color: selected != null ? colors.error : null,
-            ),
+            color: colors.error,
+            icon: const Icon(Icons.delete_outline),
           ),
         ] else if (![
           EditorTool.pan,

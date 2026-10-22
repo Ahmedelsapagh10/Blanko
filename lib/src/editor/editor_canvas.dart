@@ -311,14 +311,12 @@ final class EditorCanvasController extends ChangeNotifier {
 
   void layoutSelection(String action) {
     if (!canEditSelection) return;
-    final parents = _selectedIds
-        .map((id) => session.document.byId[id]!.parentId)
-        .toSet();
-    if (parents.length > 1) {
+    if (!selectionSharesParent) {
       message = 'Align elements within the same frame or group.';
       _notify(toolbar: true);
       return;
     }
+    if (!canLayoutSelection(action)) return;
     _command(
       () => session.translateMany(
         selectionLayout({
@@ -591,6 +589,18 @@ final class EditorCanvasController extends ChangeNotifier {
       !clipboardBusy &&
       hasSelection &&
       _selectedIds.every(session.canEdit);
+
+  bool get selectionSharesParent =>
+      _selectedIds
+          .map((id) => session.document.byId[id]!.parentId)
+          .toSet()
+          .length ==
+      1;
+
+  bool canLayoutSelection(String action) =>
+      canEditSelection &&
+      selectionSharesParent &&
+      _selectedIds.length >= (action.startsWith('distribute') ? 3 : 2);
 
   ElementId _selectionTarget(ElementId id) {
     var target = id;

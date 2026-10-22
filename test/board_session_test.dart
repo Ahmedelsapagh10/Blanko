@@ -320,6 +320,9 @@ void main() {
     session.undo(); expect(session.document.elements.map((e)=>e.id),original.elements.map((e)=>e.id));
     session.redo(); expect(session.document.elements.map((e)=>e.id),changed.elements.map((e)=>e.id));
     expect(session.replaceElements({ElementId('element-1'):[]}),false);
+    final beforeClear = session.document;
+    expect(session.clearAll(),false);expect(session.document,same(beforeClear));
+    session.setLockedMany([ElementId('element-1')],false);
     session.clearAll();expect(session.document.elements,isEmpty);expect(session.document.title,'Keep me');
     session.undo();expect(session.document.elements.map((e)=>e.id),changed.elements.map((e)=>e.id));
   });

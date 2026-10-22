@@ -1035,7 +1035,10 @@ final class BoardSession {
 
   /// Explicit board-wide action; manifests stay alive for undo and other uses.
   bool clearAll() {
-    if (_document.elements.isEmpty) return false;
+    if (_document.elements.isEmpty ||
+        _document.elements.any((element) => element.locked)) {
+      return false;
+    }
     _commit(
       _Change([
         for (var i = 0; i < _document.elements.length; i++)

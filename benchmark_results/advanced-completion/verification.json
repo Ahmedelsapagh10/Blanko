@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-22",
+  "baseline": "1ec49a1d55f012c80602bf8b57fb9dfef18aa2d9",
+  "progress": "152/275; unchanged; no blanket M08/device/performance pass",
+  "environment": {
+    "host": "Apple M4 /16GiB macOS",
+    "flutter": "3.41.9 stable",
+    "dart": "3.11.5",
+    "app_modes": "Debug functional smoke only, no production performance claim",
+    "browser": "Chrome test profile; localhost8772"
+  },
+  "changes": {
+    "lib/src/editor/board_session.dart": "Enforce locked Clear All protection in command layer.",
+    "lib/src/editor/editor_canvas.dart": "Shared parent/count layout eligibility.",
+    "lib/src/editor/advanced_editor_actions.dart": "Disable invalid layout; clarify incompatible Group owners.",
+    "lib/src/editor/editor_controls.dart": "Direct multi-select, group exit, descendant lock indication, disabled Delete appearance.",
+    "lib/src/editor/editor_page.dart": "Reference-counted ordered browser context-menu ownership and disposal.",
+    "test/board_session_test.dart": "Correct old assertion that expected locked content to be cleared.",
+    "test/advanced_completion_session_test.dart": "Owner/descendant lock rejection, history and Undo/Redo.",
+    "test/advanced_completion_widget_test.dart": "Touch selection, group exit, lock indication, incompatible owners and simulated browser channel lifecycle.",
+    "docs": "MASTER_PLAN/PROJECT_STATUS/HANDOFF refreshed."
+  },
+  "verification": {
+    "analysis": "flutter analyze --no-pub: clean",
+    "host": {
+      "initial_focused_pass": 23,
+      "regressions_pass": 51,
+      "final_affected_pass": 11,
+      "final_browser_only_skips": 2,
+      "distinct_cases": 74
+    },
+    "Chrome": {
+      "integration_pass": 28,
+      "final_menu_focused_pass": 5,
+      "distinct_cases": 30
+    },
+    "commands": [
+      "flutter test --no-pub --concurrency=1 test/advanced_completion_widget_test.dart test/advanced_completion_session_test.dart test/board_session_test.dart test/advanced_editor_test.dart",
+      "flutter test --no-pub --concurrency=1 test/advanced_session_test.dart test/editor_clipboard_test.dart test/selection_snapping_test.dart test/editor_frames_test.dart test/png_export_aspect_test.dart test/drawing_tools_widget_test.dart",
+      "flutter test --no-pub --platform chrome --concurrency=1 test/advanced_completion_widget_test.dart test/advanced_completion_session_test.dart test/advanced_editor_test.dart test/editor_clipboard_test.dart test/selection_snapping_test.dart",
+      "flutter test --no-pub --platform chrome test/advanced_completion_widget_test.dart",
+      "flutter test --no-pub test/advanced_completion_widget_test.dart test/advanced_editor_test.dart",
+      "flutter analyze --no-pub"
+    ],
+    "notes": [
+      "Final Chrome channel ownership tests use a mocked platform channel; actual running Chrome menu verified separately.",
+      "Initial no-space runner interrupted; recovered by removing only generated caches.",
+      "Obsolete locked-clear assertion updated; initial new-test fixture/finder failures corrected. No failing tests presented as passed."
+    ]
+  },
+  "actual_macOS": [
+    "Independent proof import; circle+image multi-select without keyboard; Group; Move; uniform resize; rotate; Copy/Paste; Duplicate; Undo/Redo; Send to back; Lock.",
+    "Actual saved project with17 elements/3 Groups/1 lock; new process restored artwork/images/lock.",
+    "Unlock/Ungroup preserved visible appearance; app saved16-element result; actual Frame4K PNG file saved."
+  ],
+  "actual_Chrome": [
+    "Imported actual native .wboard with original images and transforms; actual reload preserved17elements/lock.",
+    "Reopened existing test profile after browser restart/restoration; refreshed against new dev server; same17elements and lock persisted.",
+    "Verified native Chrome menu no longer overlays Blanko right-click menu. Locked destructive actions disabled; Unlock works.",
+    "Ungroup16elements; Undo17; Redo16; actual4K Frame PNG downloaded as Drawing tools proof (1).png.",
+    "CUA continuous Group drag selected without observed movement; physical drag qualification remains inconclusive."
+  ],
+  "export_comparison": {
+    "dimensions": [
+      3840,
+      2160
+    ],
+    "mean_absolute_RGBA_channel_difference": 0.06961868851273148,
+    "pixels_with_any_channel_difference": 429542,
+    "visual": "Same transformed artwork, layering, marker alpha, Arabic/English, notes, dashed shape and original images. No editor controls/guides/handles/lock badges. Minor engine antialias/color rounding differences."
+  },
+  "portable_file": {
+    "elements": 17,
+    "groups": 3,
+    "locked": 1,
+    "originals": 2,
+    "original_dimensions": [
+      64,
+      32
+    ],
+    "bytes_each": 137,
+    "original_sha256": "2e9ac720880156058651f0ac0c8a72a3f27a36aef0f8c41fa34e448d554287e6",
+    "all_original_bytes_match_fixture": true
+  },
+  "limits": [
+    "No physical Chrome drag pass, native mobile/stylus/IME/modifier or assistive technology qualification.",
+    "No dense rendering/active editing profile or full regression-suite claim.",
+    "Clipboard remains internal/session-only; existing staging/size limits unchanged.",
+    "Current proof Boards16elements after unlock/ungroup; saved artifact17elements includes lock and3Groups."
+  ],
+  "artifacts": {
+    "chrome-4k.png": {
+      "bytes": 201075,
+      "sha256": "d6a1f810bc57d16baabae49cc14fe20980aae4f64253d7a712731ef14c8851df",
+      "dimensions": [
+        3840,
+        2160
+      ]
+    },
+    "chrome-context-menu.png": {
+      "bytes": 142882,
+      "sha256": "f1677424eaf5055bab13d3fc64d077a7b03ef14c142867f001f96b37a37beb52",
+      "dimensions": [
+        4718592,
+        4292935744
+      ]
+    },
+    "chrome-reopened.png": {
+      "bytes": 115670,
+      "sha256": "f1472f2ae9b7f5f4e6e105067b757d63579d8f8c73669930fe508192ac7d1247",
+      "dimensions": [
+        4718592,
+        4292935744
+      ]
+    },
+    "native-4k.png": {
+      "bytes": 199447,
+      "sha256": "23c6e67a4dc45ca25ca742a97d8780c3972ec0bea0d7fed6ce593fc9f35f8c81",
+      "dimensions": [
+        3840,
+        2160
+      ]
+    },
+    "native-edited.wboard": {
+      "bytes": 7910,
+      "sha256": "84e4c0905213760140cacc5985a65c08eef48ecc3c4b6665302a866426c1778b"
+    },
+    "native-reopened.png": {
+      "bytes": 97182,
+      "sha256": "7ec856fca33ac594f8edb60456dd1c17002a156cbfe4b0e94480f42f5b86ade0",
+      "dimensions": [
+        4718592,
+        4292935744
+      ]
+    }
+  }
+}

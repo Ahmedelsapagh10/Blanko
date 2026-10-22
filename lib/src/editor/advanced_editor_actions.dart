@@ -80,7 +80,7 @@ class AdvancedEditorActions extends StatelessWidget {
                         .toSet()
                         .length >
                     1
-            ? 'Group (same frame required)'
+            ? 'Group (same frame or group required)'
             : 'Group',
         editable && c.session.canGroup(c.selectedIds),
       ),
@@ -129,13 +129,7 @@ class AdvancedEditorActions extends StatelessWidget {
         'distribute-h': 'Distribute horizontally',
         'distribute-v': 'Distribute vertically',
       }.entries)
-        item(
-          action.key,
-          action.value,
-          editable &&
-              c.selectedIds.length >=
-                  (action.key.startsWith('distribute') ? 3 : 2),
-        ),
+        item(action.key, action.value, c.canLayoutSelection(action.key)),
       const PopupMenuDivider(),
       item(
         'multi',

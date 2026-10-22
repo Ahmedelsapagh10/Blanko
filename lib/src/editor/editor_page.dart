@@ -1,4 +1,5 @@
 import 'advanced_editor_actions.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -39,9 +40,36 @@ class _EditorPageState extends State<EditorPage> {
   late final controller = widget.controller ?? EditorCanvasController();
   final focusNode = FocusNode(debugLabel: 'Blanko canvas');
 
+  // Serialize global browser state across rapid Editor route replacements.
+  static Future<void>? _browserMenuUpdates;
+  static int _browserMenuOwners = 0;
+  void _setBrowserMenu(bool enabled) {
+    if (!kIsWeb) return;
+    if (enabled) {
+      if (--_browserMenuOwners > 0) return;
+    } else if (_browserMenuOwners++ > 0) {
+      return;
+    }
+    Future<void> update() => enabled
+        ? BrowserContextMenu.enableContextMenu()
+        : BrowserContextMenu.disableContextMenu();
+    late final Future<void> pending;
+    pending = (_browserMenuUpdates?.then((_) => update()) ?? update())
+        .catchError((Object error) {
+          debugPrint('Could not update the browser context menu: $error');
+        })
+        .whenComplete(() {
+          if (identical(_browserMenuUpdates, pending)) {
+            _browserMenuUpdates = null;
+          }
+        });
+    _browserMenuUpdates = pending;
+  }
+
   @override
   void initState() {
     super.initState();
+    _setBrowserMenu(false);
     controller.onEditText = _editText;
     controller.onContextMenu = _contextMenu;
   }
@@ -129,6 +157,7 @@ class _EditorPageState extends State<EditorPage> {
 
   @override
   void dispose() {
+    _setBrowserMenu(true);
     controller.onEditText = null;
     controller.onContextMenu = null;
     focusNode.dispose();
