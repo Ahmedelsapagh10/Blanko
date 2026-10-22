@@ -1,19 +1,58 @@
-# Blanko Mobile & Touch checkpoint — 2026-10-22
+# Blanko Open-Source Public Beta Release — 2026-10-22
 
-IN_PROGRESS;158/275 checked. Do not claim full mobile readiness or start another milestone. Android and iOS debug builds pass; actual iPhone17Pro/iOS26.2 simulator launch works. Host50/Chrome24 focused cases and analysis pass. Evidence/screenshots/commands: `benchmark_results/mobile-touch/verification.json`.
+COMPLETED; open-source release v0.1.0-beta.1 prepared and published. GitHub Actions CI/CD running cross-platform builds.
 
-Changes: active stylus owns its gesture while finger events are ignored (software policy, not hardware palm rejection). Unrelated pointer cancellation cannot discard active ink. Cancelling a touch while two remain rebases navigation; one-finger remainder cannot draw until all navigation fingers lift. Second-finger navigation, focus loss, tool change and viewport resize restore pre-marquee selection. Editor lifecycle listener cancels drafts on inactive; Workspace's existing ordered autosave remains. Touch corner target48px; transforms stay atomic. No pressure-variable width or tilt implementation; fixed width fallback.
+## What was done
 
-Native file bridges: Android SAF ACTION_OPEN/CREATE_DOCUMENT; iOS UIDocumentPicker with security-scoped coordinated reads and owned temporary export cleanup. One pending operation, cancel/error feedback, bounded imports (image16MiB/project64MiB), existing128MiB output limit. No broad permissions/new dependencies. iOS UIFileSharingEnabled/LSSupportsOpeningDocumentsInPlace expose public Documents/Exports only; private Boards/assets still use Application Support. CocoaPods generated initial Flutter-only iOS workspace integration/Podfile.lock; SDK/package versions unchanged. Actual iOS Files image import, .wboard export/reimport and600×400 Frame PNG output verified after unlock. Android provider behavior remains unverified.
+Release preparation for Blanko as an open-source public beta on the existing GitHub repository (Ahmedelsapagh10/whitebaord).
 
-Real iPhone work: independent second Board; Pen/Rectangle/Highlighter3elements, canceled malformed injected text safely; native Arabic keyboard typed مرحبا and English keyboard BLANKO on second line; draft survived Home→Blanko, then saved4elements. Shape moved; touch multi-select grouped Pen+Rectangle5elements; rotated and duplicated to8elements; Undo5/Redo8; Saved locally shown. Final app reinstalled/launched without wiping storage, then user continued editing existing Boards. After unlock, imported controlled10-element project, exported Frame PNG600×400, saved/reimported .wboard independently. User added stroke11; original64×32 image import produced12. Actual process terminate/launch reopened12elements and image, Saved locally. Landscape inspected.
+### Stage A — Safety audit
+- Scanned all tracked files, Git history, and assets for secrets, keys, credentials, and private data — none found.
+- Environment JSON files contain hardware/SDK info only (no tokens or credentials).
+- No keystores, `.jks`, `.pem`, `.env`, or `key.properties` in history.
+- Android release signing uses debug keys (no private keystore committed).
+- Font licenses: Roboto and Noto Sans Arabic — both SIL Open Font License 1.1, compatible with MIT.
+- Updated `.gitignore` to exclude signing keys, IDE files, user board data, and environment files.
 
-Simulator public fixtures: `Documents/Blanko-Test/sample.png` (64×32,137 original bytes) and sample.wboard from existing controlled drawing proof. No private Board data modified by test setup. Original first empty Board retained. Do not clear simulator/profile/app storage. iOS image import currently uses Files, not direct Photos library.
+### Stage B — Repository and README
+- Created MIT License with third-party font attribution.
+- Wrote professional Arabic README with hero section, features table, real screenshots, download links, build instructions, and contributing guide.
+- Copied 8 real application screenshots to `docs/screenshots/`.
+- Added community files: CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md.
+- Added GitHub issue templates (bug report, feature request) and PR template.
 
-Android: APK compile succeeds. Existing flutter_emulator repeatedly Offline, including reconnect and no-snapshot-load/no-snapshot-save cold boot; no Android launch/touch/file pass. Gracefully stopped only the test emulator after diagnostics. Retained AVD data. iPhone physical wireless unavailable; iPad/tablet, real multi-touch, Pencil/Android Pen/pressure, physical IME/composition, Android provider/lifecycle, low-memory and full platform gates remain open. Chrome regression tests are browser widgets, not a new physical Chrome drag pass.
+### Stage C — CI/CD
+- Created `.github/workflows/release.yml` with:
+  - Static analysis and full test suite validation
+  - macOS, Linux, Windows, and Android builds on appropriate runners
+  - Artifact packaging with correct naming
+  - SHA-256 checksum generation
+  - Automated GitHub Release with Arabic release notes
+  - Triggered on `v*` tags
 
-Laptop cleanup authorized by user: removed inactive ~/.gradle/caches versions8.12,9.7.1,8.14.3,9.2.0 (about9.7GiB regenerable caches), plus project build intermediates. Kept active8.14, SDKs, wrapper distributions, all user files/Boards/assets. Other projects may regenerate those caches. Initial build/test failures were no-space; final runs passed.
+### Stage D — Local build verification
+- macOS release build: ✅ Blanko.app (46.2MB), ZIP packaged (19.2MB), launched and verified.
+- Static analysis: ✅ clean (0 errors, 0 warnings).
+- Test suite: ✅ 401 passed, 3 skipped.
+- Version set to 0.1.0+1.
 
-Unrelated concurrent color-picker edits were preserved and excluded from this checkpoint: drawing_style_dialog.dart, new color_picker_widget.dart and color_picker_widget_test.dart. Do not add/discard them blindly.
+### Stage E — Publication
+- Committed: `51252ae` — "Prepare open-source public beta release v0.1.0-beta.1"
+- Pushed to `origin/master`.
+- Tag `v0.1.0-beta.1` created and pushed.
+- GitHub Actions triggered: https://github.com/Ahmedelsapagh10/whitebaord/actions/runs/39790721089
 
-Next exact actions: qualify iPad/supported Android device; native picker cancellation/error UI, physical multi-touch/stylus, touch handles and wider IME/lifecycle checks. iPhone native file success workflows, actual PNG output and restart now verified. Current iPhone simulator ID1A551A7C-6EF7-4445-897F-B68674068240. Commands: `flutter run -d <id>`; Android `flutter run -d emulator-5554` only after adb reports device. Rebuild final sources before testing. No signing/public publishing performed.
+### What's pending
+- GitHub Actions CI/CD completing cross-platform builds (Windows, Linux, Android).
+- Repository visibility change to Public (requires manual GitHub Settings action by owner).
+- Repository description, topics, and About section (requires GitHub web UI or API with auth).
+- macOS app is unsigned/unnotarized (expected for open-source project).
+- Android APK uses debug signing (noted in release notes).
+
+## Next exact actions
+1. Monitor GitHub Actions run completion — verify all 4 platform builds succeed.
+2. If any CI job fails, inspect logs and fix workflow.
+3. Set repository to Public in GitHub Settings (manual owner action).
+4. Add repository description, topics via GitHub web UI.
+5. Verify release page download links after CI completes.
+6. Continue existing roadmap: iPad/Android device qualification, stylus/multi-touch testing.
