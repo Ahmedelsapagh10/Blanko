@@ -12,7 +12,16 @@ void main() {
     'desktop more tools is an anchored menu and image import is discoverable',
     (tester) async {
       await workspace.open(tester, TestBoardStore());
-      expect(find.byTooltip('Insert image'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) =>
+              w is IconButton &&
+              (w.tooltip == 'Insert image' ||
+                  w.tooltip ==
+                      'Image import available on Android, iOS, macOS and Web'),
+        ),
+        findsOneWidget,
+      );
       await tester.tap(find.byTooltip('More tools'));
       await tester.pumpAndSettle();
       expect(find.text('Export frame'), findsOneWidget);

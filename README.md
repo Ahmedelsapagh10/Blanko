@@ -123,10 +123,10 @@
 
 | المنصة | التحميل | ملاحظات |
 |--------|---------|---------|
-| 🪟 **Windows** | [Blanko-Windows-x64.zip](https://github.com/Ahmedelsapagh10/whitebaord/releases/latest) | فك الضغط وشغّل `whiteboard.exe` |
-| 🐧 **Linux** | [Blanko-Linux-x64.tar.gz](https://github.com/Ahmedelsapagh10/whitebaord/releases/latest) | فك الضغط وشغّل `bundle/whiteboard` |
-| 🍎 **macOS** | [Blanko-macOS.zip](https://github.com/Ahmedelsapagh10/whitebaord/releases/latest) | فك الضغط واسحب إلى Applications |
-| 📱 **Android** | [Blanko-Android.apk](https://github.com/Ahmedelsapagh10/whitebaord/releases/latest) | فعّل التثبيت من مصادر خارجية |
+| 🪟 **Windows** | [Blanko-Windows-x64.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فك الضغط وشغّل `whiteboard.exe` |
+| 🐧 **Linux** | [Blanko-Linux-x64.tar.gz](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فك الضغط وشغّل `bundle/whiteboard` |
+| 🍎 **macOS** | [Blanko-macOS.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فك الضغط واسحب إلى Applications |
+| 📱 **Android** | [Blanko-Android.apk](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فعّل التثبيت من مصادر خارجية |
 | 🌐 **Web** | بناء من المصدر | `flutter run -d chrome` |
 
 > [!IMPORTANT]
@@ -163,8 +163,8 @@
 ### التشغيل
 
 ```bash
-git clone https://github.com/Ahmedelsapagh10/whitebaord.git
-cd whitebaord
+git clone https://github.com/Ahmedelsapagh10/Blanko.git
+cd Blanko
 flutter pub get
 
 # macOS
@@ -205,8 +205,8 @@ flutter build apk --release
 
 📖 راجع [دليل المساهمة](CONTRIBUTING.md) للتفاصيل
 
-🐛 [الإبلاغ عن مشكلة](https://github.com/Ahmedelsapagh10/whitebaord/issues/new?template=bug_report.md)
-✨ [اقتراح ميزة](https://github.com/Ahmedelsapagh10/whitebaord/issues/new?template=feature_request.md)
+🐛 [الإبلاغ عن مشكلة](https://github.com/Ahmedelsapagh10/Blanko/issues/new?template=bug_report.md)
+✨ [اقتراح ميزة](https://github.com/Ahmedelsapagh10/Blanko/issues/new?template=feature_request.md)
 
 ---
 

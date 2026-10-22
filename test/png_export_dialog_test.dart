@@ -10,6 +10,7 @@ import 'package:whiteboard/src/editor/board_session.dart';
 import 'package:whiteboard/src/editor/editor_canvas.dart';
 import 'package:whiteboard/src/editor/editor_page.dart';
 import 'package:whiteboard/src/editor/png_export_dialog.dart';
+import 'package:whiteboard/src/editor/project_file_gateway.dart';
 import 'package:whiteboard/src/geometry/geometry.dart';
 import 'package:whiteboard/src/theme/blanko_brand.dart';
 
@@ -156,6 +157,7 @@ void main() {
       expect(store.assets, isEmpty);
       await tester.pumpWidget(const SizedBox());
     },
+    skip: !supportsProductFiles,
   );
 
   testWidgets(
@@ -218,7 +220,7 @@ void main() {
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
     },
-    skip: kIsWeb,
+    skip: kIsWeb || !supportsProductFiles,
   );
 
   testWidgets(
@@ -264,6 +266,6 @@ void main() {
       }
       await tester.pumpWidget(const SizedBox());
     },
-    skip: kIsWeb,
+    skip: kIsWeb || !supportsProductFiles,
   );
 }

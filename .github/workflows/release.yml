@@ -42,7 +42,11 @@ jobs:
       - name: Package macOS App
         run: |
           cd build/macos/Build/Products/Release
-          zip -r -y Blanko-macOS.zip "whiteboard.app"
+          if [ -d "Blanko.app" ]; then
+            zip -r -y Blanko-macOS.zip "Blanko.app"
+          else
+            zip -r -y Blanko-macOS.zip *.app
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: Blanko-macOS
@@ -90,7 +94,11 @@ jobs:
       - name: Package Windows bundle
         shell: pwsh
         run: |
-          Compress-Archive -Path "build\windows\x64\runner\Release\*" -DestinationPath "Blanko-Windows-x64.zip"
+          if (Test-Path "build\windows\x64\runner\Release") {
+            Compress-Archive -Path "build\windows\x64\runner\Release\*" -DestinationPath "Blanko-Windows-x64.zip"
+          } else {
+            Compress-Archive -Path "build\windows\runner\Release\*" -DestinationPath "Blanko-Windows-x64.zip"
+          }
       - uses: actions/upload-artifact@v4
         with:
           name: Blanko-Windows-x64
@@ -147,7 +155,7 @@ jobs:
       - name: Generate checksums
         run: |
           cd artifacts
-          sha256sum * > SHA256SUMS.txt
+          sha256sum Blanko-* > SHA256SUMS.txt
           cat SHA256SUMS.txt
 
       - name: Create GitHub Release
@@ -199,7 +207,7 @@ jobs:
             - تطبيق macOS غير موثّق — قد تحتاج لفتحه من الإعدادات
             - APK Android موقّع بمفتاح Debug — للتجربة فقط
             - لم يُختبر على أجهزة لوحية أو أقلام رقمية بعد
-            - أبلغ عن المشاكل عبر [GitHub Issues](https://github.com/Ahmedelsapagh10/whitebaord/issues)
+            - أبلغ عن المشاكل عبر [GitHub Issues](https://github.com/Ahmedelsapagh10/Blanko/issues)
 
             </div>
           files: |

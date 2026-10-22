@@ -38,21 +38,25 @@ Release preparation for Blanko as an open-source public beta on the existing Git
 
 ### Stage E — Publication
 - Committed: `51252ae` — "Prepare open-source public beta release v0.1.0-beta.1"
-- Pushed to `origin/master`.
-- Tag `v0.1.0-beta.1` created and pushed.
-- GitHub Actions triggered: https://github.com/Ahmedelsapagh10/whitebaord/actions/runs/39790721089
+- Pushed to `origin/master` and tag `v0.1.0-beta.1` pushed.
+- Initial CI run (ID: 39790721089) diagnosed: 4 tests failed on Linux VM due to platform-specific feature gates (`supportsProductFiles` and `supportsImagePicking` are false on Linux). Also identified `Blanko.app` naming in macOS package step and updated repo links to `Ahmedelsapagh10/Blanko`.
+- Remediations applied:
+  - `test/png_export_dialog_test.dart`: added `skip: !supportsProductFiles` to native save tests.
+  - `test/product_ui_refinement_test.dart`: checked for either image import tooltip variant depending on platform capability.
+  - `.github/workflows/release.yml`: added robust `Blanko.app` detection for macOS zip, PowerShell fallback for Windows, clean `sha256sum Blanko-*` checksums, and updated issue URL.
+  - `README.md` and `CONTRIBUTING.md`: updated repository URLs to `Ahmedelsapagh10/Blanko`.
 
 ### What's pending
-- GitHub Actions CI/CD completing cross-platform builds (Windows, Linux, Android).
-- Repository visibility change to Public (requires manual GitHub Settings action by owner).
-- Repository description, topics, and About section (requires GitHub web UI or API with auth).
-- macOS app is unsigned/unnotarized (expected for open-source project).
+- Push CI fixes commit and update tag `v0.1.0-beta.1` to re-trigger GitHub Actions release workflow.
+- Monitor GitHub Actions cross-platform builds to full completion and verify release published.
+- Repository visibility change to Public (manual GitHub Settings action by owner).
+- Add repository description, topics (`whiteboard`, `flutter`, `canvas`, `open-source`, `arabic`) via GitHub web UI.
+- macOS app is unsigned/unnotarized (standard for open-source; noted in README).
 - Android APK uses debug signing (noted in release notes).
 
 ## Next exact actions
-1. Monitor GitHub Actions run completion — verify all 4 platform builds succeed.
-2. If any CI job fails, inspect logs and fix workflow.
-3. Set repository to Public in GitHub Settings (manual owner action).
-4. Add repository description, topics via GitHub web UI.
-5. Verify release page download links after CI completes.
-6. Continue existing roadmap: iPad/Android device qualification, stylus/multi-touch testing.
+1. Push the CI remediation commit to `origin/master`.
+2. Move tag `v0.1.0-beta.1` to the new commit and push (`git tag -f v0.1.0-beta.1 && git push -f origin v0.1.0-beta.1`).
+3. Monitor GitHub Actions release workflow until all jobs succeed and artifacts are attached.
+4. Verify release download links on `https://github.com/Ahmedelsapagh10/Blanko/releases`.
+5. Guide the repository owner on setting visibility to Public.

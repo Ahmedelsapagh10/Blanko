@@ -1,6 +1,6 @@
 # Open-Source Public Beta Release — 2026-10-22
 
-Release v0.1.0-beta.1 prepared and published. MIT License, professional Arabic README, GitHub Actions CI/CD, community files, real screenshots. macOS release build verified locally (Blanko.app 46.2MB, all 401 tests pass, analysis clean). Tag `v0.1.0-beta.1` pushed; GitHub Actions building Windows/Linux/Android artifacts. Repository: https://github.com/Ahmedelsapagh10/whitebaord
+Release v0.1.0-beta.1 prepared and published. MIT License, professional Arabic README, GitHub Actions CI/CD, community files, real screenshots. macOS release build verified locally (Blanko.app 46.2MB, all 401 tests pass, analysis clean). Fixed Linux runner test platform skips (supportsProductFiles / supportsImagePicking) and refined cross-platform artifact packaging in CI workflow. Repository: https://github.com/Ahmedelsapagh10/Blanko
 
 # Mobile & Touch checkpoint — 2026-10-22
 

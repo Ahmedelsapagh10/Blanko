@@ -13,8 +13,8 @@ Thank you for considering contributing to Blanko! 🎨
 ### Setup
 
 ```bash
-git clone https://github.com/Ahmedelsapagh10/whitebaord.git
-cd whitebaord
+git clone https://github.com/Ahmedelsapagh10/Blanko.git
+cd Blanko
 flutter pub get
 flutter run -d macos    # or: -d chrome, -d windows, -d linux
 ```
@@ -30,13 +30,13 @@ flutter analyze --no-fatal-infos   # Static analysis
 
 ### Reporting Bugs
 
-- Use the [Bug Report](https://github.com/Ahmedelsapagh10/whitebaord/issues/new?template=bug_report.md) issue template
+- Use the [Bug Report](https://github.com/Ahmedelsapagh10/Blanko/issues/new?template=bug_report.md) issue template
 - Include: steps to reproduce, expected vs. actual behavior, platform/OS, Flutter version
 - Attach screenshots or screen recordings when relevant
 
 ### Suggesting Features
 
-- Use the [Feature Request](https://github.com/Ahmedelsapagh10/whitebaord/issues/new?template=feature_request.md) issue template
+- Use the [Feature Request](https://github.com/Ahmedelsapagh10/Blanko/issues/new?template=feature_request.md) issue template
 - Describe the problem your feature solves
 - Keep suggestions focused and actionable
 
