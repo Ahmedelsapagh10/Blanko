@@ -68,8 +68,24 @@ Future<void> _filesMenu(WidgetTester tester) async {
   );
   expect(find.text('Export PNG'), findsOneWidget);
   expect(find.text('Import .wboard'), findsOneWidget);
-  await tester.sendKeyEvent(LogicalKeyboardKey.escape);
-  await tester.pump(const Duration(milliseconds: 250));
+  await tester.tap(find.text('Export PNG'));
+  await _waitFor(
+    tester,
+    () => find.byType(AlertDialog).evaluate().isNotEmpty,
+    'Windows PNG export dialog',
+  );
+  final exportButton = find.descendant(
+    of: find.byType(AlertDialog),
+    matching: find.byWidgetPredicate((widget) => widget is FilledButton),
+  );
+  expect(exportButton, findsOneWidget);
+  expect(tester.widget<FilledButton>(exportButton).onPressed, isNotNull);
+  await tester.tap(find.text('Close'));
+  await _waitFor(
+    tester,
+    () => find.byType(AlertDialog).evaluate().isEmpty,
+    'PNG dialog closing',
+  );
 
   // Exercise the real Release runner's channel registration without opening a
   // chooser. Missing native registration and unsupported methods fail this test.
