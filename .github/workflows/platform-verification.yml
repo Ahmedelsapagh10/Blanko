@@ -7,6 +7,10 @@ on:
         description: Verify only the Android emulator after a setup-only change
         type: boolean
         default: false
+      windows_only:
+        description: Verify the Windows Release save controls, reopening and branding
+        type: boolean
+        default: false
   push:
     branches: [master]
     paths:
@@ -36,13 +40,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: windows-latest
-            target: windows
-          - os: ubuntu-latest
-            target: linux
-          - os: macos-latest
-            target: macos
+        include: ${{ fromJSON(github.event_name == 'workflow_dispatch' && inputs.windows_only && '[{"os":"windows-latest","target":"windows"}]' || '[{"os":"windows-latest","target":"windows"},{"os":"ubuntu-latest","target":"linux"},{"os":"macos-latest","target":"macos"}]') }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 25
     steps:
@@ -67,7 +65,12 @@ jobs:
         if: runner.os == 'Linux'
         run: xvfb-run -a flutter test --no-pub integration_test/platform_smoke_test.dart -d linux
       - name: Build normal Release entry point
+        if: runner.os != 'Windows'
         run: flutter build ${{ matrix.target }} --release
+      - name: Windows Release save controls and real process reopening
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./tool/verify_windows_release.ps1
       - name: Windows Release startup
         if: runner.os == 'Windows'
         shell: pwsh
@@ -126,9 +129,11 @@ jobs:
           name: native-${{ matrix.target }}-diagnostics
           path: |
             release-startup.log
+            ${{ runner.temp }}/blanko-windows-release/*.json
           if-no-files-found: ignore
 
   native-android:
+    if: github.event_name != 'workflow_dispatch' || !inputs.windows_only
     name: Native Android emulator
     runs-on: ubuntu-latest
     timeout-minutes: 30

@@ -1,3 +1,7 @@
+# Windows correction in progress — 2026-10-24
+
+Current priority: downloaded Windows export arrow inactive, template icon. beta.1 excludes Windows file support; beta.3 includes it; user tag unconfirmed. Candidate code4 adds real Blanko ICO, window build number and real Windows Release default-store/files menu/two-process restart verification. New tool/verify_windows_release.ps1 runs only on fresh CI, builds smoke then normal lib/main, checks actual embedded icon. Do not alter metadata CompanyName/ProductName: Windows Boards live under that path. No app storage workaround justified. Validate Windows candidate before a new immutable release/tag; don't mark save fixed just from compilation. Web still awaits user URL. Preserve all Boards/keys and existing tags.
+
 # Blanko native-platform handoff — 2026-10-24
 
 Published beta.3 at source630e5b2/code3: https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.3. Release40019361470: all7 jobs passed, including real SDK37 guard, analysis, four native Release builds/startups, actual public download/checksum/archive checks. beta.1 assets/tags untouched; beta.2 tag retained, unpublished after certificate-parser failure. No force push/data reset.

@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 import json
 import os
+import struct
 import subprocess
+import sys
+import tempfile
 
-WORKSPACE = "/Users/ahmedelsapagh/Downloads/whiteboard"
+WORKSPACE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LIGHT_ICON_1024 = os.path.join(WORKSPACE, "design/brand/icons/blanko_app_icon_light_1024.png")
 SYMBOL_TRANSPARENT_4096 = os.path.join(WORKSPACE, "design/brand/icons/blanko_symbol_transparent_4096.png")
 
@@ -101,7 +104,34 @@ def generate_web_icons():
     sips_resize(LIGHT_ICON_1024, os.path.join(icons_dir, "Icon-maskable-192.png"), 192, 192)
     sips_resize(LIGHT_ICON_1024, os.path.join(icons_dir, "Icon-maskable-512.png"), 512, 512)
 
+def generate_windows_icon():
+    # Windows loads each resolution directly, including the 256px Explorer icon.
+    sizes = (16, 20, 24, 32, 40, 48, 64, 128, 256)
+    images = []
+    with tempfile.TemporaryDirectory(prefix="blanko-windows-icon-") as temporary:
+        for size in sizes:
+            filename = os.path.join(temporary, f"{size}.png")
+            sips_resize(LIGHT_ICON_1024, filename, size, size)
+            with open(filename, "rb") as source:
+                images.append(source.read())
+    offset = 6 + 16 * len(sizes)
+    directory = bytearray(struct.pack("<HHH", 0, 1, len(sizes)))
+    for size, image in zip(sizes, images):
+        dimension = 0 if size == 256 else size
+        directory.extend(struct.pack("<BBBBHHII", dimension, dimension, 0, 0,
+                                     1, 32, len(image), offset))
+        offset += len(image)
+    destination = os.path.join(WORKSPACE, "windows/runner/resources/app_icon.ico")
+    with open(destination, "wb") as output:
+        output.write(directory)
+        for image in images:
+            output.write(image)
+
 if __name__ == "__main__":
+    if sys.argv[1:] == ["--windows-only"]:
+        generate_windows_icon()
+        print("Windows Blanko icon generated.")
+        sys.exit(0)
     print("Generating Android icons...")
     generate_android_icons()
     print("Generating iOS icons...")
@@ -110,4 +140,6 @@ if __name__ == "__main__":
     generate_macos_icons()
     print("Generating Web icons...")
     generate_web_icons()
+    print("Generating Windows icon...")
+    generate_windows_icon()
     print("All icons successfully generated!")

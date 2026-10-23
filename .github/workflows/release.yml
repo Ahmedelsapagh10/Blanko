@@ -150,7 +150,9 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
-      - run: flutter build windows --release
+      - name: Verify Windows Release save controls, reopening and branding
+        shell: pwsh
+        run: ./tool/verify_windows_release.ps1
       - name: Verify Windows Release window before packaging
         shell: pwsh
         run: |

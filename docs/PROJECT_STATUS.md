@@ -1,3 +1,7 @@
+# Windows release remediation — 2026-10-24
+
+User reports inactive Files/export arrow and missing Windows branding in a downloaded package; exact downloaded tag remains unconfirmed. beta.1 source explicitly excludes Windows file support; beta.3 includes it. Windows ICO was still the Flutter template: replaced with existing Blanko artwork at nine sizes. Candidate code4 includes visible build number and a fail-closed Release test of normal default storage, enabled export menu and two-process acknowledged-save reopening, followed by rebuilding the actual normal entry and checking its embedded icon. Analysis/focused tests and actual hosted Windows execution pending; prior window-startup checks alone do not qualify the reported UI workflow. Preserve CompanyName/ProductName and all local Boards; no storage migration.
+
 # Native platform validation — 2026-10-23
 
 **169/276 checked; M13 remains IN_PROGRESS.** Published [v0.1.0-beta.3](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.3), source630e5b2/code3. All7 jobs40019361470 passed: analysis/tests, real SDK37 compatibility, Windows/Linux/macOS/Android Release builds/startup and public download/checksum/archive verification. Fixed Windows Board reopening, native Windows/Linux file workflows and bounded macOS imports; no data migration or runtime dependency/SDK upgrade.
