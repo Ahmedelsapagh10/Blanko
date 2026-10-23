@@ -2,7 +2,9 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-23. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Release priority2026-10-23 (166/275 checked): resume existing public beta, freeze features; source/tag `2659d8a`/`v0.1.0-beta.1` already published with successful four-platform CI. Verify downloads, packaging, source safety and accurate platform/signing/backup documentation. Do not recreate releases, move tags, force-push or repeat UI work. Stable V1/performance/device/signing gates remain open. Evidence: `docs/releases/verification-beta.1.json`.
+Platform verification priority2026-10-23 (169/276 checked): user requests working native platforms; Web deployment deferred until user supplies its URL. Close Windows/Linux native image/project/PNG file gaps using existing channels. Run actual OS-engine tests, separate Debug integration from Release startup, preserve user Boards, and never rewrite beta.1 artifacts/tag. Keep full device/signing/performance gates unchecked until evidenced.
+
+Historical beta.1 checkpoint2026-10-23 (166/275 checked at that point): resume existing public beta, freeze features; source/tag `2659d8a`/`v0.1.0-beta.1` already published with successful four-platform CI. Verify downloads, packaging, source safety and accurate platform/signing/backup documentation. Do not recreate releases, move tags, force-push or repeat UI work. Stable V1/performance/device/signing gates remain open. Evidence: `docs/releases/verification-beta.1.json`.
 
 Historical priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Mobile & Touch milestone; preserve the completed Advanced Editing, Frames/PNG/portable and M12 UI work, then stop for review. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
@@ -1000,12 +1002,12 @@ Acceptance contract: Actual OS/device/backend builds and runtime outcomes record
 Verification contract: Windows/macOS/Chrome/Edge/Safari/Android/iOS runs plus real input/IME/files/storage/lifecycle/performance matrix.
 
 - [ ] WB-1301 Windows desktop validation.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **Windows desktop validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **Windows desktop validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: `docs/releases/native-platform-verification.json`; OS-native engine/storage/file/PNG checks and Release startup pass. Wider physical/manual compatibility remains open.
 
 - [ ] WB-1302 macOS desktop validation.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **macOS desktop validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **macOS desktop validation**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: `docs/releases/native-platform-verification.json`; OS-native engine/storage/file/PNG checks and Release startup pass. Wider physical/manual compatibility remains open.
 
 - [ ] WB-1303 Chrome Web validation.
   - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
@@ -1048,8 +1050,8 @@ Verification contract: Windows/macOS/Chrome/Edge/Safari/Android/iOS runs plus re
   - Acceptance: **App lifecycle and background/resume**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending. Mobile checkpoint evidence/remaining gates: `benchmark_results/mobile-touch/verification.json`.
 
 - [ ] WB-1313 Storage compatibility.
-  - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
-  - Acceptance: **Storage compatibility**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: pending.
+  - Status: IN_PROGRESS; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
+  - Acceptance: **Storage compatibility**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: `docs/releases/native-platform-verification.json`; OS-native engine/storage/file/PNG checks and Release startup pass. Wider physical/manual compatibility remains open.
 
 - [ ] WB-1314 Platform-specific performance checks.
   - Status: PLANNED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
@@ -1058,6 +1060,10 @@ Verification contract: Windows/macOS/Chrome/Edge/Safari/Android/iOS runs plus re
 - [x] WB-1315 Record unsupported/unavailable hardware tests.
   - Status: VERIFIED; priority: P1; dependencies: relevant implemented feature; environment discovery after WB-0001.
   - Acceptance: **Record unsupported/unavailable hardware tests**, integrated where applicable under M13 contract; tests: M13 verification scoped to this deliverable; evidence: `benchmark_results/ui-ux/verification.json`; macOS/Chrome UI and focused tests, native mobile qualification remains separate.
+
+- [ ] WB-1316 Linux desktop validation.
+  - Status: IN_PROGRESS; priority: P1; dependencies: implemented editor and native file bridge.
+  - Acceptance: real Linux engine/storage/PNG checks and Release startup; full chooser UX and distribution/runtime compatibility remain open. Tests/evidence: `integration_test/platform_smoke_test.dart`, `docs/releases/native-platform-verification.json`; GitHub Ubuntu native job passed, other distributions unqualified.
 
 ## M14 — Production Hardening
 
@@ -1159,21 +1165,21 @@ Verification contract: CI matrix, installation/recovery/offline and authorized s
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Configure app icons/assets**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1505 Prepare Windows distribution.
-  - Status: IN_PROGRESS; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Prepare Windows distribution**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1505 Prepare Windows distribution.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Prepare Windows distribution**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta distribution scope): Full ZIP packaged; real Windows host/native engine tests and Release native-window startup passed in run39981289738. Unsigned beta scope; full device qualification remains WB-1301. `docs/releases/native-platform-verification.json`.
 
-- [ ] WB-1506 Prepare macOS distribution.
-  - Status: IN_PROGRESS; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Prepare macOS distribution**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1506 Prepare macOS distribution.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Prepare macOS distribution**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta distribution scope): Universal ZIP, valid Ad-hoc signature, native engine tests, actual local Release editor/image import and CI Release startup passed. Notarization remains external. `docs/releases/native-platform-verification.json`.
 
 - [ ] WB-1507 Prepare Web production build.
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Prepare Web production build**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1508 Prepare Android release build.
-  - Status: IN_PROGRESS; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Prepare Android release build**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1508 Prepare Android release build.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Prepare Android release build**, beta distribution scope: Published beta.3/code3/API24+ APK with three ABIs and fixed owner certificate; all7 release jobs40019361470 passed including signing, real SDK37 compatibility and actual public download/checksum/archive verification. Actual owner-signed local APK drawing, files, process restart and install-r code2→3 verified; post-upgrade UI shows both Boards and imported artwork. Physical-device/provider qualification remains open. `docs/releases/native-platform-verification.json`.
 
 - [ ] WB-1509 Prepare iOS release build.
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.

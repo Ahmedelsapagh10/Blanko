@@ -2,7 +2,7 @@
 
 ## v0.1.0-beta.3 — 2026-10-23
 
-Includes the native platform and persistence fixes below, Android build code3, and a strict certificate check compatible with numbered and SDK-range signer labels. All signing identities must match the approved owner certificate; additional or unapproved signers remain rejected.
+Includes the native platform and persistence fixes below, Android build code3, and a strict certificate check compatible with numbered, SDK-range and scheme-prefixed (`V3.0 Signer:`) labels. All signing identities must match the approved owner certificate; additional or unapproved signers remain rejected.
 
 ## v0.1.0-beta.2 — 2026-10-23
 

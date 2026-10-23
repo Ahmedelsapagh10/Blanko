@@ -1,6 +1,6 @@
 # Blanko — التثبيت وحدود النسخة التجريبية
 
-الإصدار المنشور: [v0.1.0-beta.1](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.1)، من الكود `2659d8a`. حزم Release مبنية في [GitHub Actions](https://github.com/Ahmedelsapagh10/Blanko/actions/runs/39794439149). الإصدار التجريبي لا يعني اعتماد جميع المنصات للإنتاج.
+الإصدار المنشور: [v0.1.0-beta.3](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.3)، من الكود `630e5b2`. حزم Release مبنية في [GitHub Actions](https://github.com/Ahmedelsapagh10/Blanko/actions/runs/40019361470). الإصدار التجريبي لا يعني اعتماد جميع المنصات للإنتاج.
 
 ## التحميل والتثبيت
 
@@ -15,21 +15,21 @@ sha256sum Blanko-Linux-x64.tar.gz
 
 على Windows استخدم `Get-FileHash .\Blanko-Windows-x64.zip -Algorithm SHA256`.
 
-- **macOS:** الحزمة Universal لـ Apple Silicon وIntel. فك الضغط وانقل `Blanko.app` إلى Applications. التوقيع Ad-hoc؛ لا يوجد Developer ID أو توثيق Apple. قد يمنع النظام فتحها. راجع مصدر الملف وإعدادات Privacy & Security بنفسك؛ لا تحتاج لتعطيل Gatekeeper على الجهاز.
+- **macOS:** فك الضغط وانقل `Blanko.app` إلى Applications. التوقيع Ad-hoc؛ لا يوجد Developer ID أو توثيق Apple. قد يمنع النظام فتحها. راجع مصدر الملف وإعدادات Privacy & Security بنفسك؛ لا تحتاج لتعطيل Gatekeeper على الجهاز.
 - **Windows x64:** فك ZIP كاملًا ثم شغّل `whiteboard.exe`. احتفظ بمجلد `data` وكل DLLs بجانبه. قد يلزم Microsoft Visual C++ Redistributable 2015–2022 x64؛ لا تحمّل DLLs منفردة من مواقع مجهولة.
 - **Linux x64:** فك الضغط وشغّل `./bundle/whiteboard` من بيئة سطح مكتب تدعم GTK3. احتفظ بـ `lib` و`data`. CI يستخدم `ubuntu-latest`؛ توزيعات أقدم أو مكتبات نظام مختلفة غير مؤهلة. يعتمد التشغيل على GTK3 وGLib وC++ runtime وبيئة عرض/OpenGL متوافقة. البناء من المصدر يحتاج CMake وNinja وClang وpkg-config و`libgtk-3-dev`.
-- **Android:** APK واحد لـ arm64-v8a وarmeabi-v7a وx86_64، Android 7.0/API24 أو أحدث. موقّع بمفتاح **Android Debug**؛ نسخة تجربة فقط وليست توزيعًا إنتاجيًا بمفتاح ثابت. اسم الحزمة `ahmedelsapagh.com.whiteboard`، الإصدار `0.1.0`، رقم البناء `1`. اسمح بالتثبيت من مصدر التحميل فقط إذا قررت الوثوق بالحزمة.
+- **Android:** APK واحد لـ arm64-v8a وarmeabi-v7a وx86_64، Android 7.0/API24 أو أحدث. موقّع بمفتاح إصدار المالك الثابت، وبصمته العامة في `android/release-certificate.sha256`. اسم الحزمة `ahmedelsapagh.com.whiteboard`، الإصدار `0.1.0`، رقم البناء `3`. اسمح بالتثبيت من مصدر التحميل فقط إذا قررت الوثوق بالحزمة.
 - **Web:** التشغيل من المصدر باستخدام `flutter run -d chrome`. لا يوجد موقع مستضاف أو حزمة Web منشورة ضمن هذا الإصدار. استضافة بناء `flutter build web --release` تحتاج HTTPS، أصلًا ثابتًا، وخدمة ملفات Flutter كاملة. ملفات Web تحتاج التحميل أول مرة؛ لا ندّعي أن إعادة التحميل دون إنترنت مؤهلة.
 - **iOS:** لا توجد IPA عامة؛ الاستخدام الحالي من المصدر/المحاكي. التوزيع على جهاز يحتاج هوية Apple وتوقيعًا مناسبًا.
 
 ## ما الذي تحقق فعليًا؟
 
-- بناء وتحزيم macOS وWindows وLinux وAndroid ناجح في CI؛ الملفات الأربعة حُمّلت وطابقت بصمات GitHub وSHA256SUMS.
-- الحزم تشمل ملفات التشغيل والموارد المطلوبة؛ أرشيف macOS يحفظ روابط frameworks، وLinux يحفظ صلاحيات التنفيذ.
-- macOS/Chrome: الرسم والحفظ وإعادة الفتح والصور وPNG وملفات `.wboard` مؤهلة في اختبارات المشروع السابقة. لا يثبت ذلك تشغيل حزمة Windows/Linux/Android المنشورة.
-- iPhone17Pro/iOS26.2: اختبار محاكي فعلي للرسم والملفات وإعادة التشغيل؛ ليس اختبار جهاز حقيقي.
-- Windows وLinux: التشغيل الفعلي غير متحقق؛ استيراد الصور وفتح/حفظ `.wboard` وتصدير PNG **غير متاحين حاليًا**. الحفظ التلقائي المحلي موجود في الكود، لكن اعتماده على هاتين المنصتين يحتاج اختبارًا فعليًا.
-- Android: APK صحيح البنية والتوقيع، لكن تشغيله واستيراد/تصدير الملفات على جهاز لم يُتحقق منه. اختبار الأجهزة اللوحية والقلم وضغطه ما زال مفتوحًا.
+- نجحت وظائف الإصدار السبع، بما فيها اختبارات التحليل والمحرك، تشغيل Release على Windows/Linux/macOS وAndroid، وتوقيع APK. وظيفة النشر حمّلت الملفات العامة الأربعة وفحصت SHA256SUMS وسلامة الأرشيفات؛ طابقت بصمات GitHub أيضًا.
+- أربع حالات داخل المحرك على Windows/Linux/macOS/Android وiOS: مزود التخزين الحقيقي، الرسم والتراجع والحفظ وإعادة فتح المتجر والصور الأصلية، ملفات مشاريع مستقلة وPNG مع فحص النسب، والتحقق من قناة الملفات الأصلية. إعادة فتح المتجر ليست إعادة تشغيل عملية النظام.
+- macOS Release: رسم واختيار صورة واستيرادها فعليًا. Android Release على محاكي API36: رسم/تراجع/أشكال، إعادة تشغيل العملية، حفظ PNG و`.wboard` واستيراد مشروع مستقل وصورة وبقائها بعد إعادة التشغيل. ترقية رقم البناء2 إلى3 بنفس المفتاح نجحت دون إزالة التطبيق؛ ظهرت اللوحتان والصورة بعدها. عدد عناصر اللوحة النشطة النهائي5 مقابل3 في اللقطة السابقة؛ لا ندّعي تطابقًا عدديًا لم يُثبت.
+- iPhone17Pro/iOS26.2: رسم/تراجع، حفظ PNG عبر Files، رسالة النجاح وإعادة تشغيل العملية؛ محاكي وليس جهازًا حقيقيًا. بناء iOS Release دون توقيع نجح، ولا توجد IPA عامة.
+- حوارات Windows/Linux الأصلية مدمجة وتُبنى وتُختبر قنواتها، لكن اختيار الملفات يدويًا على هاتين المنصتين لم يُؤهّل. مزودو Android الآخرون، الأجهزة الفعلية والتابلت والقلم وتوزيعات Linux الأوسع ما زالت مفتوحة. Web ينتظر رابط المالك؛ لم ننشر موقعًا.
+- الأدلة واللقطات: `releases/native-platform-verification.json` و`screenshots/native-verification/`. التحليل نظيف؛28 حالة محلية مركزة و6 حالات قراءة Swift و14 حالة حماية توقيع نجحت، مع اختبار SDK37 حقيقي مستقل.
 
 ## الحفظ والنسخ الاحتياطي
 
@@ -47,20 +47,16 @@ Flutter3.41.9/Dart3.11.5 هما الإصداران المستخدمان في CI 
 
 الـworkflow الحالي يقبل النشر بأسماء `vX.Y.Z-beta.N` فقط؛ الفروع وPull Requests تشغّل التحليل والاختبارات دون نشر. صلاحية الكتابة محصورة في وظيفة النشر، ونسخ Actions مثبتة بمعرف commit.
 
-**قبل إصدار Android بمفتاح دائم:** المالك ينشئ مفتاح الإصدار ويحفظه ونسخة احتياطية خارج Git، ثم يضيفه إلى مخزن أسرار CI ويضبط Gradle. لا يُطبع المفتاح أو كلمة المرور في السجل. مفتاح Debug الذي أنشأه runner للإصدار الحالي غير محفوظ، لذلك لا نضمن تحديث APK فوقه أو ثبات توقيعه في البناء التالي. لا تنشر Stable بهذه الآلية.
+**Android:** أسرار GitHub Actions الأربعة ضُبطت بموافقة المالك. النشر يتطلب مفتاح الإصدار ويتحقق من جميع هويات التوقيع قبل رفع APK. احتفظ بنسخة احتياطية من المفتاح خارج Git. توقيع beta.1 القديم Debug ومختلف؛ صدّر `.wboard` قبل أي إزالة ولا نضمن تحديثًا مباشرًا فوقه.
 
 **قبل توزيع macOS موثّق:** يلزم Apple Developer ID وتوقيع مناسب وNotarization والتحقق من التثبيت تحت Gatekeeper. لا توجد هذه الهوية في المستودع. Windows Authenticode وiOS signing ليسا معدّين أيضًا.
 
 CI وبصمات الملفات ليست اعتمادًا أمنيًا شاملًا أو ضمان أداء10,000عنصر. اختبارات الأجهزة والتوافق والتوقيع والأداء المتبقية تظل مفتوحة في MASTER_PLAN.
 
-## مرشح الإصدار التالي والتوقيع
+## إعداد التوقيع والتوافق
 
-الإصلاحات الجديدة لا تغيّر حزم beta.1 المنشورة. Windows: أُصلح اختلاف فواصل المسار الذي كان يمنع إعادة فتح اللوحات. Windows/Linux: أُضيف اختيار الصور والمشاريع وتصدير PNG عبر حوارات النظام. اختبارات المحرر داخل المحرك وتشغيل Release نجحت على Windows/Linux/macOS في run39978708438. فحص الحوارات يدويًا وتوافق الأجهزة الأوسع يبقيان مطلوبين.
+Gradle يقرأ `android/key.properties` المحجوب عن Git (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`) أو متغيرات `BLANKO_ANDROID_KEYSTORE_PATH`, `BLANKO_ANDROID_STORE_PASSWORD`, `BLANKO_ANDROID_KEY_ALIAS`, `BLANKO_ANDROID_KEY_PASSWORD`. الإعداد الجزئي يُرفض. غيابها جميعًا يسمح فقط ببناء محلي بتوقيع Debug؛ النشر العام يرفض غياب مفتاح المالك.
 
-لدعم توقيع Android دائم، أصبح Gradle يقرأ `android/key.properties` المحجوب عن Git (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`) أو متغيرات `BLANKO_ANDROID_KEYSTORE_PATH`, `BLANKO_ANDROID_STORE_PASSWORD`, `BLANKO_ANDROID_KEY_ALIAS`, `BLANKO_ANDROID_KEY_PASSWORD`. أي إعداد جزئي يُرفض؛ غيابها جميعًا يبقي توقيع Debug للتجربة فقط. لا ترسل كلمات المرور في المحادثة ولا ترفع المفتاح إلى Git.
+أسرار CI هي `BLANKO_ANDROID_KEYSTORE_BASE64`, `BLANKO_ANDROID_STORE_PASSWORD`, `BLANKO_ANDROID_KEY_ALIAS`, `BLANKO_ANDROID_KEY_PASSWORD`. يُكتب المفتاح مؤقتًا بصلاحيات خاصة ويُحذف بعد البناء، ولا يدخل Git أو السجلات. فحص SDK37 الحقيقي يسبق بناء Android. سبّب تنسيق `V3.0 Signer: ...` فشل مرشح beta.2؛ أُصلح في beta.3 دون إضعاف رفض الشهادات غير المعتمدة. tag beta.2 محفوظ ولم تُنشر له حزم؛ beta.1 التاريخي لم تُستبدل ملفاته.
 
-يمكن للمالك تزويد GitHub Actions بأربعة أسرار: `BLANKO_ANDROID_KEYSTORE_BASE64`, `BLANKO_ANDROID_STORE_PASSWORD`, `BLANKO_ANDROID_KEY_ALIAS`, `BLANKO_ANDROID_KEY_PASSWORD`. الـworkflow يكتب المفتاح مؤقتًا بصلاحية خاصة ويحذفه بعد البناء. هذا الدعم مُجهّز؛ التوقيع بمفتاح دائم لم يُتحقق منه بعد لعدم توفير مفتاح. التغيير إلى شهادة مختلفة عن beta.1 يحتاج نقل `.wboard` قبل أي إزالة/إعادة تثبيت؛ لا يوجد ضمان تحديث فوق توقيع Debug القديم.
-
-الويب المستضاف مؤجل حتى يرسل المالك رابطه. لم يُنشأ أو يُعدّل نشر Web خلال هذه المراجعة.
-
-عند الانتقال من اختبار native Debug إلى بناء Android Release على Flutter3.41.9، استخدم `flutter build apk --release` دون `--no-pub` حتى يعيد Flutter توليد تسجيل الإضافات ويستبعد إضافات الاختبار من Release. لا تعدّل GeneratedPluginRegistrant يدويًا.
+عند الانتقال من اختبار native Debug إلى بناء Android Release على Flutter3.41.9، استخدم `flutter build apk --release` دون `--no-pub` حتى يعيد Flutter توليد تسجيل الإضافات. لا تعدّل GeneratedPluginRegistrant يدويًا. اختبر Debug على محاكي مستقل خالٍ من بيانات المستخدم لأن شهادته تختلف عن Release.

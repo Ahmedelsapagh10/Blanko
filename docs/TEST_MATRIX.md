@@ -1,6 +1,25 @@
 # Test matrix
 
-Updated 2026-10-18. Complete requirement/task mapping: [MASTER_PLAN](MASTER_PLAN.md), per-milestone verification contracts. This matrix records current coverage rather than claiming future tests exist.
+Updated 2026-10-23. Complete requirement/task mapping: [MASTER_PLAN](MASTER_PLAN.md), per-milestone verification contracts. This matrix records current coverage rather than claiming future tests exist.
+
+## Native platform verification — 2026-10-23
+
+Four real-engine integration cases passed on Windows, Linux (Xvfb), macOS, Android emulator and iOS simulator. Actual providers/channels, isolated durable stores, editor gestures/Undo, original assets, portable files and PNG pixels are exercised. Automated store reopening is not a process restart. Current evidence, sources, real UI/process restarts and remaining hardware/provider limits: `releases/native-platform-verification.json`.
+
+```sh
+flutter test --no-pub integration_test/platform_smoke_test.dart -d windows
+xvfb-run -a flutter test --no-pub integration_test/platform_smoke_test.dart -d linux
+flutter test --no-pub integration_test/platform_smoke_test.dart -d macos
+flutter test --no-pub integration_test/platform_smoke_test.dart -d <disposable-android-device-id>
+flutter test --no-pub integration_test/platform_smoke_test.dart -d <ios-simulator-id>
+bash tool/test_android_signature.sh
+```
+
+Use a fresh disposable Android AVD for Debug integration tests, before installing the owner-signed Release APK. Their signing keys differ; never let a test installation uninstall an existing app holding user Boards. CI uses isolated fresh devices. Actual Android Release checks separately cover drawing, Undo/Redo, acknowledged save/process restart, Downloads-provider PNG/project output/import and imported-image restart. Actual411×706 PNG passes signature/chunk CRC/dimension checks and visual inspection; actual `.wboard` passes the production decoder. Other providers and physical-device qualification remain open.
+
+Desktop Release startup is checked before packaging; Android owner certificate must match `android/release-certificate.sha256`. Fourteen fast guard cases cover accepted SDK labels and rejected unapproved/additional signers, source-stamp substitution, missing output and verifier errors. The minimal `tool/test_android_signature_real.sh` creates only a disposable fixture key/APK, checks the installed SDK tool and requires a real verification marker; local SDK36.0.0 passed, hosted SDK37 regression verification passed in40018755569 and again before the published beta.3 build in40019361470. It does not use owner signing credentials or publish files.
+
+Do not add `--no-pub` to Android Release builds immediately following native Debug tests: Flutter3.41.9 must regenerate plugin registration for Release. Normal `flutter build apk --release` is verified; stale IntegrationTestPlugin registration previously caused a genuine build failure.
 
 ## MVP-02 persistence verification — 2026-10-19
 

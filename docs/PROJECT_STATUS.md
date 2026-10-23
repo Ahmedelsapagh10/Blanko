@@ -1,3 +1,11 @@
+# Native platform validation — 2026-10-23
+
+**169/276 checked; M13 remains IN_PROGRESS.** Published [v0.1.0-beta.3](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.3), source630e5b2/code3. All7 jobs40019361470 passed: analysis/tests, real SDK37 compatibility, Windows/Linux/macOS/Android Release builds/startup and public download/checksum/archive verification. Fixed Windows Board reopening, native Windows/Linux file workflows and bounded macOS imports; no data migration or runtime dependency/SDK upgrade.
+
+Four real-engine integration cases passed on each of Windows/Linux/macOS/Android/iOS,28 focused local host cases, clean analysis,6 Swift reader cases and14 signing guard cases. Actual macOS image picker/import, iPhone drawing/PNG/process restart and Android drawing/PNG/project/image/import/process restart verified. Owner-signed Android code2→3 install-r succeeds; post-upgrade UI shows both Boards and imported artwork. Final active count5 versus earlier3 is recorded without an exact unchanged-count claim. Screenshots/evidence: `docs/screenshots/native-verification/`, `docs/releases/native-platform-verification.json`.
+
+Owner signing secrets configured with explicit approval; private files ignored. SDK37's `V3.0 Signer: ...` output caused unpublished beta.2 failure; exact regression now passes before release builds. Existing tags/beta.1 files unchanged. beta.1 used a different Debug key: export `.wboard` before any uninstall. Windows/Linux manual chooser UX, wider Android providers/physical devices/tablets/stylus, Apple notarization/iOS distribution, Authenticode and dense performance remain unqualified. iOS unsigned device Release builds; no public IPA. Web waits for owner's URL. No all-hardware/zero-bug claim.
+
 # Open-source beta verification — 2026-10-23
 
 **166/275 checked.** Existing public repository: https://github.com/Ahmedelsapagh10/Blanko. Beta `v0.1.0-beta.1` source2659d8a published2026-10-22; run39794439149 all six jobs succeeded. Four actual downloads match GitHub SHA256 and published checksums; complete bundles inspected. MIT/OFL retained. Current review:687trackedfiles/856historyblobs, no known secret-pattern hits or sensitive signing-key paths; not a comprehensive security certification. Four controlled project fixtures contain only tiny deterministic image samples.

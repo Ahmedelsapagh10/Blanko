@@ -1,0 +1,378 @@
+{
+  "verifiedOn": "2026-10-23",
+  "repository": "https://github.com/Ahmedelsapagh10/Blanko",
+  "functionalSource": "38fffce003b0a9b759aa8e268373abe4e74d0be3",
+  "releasePreparationSource": "d10b8cb92d7ffa6e4e59179a2e361930eae637a3",
+  "publicRelease": {
+    "existing": "v0.1.0-beta.1",
+    "existingUnchanged": true,
+    "next": "v0.1.0-beta.3",
+    "nextStatus": "published; all seven release jobs passed; actual public downloads, checksums and archive integrity verified on publisher runner",
+    "releaseId": 422286795,
+    "url": "https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.3",
+    "source": "630e5b292dc8a8ed6b7c89436d561e2ae3f3bf47",
+    "run": 40019361470,
+    "assets": [
+      {
+        "name": "Blanko-Android.apk",
+        "size": 53286723,
+        "digest": "sha256:67daf7d64a9756708a6d48d72ceeca4eade6ea80582f5aaa5fda4656c2d9c48a",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-Android.apk"
+      },
+      {
+        "name": "Blanko-Linux-x64.tar.gz",
+        "size": 20428869,
+        "digest": "sha256:5c33a22908831afbcde9fa392dd4503b460845e91e0488b4c60e30522c7a5213",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-Linux-x64.tar.gz"
+      },
+      {
+        "name": "Blanko-macOS.zip",
+        "size": 19204440,
+        "digest": "sha256:1c35e4646d449a26121d840cd9448bbe7216047dd15129e5d63da81917599677",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-macOS.zip"
+      },
+      {
+        "name": "Blanko-Windows-x64.zip",
+        "size": 14214543,
+        "digest": "sha256:66425ff4612c91316026a23e1e001598b58da814e6cf4497ecf1b71f97887cdb",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-Windows-x64.zip"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "size": 347,
+        "digest": "sha256:4ea31ac64708ec99f28dc6f30c5e1922662231fc51a0f85b1c70846dab1776b0",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/SHA256SUMS.txt"
+      }
+    ],
+    "checksumContents": "67daf7d64a9756708a6d48d72ceeca4eade6ea80582f5aaa5fda4656c2d9c48a  Blanko-Android.apk\n5c33a22908831afbcde9fa392dd4503b460845e91e0488b4c60e30522c7a5213  Blanko-Linux-x64.tar.gz\n66425ff4612c91316026a23e1e001598b58da814e6cf4497ecf1b71f97887cdb  Blanko-Windows-x64.zip\n1c35e4646d449a26121d840cd9448bbe7216047dd15129e5d63da81917599677  Blanko-macOS.zip\n",
+    "existingUnchangedScope": "beta.1 binary assets and immutable tag; release body links corrected beta.3"
+  },
+  "toolchain": "Flutter3.41.9/Dart3.11.5 unchanged",
+  "nativeIntegration": {
+    "casesPerTarget": 4,
+    "targets": [
+      "Windows GitHub runner",
+      "Linux GitHub runner with Xvfb",
+      "macOS GitHub runner and local Apple M4",
+      "Android API36 x86_64 emulator on CI",
+      "iPhone17Pro/iOS26.2 arm64 simulator on local macOS"
+    ],
+    "mockNativeChannels": false,
+    "checks": [
+      "actual default application-support provider resolution without opening user store",
+      "real editor drawing/Undo/Redo, acknowledged save, original image bytes, widget/store disposal and reopen",
+      "portable project write/read/import to independent board, real900x400 PNG file decode and uniform circle/padding pixel assertions with Arabic/sticky/stroke/rotated-image fixture",
+      "native project bridge rejects unsafe save arguments without opening chooser"
+    ],
+    "storeReopeningIsProcessRestart": false
+  },
+  "ci": {
+    "desktop": {
+      "run": 39981289738,
+      "source": "5cf609a",
+      "nativeCasesPerOS": 4,
+      "hostRegressions": "pass on Windows/Linux/macOS",
+      "releaseBuildStartupPackage": "pass on all three desktop jobs; overall workflow Android setup did not pass"
+    },
+    "android": {
+      "run": 39984100752,
+      "source": "6079d4c",
+      "nativeCases": 4,
+      "releaseInstallStartAndForceStopRestart": "pass",
+      "signing": "CI Debug preview certificate at this run, not owner certificate"
+    },
+    "latestAnalysis": {
+      "run": 40018545386,
+      "source": "630e5b2",
+      "result": "success"
+    },
+    "latestNative": {
+      "run": 40016877740,
+      "source": "9f4afe9",
+      "result": "success; product tree identical to630e5b2"
+    },
+    "beta2Release": {
+      "run": 40012806101,
+      "source": "d10b8cb",
+      "result": "Android build succeeded; signing-identity assertion failed before artifact upload/publication. No beta.2 release published."
+    },
+    "signingDiagnostics": {
+      "firstRun": 40015109192,
+      "source": "eac4ae8",
+      "result": "failure; superseded by successful real SDK fixture and final beta.3 release",
+      "strictParserSource": "a7c4ed9",
+      "strictParserCI": {
+        "run": 40016017831,
+        "result": "failure: V3.0 scheme prefix still unrecognized"
+      },
+      "firstRunResult": "failure: loaded key matched, SDK37 numbered parser produced no identity",
+      "realSDKIsolation": {
+        "run": 40018050909,
+        "job": 120635125857,
+        "observed": "SDK37.0.0/apksigner0.9 prints V3.0 Signer: certificate SHA-256 digest: HEX",
+        "result": "isolated failure reproduced in tiny real APK without owner key"
+      },
+      "fixedSource": "630e5b2",
+      "finalRealSDKRun": 40018755569,
+      "finalRealSDKResult": "success",
+      "finalSourceAnalysisRun": 40018545386,
+      "finalSourceAnalysisResult": "success"
+    },
+    "code3Native": {
+      "run": 40016877740,
+      "source": "9f4afe9",
+      "result": "success on Windows/Linux/macOS/Android"
+    },
+    "code3Analysis": {
+      "run": 40016877720,
+      "result": "success"
+    },
+    "publishedRelease": {
+      "run": 40019361470,
+      "source": "630e5b292dc8a8ed6b7c89436d561e2ae3f3bf47",
+      "result": "all seven jobs success",
+      "tag": "v0.1.0-beta.3"
+    }
+  },
+  "local": {
+    "environment": "Apple M4/16GiB/macOS26.5.1/Xcode26.2",
+    "focusedHostTests": 28,
+    "analysis": "No issues found",
+    "macOSNativeIntegrationCases": 4,
+    "iOSNativeIntegrationCases": 4,
+    "swiftReaderCases": 6,
+    "macOSRelease": "Universal x86_64/arm64, valid Ad-hoc codesign; real editor drawing and image chooser/import observed",
+    "iOSRelease": "device Release compile without codesign succeeded; not an installable signed IPA",
+    "iOSVisual": "new independent board; pen/ellipse, Undo/Redo, Saved locally, native Files PNG Keep Both, Export complete/Done; actual app process terminate/launch restored two elements with session Undo reset",
+    "androidOwnerAPK": {
+      "file": "build/verified-release/Blanko-Android-code2.apk",
+      "sha256": "4478c651f35ce67028b40a7d39e8ab296d70fc1e8cef1dcb7d38bf8339280938",
+      "bytes": 53286723,
+      "certificateSha256": "867a313a36b647a54048038a7ab1f52a4c2e582a64f5b54dd122273864e30b9d",
+      "signatureMatchesOwnerKeystore": true,
+      "package": "ahmedelsapagh.com.whiteboard",
+      "versionName": "0.1.0",
+      "versionCode": 2,
+      "minSDK": 24,
+      "targetSDK": 36,
+      "abis": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86_64"
+      ],
+      "installAndColdLaunch": "pass on dedicated local API36 arm64 emulator",
+      "visualQualification": "Actual API36 arm64 emulator: pen, ellipse, Undo/Redo, Saved locally, real process restart restored2elements; native PNG save completed/success dialog closed; .wboard Save As/import created independent Board (library2boards); native image picker imported exported PNG and real process restart restored3elements including image."
+    },
+    "macOSCandidate": {
+      "file": "build/verified-release/Blanko-macOS.zip",
+      "sha256": "9f61c03864c06e935812456e0c64bec22923596e6773321452848d8f5611d042",
+      "versionCode": 2
+    },
+    "screenshots": [
+      "docs/screenshots/native-verification/macos-image-import.png",
+      "docs/screenshots/native-verification/ios-export.png",
+      "docs/screenshots/native-verification/ios-reopened.png",
+      "docs/screenshots/native-verification/android-reopened.png",
+      "docs/screenshots/native-verification/android-export.png",
+      "docs/screenshots/native-verification/android-library.png",
+      "docs/screenshots/native-verification/android-image-reopened.png",
+      "docs/screenshots/native-verification/android-upgraded.png",
+      "docs/screenshots/native-verification/android-upgraded-library.png"
+    ],
+    "androidNativeFiles": {
+      "png": {
+        "file": "build/verified-release/android-smoke/viewport.png",
+        "width": 411,
+        "height": 706,
+        "bytes": 5595,
+        "sha256": "28622405e2beaa3aa0cc0f93b1df52933dadfe95c8c0b8bbe89fea36378b3b3f",
+        "validation": "PNG signature/chunk CRCs, pixel dimensions and actual artwork viewed; no overlays"
+      },
+      "project": {
+        "file": "build/verified-release/android-smoke/board.wboard",
+        "bytes": 1614,
+        "sha256": "54a8265697576a6d9a977e9a907ab4066bacf03d736b1a66ffe7344602c8474c",
+        "validation": "Actual SAF output accepted by production Dart decodePortableProject, strict document and checksum;2elements; UI import created independent Board"
+      }
+    },
+    "signatureGuard": {
+      "cases": 14,
+      "result": "passed",
+      "realAPKWithSDKTools": [
+        "36.0.0 passed",
+        "36.1.0-rc1 passed"
+      ],
+      "scope": "Numbered, SDK-range and exact SDK37 scheme labels; every unapproved/additional signer, source-stamp substitution, empty output or verifier failure rejected",
+      "realSDK37Fixture": {
+        "run": 40018755569,
+        "result": "success with exact V3.0 scheme-prefixed output"
+      }
+    },
+    "androidCode3APK": {
+      "file": "build/verified-release/Blanko-Android.apk",
+      "sha256": "92fe6a9b2958c3873ca995987bb6bcc43223e9792a7e5d1e53055bb77d5a5872",
+      "versionCode": 3,
+      "signatureMatchesApprovedOwner": true,
+      "installOverCode2AndLaunch": "success; no uninstall/data clearing",
+      "postUpgradeVisualDataCheck": "observed both Boards and imported artwork; active5 and other2 elements; see androidPostUpgradeVisual for count discrepancy limitation"
+    },
+    "iOSCode3Release": "device Release compilation with no codesign passed"
+  },
+  "bugsAndRecovery": [
+    "Windows listBoards rejected correct files due to slash/backslash full-path comparison; strict filename comparison fixed actual failing Windows CI tests without changing persisted data",
+    "Android CI AVD discovery required explicit AVD home/path and platform-tools PATH",
+    "Flutter3.41.9 --no-pub after native Debug retained IntegrationTestPlugin registration while excluding Release dependency; standard build regenerates registration",
+    "macOS image native reader was unbounded and did not share pending-operation ownership; fixed and six real Foundation boundary/error cases executed",
+    "Local candidate transfer stalled; incomplete archives were not extracted or executed. Public-download validation added to GitHub runner.",
+    "Temporary local Android AVD directory vanished before resumed UI check; official SDK recreated only the dedicated test device using explicit persistent AVD home",
+    "beta.2 release pipeline built Android successfully but certificate equality guard failed. Kept the gate and immutable tag; no unverified APK published; added manual candidate diagnostics without publication.",
+    "After two ineffective digest-label parsers, tiny real SDK37 fixture isolated actual V3.0 Signer: prefix and extra colon. Fixed final-field parsing/all approved signer handling,14regressions; hosted SDK37 fixture and final beta.3 release passed."
+  ],
+  "signing": {
+    "ownerApprovalToConfigureGitHubSecrets": true,
+    "fourEncryptedSecretsConfigured": true,
+    "privateMaterialCommitted": false,
+    "localPrivateFilesIgnored": true,
+    "releaseWorkflowRequiresMatchingCertificate": true,
+    "signedCIArtifactVerification": "success: beta.3 Android release job120640787472 verifies all signing identities against the approved owner certificate before publication; publisher verifies actual public APK checksum/archive"
+  },
+  "limitations": [
+    "No guarantee of zero bugs on every hardware/OS variant",
+    "Windows/Linux native chooser UX, other Android document providers and wider manual qualification remain open; standard Android Downloads provider was verified.",
+    "Physical Android/iOS, tablets, stylus/pressure/palm rejection, wider IME and long-running memory/dense performance remain open",
+    "macOS is Ad-hoc/unnotarized; Windows Authenticode and iOS device signing not configured",
+    "Owner release key differs from beta.1 Debug certificate; export backups before any uninstall, never silently discard app data",
+    "Web deployment/testing deferred until owner supplies URL"
+  ],
+  "filesChanged": {
+    "windows/runner/": "COM native chooser/save bridge, worker IO, lifecycle and build integration",
+    "linux/runner/": "GTK native chooser/save bridge, bounded worker IO and runner integration",
+    "macos/Runner/MainFlutterWindow.swift": "Bound import reads before allocation and serialize image/project operations",
+    "lib/src/persistence/file_board_store.dart": "Compare strict board filenames instead of mixed-separator full paths on Windows",
+    "lib/src/editor/image_picker_io.dart": "Enable Windows/Linux existing native image channel",
+    "lib/src/editor/project_file_gateway_io.dart": "Enable Windows/Linux existing project/PNG channels",
+    "integration_test/platform_smoke_test.dart": "Four real-engine checks using isolated durable stores and real files/PNG pixels",
+    "test/file_board_store_test.dart": "Reject valid board contents under a mismatched filename",
+    "test/mobile_file_gateway_test.dart, test/project_file_gateway_test.dart, test/workspace_project_files_test.dart": "Include desktop bridge targets in relevant expectations",
+    "pubspec.yaml, pubspec.lock": "SDK integration_test dev tooling, no existing dependency upgrades; build code3",
+    "ios/Podfile.lock, ios/Runner.xcodeproj/project.pbxproj": "Generated native SDK integration-test registration",
+    "android/app/build.gradle.kts": "Read ignored local or CI signing credentials; reject partial configuration",
+    "android/release-certificate.sha256": "Approved public signing identity; not a private key",
+    ".github/workflows/platform-verification.yml": "OS-native tests, Release boot, Android disposable emulator and candidate artifacts",
+    ".github/workflows/release.yml": "Require verified owner signing; Release startup and public archive/download checks",
+    "README.md, CHANGELOG.md, docs/RELEASE.md, docs/releases/": "Current source/release distinction, safety notices, release notes and verification evidence",
+    "docs/MASTER_PLAN.md, docs/PROJECT_STATUS.md, docs/HANDOFF.md": "Verified beta distribution progress and explicit remaining platform gates",
+    "docs/screenshots/native-verification/": "Real macOS, iPhone simulator and Android emulator test-artwork screenshots, including post-upgrade library",
+    "tool/verify_android_signature.sh, tool/test_android_signature.sh": "Strict certificate identity guard across SDK formats and14 focused positive/negative cases",
+    "tool/test_android_signature_real.sh": "Tiny actual SDK signing fixture using only a disposable test key; execution marker required",
+    "docs/TEST_MATRIX.md": "Actual native coverage, device-safe test commands and SDK compatibility evidence"
+  },
+  "filesChangedExact": [
+    ".github/workflows/platform-verification.yml",
+    ".github/workflows/release.yml",
+    "CHANGELOG.md",
+    "README.md",
+    "android/app/build.gradle.kts",
+    "android/release-certificate.sha256",
+    "docs/HANDOFF.md",
+    "docs/MASTER_PLAN.md",
+    "docs/PROJECT_STATUS.md",
+    "docs/RELEASE.md",
+    "docs/TEST_MATRIX.md",
+    "docs/releases/native-platform-verification.json",
+    "docs/releases/v0.1.0-beta.1.md",
+    "docs/releases/v0.1.0-beta.2.md",
+    "docs/releases/v0.1.0-beta.3.md",
+    "docs/screenshots/native-verification/android-export.png",
+    "docs/screenshots/native-verification/android-image-reopened.png",
+    "docs/screenshots/native-verification/android-library.png",
+    "docs/screenshots/native-verification/android-reopened.png",
+    "docs/screenshots/native-verification/android-upgraded-library.png",
+    "docs/screenshots/native-verification/android-upgraded.png",
+    "docs/screenshots/native-verification/ios-export.png",
+    "docs/screenshots/native-verification/ios-reopened.png",
+    "docs/screenshots/native-verification/macos-image-import.png",
+    "integration_test/platform_smoke_test.dart",
+    "ios/Podfile.lock",
+    "ios/Runner.xcodeproj/project.pbxproj",
+    "lib/src/editor/image_picker_io.dart",
+    "lib/src/editor/project_file_gateway_io.dart",
+    "lib/src/persistence/file_board_store.dart",
+    "linux/runner/CMakeLists.txt",
+    "linux/runner/my_application.cc",
+    "linux/runner/native_file_bridge.cc",
+    "linux/runner/native_file_bridge.h",
+    "macos/Runner/MainFlutterWindow.swift",
+    "pubspec.lock",
+    "pubspec.yaml",
+    "test/file_board_store_test.dart",
+    "test/mobile_file_gateway_test.dart",
+    "test/project_file_gateway_test.dart",
+    "test/workspace_project_files_test.dart",
+    "tool/test_android_signature.sh",
+    "tool/test_android_signature_real.sh",
+    "tool/verify_android_signature.sh",
+    "windows/runner/CMakeLists.txt",
+    "windows/runner/flutter_window.cpp",
+    "windows/runner/flutter_window.h",
+    "windows/runner/native_file_gateway.cpp",
+    "windows/runner/native_file_gateway.h"
+  ],
+  "finalReleaseJobs": [
+    {
+      "name": "Real SDK signature compatibility",
+      "id": 120639595589,
+      "conclusion": "success"
+    },
+    {
+      "name": "Analyze & Test",
+      "id": 120639595961,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build Windows",
+      "id": 120640787395,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build Android APK",
+      "id": 120640787472,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build Linux",
+      "id": 120640787493,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build macOS",
+      "id": 120640787604,
+      "conclusion": "success"
+    },
+    {
+      "name": "Publish Release",
+      "id": 120643153077,
+      "conclusion": "success"
+    }
+  ],
+  "androidPostUpgradeVisual": {
+    "result": "observed",
+    "method": "owner-signed code2 to code3 adb install -r; no uninstall or data clearing; post-upgrade real UI",
+    "boards": [
+      {
+        "active": true,
+        "elements": 5
+      },
+      {
+        "active": false,
+        "elements": 2
+      }
+    ],
+    "note": "Earlier pre-upgrade check recorded3 active elements; final screen has5. Cause of extra edits not established. Both boards and previously imported artwork visibly remain; no exact unchanged-count claim.",
+    "screenshots": [
+      "docs/screenshots/native-verification/android-upgraded.png",
+      "docs/screenshots/native-verification/android-upgraded-library.png"
+    ]
+  },
+  "handoffUpdatedOn": "2026-10-24"
+}
