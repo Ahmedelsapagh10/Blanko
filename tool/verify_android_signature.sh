@@ -12,10 +12,10 @@ if [[ ! "$expected" =~ ^[0-9a-f]{64}$ ]]; then
   exit 1
 fi
 
-# SDK tools label signers either by number or by supported SDK range.
+# SDK tools label signers by number, SDK range, or signature scheme.
 # Require every reported signing identity to match; exclude source stamps.
 actual=$("$1" verify --print-certs "$2" |
-  awk -F ': ' '/^Signer.* certificate SHA-256 digest:/ { print tolower($NF) }' |
+  awk -F ': ' '/^(Signer.*|V[0-9]+([.][0-9]+)? Signer.*) certificate SHA-256 digest:/ { print tolower($NF) }' |
   tr -d '\r' | sort -u)
 if [[ "$actual" != "$expected" ]]; then
   echo "Android certificate mismatch. Approved: $expected; reported: ${actual:-none}" >&2

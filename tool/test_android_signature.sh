@@ -35,6 +35,11 @@ check fail "$(printf 'Signer #1 certificate SHA-256 digest: %s\nSigner #2 certif
 check fail "Source Stamp Signer certificate SHA-256 digest: $expected"
 check fail "$(printf 'Signer #1 certificate SHA-256 digest: %s\nSource Stamp Signer certificate SHA-256 digest: %s' "$other" "$expected")"
 check fail ''
+check pass "V3.0 Signer: certificate SHA-256 digest: $expected"
+check pass "$(printf 'V3.0 Signer: certificate SHA-256 digest: %s\nV3.1 Signer: certificate SHA-256 digest: %s' "$expected" "$expected")"
+check pass "$(printf 'Signer #1 certificate SHA-256 digest: %s\nV3.0 Signer: certificate SHA-256 digest: %s' "$expected" "$expected")"
+check fail "$(printf 'V3.0 Signer: certificate SHA-256 digest: %s\nV3.1 Signer: certificate SHA-256 digest: %s' "$expected" "$other")"
+check fail "$(printf 'V3.0 Signer: certificate SHA-256 digest: %s\nSource Stamp Signer certificate SHA-256 digest: %s' "$other" "$expected")"
 SIGNATURE_STATUS=1
 check fail "Signer #1 certificate SHA-256 digest: $expected"
 echo "$checks Android signature guard cases passed."
