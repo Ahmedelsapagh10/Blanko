@@ -25,6 +25,11 @@ class MainFlutterWindow: NSWindow, NSWindowDelegate {
         result(FlutterError(code: "unavailable", message: "Editor window is unavailable.", details: nil))
         return
       }
+      guard !window.productFilePending else {
+        result(FlutterError(code: "busy", message: "Another file operation is in progress.", details: nil))
+        return
+      }
+      window.productFilePending = true
       let panel = NSOpenPanel()
       if #available(macOS 11.0, *) {
         panel.allowedContentTypes = [.png, .jpeg, .webP, .gif, .bmp]
@@ -34,12 +39,16 @@ class MainFlutterWindow: NSWindow, NSWindowDelegate {
       panel.allowsMultipleSelection = false
       panel.canChooseDirectories = false
       panel.beginSheetModal(for: window) { response in
-        guard response == .OK, let url = panel.url else { result(nil); return }
+        guard response == .OK, let url = panel.url else {
+          window.productFilePending = false
+          result(nil)
+          return
+        }
         let scoped = url.startAccessingSecurityScopedResource()
         DispatchQueue.global(qos: .userInitiated).async {
           defer { if scoped { url.stopAccessingSecurityScopedResource() } }
           do {
-            let data = try Data(contentsOf: url)
+            let data = try window.readImport(url, maximumBytes: 16 * 1024 * 1024)
             let mime: String
             switch url.pathExtension.lowercased() {
             case "png": mime = "image/png"
@@ -50,11 +59,13 @@ class MainFlutterWindow: NSWindow, NSWindowDelegate {
             default: mime = "application/octet-stream"
             }
             DispatchQueue.main.async {
+              window.productFilePending = false
               result(["bytes": FlutterStandardTypedData(bytes: data),
                       "filename": url.lastPathComponent, "mimeType": mime])
             }
           } catch {
             DispatchQueue.main.async {
+              window.productFilePending = false
               result(FlutterError(code: "read_failed", message: "Could not read selected image: \(error.localizedDescription)", details: nil))
             }
           }
@@ -100,17 +111,7 @@ class MainFlutterWindow: NSWindow, NSWindowDelegate {
       DispatchQueue.global(qos: .userInitiated).async { [self] in
         defer { if scoped { url.stopAccessingSecurityScopedResource() } }
         do {
-          let values = try url.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey])
-          guard values.isRegularFile == true,
-                let size = values.fileSize, size > 0, size <= maximumProductFileBytes else {
-            throw NSError(domain: "Blanko", code: 1, userInfo: [
-              NSLocalizedDescriptionKey: "Project file must contain between 1 byte and 128 MiB."])
-          }
-          let data = try Data(contentsOf: url, options: .mappedIfSafe)
-          guard data.count <= maximumProductFileBytes else {
-            throw NSError(domain: "Blanko", code: 1, userInfo: [
-              NSLocalizedDescriptionKey: "Project file exceeds the 128 MiB limit."])
-          }
+          let data = try readImport(url, maximumBytes: 64 * 1024 * 1024)
           DispatchQueue.main.async { [self] in
             productFilePending = false
             result(FlutterStandardTypedData(bytes: data))
@@ -123,6 +124,41 @@ class MainFlutterWindow: NSWindow, NSWindowDelegate {
         }
       }
     }
+  }
+
+  private func readImport(_ url: URL, maximumBytes: Int) throws -> Data {
+    let values = try url.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey])
+    guard values.isRegularFile == true else {
+      throw NSError(domain: "Blanko", code: 1, userInfo: [
+        NSLocalizedDescriptionKey: "Select a regular file."])
+    }
+    if let size = values.fileSize, size > maximumBytes {
+      throw NSError(domain: "Blanko", code: 2, userInfo: [
+        NSLocalizedDescriptionKey: "File exceeds the \(maximumBytes / 1024 / 1024) MiB import limit."])
+    }
+    guard let stream = InputStream(url: url) else {
+      throw NSError(domain: "Blanko", code: 3, userInfo: [
+        NSLocalizedDescriptionKey: "Could not open the selected file."])
+    }
+    stream.open()
+    defer { stream.close() }
+    var data = Data()
+    var buffer = [UInt8](repeating: 0, count: 64 * 1024)
+    while true {
+      let count = stream.read(&buffer, maxLength: buffer.count)
+      if count < 0 { throw stream.streamError ?? NSError(domain: "Blanko", code: 4) }
+      if count == 0 { break }
+      guard count <= maximumBytes - data.count else {
+        throw NSError(domain: "Blanko", code: 2, userInfo: [
+          NSLocalizedDescriptionKey: "File exceeds the \(maximumBytes / 1024 / 1024) MiB import limit."])
+      }
+      data.append(contentsOf: buffer.prefix(count))
+    }
+    guard !data.isEmpty else {
+      throw NSError(domain: "Blanko", code: 5, userInfo: [
+        NSLocalizedDescriptionKey: "The selected file is empty."])
+    }
+    return data
   }
 
   private func saveProductFile(arguments: Any?, result: @escaping FlutterResult) {
