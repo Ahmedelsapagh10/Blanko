@@ -66,7 +66,8 @@
     },
     "archives": "All4 downloaded, archive integrity and required bundle files checked; SHA256SUMS and GitHub digests matched.",
     "macOS": "Universal x86_64/arm64, Ad-hoc signature; codesign --verify --deep --strict passed on first complete download. Exact downloaded binary NOT launched: initial execution denied until user approval; temporary verified files disappeared before approval. Restore via urllib stalled; bounded90second curl retry transferred1746138/19199950bytes and timed out. Partial restore was not extracted or executed. Existing CUA app window is not attributed to downloaded binary.",
-    "Android": "apksigner verify passed; certificate CN=Android Debug, SHA2562fb2879a714df574673c98880bdbc80e771b16f33e502f9e7948b24f210245cd; package ahmedelsapagh.com.whiteboard version0.1.0 code1 minSDK24 targetSDK36; arm64-v8a/armeabi-v7a/x86_64."
+    "Android": "apksigner verify passed; certificate CN=Android Debug, SHA2562fb2879a714df574673c98880bdbc80e771b16f33e502f9e7948b24f210245cd; package ahmedelsapagh.com.whiteboard version0.1.0 code1 minSDK24 targetSDK36; arm64-v8a/armeabi-v7a/x86_64.",
+    "partialDownloadRemoved": true
   },
   "limitations": [
     "Windows/Linux/Android downloaded packages not launched.",
@@ -76,5 +77,13 @@
     "No published binary replacement or tag rewrite performed."
   ],
   "releaseNotesUpdated": true,
-  "privateVulnerabilityReportingEnabled": true
+  "privateVulnerabilityReportingEnabled": true,
+  "followupCI": {
+    "commit": "67ebf5820feff0acf73e35f4314cfd0880a252e8",
+    "runId": 39975335007,
+    "url": "https://github.com/Ahmedelsapagh10/Blanko/actions/runs/39975335007",
+    "conclusion": "success",
+    "analyzeAndTests": "success",
+    "platformBuildsAndPublishing": "correctly skipped for master branch; published binary evidence belongs to tag2659d8a"
+  }
 }
