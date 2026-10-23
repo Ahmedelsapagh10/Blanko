@@ -2,11 +2,12 @@
 library;
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:whiteboard/src/editor/project_file_gateway.dart'
+    show supportsProductFiles;
 import 'package:whiteboard/src/document/document.dart';
 import 'package:whiteboard/src/document/document_settings.dart';
 import 'package:whiteboard/src/document/element.dart';
@@ -128,7 +129,7 @@ void main() {
       expect(find.text('Project file saved.'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 
   testWidgets(
@@ -178,7 +179,7 @@ void main() {
       expect(workspace.canvas(tester).camera.zoom, 1.5);
       await tester.pumpWidget(const SizedBox());
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 
   testWidgets(
@@ -217,7 +218,7 @@ void main() {
       expect(find.textContaining('Could not import project:'), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 
   testWidgets(
@@ -261,6 +262,6 @@ void main() {
       expect(requests, 1);
       await tester.pumpWidget(const SizedBox());
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 }

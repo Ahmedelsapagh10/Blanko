@@ -1,0 +1,105 @@
+name: Native Platform Verification
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'lib/**'
+      - 'test/**'
+      - 'integration_test/**'
+      - 'windows/**'
+      - 'linux/**'
+      - 'macos/**'
+      - 'android/**'
+      - 'ios/**'
+      - 'pubspec.*'
+      - '.github/workflows/platform-verification.yml'
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: '3.41.9'
+
+jobs:
+  native-desktop:
+    name: Native ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows
+          - os: ubuntu-latest
+            target: linux
+          - os: macos-latest
+            target: macos
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Linux build and display dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev xvfb
+      - run: flutter pub get
+      - name: Host regressions on this operating system
+        run: flutter test --no-pub
+      - name: Native engine integration (Debug)
+        if: runner.os != 'Linux'
+        run: flutter test --no-pub integration_test/platform_smoke_test.dart -d ${{ matrix.target }}
+      - name: Native Linux engine integration (Debug, Xvfb)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a flutter test --no-pub integration_test/platform_smoke_test.dart -d linux
+      - name: Build normal Release entry point
+        run: flutter build ${{ matrix.target }} --release --no-pub
+      - name: Windows Release startup
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $app = Start-Process -FilePath (Resolve-Path 'build/windows/x64/runner/Release/whiteboard.exe') -PassThru
+          try {
+            Start-Sleep -Seconds 8
+            $app.Refresh()
+            if ($app.HasExited) { throw "Release exited unexpectedly: $($app.ExitCode)" }
+            if ($app.MainWindowHandle -eq 0) { throw 'Release did not create a native window' }
+          } finally {
+            if (!$app.HasExited) { $null = $app.CloseMainWindow(); if (!$app.WaitForExit(5000)) { $app.Kill() } }
+          }
+      - name: macOS Release startup
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          build/macos/Build/Products/Release/Blanko.app/Contents/MacOS/Blanko > release-startup.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          sleep 8
+          kill -0 "$app_pid"
+      - name: Linux Release startup (Xvfb)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          xvfb-run -a bash -c '
+            build/linux/x64/release/bundle/whiteboard > release-startup.log 2>&1 &
+            app_pid=$!
+            trap '\''kill "$app_pid" 2>/dev/null || true'\'' EXIT
+            sleep 8
+            kill -0 "$app_pid"
+          '
+      - name: Preserve startup diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-${{ matrix.target }}-diagnostics
+          path: |
+            release-startup.log
+          if-no-files-found: ignore

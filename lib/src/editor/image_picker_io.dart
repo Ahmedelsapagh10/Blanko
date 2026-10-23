@@ -5,7 +5,11 @@ import 'package:flutter/services.dart';
 import 'image_picker_stub.dart';
 
 bool get supportsImagePicking =>
-    Platform.isMacOS || Platform.isAndroid || Platform.isIOS;
+    Platform.isMacOS ||
+    Platform.isWindows ||
+    Platform.isLinux ||
+    Platform.isAndroid ||
+    Platform.isIOS;
 
 Future<PickedImage?> pickImageFile() async {
   if (!supportsImagePicking) return null;

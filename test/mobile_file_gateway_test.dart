@@ -20,11 +20,19 @@ void main() {
     messenger.setMockMethodCallHandler(projectChannel, null);
   });
 
-  test('native file capabilities include mobile and macOS hosts', () {
-    final supported = Platform.isAndroid || Platform.isIOS || Platform.isMacOS;
-    expect(images.supportsImagePicking, supported);
-    expect(projects.supportsProductFiles, supported);
-  });
+  test(
+    'native file capabilities include supported desktop and mobile hosts',
+    () {
+      final supported =
+          Platform.isAndroid ||
+          Platform.isIOS ||
+          Platform.isMacOS ||
+          Platform.isWindows ||
+          Platform.isLinux;
+      expect(images.supportsImagePicking, supported);
+      expect(projects.supportsProductFiles, supported);
+    },
+  );
 
   test(
     'image channel preserves selected bytes and distinguishes cancellation and errors',
@@ -59,7 +67,7 @@ void main() {
         ),
       );
     },
-    skip: !(Platform.isAndroid || Platform.isIOS || Platform.isMacOS),
+    skip: !images.supportsImagePicking,
   );
 
   test(
@@ -109,6 +117,11 @@ void main() {
         throwsA(isA<PlatformException>()),
       );
     },
-    skip: !(Platform.isAndroid || Platform.isIOS || Platform.isMacOS),
+    skip:
+        !(Platform.isAndroid ||
+            Platform.isIOS ||
+            Platform.isMacOS ||
+            Platform.isWindows ||
+            Platform.isLinux),
   );
 }

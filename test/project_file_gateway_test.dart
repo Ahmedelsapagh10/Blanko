@@ -1,8 +1,6 @@
 @TestOn('vm')
 library;
 
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:whiteboard/src/editor/project_file_gateway_io.dart';
@@ -31,7 +29,7 @@ void main() {
       );
       await expectLater(pickProjectFile(), throwsA(isA<PlatformException>()));
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 
   test(
@@ -64,7 +62,7 @@ void main() {
         isFalse,
       );
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 
   test(
@@ -93,7 +91,7 @@ void main() {
       );
       expect(called, isFalse);
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 
   test(
@@ -112,6 +110,6 @@ void main() {
         throwsA(isA<PlatformException>()),
       );
     },
-    skip: !Platform.isMacOS,
+    skip: !supportsProductFiles,
   );
 }
