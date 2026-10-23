@@ -1,6 +1,12 @@
 # Changelog
 
+## v0.1.0-beta.3 — 2026-10-23
+
+Includes the native platform and persistence fixes below, Android build code3, and a strict certificate check compatible with numbered and SDK-range signer labels. All signing identities must match the approved owner certificate; additional or unapproved signers remain rejected.
+
 ## v0.1.0-beta.2 — 2026-10-23
+
+Candidate tag retained; not published. SDK37 changed signer output and the initial certificate parser failed closed before distribution.
 
 - Fix Windows Board Library/reopening across native path separators without changing stored data.
 - Enable Windows/Linux native image/project pickers and PNG/project file output.
