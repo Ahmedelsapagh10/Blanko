@@ -62,3 +62,5 @@ CI وبصمات الملفات ليست اعتمادًا أمنيًا شاملً
 يمكن للمالك تزويد GitHub Actions بأربعة أسرار: `BLANKO_ANDROID_KEYSTORE_BASE64`, `BLANKO_ANDROID_STORE_PASSWORD`, `BLANKO_ANDROID_KEY_ALIAS`, `BLANKO_ANDROID_KEY_PASSWORD`. الـworkflow يكتب المفتاح مؤقتًا بصلاحية خاصة ويحذفه بعد البناء. هذا الدعم مُجهّز؛ التوقيع بمفتاح دائم لم يُتحقق منه بعد لعدم توفير مفتاح. التغيير إلى شهادة مختلفة عن beta.1 يحتاج نقل `.wboard` قبل أي إزالة/إعادة تثبيت؛ لا يوجد ضمان تحديث فوق توقيع Debug القديم.
 
 الويب المستضاف مؤجل حتى يرسل المالك رابطه. لم يُنشأ أو يُعدّل نشر Web خلال هذه المراجعة.
+
+عند الانتقال من اختبار native Debug إلى بناء Android Release على Flutter3.41.9، استخدم `flutter build apk --release` دون `--no-pub` حتى يعيد Flutter توليد تسجيل الإضافات ويستبعد إضافات الاختبار من Release. لا تعدّل GeneratedPluginRegistrant يدويًا.

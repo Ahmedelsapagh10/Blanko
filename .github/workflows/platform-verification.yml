@@ -67,7 +67,7 @@ jobs:
         if: runner.os == 'Linux'
         run: xvfb-run -a flutter test --no-pub integration_test/platform_smoke_test.dart -d linux
       - name: Build normal Release entry point
-        run: flutter build ${{ matrix.target }} --release --no-pub
+        run: flutter build ${{ matrix.target }} --release
       - name: Windows Release startup
         if: runner.os == 'Windows'
         shell: pwsh
@@ -172,7 +172,7 @@ jobs:
       - name: Build and launch normal Android Release
         shell: bash
         run: |
-          flutter build apk --release --no-pub
+          flutter build apk --release
           adb install -r build/app/outputs/flutter-apk/app-release.apk
           adb shell am start -W -n ahmedelsapagh.com.whiteboard/ahmedelsapagh.com.whiteboard.MainActivity
           sleep 8
