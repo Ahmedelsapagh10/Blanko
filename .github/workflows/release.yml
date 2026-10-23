@@ -1,6 +1,12 @@
 name: Blanko Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      android_only:
+        description: Validate Android signing and upload a candidate without publishing
+        type: boolean
+        default: true
   pull_request:
     branches: [master]
   push:
@@ -149,7 +155,7 @@ jobs:
           path: Blanko-Windows-x64.zip
 
   build-android:
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.android_only)
     name: Build Android APK
     needs: analyze
     runs-on: ubuntu-latest
@@ -181,6 +187,10 @@ jobs:
             umask 077
             printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/blanko-release.keystore"
             echo "BLANKO_ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/blanko-release.keystore" >> "$GITHUB_ENV"
+            certificate=$(keytool -exportcert -keystore "$RUNNER_TEMP/blanko-release.keystore" -alias "$KEY_ALIAS" -storepass:env STORE_PASSWORD | sha256sum | cut -d ' ' -f 1)
+            expected=$(tr -d '[:space:]' < android/release-certificate.sha256)
+            echo "Loaded owner certificate SHA-256: $certificate"
+            test "$certificate" = "$expected" || { echo 'Configured keystore differs from the approved release identity.'; exit 1; }
           else
             echo '::error::Publishing requires the owner-provided Android release signing secrets.'
             exit 1
@@ -197,6 +207,9 @@ jobs:
           test -n "$signer"
           actual=$("$signer" verify --print-certs build/app/outputs/flutter-apk/app-release.apk | awk -F ': ' '/Signer #1 certificate SHA-256 digest:/ { print $2 }')
           expected=$(tr -d '[:space:]' < android/release-certificate.sha256)
+          echo "Verification tool: $signer"
+          echo "APK certificate SHA-256: $actual"
+          echo "Approved certificate SHA-256: $expected"
           test "$actual" = "$expected" || { echo 'Android signing certificate does not match the approved release identity.'; exit 1; }
           echo "Verified Android release certificate: $actual"
       - name: Remove temporary signing material
@@ -211,6 +224,7 @@ jobs:
           path: Blanko-Android.apk
 
   release:
+    if: startsWith(github.ref, 'refs/tags/v')
     name: Publish Release
     permissions:
       contents: write
