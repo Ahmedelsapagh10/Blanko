@@ -1,8 +1,10 @@
 # Master execution plan
 
-Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-21. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
+Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-23. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Mobile & Touch milestone; preserve the completed Advanced Editing, Frames/PNG/portable and M12 UI work, then stop for review. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
+Release priority2026-10-23 (166/275 checked): resume existing public beta, freeze features; source/tag `2659d8a`/`v0.1.0-beta.1` already published with successful four-platform CI. Verify downloads, packaging, source safety and accurate platform/signing/backup documentation. Do not recreate releases, move tags, force-push or repeat UI work. Stable V1/performance/device/signing gates remain open. Evidence: `docs/releases/verification-beta.1.json`.
+
+Historical priority override2026-10-19: MVP-01 and MVP-02 usable editor/persistence are verified; MVP-03A and MVP-03B are verified; current priority is the user-authorized Mobile & Touch milestone; preserve the completed Advanced Editing, Frames/PNG/portable and M12 UI work, then stop for review. Preserve rendering evidence and the10,000-element requirement; unresolved stress performance moves to M14 Production Hardening and does not block the usable editor. Correctness, crash safety and reasonable interaction remain mandatory. Speculative caching/fonts/repeated benchmark investigations paused. This explicit user priority supersedes historical rendering prerequisites for editor integration.
 
 UI/UX checkpoint 2026-10-20: M12 presentation implementation verified on available desktop/browser targets. Native phone/tablet runs, full assistive-technology review and M13 device/input qualification remain unchecked. No claim of full V1 or 10K performance acceptance. See `benchmark_results/ui-ux/verification.json` and `docs/HANDOFF.md`.
 
@@ -1141,13 +1143,13 @@ Acceptance contract: Reproducible CI/artifacts/metadata/docs; mandatory platform
 
 Verification contract: CI matrix, installation/recovery/offline and authorized signed-artifact checks, release-candidate acceptance/evidence review.
 
-- [ ] WB-1501 Set up reliable CI validation.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Set up reliable CI validation**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1501 Set up reliable CI validation.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Set up reliable CI validation**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Successful analyze/test CI; master/PR validation with read-only token, release-only write permission and pinned Actions. `docs/releases/verification-beta.1.json`.
 
-- [ ] WB-1502 Configure test/build matrix.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Configure test/build matrix**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1502 Configure test/build matrix.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Configure test/build matrix**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Appropriate macOS/Linux/Windows/Android runner builds succeeded in run39794439149; no runtime qualification implied. `docs/releases/verification-beta.1.json`.
 
 - [ ] WB-1503 Configure production app metadata.
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
@@ -1158,11 +1160,11 @@ Verification contract: CI matrix, installation/recovery/offline and authorized s
   - Acceptance: **Configure app icons/assets**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1505 Prepare Windows distribution.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Status: IN_PROGRESS; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Prepare Windows distribution**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1506 Prepare macOS distribution.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Status: IN_PROGRESS; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Prepare macOS distribution**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1507 Prepare Web production build.
@@ -1170,48 +1172,48 @@ Verification contract: CI matrix, installation/recovery/offline and authorized s
   - Acceptance: **Prepare Web production build**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1508 Prepare Android release build.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Status: IN_PROGRESS; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Prepare Android release build**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1509 Prepare iOS release build.
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Prepare iOS release build**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1510 Document signing/notarization requirements.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Document signing/notarization requirements**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1510 Document signing/notarization requirements.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Document signing/notarization requirements**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Ad-hoc/unnotarized macOS and ephemeral Debug-signed Android limitations, stable signing requirements and owner actions documented in RELEASE.md. `docs/releases/verification-beta.1.json`.
 
 - [ ] WB-1511 Document browser deployment requirements.
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Document browser deployment requirements**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1512 Create release notes and changelog.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Create release notes and changelog**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1512 Create release notes and changelog.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Create release notes and changelog**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Published Arabic beta notes and CHANGELOG.md; immutable tag retained. `docs/releases/verification-beta.1.json`.
 
-- [ ] WB-1513 Create user-facing backup limitations.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Create user-facing backup limitations**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1513 Create user-facing backup limitations.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Create user-facing backup limitations**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Explicit local/browser data loss, session-only Undo, portable backup and APK reinstall warnings in README/RELEASE.md. `docs/releases/verification-beta.1.json`.
 
-- [ ] WB-1514 Prepare installation and recovery documentation.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Prepare installation and recovery documentation**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1514 Prepare installation and recovery documentation.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Prepare installation and recovery documentation**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Complete-bundle install, checksum verification, backup/reimport and recovery limits documented; unavailable platforms called out. `docs/releases/verification-beta.1.json`.
 
 - [ ] WB-1515 Conduct release candidate verification.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Status: IN_PROGRESS; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Conduct release candidate verification**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
 - [ ] WB-1516 Complete final security/performance review.
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
   - Acceptance: **Complete final security/performance review**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
 
-- [ ] WB-1517 Produce release artifacts where toolchains allow.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Produce release artifacts where toolchains allow**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1517 Produce release artifacts where toolchains allow.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Produce release artifacts where toolchains allow**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Four existing published Release artifacts downloaded; required runtime/assets and archive integrity checked; hashes match GitHub and SHA256SUMS. `docs/releases/verification-beta.1.json`.
 
-- [ ] WB-1518 Identify external publishing/account requirements.
-  - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Identify external publishing/account requirements**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence: pending.
+- [x] WB-1518 Identify external publishing/account requirements.
+  - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
+  - Acceptance: **Identify external publishing/account requirements**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta scope): Existing public repository/owner authenticated, MIT/OFL retained; missing durable signing/notarization identities recorded; private vulnerability reports enabled. `docs/releases/verification-beta.1.json`.
 
 - [ ] WB-1519 Final production readiness sign-off.
   - Status: PLANNED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.

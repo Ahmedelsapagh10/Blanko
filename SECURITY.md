@@ -10,9 +10,9 @@
 
 If you discover a security vulnerability, please report it responsibly:
 
-1. **Do NOT open a public issue** for security vulnerabilities
-2. **Email**: Contact the maintainer directly through their [GitHub profile](https://github.com/Ahmedelsapagh10)
-3. **Include**: A clear description of the vulnerability, steps to reproduce, and potential impact
+1. **Do not open a public issue** with an exploit, private Board, or credentials.
+2. Use [GitHub private vulnerability reporting](https://github.com/Ahmedelsapagh10/Blanko/security/advisories/new), enabled for this repository.
+3. Include affected version/platform, reproduction steps and impact. Share a minimal synthetic project rather than personal data.
 
 ## Scope
 
@@ -24,4 +24,4 @@ Blanko is a local-first application with no backend services, no authentication,
 
 ## Response
 
-We aim to acknowledge security reports within 48 hours and provide a fix or mitigation plan within 7 days for confirmed vulnerabilities.
+This is a community-maintained beta; response and remediation times are not guaranteed. The maintainer will triage private reports and coordinate disclosure.

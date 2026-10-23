@@ -1,6 +1,8 @@
-# Open-Source Public Beta Release — 2026-10-22
+# Open-source beta verification — 2026-10-23
 
-Release v0.1.0-beta.1 prepared and published. MIT License, professional Arabic README, GitHub Actions CI/CD, community files, real screenshots. macOS release build verified locally (Blanko.app 46.2MB, all 401 tests pass, analysis clean). Fixed Linux runner test platform skips (supportsProductFiles / supportsImagePicking) and refined cross-platform artifact packaging in CI workflow. Repository: https://github.com/Ahmedelsapagh10/Blanko
+**166/275 checked.** Existing public repository: https://github.com/Ahmedelsapagh10/Blanko. Beta `v0.1.0-beta.1` source2659d8a published2026-10-22; run39794439149 all six jobs succeeded. Four actual downloads match GitHub SHA256 and published checksums; complete bundles inspected. MIT/OFL retained. Current review:687trackedfiles/856historyblobs, no known secret-pattern hits or sensitive signing-key paths; not a comprehensive security certification. Four controlled project fixtures contain only tiny deterministic image samples.
+
+Corrected beta asset URLs, unsupported Windows/Linux file workflows,100-operation session Undo and backup/reinstall warnings. Added release/install guide and changelog. CI now validates master/PR and limits publishing to beta tags; Actions pinned, write token restricted to publishing. Private security reports enabled. Local analysis clean;34focusedtests pass,1platform skip. Published Windows/Linux/Android packages not launched; Android is Debug-signed and not update-stable, macOS Ad-hoc/unnotarized. Stable/device/performance gates remain unchecked. Exact evidence: `docs/releases/verification-beta.1.json`.
 
 # Mobile & Touch checkpoint — 2026-10-22
 

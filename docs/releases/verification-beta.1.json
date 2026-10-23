@@ -1,0 +1,80 @@
+{
+  "verifiedOn": "2026-10-23",
+  "repository": "https://github.com/Ahmedelsapagh10/Blanko",
+  "visibility": "public",
+  "tag": "v0.1.0-beta.1",
+  "sourceCommit": "2659d8abbbadc6169c8f7e3df7b2cc7eddffd0a8",
+  "releaseId": 420817690,
+  "releaseUrl": "https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.1",
+  "ci": {
+    "runId": 39794439149,
+    "url": "https://github.com/Ahmedelsapagh10/Blanko/actions/runs/39794439149",
+    "jobs": {
+      "Analyze & Test": "success",
+      "Build Android APK": "success",
+      "Build macOS": "success",
+      "Build Linux": "success",
+      "Build Windows": "success",
+      "Publish Release": "success"
+    }
+  },
+  "downloads": [
+    {
+      "name": "Blanko-Android.apk",
+      "bytes": 53286799,
+      "sha256": "8d8eb91acd80e6dda0685eeb45998c3e73f93acef6239da1a84e67848e5472fd",
+      "downloadedAndMatched": true,
+      "url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-Android.apk"
+    },
+    {
+      "name": "Blanko-Linux-x64.tar.gz",
+      "bytes": 20393500,
+      "sha256": "c958272e3a75857ba3d8f99d4055978195dd27b08486220eba44a5624d2b861f",
+      "downloadedAndMatched": true,
+      "url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-Linux-x64.tar.gz"
+    },
+    {
+      "name": "Blanko-macOS.zip",
+      "bytes": 19199950,
+      "sha256": "09c373fb89144cc3ca14b0452180c10e31738b47c04a7179a31c6508b68129c2",
+      "downloadedAndMatched": true,
+      "url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-macOS.zip"
+    },
+    {
+      "name": "Blanko-Windows-x64.zip",
+      "bytes": 14156800,
+      "sha256": "14851c87fba277eca5dceef9f8f2460f6aeb8d07f4e576a0e018457175dc076a",
+      "downloadedAndMatched": true,
+      "url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-Windows-x64.zip"
+    }
+  ],
+  "audit": {
+    "trackedFiles": 687,
+    "historicalBlobs": 856,
+    "knownSecretPatternHits": 0,
+    "sensitiveKeyPathCandidates": 0,
+    "scope": "Pattern scan for private keys, GitHub/AWS/Google/Slack credentials. Not a comprehensive security certification. Local developer paths/hardware diagnostics in historical engineering reports retained; no history rewrite.",
+    "projectFixtures": "4 tracked controlled test projects; embedded images all137byte64x32 deterministic PNGs. JPEG fixture derived from Blanko icon. No live Board store or signing key tracked.",
+    "fonts": "Roboto and Noto Sans Arabic retain OFL files; own source MIT; Flutter/dependency NOTICES retained in bundles."
+  },
+  "localChecks": {
+    "analyze": "No issues",
+    "tests": {
+      "passed": 34,
+      "skipped": 1,
+      "command": "flutter test --no-pub test/png_export_aspect_test.dart test/png_export_dialog_test.dart test/workspace_project_files_test.dart test/file_board_store_test.dart test/theme_preferences_test.dart"
+    },
+    "archives": "All4 downloaded, archive integrity and required bundle files checked; SHA256SUMS and GitHub digests matched.",
+    "macOS": "Universal x86_64/arm64, Ad-hoc signature; codesign --verify --deep --strict passed on first complete download. Exact downloaded binary NOT launched: initial execution denied until user approval; temporary verified files disappeared before approval. Restore via urllib stalled; bounded90second curl retry transferred1746138/19199950bytes and timed out. Partial restore was not extracted or executed. Existing CUA app window is not attributed to downloaded binary.",
+    "Android": "apksigner verify passed; certificate CN=Android Debug, SHA2562fb2879a714df574673c98880bdbc80e771b16f33e502f9e7948b24f210245cd; package ahmedelsapagh.com.whiteboard version0.1.0 code1 minSDK24 targetSDK36; arm64-v8a/armeabi-v7a/x86_64."
+  },
+  "limitations": [
+    "Windows/Linux/Android downloaded packages not launched.",
+    "Windows/Linux image import, project open/save and PNG output unavailable.",
+    "No permanent Android release key/upgrade guarantee; no Apple Developer ID/notarization.",
+    "Physical mobile/tablet/stylus/IME, full platform qualification and10K performance remain open.",
+    "No published binary replacement or tag rewrite performed."
+  ],
+  "releaseNotesUpdated": true,
+  "privateVulnerabilityReportingEnabled": true
+}

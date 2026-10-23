@@ -10,7 +10,7 @@
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.41-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Public%20Beta-orange)]()
+[![Status](https://img.shields.io/badge/Status-Public%20Beta-orange)](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.1)
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20Android%20%7C%20Web-blue)]()
 
 [**⬇️ تحميل**](#-التحميل) · [**✨ المميزات**](#-المميزات) · [**🔧 البناء من المصدر**](#-البناء-من-المصدر) · [**🤝 المساهمة**](#-المساهمة)
@@ -70,7 +70,7 @@
 - تصدير PNG بدقات مخصصة حتى 4K
 - ملفات `.wboard` قابلة للنقل بين الأجهزة
 - مكتبة لوحات مع إنشاء وتكرار وحذف
-- تراجع/إعادة غير محدود في الجلسة
+- تراجع/إعادة لآخر 100 عملية خلال الجلسة
 - وضع داكن 🌙 فاتح ☀️ وتلقائي
 
 </td>
@@ -109,7 +109,7 @@
 </td>
 <td align="center">
 <img src="docs/screenshots/phone-dark.png" alt="واجهة الهاتف" width="200"><br>
-<sub>واجهة الهاتف</sub>
+<sub>واجهة الهاتف — تصيير Flutter لاختبار التخطيط</sub>
 </td>
 </tr>
 </table>
@@ -119,20 +119,20 @@
 ## ⬇️ التحميل
 
 > [!NOTE]
-> هذه **نسخة تجريبية عامة** (Public Beta). التطبيق يعمل بشكل جيد لكن قد تصادف بعض المشاكل البسيطة.
+> هذه **نسخة تجريبية عامة** `v0.1.0-beta.1`، وليست إصدارًا مستقرًا. اكتمل بناء الحزم الأربع في CI، لكن بناء الحزمة لا يثبت تشغيلها على كل جهاز. راجع [حالة التحقق والتثبيت](docs/RELEASE.md).
 
 | المنصة | التحميل | ملاحظات |
 |--------|---------|---------|
-| 🪟 **Windows** | [Blanko-Windows-x64.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فك الضغط وشغّل `whiteboard.exe` |
-| 🐧 **Linux** | [Blanko-Linux-x64.tar.gz](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فك الضغط وشغّل `bundle/whiteboard` |
-| 🍎 **macOS** | [Blanko-macOS.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فك الضغط واسحب إلى Applications |
-| 📱 **Android** | [Blanko-Android.apk](https://github.com/Ahmedelsapagh10/Blanko/releases/latest) | فعّل التثبيت من مصادر خارجية |
+| 🪟 **Windows** | [Blanko-Windows-x64.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-Windows-x64.zip) | فك الضغط وشغّل `whiteboard.exe` |
+| 🐧 **Linux** | [Blanko-Linux-x64.tar.gz](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-Linux-x64.tar.gz) | فك الضغط وشغّل `bundle/whiteboard` |
+| 🍎 **macOS** | [Blanko-macOS.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-macOS.zip) | فك الضغط واسحب إلى Applications |
+| 📱 **Android** | [Blanko-Android.apk](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/Blanko-Android.apk) | فعّل التثبيت من مصادر خارجية |
 | 🌐 **Web** | بناء من المصدر | `flutter run -d chrome` |
 
 > [!IMPORTANT]
 > - تطبيق macOS **غير موثّق من Apple** — قد تحتاج للسماح بفتحه من إعدادات النظام
 > - APK الأندرويد موقّع بمفتاح Debug — للتجربة والاستخدام الشخصي
-> - تحقق من سلامة الملفات عبر `SHA256SUMS.txt` في صفحة الإصدار
+> - تحقق من سلامة الملفات عبر [SHA256SUMS.txt](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.1/SHA256SUMS.txt) في صفحة الإصدار
 
 ---
 
@@ -140,12 +140,12 @@
 
 | | |
 |---|---|
-| 🔒 **خصوصية كاملة** | لا حسابات، لا تسجيل دخول، لا تتبع |
+| 🔒 **عمل محلي** | لا حسابات أو خادم لحفظ اللوحات؛ ملفات الجهاز غير مشفّرة بواسطة التطبيق |
 | 📴 **يعمل بدون إنترنت** | بعد التثبيت لا حاجة لاتصال |
 | 💻 **متعدد المنصات** | كود واحد لـ macOS, Windows, Linux, Android, Web |
 | 📁 **ملفاتك ملكك** | بيانات محلية وملفات `.wboard` قابلة للنقل |
 | 🛠️ **مفتوح المصدر** | كود شفاف تحت رخصة MIT |
-| 🎯 **مبني بـ Flutter** | أداء عالي وتجربة مستخدم سلسة |
+| 🎯 **مبني بـ Flutter** | قاعدة واحدة للرسم والتحرير |
 
 ---
 
@@ -153,7 +153,7 @@
 
 ### المتطلبات
 
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) 3.41.x (stable)
+- [Flutter SDK](https://docs.flutter.dev/install) 3.41.9 (نسخة CI الحالية)
 - Dart SDK 3.11.x (يأتي مع Flutter)
 - **macOS**: Xcode 26+
 - **Windows**: Visual Studio 2022+ مع "Desktop development with C++"
@@ -177,7 +177,7 @@ flutter run -d windows
 flutter run -d linux
 
 # Chrome
-flutter run -d web-server --web-port=8766 --web-hostname=localhost
+flutter run -d chrome
 
 # Android
 flutter run -d <device-id>
@@ -215,11 +215,14 @@ flutter build apk --release
 > [!WARNING]
 > هذه نسخة تجريبية عامة (Public Beta) وليست إصدار مستقر.
 
-- لم يُختبر بشكل كامل على أجهزة لوحية أو أقلام رقمية
+- Windows وLinux: الحزم بُنيت في CI، ولم يُتحقق من تشغيلها فعليًا. استيراد الصور وفتح/حفظ `.wboard` وتصدير PNG غير متاحين عليهما حاليًا
+- Android: الحزمة بُنيت وفُحص توقيعها؛ تشغيل التطبيق على جهاز فعلي غير متحقق
+- اختبار iPhone كان على المحاكي؛ الأجهزة اللوحية والأقلام الرقمية ما زالت غير مؤهلة بالكامل
 - تطبيق macOS غير موقّع من Apple (يتطلب سماح يدوي)
-- APK Android يستخدم توقيع Debug
+- APK Android يستخدم توقيع Debug مؤقتًا؛ التحديث إلى إصدار بمفتاح مختلف قد يتطلب إعادة تثبيت تؤدي إلى فقد البيانات المحلية. صدّر نسخة `.wboard` قبل ذلك
 - أداء المشاريع الكبيرة جداً لم يُحسّن بعد
-- لا يوجد مزامنة سحابية أو تعاون مباشر حالياً
+- لا توجد مزامنة أو نسخة احتياطية سحابية. الحفظ التلقائي ليس نسخة احتياطية؛ صدّر مشاريعك دوريًا واحتفظ بالملفات خارج بيانات التطبيق
+- [دليل التثبيت والنسخ الاحتياطي وقيود المنصات](docs/RELEASE.md)
 
 ---
 
