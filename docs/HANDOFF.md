@@ -1,6 +1,8 @@
-# Windows correction in progress — 2026-10-24
+# Windows correction handoff — 2026-10-24
 
-Current priority: downloaded Windows export arrow inactive, template icon. beta.1 excludes Windows file support; beta.3 includes it; user tag unconfirmed. Candidate code4 adds real Blanko ICO, window build number and real Windows Release default-store/files menu/two-process restart verification. New tool/verify_windows_release.ps1 runs only on fresh CI, builds smoke then normal lib/main, checks actual embedded icon. Do not alter metadata CompanyName/ProductName: Windows Boards live under that path. No app storage workaround justified. Validate Windows candidate before a new immutable release/tag; don't mark save fixed just from compilation. Web still awaits user URL. Preserve all Boards/keys and existing tags.
+Candidate d195d1d/code4 passed Windows run40042010681:19focused checks, two actual Release write/read processes with normal default storage and UI; Files/PNG controls enabled; exact drawing/camera/original asset reopening; normal entry rebuilt; actual EXE Blanko icon and startup/package pass. Earlier Debug native4 and402host/3skips passed. First Release failures were test-only Escape debug-name lookup; exact exception captured, pointer/dialog interaction fixes it. No production persistence workaround. User's downloaded tag unconfirmed: beta.1 lacks Windows file support; beta.3 includes it. Actual template ICO omission fixed; window identifies build4. CompanyName/ProductName preserved to keep Board storage location.
+
+Next: create new immutable beta.4 tag from verified candidate+notes; require all release gates including actual Windows Release check again; verify public downloads/checksums, update README/download notes and push final handoff. Never move old tags or replace old binaries. Preserve Boards/keys. Web still waits owner's URL; manual native Windows chooser/user hardware remains separate. No unrelated features.
 
 # Blanko native-platform handoff — 2026-10-24
 

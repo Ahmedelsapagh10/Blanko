@@ -2,6 +2,10 @@
 
 Updated 2026-10-23. Complete requirement/task mapping: [MASTER_PLAN](MASTER_PLAN.md), per-milestone verification contracts. This matrix records current coverage rather than claiming future tests exist.
 
+## Windows Release correction — 2026-10-24
+
+`tool/verify_windows_release.ps1` is deliberately restricted to a fresh Windows GitHub runner. It builds `integration_test/windows_release_test.dart` as actual Release/AOT with self-reported fail-closed results, launches separate write/read processes using the normal default Board store, verifies Files/PNG controls and exact acknowledged document/camera/original assets after process exit, then rebuilds normal `lib/main.dart` and compares its actual embedded icon. Run40042010681 passed both phases and19focused Windows file/storage checks. No mocked store/channel. Native chooser interaction itself is not automated. First attempts exposed a test-only KeyEventSimulator debug-name lookup absent in Release; pointer-based dialog interaction avoids it without modifying application behavior. `flutter drive --release` for native desktop is unsupported by this SDK, so do not relabel Debug/Profile as Release.
+
 ## Native platform verification — 2026-10-23
 
 Four real-engine integration cases passed on Windows, Linux (Xvfb), macOS, Android emulator and iOS simulator. Actual providers/channels, isolated durable stores, editor gestures/Undo, original assets, portable files and PNG pixels are exercised. Automated store reopening is not a process restart. Current evidence, sources, real UI/process restarts and remaining hardware/provider limits: `releases/native-platform-verification.json`.

@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-24",
+  "reportedSymptom": "Downloaded Windows build: Files & export arrow disabled; template icon",
+  "downloadedTagConfirmed": false,
+  "establishedCauses": [
+    "beta.1 explicitly excludes Platform.isWindows from supportsProductFiles; current beta.3 supports it. User tag remains unconfirmed, so this does not establish a beta.3 runtime fault.",
+    "Windows app_icon.ico remained the Flutter template; existing icon generator omitted Windows."
+  ],
+  "changes": [
+    "Existing Blanko light icon packed at16,20,24,32,40,48,64,128,256px, without new image dependencies.",
+    "Windows title identifies0.1.0 build4; CompanyName/ProductName and application-support storage path unchanged.",
+    "CI Release fixture uses normal app composition/default storage and separate write/read OS processes; file menu must open, drawing/original asset and viewport must reopen exactly.",
+    "Normal production entry rebuilt after fixture; actual exe icon compared pixel-for-pixel with expected ICO before packaging."
+  ],
+  "local": {
+    "analysis": "No issues found",
+    "focusedProjectAndFileWidgetTests": 8,
+    "icoDirectoryAndPNGDimensions": "nine sizes verified; actual256px artwork viewed"
+  },
+  "limits": [
+    "No Windows computer connected locally for manual native file-chooser qualification.",
+    "CI Release fixture is a separate test entrypoint that composes the real WhiteboardApp; distributed executable is rebuilt from lib/main.dart.",
+    "No inferred production autosave corruption or undocumented data migration.",
+    "Physical Windows hardware, providers and commercial code signing remain separate obligations."
+  ],
+  "diagnosticSource": "d195d1d",
+  "diagnosticNote": "Replaced debug keyboard lookup with real menu→PNG dialog→enabled Export button→Close controls. No production persistence change; same two-process data checks retained.",
+  "diagnosticRun": {
+    "run": 40041561294,
+    "source": "1cc6e75",
+    "result": "Release menu opened; harness failed on SDK KeyEventSimulator._findPhysicalKey for Escape, whose debug-name lookup is absent in Release. Not a production persistence exception."
+  },
+  "failedCandidate": {
+    "run": 40040877476,
+    "source": "542e6f166c0b865fd28f59036894f98f4a2b8ffb",
+    "status": "Release write phase failed before packaging; diagnostics captured only generic FlutterErrorDetails in Release",
+    "hostTests": {
+      "passed": 402,
+      "skipped": 3
+    },
+    "nativeDebugCasesPassed": 4
+  },
+  "windowsCandidate": {
+    "run": 40042010681,
+    "job": 120715034569,
+    "source": "d195d1d",
+    "status": "success",
+    "focusedWindowsTests": 19,
+    "releaseProcesses": {
+      "write": true,
+      "read": true
+    },
+    "actualEmbeddedIconPixelComparison": "passed",
+    "normalEntryRebuildAndWindowStartup": "passed",
+    "package": "verified-windows-release artifact"
+  },
+  "publication": "pending new immutable beta.4 release"
+}
