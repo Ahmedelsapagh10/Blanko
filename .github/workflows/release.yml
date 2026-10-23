@@ -135,7 +135,34 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      - name: Prepare owner-provided Android signing
+        shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.BLANKO_ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.BLANKO_ANDROID_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.BLANKO_ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.BLANKO_ANDROID_KEY_PASSWORD }}
+        run: |
+          if [[ -n "$KEYSTORE_BASE64$STORE_PASSWORD$KEY_ALIAS$KEY_PASSWORD" ]]; then
+            [[ -n "$KEYSTORE_BASE64" && -n "$STORE_PASSWORD" && -n "$KEY_ALIAS" && -n "$KEY_PASSWORD" ]] || {
+              echo 'All four Android signing secrets must be provided together.'
+              exit 1
+            }
+            umask 077
+            printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/blanko-release.keystore"
+            echo "BLANKO_ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/blanko-release.keystore" >> "$GITHUB_ENV"
+          else
+            echo '::warning::No durable Android signing key: APK remains a Debug-signed beta preview.'
+          fi
       - run: flutter build apk --release
+        env:
+          BLANKO_ANDROID_STORE_PASSWORD: ${{ secrets.BLANKO_ANDROID_STORE_PASSWORD }}
+          BLANKO_ANDROID_KEY_ALIAS: ${{ secrets.BLANKO_ANDROID_KEY_ALIAS }}
+          BLANKO_ANDROID_KEY_PASSWORD: ${{ secrets.BLANKO_ANDROID_KEY_PASSWORD }}
+      - name: Remove temporary signing material
+        if: always()
+        shell: bash
+        run: rm -f "$RUNNER_TEMP/blanko-release.keystore"
       - name: Rename APK
         run: mv build/app/outputs/flutter-apk/app-release.apk Blanko-Android.apk
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -223,7 +250,7 @@ jobs:
 
             - تطبيق macOS غير موثّق — قد تحتاج لفتحه من الإعدادات
             - APK Android موقّع بمفتاح Debug — للتجربة فقط، وقد تختلف مفاتيح الإصدارات القادمة. صدّر مشاريعك قبل إعادة التثبيت
-            - Windows وLinux: البناء متحقق في CI، التشغيل الفعلي غير متحقق؛ استيراد الصور وملفات المشاريع وتصدير PNG غير متاحين عليهما حاليًا
+            - Windows وLinux وmacOS: اختبارات المحرر داخل المحرك وتشغيل Release متحققة في CI؛ تم توصيل ملفات Windows/Linux بالنظام. اختيار الملفات يدويًا وتوافق الأجهزة الأوسع يظلان ضمن اختبارات النسخة التجريبية
             - الحفظ التلقائي ليس نسخة احتياطية؛ احتفظ بنسخ `.wboard` خارج بيانات التطبيق
             - لم يُختبر على أجهزة لوحية أو أقلام رقمية بعد
             - أبلغ عن المشاكل عبر [GitHub Issues](https://github.com/Ahmedelsapagh10/Blanko/issues)

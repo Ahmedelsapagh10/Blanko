@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:whiteboard/main.dart';
 import 'package:whiteboard/src/document/document_codec.dart';
 import 'package:whiteboard/src/document/element.dart';
@@ -78,6 +79,13 @@ void main() {
     }
     stores.clear();
     if (await directory.exists()) await directory.delete(recursive: true);
+  });
+
+  test('native default storage directory provider is registered', () async {
+    // Resolve the normal native location without opening or altering user Boards.
+    final support = await getApplicationSupportDirectory();
+    expect(support.isAbsolute, isTrue);
+    expect(support.path, isNotEmpty);
   });
 
   testWidgets(

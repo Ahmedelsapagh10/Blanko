@@ -52,3 +52,13 @@ Flutter3.41.9/Dart3.11.5 هما الإصداران المستخدمان في CI 
 **قبل توزيع macOS موثّق:** يلزم Apple Developer ID وتوقيع مناسب وNotarization والتحقق من التثبيت تحت Gatekeeper. لا توجد هذه الهوية في المستودع. Windows Authenticode وiOS signing ليسا معدّين أيضًا.
 
 CI وبصمات الملفات ليست اعتمادًا أمنيًا شاملًا أو ضمان أداء10,000عنصر. اختبارات الأجهزة والتوافق والتوقيع والأداء المتبقية تظل مفتوحة في MASTER_PLAN.
+
+## مرشح الإصدار التالي والتوقيع
+
+الإصلاحات الجديدة لا تغيّر حزم beta.1 المنشورة. Windows: أُصلح اختلاف فواصل المسار الذي كان يمنع إعادة فتح اللوحات. Windows/Linux: أُضيف اختيار الصور والمشاريع وتصدير PNG عبر حوارات النظام. اختبارات المحرر داخل المحرك وتشغيل Release نجحت على Windows/Linux/macOS في run39978708438. فحص الحوارات يدويًا وتوافق الأجهزة الأوسع يبقيان مطلوبين.
+
+لدعم توقيع Android دائم، أصبح Gradle يقرأ `android/key.properties` المحجوب عن Git (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`) أو متغيرات `BLANKO_ANDROID_KEYSTORE_PATH`, `BLANKO_ANDROID_STORE_PASSWORD`, `BLANKO_ANDROID_KEY_ALIAS`, `BLANKO_ANDROID_KEY_PASSWORD`. أي إعداد جزئي يُرفض؛ غيابها جميعًا يبقي توقيع Debug للتجربة فقط. لا ترسل كلمات المرور في المحادثة ولا ترفع المفتاح إلى Git.
+
+يمكن للمالك تزويد GitHub Actions بأربعة أسرار: `BLANKO_ANDROID_KEYSTORE_BASE64`, `BLANKO_ANDROID_STORE_PASSWORD`, `BLANKO_ANDROID_KEY_ALIAS`, `BLANKO_ANDROID_KEY_PASSWORD`. الـworkflow يكتب المفتاح مؤقتًا بصلاحية خاصة ويحذفه بعد البناء. هذا الدعم مُجهّز؛ التوقيع بمفتاح دائم لم يُتحقق منه بعد لعدم توفير مفتاح. التغيير إلى شهادة مختلفة عن beta.1 يحتاج نقل `.wboard` قبل أي إزالة/إعادة تثبيت؛ لا يوجد ضمان تحديث فوق توقيع Debug القديم.
+
+الويب المستضاف مؤجل حتى يرسل المالك رابطه. لم يُنشأ أو يُعدّل نشر Web خلال هذه المراجعة.

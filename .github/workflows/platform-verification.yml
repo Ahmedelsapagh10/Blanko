@@ -95,6 +95,24 @@ jobs:
             sleep 8
             kill -0 "$app_pid"
           '
+      - name: Package verified Windows Release
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path 'build/windows/x64/runner/Release/*' -DestinationPath Blanko-Windows-x64.zip
+      - name: Package verified macOS Release
+        if: runner.os == 'macOS'
+        run: ditto -c -k --keepParent build/macos/Build/Products/Release/Blanko.app Blanko-macOS.zip
+      - name: Package verified Linux Release
+        if: runner.os == 'Linux'
+        run: tar -czf Blanko-Linux-x64.tar.gz -C build/linux/x64/release bundle
+      - name: Upload verified desktop candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: verified-${{ matrix.target }}-release
+          path: |
+            Blanko-*.zip
+            Blanko-*.tar.gz
+          if-no-files-found: error
       - name: Preserve startup diagnostics
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -123,6 +141,10 @@ jobs:
       - name: Prepare disposable Android device
         shell: bash
         run: |
+          export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+          adb start-server
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'system-images;android-36;google_apis;x86_64'
           echo no | "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n blanko-ci -k 'system-images;android-36;google_apis;x86_64'
           sudo chown "$USER" /dev/kvm
@@ -147,6 +169,12 @@ jobs:
           adb shell am start -W -n ahmedelsapagh.com.whiteboard/ahmedelsapagh.com.whiteboard.MainActivity
           sleep 4
           adb shell pidof ahmedelsapagh.com.whiteboard
+      - name: Upload verified Android candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: verified-android-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
       - name: Preserve Android diagnostics
         if: always()
         shell: bash
