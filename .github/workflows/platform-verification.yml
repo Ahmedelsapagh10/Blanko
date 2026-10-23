@@ -2,6 +2,11 @@ name: Native Platform Verification
 
 on:
   workflow_dispatch:
+    inputs:
+      android_only:
+        description: Verify only the Android emulator after a setup-only change
+        type: boolean
+        default: false
   push:
     branches: [master]
     paths:
@@ -26,6 +31,7 @@ env:
 
 jobs:
   native-desktop:
+    if: github.event_name != 'workflow_dispatch' || !inputs.android_only
     name: Native ${{ matrix.target }}
     strategy:
       fail-fast: false
@@ -144,9 +150,15 @@ jobs:
           export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
           echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
           echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+          export ANDROID_AVD_HOME="$RUNNER_TEMP/blanko-avd"
+          mkdir -p "$ANDROID_AVD_HOME"
+          echo "ANDROID_AVD_HOME=$ANDROID_AVD_HOME" >> "$GITHUB_ENV"
           adb start-server
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'system-images;android-36;google_apis;x86_64'
-          echo no | "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n blanko-ci -k 'system-images;android-36;google_apis;x86_64'
+          printf 'no\n' | "$ANDROID_HOME/cmdline-tools/latest/bin/avdmanager" create avd -n blanko-ci -k 'system-images;android-36;google_apis;x86_64' --device pixel_7 --path "$ANDROID_AVD_HOME/blanko-ci.avd"
+          test -f "$ANDROID_AVD_HOME/blanko-ci.ini"
+          sed -i 's/^disk.dataPartition.size=.*/disk.dataPartition.size=2G/' "$ANDROID_AVD_HOME/blanko-ci.avd/config.ini"
+          "$ANDROID_HOME/emulator/emulator" -list-avds | grep -Fx blanko-ci
           sudo chown "$USER" /dev/kvm
           "$ANDROID_HOME/emulator/emulator" -avd blanko-ci -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -memory 2048 > emulator-startup.log 2>&1 &
           for attempt in $(seq 1 150); do
