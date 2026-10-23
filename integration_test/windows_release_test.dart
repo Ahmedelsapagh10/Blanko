@@ -21,6 +21,7 @@ import '../test/support/image_test_bytes.dart';
 
 const _enabled = bool.fromEnvironment('WB_WINDOWS_RELEASE_SMOKE');
 late final File _resultFile;
+final _failures = <Map<String, String>>[];
 
 Future<void> _waitFor(
   WidgetTester tester,
@@ -99,7 +100,12 @@ Future<void> _report(
       const Duration(seconds: 75),
     );
     // A skipped or unregistered test must not turn this into a green CI job.
-    success = success && binding.results.length == 1;
+    success = success && binding.results.length == 1 && _failures.isEmpty;
+    if (!success) {
+      error = _failures.isEmpty
+          ? 'Release test failed or did not report exactly one result.'
+          : _failures.first['exception'];
+    }
   } catch (failure) {
     error = '$failure';
   }
@@ -114,6 +120,7 @@ Future<void> _report(
         'tests': binding.results.map(
           (name, value) => MapEntry(name, value.toString()),
         ),
+        'failures': _failures,
         'error': ?error,
       }),
       flush: true,
@@ -127,6 +134,19 @@ Future<void> _report(
 
 void main(List<String> arguments) {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  final inheritedReporter = reportTestException;
+  reportTestException = (details, description) {
+    // FlutterErrorDetails.toString() deliberately loses useful information in
+    // Release. Capture the exception and stack before retaining normal reporting.
+    _failures.add({
+      'test': description,
+      'exception': details.exceptionAsString(),
+      'stack': ?details.stack?.toString(),
+      'library': ?details.library,
+      'context': ?details.context?.toDescription(),
+    });
+    inheritedReporter(details, description);
+  };
   final phase = arguments.length == 2 ? arguments.first : 'invalid';
   _resultFile = File(
     arguments.length == 2

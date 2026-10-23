@@ -12,10 +12,16 @@ $executable = (Resolve-Path 'build/windows/x64/runner/Release/whiteboard.exe').P
 foreach ($phase in @('write', 'read')) {
   $report = Join-Path $reports "$phase.json"
   if (Test-Path $report) { Remove-Item $report }
-  $app = Start-Process -FilePath $executable -ArgumentList @($phase, "`"$report`"") -PassThru
+  $app = Start-Process -FilePath $executable -ArgumentList @($phase, "`"$report`"") -PassThru `
+    -RedirectStandardOutput (Join-Path $reports "$phase.stdout.log") `
+    -RedirectStandardError (Join-Path $reports "$phase.stderr.log")
   try {
     if (!$app.WaitForExit(90000)) { throw "Release $phase timed out" }
-    if ($app.ExitCode -ne 0) { throw "Release $phase exited with $($app.ExitCode)" }
+    if ($app.ExitCode -ne 0) {
+      if (Test-Path $report) { Get-Content $report -Raw | Write-Output }
+      Get-Content (Join-Path $reports "$phase.stderr.log") | Write-Output
+      throw "Release $phase exited with $($app.ExitCode)"
+    }
     if (!(Test-Path $report)) { throw "Release $phase produced no result" }
     $result = Get-Content $report -Raw | ConvertFrom-Json
     if ($result.passed -ne $true -or $result.phase -ne $phase) {

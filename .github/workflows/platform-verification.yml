@@ -57,9 +57,13 @@ jobs:
           sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev xvfb
       - run: flutter pub get
       - name: Host regressions on this operating system
+        if: github.event_name != 'workflow_dispatch' || !inputs.windows_only
         run: flutter test --no-pub
+      - name: Focused Windows files and persistence regressions
+        if: github.event_name == 'workflow_dispatch' && inputs.windows_only
+        run: flutter test --no-pub test/workspace_project_files_test.dart test/project_file_gateway_test.dart test/file_board_store_test.dart
       - name: Native engine integration (Debug)
-        if: runner.os != 'Linux'
+        if: runner.os != 'Linux' && (github.event_name != 'workflow_dispatch' || !inputs.windows_only)
         run: flutter test --no-pub integration_test/platform_smoke_test.dart -d ${{ matrix.target }}
       - name: Native Linux engine integration (Debug, Xvfb)
         if: runner.os == 'Linux'
@@ -130,6 +134,7 @@ jobs:
           path: |
             release-startup.log
             ${{ runner.temp }}/blanko-windows-release/*.json
+            ${{ runner.temp }}/blanko-windows-release/*.log
           if-no-files-found: ignore
 
   native-android:
