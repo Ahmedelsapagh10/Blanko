@@ -36,7 +36,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - run: bash tool/test_android_signature_real.sh
+      - run: |
+          bash tool/test_android_signature_real.sh | tee "$RUNNER_TEMP/signature-fixture.log"
+          grep -q '^Verified Android release certificate:' "$RUNNER_TEMP/signature-fixture.log"
 
   analyze:
     if: github.event_name != 'workflow_dispatch' || !inputs.signature_only

@@ -12,6 +12,7 @@ cat > "$fixture_dir/AndroidManifest.xml" <<'MANIFEST'
   <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="36" />
   <application android:hasCode="false" android:label="Blanko signature fixture" />
 </manifest>
+MANIFEST
 "$tools/aapt" package -f -M "$fixture_dir/AndroidManifest.xml" -I "$platform" -F "$fixture_dir/unsigned.apk"
 keytool -genkeypair -keystore "$fixture_dir/fixture.jks" -storetype JKS -storepass fixture-only -keypass fixture-only -alias fixture -keyalg RSA -keysize 2048 -validity 1 -dname 'CN=Blanko Signature Fixture' > /dev/null 2>&1
 keytool -exportcert -keystore "$fixture_dir/fixture.jks" -storepass fixture-only -alias fixture 2>/dev/null | openssl dgst -sha256 | awk '{print $NF}' > "$fixture_dir/pin"
