@@ -42,6 +42,8 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze --no-fatal-infos
       - run: flutter test
+      - name: Test Android certificate guard
+        run: bash tool/test_android_signature.sh
 
   build-macos:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -205,13 +207,8 @@ jobs:
         run: |
           signer=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)
           test -n "$signer"
-          actual=$("$signer" verify --print-certs build/app/outputs/flutter-apk/app-release.apk | awk -F ': ' '/Signer #1 certificate SHA-256 digest:/ { print $2 }')
-          expected=$(tr -d '[:space:]' < android/release-certificate.sha256)
           echo "Verification tool: $signer"
-          echo "APK certificate SHA-256: $actual"
-          echo "Approved certificate SHA-256: $expected"
-          test "$actual" = "$expected" || { echo 'Android signing certificate does not match the approved release identity.'; exit 1; }
-          echo "Verified Android release certificate: $actual"
+          bash tool/verify_android_signature.sh "$signer" build/app/outputs/flutter-apk/app-release.apk android/release-certificate.sha256
       - name: Remove temporary signing material
         if: always()
         shell: bash
