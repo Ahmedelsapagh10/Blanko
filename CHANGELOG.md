@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.1.0-beta.2 — 2026-10-23
+
+- Fix Windows Board Library/reopening across native path separators without changing stored data.
+- Enable Windows/Linux native image/project pickers and PNG/project file output.
+- Bound macOS image/project reads before allocating full file contents.
+- Use the owner's Android release certificate and verify its fingerprint before publication.
+- Add real native-engine storage/editor/PNG integration checks and Release startup CI.
+
+Android beta.1 used a different Debug certificate: export `.wboard` backups before any uninstall. Physical devices, full picker qualification, Apple notarization and wider Linux support remain open.
+
 ## v0.1.0-beta.1 — 2026-10-22
 
 First public beta; source commit `2659d8a`.

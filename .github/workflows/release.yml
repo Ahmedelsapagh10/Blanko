@@ -51,6 +51,14 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build macos --release
+      - name: Verify macOS Release startup before packaging
+        shell: bash
+        run: |
+          build/macos/Build/Products/Release/Blanko.app/Contents/MacOS/Blanko > release-startup.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          sleep 8
+          kill -0 "$app_pid"
       - name: Package macOS App
         run: |
           cd build/macos/Build/Products/Release
@@ -79,9 +87,19 @@ jobs:
       - name: Install Linux dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y ninja-build libgtk-3-dev
+          sudo apt-get install -y ninja-build libgtk-3-dev xvfb
       - run: flutter pub get
       - run: flutter build linux --release
+      - name: Verify Linux Release startup before packaging
+        shell: bash
+        run: |
+          xvfb-run -a bash -c '
+            build/linux/x64/release/bundle/whiteboard > release-startup.log 2>&1 &
+            app_pid=$!
+            trap '\''kill "$app_pid" 2>/dev/null || true'\'' EXIT
+            sleep 8
+            kill -0 "$app_pid"
+          '
       - name: Package Linux bundle
         run: |
           cd build/linux/x64/release
@@ -105,6 +123,18 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build windows --release
+      - name: Verify Windows Release window before packaging
+        shell: pwsh
+        run: |
+          $app = Start-Process -FilePath (Resolve-Path 'build/windows/x64/runner/Release/whiteboard.exe') -PassThru
+          try {
+            Start-Sleep -Seconds 8
+            $app.Refresh()
+            if ($app.HasExited) { throw "Release exited unexpectedly: $($app.ExitCode)" }
+            if ($app.MainWindowHandle -eq 0) { throw 'Release did not create a native window' }
+          } finally {
+            if (!$app.HasExited) { $null = $app.CloseMainWindow(); if (!$app.WaitForExit(5000)) { $app.Kill() } }
+          }
       - name: Package Windows bundle
         shell: pwsh
         run: |
@@ -152,13 +182,23 @@ jobs:
             printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/blanko-release.keystore"
             echo "BLANKO_ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/blanko-release.keystore" >> "$GITHUB_ENV"
           else
-            echo '::warning::No durable Android signing key: APK remains a Debug-signed beta preview.'
+            echo '::error::Publishing requires the owner-provided Android release signing secrets.'
+            exit 1
           fi
       - run: flutter build apk --release
         env:
           BLANKO_ANDROID_STORE_PASSWORD: ${{ secrets.BLANKO_ANDROID_STORE_PASSWORD }}
           BLANKO_ANDROID_KEY_ALIAS: ${{ secrets.BLANKO_ANDROID_KEY_ALIAS }}
           BLANKO_ANDROID_KEY_PASSWORD: ${{ secrets.BLANKO_ANDROID_KEY_PASSWORD }}
+      - name: Verify Android release signing identity
+        shell: bash
+        run: |
+          signer=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)
+          test -n "$signer"
+          actual=$("$signer" verify --print-certs build/app/outputs/flutter-apk/app-release.apk | awk -F ': ' '/Signer #1 certificate SHA-256 digest:/ { print $2 }')
+          expected=$(tr -d '[:space:]' < android/release-certificate.sha256)
+          test "$actual" = "$expected" || { echo 'Android signing certificate does not match the approved release identity.'; exit 1; }
+          echo "Verified Android release certificate: $actual"
       - name: Remove temporary signing material
         if: always()
         shell: bash
@@ -249,7 +289,7 @@ jobs:
             ## ⚠️ ملاحظات النسخة التجريبية
 
             - تطبيق macOS غير موثّق — قد تحتاج لفتحه من الإعدادات
-            - APK Android موقّع بمفتاح Debug — للتجربة فقط، وقد تختلف مفاتيح الإصدارات القادمة. صدّر مشاريعك قبل إعادة التثبيت
+            - APK Android موقّع بمفتاح إصدار المالك الثابت؛ CI يتحقق من بصمة الشهادة قبل النشر. توقيع beta.1 القديم مختلف: صدّر مشاريعك قبل أي إزالة أو إعادة تثبيت، ولا تمسح البيانات لتجاوز اختلاف التوقيع
             - Windows وLinux وmacOS: اختبارات المحرر داخل المحرك وتشغيل Release متحققة في CI؛ تم توصيل ملفات Windows/Linux بالنظام. اختيار الملفات يدويًا وتوافق الأجهزة الأوسع يظلان ضمن اختبارات النسخة التجريبية
             - الحفظ التلقائي ليس نسخة احتياطية؛ احتفظ بنسخ `.wboard` خارج بيانات التطبيق
             - لم يُختبر على أجهزة لوحية أو أقلام رقمية بعد
@@ -263,3 +303,18 @@ jobs:
             artifacts/Blanko-Windows-x64.zip
             artifacts/Blanko-Android.apk
             artifacts/SHA256SUMS.txt
+      - name: Verify actual public downloads
+        shell: bash
+        run: |
+          mkdir verified-downloads
+          for name in Blanko-macOS.zip Blanko-Linux-x64.tar.gz Blanko-Windows-x64.zip Blanko-Android.apk SHA256SUMS.txt; do
+            curl --fail --location --retry 2 --connect-timeout 20 --max-time 120 \
+              "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/$name" \
+              --output "verified-downloads/$name"
+          done
+          cd verified-downloads
+          sha256sum --check SHA256SUMS.txt
+          unzip -tq Blanko-macOS.zip
+          unzip -tq Blanko-Windows-x64.zip
+          unzip -tq Blanko-Android.apk
+          tar -tzf Blanko-Linux-x64.tar.gz > /dev/null
