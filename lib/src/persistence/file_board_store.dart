@@ -125,7 +125,9 @@ final class FileBoardStore implements BoardStore {
     await for (final entry in directory.list(followLinks: false)) {
       if (entry is! File || !entry.path.endsWith('.board.json')) continue;
       final snapshot = BoardSnapshot.decode(await entry.readAsString());
-      if (_file(snapshot.document.id).path != entry.path) {
+      // Directory enumeration uses native separators; constructed paths may use '/'.
+      if (_file(snapshot.document.id).uri.pathSegments.last !=
+          entry.uri.pathSegments.last) {
         throw const FormatException(
           'Local board identity does not match its filename.',
         );

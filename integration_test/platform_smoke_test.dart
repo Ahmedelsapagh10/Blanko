@@ -40,7 +40,10 @@ Future<void> _waitFor(
 
 Future<void> _saved(WidgetTester tester) => _waitFor(
   tester,
-  () => find.text('Saved locally').evaluate().isNotEmpty,
+  () => find
+      .byTooltip('Saved locally\nChanges are saved on this device.')
+      .evaluate()
+      .isNotEmpty,
   'acknowledged local save',
 );
 

@@ -202,6 +202,22 @@ void main() {
   );
 
   test(
+    'library still rejects a valid board stored under a different identity',
+    () async {
+      final store = await open();
+      await store.writeBoard(snapshot('original', 1, 0), expectedVersion: null);
+      final encoded = base64Url
+          .encode(utf8.encode('original'))
+          .replaceAll('=', '');
+      await File(
+        '${directory.path}/$encoded.board.json',
+      ).rename('${directory.path}/different.board.json');
+      await expectLater(store.listBoards(), throwsFormatException);
+      expect(await store.readBoard('original'), isNull);
+    },
+  );
+
+  test(
     'OS writer lock rejects a second process, not only another Dart object',
     () async {
       final writer = await open();
