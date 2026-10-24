@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart'
+    show FlutterQuillLocalizations;
 
 import 'src/editor/workspace_page.dart';
 import 'src/persistence/board_store.dart';
@@ -48,6 +50,8 @@ class _WhiteboardAppState extends State<WhiteboardApp> {
     child: ListenableBuilder(
       listenable: _appearance,
       builder: (context, _) => MaterialApp(
+        localizationsDelegates:
+            FlutterQuillLocalizations.localizationsDelegates,
         title: BlankoBrand.appName,
         debugShowCheckedModeBanner: false,
         theme: BlankoTheme.light,

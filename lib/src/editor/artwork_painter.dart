@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../document/element.dart';
 import '../geometry/geometry.dart';
 import 'drawing_geometry.dart';
+import 'editor_text.dart';
 
 Rect artworkRect(Bounds2 bounds) =>
     Rect.fromLTRB(bounds.left, bounds.top, bounds.right, bounds.bottom);
@@ -73,7 +74,7 @@ void paintElementArtwork(
   Canvas canvas,
   DocumentElement element, {
   Path? path,
-  TextPainter? textLayout,
+  ElementTextLayout? textLayout,
   ui.Image? image,
   double? opacity,
 }) {

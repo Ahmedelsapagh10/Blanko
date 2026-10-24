@@ -39,17 +39,20 @@ class _WorkspacePageState extends State<WorkspacePage> {
   String? _error;
   bool _busy = true;
   bool _viewDirty = false;
+  bool _textDirty = false;
   Timer? _viewTimer;
   late final AppLifecycleListener _lifecycle;
   late final UnsavedCloseGuard _closeGuard;
 
   bool get _dirty =>
+      (_canvas?.textDraftDirty ?? false) ||
       _viewDirty ||
       (_save != null &&
           _save!.state != SaveState.saved &&
           _save!.state != SaveState.readOnly);
 
   void _setBusy(bool value) {
+    if (value && _canvas?.finishTextEditing() == false) return;
     _canvas?.inputEnabled = !value;
     setState(() => _busy = value);
   }
@@ -185,6 +188,10 @@ class _WorkspacePageState extends State<WorkspacePage> {
 
   void _changed() {
     final canvas = _canvas!, save = _save!;
+    if (_textDirty != canvas.textDraftDirty) {
+      _textDirty = canvas.textDraftDirty;
+      if (mounted) setState(() {});
+    }
     if (!canvas.readOnly &&
         !identical(canvas.session.document, save.latest.document)) {
       _viewTimer?.cancel();
@@ -214,6 +221,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
   }
 
   Future<bool> _flush() async {
+    if (_canvas?.finishTextEditing() == false) return false;
     _submitView();
     final save = _save;
     if (save == null) return true; // No authored work exists during opening.
@@ -222,8 +230,19 @@ class _WorkspacePageState extends State<WorkspacePage> {
   }
 
   Future<void> _retry() async {
-    _submitView();
-    await _save?.retry();
+    if (_busy || _canvas?.finishTextEditing() == false) return;
+    final canvas = _canvas, save = _save, store = _store;
+    _setBusy(true);
+    try {
+      if (store != null && !store.writable) await store.initialize();
+      if (!mounted || !identical(canvas, _canvas)) return;
+      _submitView();
+      await save?.retry();
+    } catch (error) {
+      if (mounted) _fileMessage('Could not reconnect local storage: $error');
+    } finally {
+      if (mounted) _setBusy(false);
+    }
   }
 
   Future<void> _renameActiveBoard() async {
@@ -451,6 +470,7 @@ class _WorkspacePageState extends State<WorkspacePage> {
 
   @override
   void dispose() {
+    _canvas?.finishTextEditing();
     _lifecycle.dispose();
     _closeGuard.dispose();
     _viewTimer?.cancel();
@@ -520,7 +540,8 @@ class _WorkspacePageState extends State<WorkspacePage> {
       SaveState.failed => 'Save failed',
       SaveState.readOnly => 'Read only · another window is editing',
       SaveState.saving => 'Saving…',
-      SaveState.saved => _viewDirty ? 'Saving…' : 'Saved locally',
+      SaveState.saved =>
+        _viewDirty || _canvas!.textDraftDirty ? 'Saving…' : 'Saved locally',
     };
     return Stack(
       children: [

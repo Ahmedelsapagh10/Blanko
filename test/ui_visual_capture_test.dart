@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:whiteboard/main.dart';
 import 'package:whiteboard/src/document/element.dart';
 import 'package:whiteboard/src/editor/editor_canvas.dart';
+import 'package:whiteboard/src/editor/inline_text_editor.dart';
 import 'package:whiteboard/src/geometry/geometry.dart';
 import 'package:whiteboard/src/theme/theme_preference_store.dart';
 import 'support/test_board_store.dart';
@@ -101,16 +102,23 @@ Future<void> main() async {
           );
           await tester.tapAt(origin + const Offset(150, 200));
           await tester.pumpAndSettle();
-          await tester.enterText(
-            find.byKey(const ValueKey('board-text-input')),
-            'Ideas stay readable.\nأفكار واضحة',
+          final draft = tester
+              .widget<InlineTextLayer>(find.byType(InlineTextLayer))
+              .draft;
+          const text = 'Ideas stay readable.\nأفكار واضحة';
+          draft.editor.replaceText(
+            0,
+            draft.editor.document.length - 1,
+            text,
+            const TextSelection.collapsed(offset: text.length),
           );
           await tester.pumpAndSettle();
           await _capture(
             tester,
             '${size.width < 700 ? 'phone' : 'tablet'}-text-dark',
           );
-          await tester.tap(find.text('Cancel'));
+          await tester.ensureVisible(find.byTooltip('Cancel text editing'));
+          await tester.tap(find.byTooltip('Cancel text editing'));
           await tester.pumpAndSettle();
         }
         await tester.pumpWidget(const SizedBox());

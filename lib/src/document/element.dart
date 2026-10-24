@@ -1,4 +1,7 @@
 import '../geometry/geometry.dart';
+import 'rich_text.dart';
+
+export 'rich_text.dart';
 
 /// Maximum safe integer revision across native and JavaScript targets.
 const maximumDocumentRevision = 9007199254740991;
@@ -153,17 +156,23 @@ final class ArrowElementContent extends ElementContent {
 
 final class TextElementContent extends ElementContent {
   TextElementContent({
-    required this.text,
+    required String text,
     required this.bounds,
     required this.style,
+    this.richText,
     this.direction = ElementTextDirection.auto,
     this.alignment = ElementTextAlignment.start,
     this.sizing = TextSizing.auto,
-  }) {
+  }) : _text = text {
+    if (richText != null && text != richText!.plainText) {
+      throw ArgumentError('Text must match its rich text projection.');
+    }
     _requireArea(bounds);
   }
 
-  final String text;
+  final String _text;
+  final RichTextData? richText;
+  String get text => richText?.plainText ?? _text;
   final Bounds2 bounds;
   final ElementTextStyle style;
   final ElementTextDirection direction;
@@ -173,19 +182,25 @@ final class TextElementContent extends ElementContent {
 
 final class StickyNoteElementContent extends ElementContent {
   StickyNoteElementContent({
-    required this.text,
+    required String text,
     required this.bounds,
     required this.style,
     required this.backgroundColor,
+    this.richText,
     this.direction = ElementTextDirection.auto,
     this.alignment = ElementTextAlignment.start,
     this.sizing = TextSizing.autoHeight,
-  }) {
+  }) : _text = text {
+    if (richText != null && text != richText!.plainText) {
+      throw ArgumentError('Text must match its rich text projection.');
+    }
     _requireArea(bounds);
     _requireColor(backgroundColor, 'backgroundColor');
   }
 
-  final String text;
+  final String _text;
+  final RichTextData? richText;
+  String get text => richText?.plainText ?? _text;
   final Bounds2 bounds;
   final ElementTextStyle style;
   final int backgroundColor;

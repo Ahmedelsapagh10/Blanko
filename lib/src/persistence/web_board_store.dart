@@ -22,6 +22,7 @@ final class WebBoardStore implements BoardStore {
   bool _closed = false;
   bool _closing = false;
   bool _invalidated = false;
+  Future<void>? _opening;
 
   @override
   bool get writable => _writable && !_closed && !_invalidated;
@@ -30,9 +31,24 @@ final class WebBoardStore implements BoardStore {
       'IndexedDB · ${web.window.location.origin} · $databaseName';
 
   @override
-  Future<void> initialize() async {
-    if (_closed) throw StateError('The local workspace is closed.');
-    if (_database != null) return;
+  Future<void> initialize({bool reconnect = false}) {
+    return _opening ??= _initialize(reconnect: reconnect).whenComplete(() {
+      _opening = null;
+    });
+  }
+
+  Future<void> _initialize({required bool reconnect}) async {
+    if (_closed || _closing) throw StateError('The local workspace is closed.');
+    if (_database != null && !_invalidated && !reconnect) return;
+    // Browser disk/quota failures can close IndexedDB without closing this
+    // document. Drain old requests and release their lease before reconnecting.
+    await _tail;
+    _database?.close();
+    _database = null;
+    _release();
+    await _lockRequest;
+    if (_closed || _closing) throw StateError('The local workspace is closed.');
+    _invalidated = false;
     try {
       final granted = Completer<bool>();
       _releaseLock = Completer<JSAny?>();
@@ -351,7 +367,8 @@ final class WebBoardStore implements BoardStore {
         if (id.trim().isEmpty) throw ArgumentError.value(id, 'id');
         store.put(id.toJS, 'last-board'.toJS);
       },
-    ));
+    ),
+  );
   @override
   Future<Uint8List?> readAsset(String assetId) => _serial(
     () => _transaction<Uint8List?>(
@@ -402,6 +419,7 @@ final class WebBoardStore implements BoardStore {
   @override
   Future<void> close() async {
     _closing = true;
+    await _opening;
     await _tail;
     if (_closed) return;
     _closed = true;

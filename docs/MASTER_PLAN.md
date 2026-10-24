@@ -1,6 +1,8 @@
 # Master execution plan
 
-Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-23. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
+Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-24. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
+
+Rich-text priority2026-10-24 (177/285 checked): true inline Quill editing, range/paragraph formatting, backward-compatible optional Delta, one-session Board history, debounced durable checkpoints, shared Canvas/PNG layout and width wrapping integrated. Actual macOS/Chrome Arabic typing, project transfer, restart/reload and real viewport4K/transparent Frame PNG verified. Full checkpoint431 passes/3 browser-only skips; final affected43host and49distinctChrome passes; clean analysis. APK/iOS simulator/macOS debug builds pass; mobile/wider rich-text runtime qualification stays open. Evidence: `docs/verification/rich-text/verification.json`. Stop for review; do not begin other libraries.
 
 Windows correction priority2026-10-24: user reports inactive Files/export arrow and template branding. Exact downloaded tag unconfirmed; beta.1 excluded Windows, beta.3 enabled it. Code4 corrects branding/build identification and adds actual Release menu/PNG controls plus two-process default-store reopening before distribution. Real Windows candidate40042010681 passes19focused checks, two Release process save/reopen phases, normal-entry rebuild, actual EXE icon and startup/package; beta.4 published from29ca51a; all7 release jobs40042476050 including repeated Windows Release and public-download verification passed. See `docs/releases/windows-correction-verification.json`. Keep manual native chooser/device qualification separate.
 
@@ -58,7 +60,7 @@ Priority P0; depends on MVP-03A. Acceptance: multiline Arabic/English editing, c
 
 - [x] MVP-0311 Create and re-edit multiline text with keyboard/IME drafts.
   - Status: VERIFIED; priority: P0; dependencies: MVP-03A.
-  - Acceptance: Create and re-edit multiline text with IME draft composition, modal text editor dialog, font size, wrap width, and color picker; tests: `test/editor_text_test.dart`; evidence: passing on host and Chrome web.
+  - Acceptance: Create and re-edit multiline text with IME draft composition, inline editor (superseding the initial modal), font size, wrap width, and color picker; tests: `test/editor_text_test.dart`; evidence: passing on host and Chrome web.
 
 - [x] MVP-0312 Text size, color, direction, wrapping and resizing.
   - Status: VERIFIED; priority: P0; dependencies: MVP-03A.
@@ -584,7 +586,7 @@ Verification contract: RTL/IME/editing widget tests, decode/error/disposal tests
 
 - [x] WB-0702 Implement editable text overlay.
   - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
-  - Acceptance: **Implement editable text overlay**, integrated where applicable under M07/MVP-03B contract with modal draft editor and double-click re-editing; tests: `test/editor_text_test.dart`; evidence: verified on host and Chrome.
+  - Acceptance: **Implement editable text overlay**, integrated where applicable under M07/MVP-03B contract with inline Quill editing, bounded history/checkpoints and double-click re-editing; tests: `test/inline_rich_text_test.dart`, `test/editor_text_test.dart`; evidence: `docs/verification/rich-text/verification.json` (available macOS/Chrome scope).
 
 - [x] WB-0703 Arabic/RTL and mixed-direction text.
   - Status: VERIFIED; priority: P1; dependencies: WB-0305, WB-0601.
@@ -643,6 +645,44 @@ Verification contract: RTL/IME/editing widget tests, decode/error/disposal tests
 - [ ] WB-0716 Add relevant cross-platform tests.
   - Status: PLANNED; priority: P1; dependencies: WB-0305, WB-0601; image/frame tasks also WB-0203, WB-0207.
   - Acceptance: **Add relevant cross-platform tests**, integrated where applicable under M07 contract; tests: M07 verification scoped to this deliverable; evidence: pending.
+
+### Professional inline rich text — available-target implementation
+
+- [x] WB-0717 Integrate one-object Quill editing in transformed Canvas.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0702.
+  - Acceptance: Immediate Text/sticky creation, Edit action, double-click and pointer ownership; focus and camera transforms remain coherent. Tests: `test/inline_rich_text_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [x] WB-0718 Add strict versioned rich Delta to text and note content.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0203.
+  - Acceptance: Immutable supported character/newline attributes, derived plain projection and legacy codec compatibility; invalid input cannot replace the Board. Tests: `test/rich_text_document_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [x] WB-0719 Integrate themed range and paragraph formatting toolbar.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0717, WB-0718.
+  - Acceptance: Bold/italic/underline/strike, size/family/color/highlight, lists, alignment, validated links and clear inline formatting retain selection. Tests: `test/inline_rich_text_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [x] WB-0720 Validate available-target RTL, Unicode and composing guards.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0719.
+  - Acceptance: Actual Arabic/Latin macOS/Chrome input plus guarded synthetic composition, RTL alignment and font shaping; wider physical IME remains WB-0725. Tests: `test/inline_rich_text_test.dart, test/rich_text_layout_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [x] WB-0721 Integrate text transactions with durable autosave and retry.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0718, MVP-0202.
+  - Acceptance: One Board undo per committed editing session, local text Undo/Redo, cancellation restoration, accurate draft saving status, stale-safe Board switch and IndexedDB reconnect. Tests: `test/rich_text_document_test.dart, test/inline_rich_text_test.dart, test/web_board_store_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [x] WB-0722 Share rich layout across Canvas, wrapping and PNG.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0718.
+  - Acceptance: Range/paragraph layout matches real Quill pixels; manual rectangle resizing reflows width; zoom/rotation and caret visibility do not mutate glyph geometry. Tests: `test/rich_text_layout_test.dart, test/editor_text_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [x] WB-0723 Verify rich project transfer and legacy reopening.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0721.
+  - Acceptance: Legacy plain text and rich notes round trip; actual Chrome Save As imports independently on macOS and survives native process restart. Tests: `test/rich_text_document_test.dart, test/portable_project_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [x] WB-0724 Verify actual rich viewport and Export Frame PNG files.
+  - Status: VERIFIED; priority: P1; dependencies: WB-0722.
+  - Acceptance: Actual native/Chrome3840x2160 output and Chrome1200x600 transparent Frame preserve formatting/Arabic and uniform Fit, excluding overlays and outside elements. Tests: `test/png_export_test.dart, test/rich_text_layout_test.dart`; evidence: `docs/verification/rich-text/verification.json`.
+
+- [ ] WB-0725 Qualify rich editing on physical mobile/tablet, Windows/Linux, Safari/Edge and assistive technology.
+  - Status: IN_PROGRESS; priority: P1; dependencies: WB-0717–WB-0724.
+  - Acceptance: real keyboard/IME, touch handles, clipboard, rotation/zoom and saved file workflows on each target; native builds and widget checks alone do not satisfy this task. Current macOS/Chrome evidence is scoped above.
 
 ## M08 — Advanced Editing
 

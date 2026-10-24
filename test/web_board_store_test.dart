@@ -88,6 +88,28 @@ void main() {
   );
 
   test(
+    'explicit connection recovery retains data and enforces existing versions',
+    () async {
+      final store = await open();
+      final original = snapshot('recover', 1, 7);
+      await store.writeBoard(original, expectedVersion: null);
+      await store.writeLastBoard('recover');
+      await store.writeAsset('original', Uint8List.fromList([1, 2, 3]));
+      await store.initialize(reconnect: true);
+      expect(store.writable, isTrue);
+      expect((await store.readBoard('recover'))!.encode(), original.encode());
+      expect(await store.readLastBoard(), 'recover');
+      expect(await store.readAsset('original'), [1, 2, 3]);
+      await expectLater(
+        store.writeBoard(snapshot('recover', 3, 9), expectedVersion: 2),
+        throwsA(isA<StorageConflict>()),
+      );
+      await store.writeBoard(snapshot('recover', 2, 8), expectedVersion: 1);
+      expect((await store.readBoard('recover'))!.version, 2);
+    },
+  );
+
+  test(
     'rapid real transactions commit latest generation without mixing boards',
     () async {
       final store = await open();

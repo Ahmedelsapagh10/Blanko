@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   path_provider: 2.1.6
   web: 1.1.1
+  flutter_quill: 11.5.0
 
 dev_dependencies:
   integration_test:
@@ -72,6 +73,8 @@ flutter:
     - family: Roboto
       fonts:
         - asset: assets/benchmark_fonts/Roboto-Regular.ttf
+        - asset: assets/benchmark_fonts/Roboto-Bold.ttf
+          weight: 700
 
     - family: Noto Sans Arabic
       fonts:

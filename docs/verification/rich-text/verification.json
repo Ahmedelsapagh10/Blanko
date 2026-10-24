@@ -1,0 +1,205 @@
+{
+  "milestone": "Professional inline rich text",
+  "date": "2026-10-24",
+  "base_commit": "3acdab6538d1c9180f811044e2c0e84edf624616",
+  "scope": "Implemented for available macOS/Chrome editing and file workflows; physical mobile and wider desktop/browser qualification remains open. No new beta release.",
+  "environment": {
+    "hardware": "Apple M4 / 16 GiB",
+    "flutter": "3.41.9",
+    "dart": "3.11.5",
+    "web_origin": "http://127.0.0.1:52743/",
+    "native_workspace": "isolated app-container tmp/blanko-rich-native-20261024; production Boards untouched"
+  },
+  "package": {
+    "name": "flutter_quill",
+    "version": "11.5.0",
+    "license": "MIT",
+    "minimum": "Dart >=3.0.0 <4.0.0 / Flutter >=3.0.0",
+    "reason": "Maintained editor provides caret, range formatting, selection and IME without implementing a text engine. 11.5.1/11.6.0 require Flutter 3.44/Dart 3.12, so pin 11.5.0 on the existing SDK.",
+    "sources": [
+      "https://pub.dev/packages/flutter_quill/changelog",
+      "https://github.com/singerdmx/flutter-quill/blob/v11.5.0/pubspec.yaml"
+    ],
+    "sdk_upgrades": false
+  },
+  "contracts": [
+    "Optional content.richText = {version:1, delta:[insert-only text operations]}; document/project versions unchanged. Text projection is derived and validated against the existing text field.",
+    "Character attributes stay on text; paragraph alignment/direction/list attributes stay on newline operations. Only bundled Roboto/Noto Sans Arabic families, sizes 8..144, supported colors and safe http/https/mailto links accepted. Unsupported payloads fail before replacing the Board.",
+    "Legacy text without richText retains its existing renderer and serialized shape until actually edited. Older strict application readers reject new rich payloads safely; backward loading is supported, forward compatibility with old binaries is not promised.",
+    "One Quill controller per active element; 350 ms immutable checkpoints, revision-ordered existing autosave, one Board undo entry at commit. Text undo/redo stays local until commit; Escape restores original at a new revision.",
+    "Shared paragraph adapter paints canvas and PNG, including lists and RTL. Quill physical left/right alignment adapted only at the editing boundary; fonts, world transforms and uniform PNG Fit remain unchanged.",
+    "Text rectangle resizing changes wrap width/auto-height instead of stretching glyphs. Existing group transforms remain uniform. Caret visibility pans only the camera when keyboard constraints reduce the visible canvas.",
+    "Retry reconnects invalidated IndexedDB while preserving existing generation/CAS checks. No memory fallback or user-data deletion."
+  ],
+  "verification": {
+    "host_integration": {
+      "command": "flutter test --no-pub --reporter compact",
+      "passed": 431,
+      "skipped": 3,
+      "note": "One full checkpoint before the final two pointer regressions/double-click fix; browser-only cases skipped on host. Not a production performance run."
+    },
+    "final_host_affected_regressions": {
+      "command": "flutter test --no-pub test/inline_rich_text_test.dart test/editor_text_test.dart test/editor_widget_test.dart test/advanced_editor_test.dart test/mobile_gesture_test.dart --reporter compact",
+      "passed": 43,
+      "note": "Includes all 17 final inline cases, both new real-mouse pointer regressions, selection/drawing/touch; overlaps the earlier checkpoint."
+    },
+    "chrome_inline": {
+      "command": "flutter test --no-pub --platform chrome test/inline_rich_text_test.dart",
+      "passed_distinct": 17,
+      "skipped": 0,
+      "note": "15 cases in one run, then the two added pointer cases after the final double-click fix. Explicit Mac Command and Windows Control selection/paste routing both execute on Chrome."
+    },
+    "chrome_storage_layout_export": {
+      "command": "flutter test --no-pub --platform chrome test/web_board_store_test.dart test/editor_text_test.dart test/rich_text_document_test.dart test/rich_text_layout_test.dart test/png_export_test.dart --reporter compact",
+      "passed": 32
+    },
+    "analysis": {
+      "command": "flutter analyze --no-pub",
+      "result": "No issues found"
+    },
+    "builds": [
+      {
+        "command": "flutter build macos --debug --no-pub --dart-define=WB_LOCAL_WORKSPACE=<isolated app-container workspace>",
+        "result": "passed; actual app launched/restarted"
+      },
+      {
+        "command": "flutter build apk --debug --no-pub",
+        "result": "passed after generated build cleanup and stopping the stale Gradle daemon; no new Android runtime claim"
+      },
+      {
+        "command": "flutter build ios --simulator --debug --no-pub",
+        "result": "passed; no new iOS runtime claim"
+      }
+    ],
+    "automated_coverage": [
+      "Immutable/strict rich Delta and Unicode validation; unsafe links and unsupported attributes; legacy/rich codec round trip; clipboard/resize preservation",
+      "Composing range remains stable across checkpoint; text and Board undo/redo/cancel, pending Board switch/reload and durable test-store reopening",
+      "Formatting menus retain focus/ranges, RTL physical alignment, zoom/rotation overlay and pointer hit testing, caret above a simulated mobile keyboard",
+      "Exact RGBA parity between committed adapter and the real Quill widget for supported mixed formatting; exact shared-layout/PNG pixel comparison; existing Frame/4K/uniform Fit tests",
+      "Actual IndexedDB connection reopen keeps Board, last pointer and original asset bytes, rejects stale expectedVersion and accepts next generation"
+    ],
+    "actual_ui": [
+      "macOS: Arabic and Latin native typing, inline range Bold, existing text re-edit, native .wboard import of the Chrome rich file, Saved locally, explicit process quit/relaunch restores the formatted Board. Actual native 4K PNG save inspected.",
+      "Chrome: native keyboard Latin/Arabic typing, actual word selection Bold and blue Flutter range through the toolbar, Save As .wboard, real Reload button restores formatting, viewport 4K and selected Export Frame custom transparent PNG downloads inspected.",
+      "Chrome Export Frame: menu creation produced a smaller rectangle under CUA drag; actual property fields set world bounds 320x100 and output 1200x600. Exported file contains the rich text only, excluding six outside pen strokes and guides.",
+      "Actual disk exhaustion invalidated the open IndexedDB connection. Seven-element in-memory Board retained; after freeing only generated outputs, state-preserving dev hot reload plus Retry with the implemented reconnect saved it. Actual page reload then showed the same seven elements and Saved locally. Failure/recovery/reopen screenshots retained. This is an observed disk failure, not a simulated crash."
+    ],
+    "frame_png_checks": {
+      "all_chunk_crcs_valid": true,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "top_110_rows_transparent": true,
+      "artwork_bbox_inclusive": [
+        78,
+        200,
+        1035,
+        405
+      ],
+      "dimensions": [
+        1200,
+        600
+      ]
+    },
+    "resolved_findings": [
+      "Quill web default ancestor shortcuts did not receive Command/Control A/V reliably; explicit public-controller routing fixes and passes both configurations. Hidden unsupported format shortcuts are consumed; Ctrl/Cmd-K uses the validated link dialog.",
+      "Missing Select double-click editing added after a failing actual-mouse regression, now passes host/Chrome.",
+      "Caret could remain behind a simulated keyboard at the canvas bottom; constraints-aware camera-only reveal passes both phone cases.",
+      "Native CUA repeated focus/shortcut automation remains inconclusive for Command-A highlighting, while explicit host/Chrome shortcut tests pass. Native focus loss intentionally commits the session. No physical shortcut certification claimed."
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "docs/verification/rich-text/chrome-frame-custom-transparent.png",
+      "bytes": 44139,
+      "sha256": "5ee3882dc5c752d72759dd4adf30b2bedab56269ca58075323b026aea99eedc7",
+      "pixels": [
+        1200,
+        600
+      ]
+    },
+    {
+      "path": "docs/verification/rich-text/chrome-project.wboard",
+      "bytes": 1667,
+      "sha256": "70a4a77a11d6c9c4433eff74da0d2316e5de255fb67348e6324361118f446502"
+    },
+    {
+      "path": "docs/verification/rich-text/chrome-viewport-4k.png",
+      "bytes": 61576,
+      "sha256": "7999bfd4409025fbaa494cd28bf5d1e273fd1eac2dc4cca0e9d9aec1e31d26ce",
+      "pixels": [
+        3840,
+        2160
+      ]
+    },
+    {
+      "path": "docs/verification/rich-text/native-viewport-4k.png",
+      "bytes": 83161,
+      "sha256": "c64db73b05e10716c00cbc3b1f95df4e3978e32f7562f744fe629ba9ef07fadf",
+      "pixels": [
+        3840,
+        2160
+      ]
+    }
+  ],
+  "limitations": [
+    "Physical Android/iOS/tablet keyboard, IME, touch selection handles, stylus and assistive technology require device qualification. Simulator/APK compilation alone is not a UI pass.",
+    "Windows/Linux and Safari/Edge rich-text runtime qualification remains separate; existing CI will run supported native jobs after push. No all-platform production-readiness claim.",
+    "External rich clipboard is deliberately plain text; no embeds, nested lists, headings/code blocks, custom fonts or external rich-paste interoperability. Links do not launch during editing.",
+    "Editor growth capped at 200,000 UTF-16 code units; document validation additionally caps 1,000,000 units/100,000 operations. Huge text and export peak memory are not newly benchmarked.",
+    "Synthetic composing-range tests are not physical IME certification. Actual Arabic input and shaping were observed on macOS/Chrome, not every keyboard/IME.",
+    "Dense 10,000-element performance and wider release signing/device gates unchanged. Earlier beta.4 downloads do not include this source milestone."
+  ],
+  "manual_check": [
+    "Run flutter pub get, then flutter run -d macos or flutter run -d chrome. Select Text, click empty canvas, and type multiple Arabic/English lines.",
+    "Select a word and apply Bold; select a different word and choose color/size/highlight. Try alignment, RTL, numbered/bullet lists. Use Escape to cancel or click outside to commit.",
+    "Re-edit with a double click or Edit text action; resize wrap width, move/rotate, Undo/Redo. Wait for Saved locally, quit/reopen or reload.",
+    "Save As .wboard and import as an independent Board. Export viewport at 4K, then select an Export Frame and export custom dimensions with transparency. Open the actual files."
+  ],
+  "changed_files": {
+    "document": [
+      "lib/src/document/rich_text.dart — strict immutable versioned Delta",
+      "lib/src/document/element.dart — optional rich text and derived plain projection",
+      "lib/src/document/document_codec.dart — compatible optional payload"
+    ],
+    "editing": [
+      "lib/src/editor/inline_text_editor.dart — owned Quill session, toolbar, IME/clipboard/keys/caret safeguards",
+      "lib/src/editor/board_session.dart — bounded checkpoints, one history transaction, rich-preserving resize",
+      "lib/src/editor/editor_canvas.dart — active text, width resize, history/selection integration and double-click",
+      "lib/src/editor/editor_page.dart — inline overlay lifecycle replacing normal modal flow",
+      "lib/src/editor/workspace_page.dart — accurate dirty status, flush and reconnect Retry",
+      "lib/src/editor/editor_clipboard.dart — retain rich data"
+    ],
+    "rendering": [
+      "lib/src/editor/editor_text.dart — shared rich paragraph adapter and bundled Bold preload",
+      "lib/src/editor/artwork_painter.dart — shared layout painting",
+      "lib/src/editor/png_export.dart — shared rich layout resources",
+      "lib/src/editor/png_export_dialog.dart — finish text before snapshot"
+    ],
+    "configuration": [
+      "lib/main.dart — Quill localization delegates",
+      "pubspec.yaml / pubspec.lock — pinned compatible editor and existing Bold asset weight",
+      "ios/Podfile.lock / macos/Podfile.lock — resolved native plugins",
+      "macos/Runner.xcodeproj/project.pbxproj — CocoaPods Embed Pods Frameworks phase",
+      "macos/Flutter/GeneratedPluginRegistrant.swift / linux/flutter/generated_plugin_registrant.cc / linux/flutter/generated_plugins.cmake / windows/flutter/generated_plugin_registrant.cc / windows/flutter/generated_plugins.cmake — generated plugin registration"
+    ],
+    "persistence": [
+      "lib/src/persistence/web_board_store.dart — coalesced connection recovery without changing storage schema"
+    ],
+    "tests": [
+      "test/rich_text_document_test.dart — model/history/codec tests",
+      "test/rich_text_layout_test.dart — real-Quill/shared-PNG parity",
+      "test/inline_rich_text_test.dart — inline, focus, IME, keys, touch constraints and pointer regressions",
+      "test/editor_text_test.dart — existing text/note regressions adapted to inline UI",
+      "test/web_board_store_test.dart — real IndexedDB reconnect/generation regression",
+      "test/ui_visual_capture_test.dart — opt-in capture helper adapted; flag-driven captures not executed this milestone"
+    ],
+    "evidence": [
+      "docs/MASTER_PLAN.md / docs/PROJECT_STATUS.md / docs/HANDOFF.md — verified tracking and handoff",
+      "docs/verification/rich-text/* — this report and actual controlled file outputs",
+      "docs/screenshots/rich-text/* — real app screenshots"
+    ]
+  },
+  "next": "Stop for review. Next recommended work: rich-text physical mobile and Windows/browser qualification under WB-0725; no new feature library."
+}

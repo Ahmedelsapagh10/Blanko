@@ -108,7 +108,7 @@ Future<Uint8List> renderBoardPng({
   final worldBounds = worldToRegion.inverse().mapBounds(region);
   final candidates = scene.visible(worldBounds);
   final images = <String, ui.Image>{};
-  final layouts = <ElementId, TextPainter>{};
+  final layouts = <ElementId, ElementTextLayout>{};
   ui.Picture? picture;
   ui.Image? output;
   ui.PictureRecorder? recorder;

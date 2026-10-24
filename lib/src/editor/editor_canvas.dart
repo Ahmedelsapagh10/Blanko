@@ -85,8 +85,73 @@ final class EditorCanvasController extends ChangeNotifier {
   final toolbarChanges = ValueNotifier<int>(0);
   late EditorScene scene;
   final paths = <ElementId, Path>{};
-  final textLayouts = <ElementId, TextPainter>{};
+  final textLayouts = <ElementId, ElementTextLayout>{};
   void Function(Point2 world, ElementId? id, bool sticky)? onEditText;
+  bool Function({bool cancel})? onFinishText;
+  VoidCallback? onTextUndo;
+  VoidCallback? onTextRedo;
+  ElementId? editingTextId;
+  bool textDraftDirty = false;
+
+  bool finishTextEditing({bool cancel = false}) =>
+      onFinishText?.call(cancel: cancel) ?? true;
+
+  void markTextDraftDirty() {
+    if (textDraftDirty || _disposed) return;
+    textDraftDirty = true;
+    _notify(toolbar: true);
+  }
+
+  void acknowledgeTextDraft() {
+    if (!textDraftDirty || _disposed) return;
+    textDraftDirty = false;
+    _notify(toolbar: true);
+  }
+
+  void revealTextCaret(Offset viewportDelta) {
+    if (_disposed || editingTextId == null) return;
+    final next = _boundedCamera(
+      camera.pan(Point2(viewportDelta.dx, viewportDelta.dy)),
+    );
+    if (next.translation == camera.translation) return;
+    camera = next;
+    _notify(toolbar: true);
+  }
+
+  ElementId beginTextEditing(
+    ElementContent content,
+    Point2 world, {
+    ElementId? id,
+  }) {
+    final active = session.beginTextEdit(
+      content,
+      world,
+      id: id,
+      font: DocumentFontReference(id: 'editor-sans-v1', family: 'Roboto'),
+    );
+    editingTextId = active;
+    selectedId = active;
+    _refreshScene();
+    _notify(toolbar: true);
+    return active;
+  }
+
+  void checkpointTextEditing(ElementContent content) {
+    if (_disposed) return;
+    final changed = session.updateTextEdit(content);
+    textDraftDirty = false;
+    if (changed) _refreshScene();
+    _notify(toolbar: true);
+  }
+
+  void endTextEditing({bool cancel = false}) {
+    if (_disposed) return;
+    session.finishTextEdit(cancel: cancel);
+    editingTextId = null;
+    textDraftDirty = false;
+    _refreshScene();
+    _notify(toolbar: true);
+  }
 
   void requestImage(String assetId) {
     if (_disposed ||
@@ -257,6 +322,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void _command(bool Function() action) {
+    if (!finishTextEditing()) return;
     if (_disposed) return;
     cancelGesture(notify: false);
     try {
@@ -444,10 +510,56 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void resizeSelection(Bounds2 newBounds) {
+    if (!finishTextEditing()) return;
     if (_disposed || readOnly || !inputEnabled || selectedId == null) return;
-    if (session.resize(selectedId!, newBounds)) {
+    if (_resizeRectangle(selectedId!, newBounds)) {
       _refreshScene();
       _notify(toolbar: true);
+    }
+  }
+
+  bool _resizeRectangle(ElementId id, Bounds2 bounds) {
+    final content = session.document.byId[id]?.content;
+    if (content is! TextElementContent &&
+        content is! StickyNoteElementContent) {
+      return session.resize(id, bounds);
+    }
+    ElementContent withBounds(Bounds2 box) => switch (content) {
+      TextElementContent() => TextElementContent(
+        text: content.text,
+        richText: content.richText,
+        bounds: box,
+        style: content.style,
+        direction: content.direction,
+        alignment: content.alignment,
+        sizing: TextSizing.autoHeight,
+      ),
+      StickyNoteElementContent() => StickyNoteElementContent(
+        text: content.text,
+        richText: content.richText,
+        bounds: box,
+        style: content.style,
+        direction: content.direction,
+        alignment: content.alignment,
+        sizing: TextSizing.autoHeight,
+        backgroundColor: content.backgroundColor,
+      ),
+      _ => throw StateError('Expected text'),
+    };
+    final layout = layoutElementText(withBounds(bounds));
+    try {
+      final height = math.max(
+        content is StickyNoteElementContent ? 120.0 : 24.0,
+        layout.height + (content is StickyNoteElementContent ? 24 : 0),
+      );
+      return session.updateContent(
+        id,
+        withBounds(
+          Bounds2(bounds.left, bounds.top, bounds.right, bounds.top + height),
+        ),
+      );
+    } finally {
+      layout.dispose();
     }
   }
 
@@ -549,6 +661,9 @@ final class EditorCanvasController extends ChangeNotifier {
   Set<ElementId> _marqueeBase = {};
   Set<ElementId> _selectionBeforeGesture = {};
   Point2? _pressScreen;
+  ElementId? _lastTextTapId;
+  Duration? _lastTextTapTime;
+  Point2? _lastTextTapPosition;
   bool _togglingSelection = false;
   Bounds2? _gestureSelectionBounds;
   List<Bounds2> _snapCandidates = const [];
@@ -893,6 +1008,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void clearAll() {
+    if (!finishTextEditing()) return;
     if (readOnly || !inputEnabled || clipboardBusy) return;
     if (session.document.elements.any((e) => e.locked)) {
       message = 'Unlock locked items before clearing the board.';
@@ -956,6 +1072,8 @@ final class EditorCanvasController extends ChangeNotifier {
         switch (content) {
           ContainerFrameElementContent(:final bounds) => bounds,
           ExportFrameElementContent(:final bounds) => bounds,
+          TextElementContent(:final bounds) => bounds,
+          StickyNoteElementContent(:final bounds) => bounds,
           _ => null,
         };
     if (bounds == null || selectedId == null) return null;
@@ -1001,6 +1119,8 @@ final class EditorCanvasController extends ChangeNotifier {
         _frameBaseBounds = switch (content) {
           ContainerFrameElementContent(:final bounds) => bounds,
           ExportFrameElementContent(:final bounds) => bounds,
+          TextElementContent(:final bounds) => bounds,
+          StickyNoteElementContent(:final bounds) => bounds,
           _ => null,
         };
         if (_frameBaseBounds case final b?) {
@@ -1182,6 +1302,8 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void setTool(EditorTool value) {
+    if (!finishTextEditing()) return;
+    _lastTextTapId = null;
     cancelGesture(notify: false, restoreSelection: true);
     tool = value;
     if (value != EditorTool.select && value != EditorTool.pan) {
@@ -1217,6 +1339,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void pointerDown(PointerDownEvent event) {
+    if (!finishTextEditing()) return;
     if (_disposed || !inputEnabled || clipboardBusy) return;
     if (event.buttons & kSecondaryMouseButton != 0) {
       contextAt(event.localPosition, event.position);
@@ -1482,6 +1605,7 @@ final class EditorCanvasController extends ChangeNotifier {
       }
     }
     if (event.pointer != _pointer) return;
+    var editTextAfterGesture = false;
     try {
       if (_gestureTool == EditorTool.text ||
           _gestureTool == EditorTool.sticky) {
@@ -1525,6 +1649,34 @@ final class EditorCanvasController extends ChangeNotifier {
         );
         _refreshScene();
       } else if (_gestureTool == EditorTool.select) {
+        final position = Point2(event.localPosition.dx, event.localPosition.dy);
+        final content = session.document.byId[selectedId]?.content;
+        final textTap =
+            canEditSelection &&
+            !_togglingSelection &&
+            _marqueeStart == null &&
+            _handleAnchor == null &&
+            _pressScreen != null &&
+            position.distanceTo(_pressScreen!) < 2 &&
+            (content is TextElementContent ||
+                content is StickyNoteElementContent);
+        if (textTap) {
+          final elapsed = _lastTextTapTime == null
+              ? null
+              : event.timeStamp - _lastTextTapTime!;
+          editTextAfterGesture =
+              _lastTextTapId == selectedId &&
+              elapsed != null &&
+              elapsed >= Duration.zero &&
+              elapsed <= kDoubleTapTimeout &&
+              _lastTextTapPosition != null &&
+              position.distanceTo(_lastTextTapPosition!) <= 18;
+          _lastTextTapId = editTextAfterGesture ? null : selectedId;
+          _lastTextTapTime = event.timeStamp;
+          _lastTextTapPosition = position;
+        } else {
+          _lastTextTapId = null;
+        }
         if (_marqueeStart != null) {
           _updateMarquee(_world(event.localPosition));
         } else if (canEditSelection && !_togglingSelection) {
@@ -1533,7 +1685,7 @@ final class EditorCanvasController extends ChangeNotifier {
             if (_handleAnchor != null) {
               _updateHandle(_world(event.localPosition));
               if (_framePreviewBounds != null && selectedId != null) {
-                session.resize(selectedId!, _framePreviewBounds!);
+                _resizeRectangle(selectedId!, _framePreviewBounds!);
               } else if (_previewWorld != null) {
                 session.transformMany(_selectedIds, _previewWorld!);
               }
@@ -1566,6 +1718,7 @@ final class EditorCanvasController extends ChangeNotifier {
       cancelGesture(notify: false);
       _notify(toolbar: true);
     }
+    if (editTextAfterGesture) editSelectedText();
   }
 
   void cancelGesture({bool notify = true, bool restoreSelection = false}) {
@@ -1605,6 +1758,7 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void deleteSelection() {
+    if (!finishTextEditing()) return;
     if (readOnly || !inputEnabled) return;
     cancelGesture(notify: false);
     if (canEditSelection && session.deleteMany(_selectedIds)) _refreshScene();
@@ -1612,6 +1766,10 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void undo() {
+    if (editingTextId != null) {
+      onTextUndo?.call();
+      return;
+    }
     if (readOnly || !inputEnabled || clipboardBusy) return;
     cancelGesture(notify: false);
     if (session.undo()) _refreshScene();
@@ -1619,6 +1777,10 @@ final class EditorCanvasController extends ChangeNotifier {
   }
 
   void redo() {
+    if (editingTextId != null) {
+      onTextRedo?.call();
+      return;
+    }
     if (readOnly || !inputEnabled || clipboardBusy) return;
     cancelGesture(notify: false);
     if (session.redo()) _refreshScene();
@@ -1721,6 +1883,9 @@ final class EditorCanvasController extends ChangeNotifier {
     }
     textLayouts.clear();
     onEditText = null;
+    onFinishText = null;
+    onTextUndo = null;
+    onTextRedo = null;
     _points.clear();
     super.dispose();
   }
@@ -1827,6 +1992,7 @@ class _EditorPainter extends CustomPainter {
       (view.left, view.top, view.right, view.bottom),
     );
     for (final element in visible) {
+      if (element.id == c.editingTextId) continue;
       final fragments = c.eraseChanges[element.id];
       if (fragments != null) {
         for (final content in fragments) {
@@ -1959,7 +2125,7 @@ class _EditorPainter extends CustomPainter {
         stroke,
       );
     }
-    final selected = c.selectedId;
+    final selected = c.editingTextId == null ? c.selectedId : null;
     if (c.hasSelection &&
         (c.tool == EditorTool.select || c.tool == EditorTool.pan)) {
       final originalBounds = c._framePreviewBounds == null || selected == null

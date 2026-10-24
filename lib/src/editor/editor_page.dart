@@ -7,7 +7,7 @@ import '../theme/blanko_brand.dart';
 import 'editor_canvas.dart';
 import 'editor_controls.dart';
 import '../theme/theme_settings.dart';
-import 'text_editor_dialog.dart';
+import 'inline_text_editor.dart';
 import 'editor_text.dart';
 import '../document/element.dart';
 import '../geometry/geometry.dart';
@@ -72,10 +72,14 @@ class _EditorPageState extends State<EditorPage> {
     super.initState();
     _setBrowserMenu(false);
     _interactionLifecycle = AppLifecycleListener(
-      onInactive: controller.focusLost,
+      onInactive: () {
+        controller.finishTextEditing();
+        controller.focusLost();
+      },
     );
     controller.onEditText = _editText;
     controller.onContextMenu = _contextMenu;
+    controller.onFinishText = _finishText;
   }
 
   Future<void> _contextMenu(Offset position) async {
@@ -132,6 +136,15 @@ class _EditorPageState extends State<EditorPage> {
   }
 
   bool _editingText = false;
+  InlineTextDraft? _textDraft;
+  bool _endingText = false;
+  bool _disposing = false;
+
+  bool _finishText({bool cancel = false}) {
+    if (_endingText) return true;
+    return _textDraft?.finish(cancel: cancel) ?? true;
+  }
+
   Future<void> _editText(Point2 world, ElementId? id, bool sticky) async {
     if (_editingText || controller.readOnly || !controller.inputEnabled) return;
     _editingText = true;
@@ -141,30 +154,78 @@ class _EditorPageState extends State<EditorPage> {
     try {
       await ensureEditorFonts();
       if (!mounted) return;
-      final result = await showBoardTextEditor(
-        context,
-        content: content,
-        sticky:
-            content is StickyNoteElementContent || (content == null && sticky),
-        color: controller.color,
+      if (!identical(document, controller.session.document)) return;
+      final isSticky =
+          content is StickyNoteElementContent || (content == null && sticky);
+      final initial =
+          content ??
+          (isSticky
+              ? StickyNoteElementContent(
+                  text: '',
+                  bounds: Bounds2(0, 0, 240, 120),
+                  style: ElementTextStyle(
+                    fontId: 'editor-sans-v1',
+                    fontSize: 24,
+                    color: controller.color,
+                  ),
+                  backgroundColor: 0xfffff3a3,
+                )
+              : TextElementContent(
+                  text: '',
+                  bounds: Bounds2(0, 0, 320, 32),
+                  style: ElementTextStyle(
+                    fontId: 'editor-sans-v1',
+                    fontSize: 24,
+                    color: controller.color,
+                  ),
+                ));
+      controller.beginTextEditing(initial, world, id: id);
+      late final InlineTextDraft draft;
+      draft = InlineTextDraft(
+        original: initial,
+        onDirty: controller.markTextDraftDirty,
+        onCheckpoint: controller.checkpointTextEditing,
+        onUnchanged: controller.acknowledgeTextDraft,
+        onFinish: (cancel) {
+          _endingText = true;
+          controller.endTextEditing(cancel: cancel);
+          _textDraft = null;
+          controller.onTextUndo = null;
+          controller.onTextRedo = null;
+          if (!_disposing) {
+            controller.setTool(EditorTool.select);
+            if (mounted) {
+              setState(() {});
+              focusNode.requestFocus();
+            }
+          }
+          _endingText = false;
+          // The old editor subtree still uses these nodes until this frame ends.
+          WidgetsBinding.instance.addPostFrameCallback((_) => draft.dispose());
+        },
       );
-      if (mounted &&
-          identical(document, controller.session.document) &&
-          result != null) {
-        controller.saveText(result, world, id: id);
-      }
+      controller.onTextUndo = () {
+        if (draft.editor.hasUndo) draft.editor.undo();
+      };
+      controller.onTextRedo = () {
+        if (draft.editor.hasRedo) draft.editor.redo();
+      };
+      setState(() => _textDraft = draft);
     } finally {
       _editingText = false;
-      if (mounted) focusNode.requestFocus();
+      if (mounted && _textDraft == null) focusNode.requestFocus();
     }
   }
 
   @override
   void dispose() {
+    _disposing = true;
+    _finishText();
     _interactionLifecycle.dispose();
     _setBrowserMenu(true);
     controller.onEditText = null;
     controller.onContextMenu = null;
+    controller.onFinishText = null;
     focusNode.dispose();
     if (widget.controller == null) controller.dispose();
     super.dispose();
@@ -493,7 +554,15 @@ class _EditorPageState extends State<EditorPage> {
                   focusNode: focusNode,
                 ),
               ),
-              if (!compact) ...[
+              if (_textDraft case final draft?)
+                Positioned.fill(
+                  child: InlineTextLayer(
+                    key: ObjectKey(draft),
+                    draft: draft,
+                    controller: controller,
+                  ),
+                ),
+              if (!compact && _textDraft == null) ...[
                 Positioned(
                   left: 16,
                   top: 16,

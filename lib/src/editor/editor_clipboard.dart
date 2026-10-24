@@ -192,6 +192,7 @@ final class EditorClipboard extends ChangeNotifier {
       ),
       TextElementContent() => TextElementContent(
         text: original.text,
+        richText: original.richText,
         bounds: original.bounds,
         style: remapStyle(original.style),
         direction: original.direction,
@@ -200,6 +201,7 @@ final class EditorClipboard extends ChangeNotifier {
       ),
       StickyNoteElementContent() => StickyNoteElementContent(
         text: original.text,
+        richText: original.richText,
         bounds: original.bounds,
         style: remapStyle(original.style),
         backgroundColor: original.backgroundColor,

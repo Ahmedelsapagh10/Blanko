@@ -10,6 +10,7 @@ Future<void> showPngExportDialog(
   BuildContext context,
   EditorCanvasController controller,
 ) async {
+  if (!controller.finishTextEditing()) return;
   final exported = await showDialog<bool>(
     context: context,
     barrierDismissible: false,

@@ -224,6 +224,7 @@ final class DocumentCodec {
         result.addAll({
           'type': 'text',
           'text': content.text,
+          if (content.richText != null) 'richText': content.richText!.toJson(),
           'bounds': _bounds(content.bounds),
           'style': _textStyle(content.style),
           'direction': content.direction.name,
@@ -234,6 +235,7 @@ final class DocumentCodec {
         result.addAll({
           'type': 'stickyNote',
           'text': content.text,
+          if (content.richText != null) 'richText': content.richText!.toJson(),
           'bounds': _bounds(content.bounds),
           'style': _textStyle(content.style),
           'direction': content.direction.name,
@@ -290,7 +292,15 @@ final class DocumentCodec {
         'headWidth',
         if (value.containsKey('heads')) 'heads',
       ],
-      'text' => ['text', 'bounds', 'style', 'direction', 'alignment', 'sizing'],
+      'text' => [
+        'text',
+        'bounds',
+        'style',
+        'direction',
+        'alignment',
+        'sizing',
+        if (value.containsKey('richText')) 'richText',
+      ],
       'stickyNote' => [
         'text',
         'bounds',
@@ -299,6 +309,7 @@ final class DocumentCodec {
         'alignment',
         'sizing',
         'backgroundColor',
+        if (value.containsKey('richText')) 'richText',
       ],
       'image' => ['assetId', 'bounds'],
       'group' => <String>[],
@@ -347,6 +358,9 @@ final class DocumentCodec {
       ),
       'text' => TextElementContent(
         text: _string(map['text']),
+        richText: map.containsKey('richText')
+            ? RichTextData.fromJson(map['richText'])
+            : null,
         bounds: _readBounds(map['bounds']),
         style: _readTextStyle(map['style']),
         direction: _enum(map['direction'], ElementTextDirection.values),
@@ -355,6 +369,9 @@ final class DocumentCodec {
       ),
       'stickyNote' => StickyNoteElementContent(
         text: _string(map['text']),
+        richText: map.containsKey('richText')
+            ? RichTextData.fromJson(map['richText'])
+            : null,
         bounds: _readBounds(map['bounds']),
         style: _readTextStyle(map['style']),
         direction: _enum(map['direction'], ElementTextDirection.values),

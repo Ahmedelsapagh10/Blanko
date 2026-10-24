@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../document/document.dart';
 import '../document/document_geometry.dart';
 import '../document/document_settings.dart';
@@ -27,6 +29,153 @@ final class BoardSession {
   BoardDocument get document => _document;
   bool get canUndo => _undo.isNotEmpty;
   bool get canRedo => _redo.isNotEmpty;
+
+  _Positioned? _textOriginal;
+  ElementId? _textEditId;
+  DocumentFontReference? _textEditFont;
+
+  bool get hasTextEdit => _textEditId != null;
+
+  /// Checkpoints remain durable snapshots; only finishing the interaction adds
+  /// one undo entry. The caller finishes editing before other document commands.
+  ElementId beginTextEdit(
+    ElementContent content,
+    Point2 world, {
+    ElementId? id,
+    DocumentFontReference? font,
+  }) {
+    if (hasTextEdit) throw StateError('Finish the current text edit first.');
+    _requireTextContent(content);
+    final original = id == null ? null : _document.byId[id];
+    if (id != null && (original == null || _isLocked(original))) {
+      throw StateError('Text is missing or locked.');
+    }
+    if (original != null) {
+      _requireTextContent(original.content);
+      if (content.runtimeType != original.content.runtimeType) {
+        throw ArgumentError('A text edit cannot change the element type.');
+      }
+    }
+    final targetId = id ?? _allocateId();
+    final index = original == null
+        ? _document.elements.length
+        : _document.elements.indexOf(original);
+    final previous = original == null ? null : _Positioned(index, original);
+    if (original == null || !_sameTextContent(original.content, content)) {
+      final next =
+          original?.copyWith(content: content) ??
+          DocumentElement(
+            id: targetId,
+            content: content,
+            transform: Transform2.translation(world.x, world.y),
+          );
+      _document = _apply(
+        _Change([?previous], [_Positioned(index, next)], font: font),
+        forward: true,
+      );
+    }
+    _textOriginal = previous;
+    _textEditFont = font;
+    _textEditId = targetId;
+    return targetId;
+  }
+
+  bool updateTextEdit(ElementContent content) {
+    final id = _textEditId;
+    if (id == null) throw StateError('No text edit is active.');
+    _requireTextContent(content);
+    final current = _document.byId[id]!;
+    if (current.content.runtimeType != content.runtimeType) {
+      throw ArgumentError('A text edit cannot change the element type.');
+    }
+    if (_sameTextContent(current.content, content)) return false;
+    final index = _document.elements.indexOf(current);
+    _document = _apply(
+      _Change(
+        [_Positioned(index, current)],
+        [_Positioned(index, current.copyWith(content: content))],
+        font: _textEditFont,
+      ),
+      forward: true,
+    );
+    return true;
+  }
+
+  void finishTextEdit({bool cancel = false}) {
+    final id = _textEditId;
+    if (id == null) return;
+    final current = _document.byId[id]!;
+    final latest = _Positioned(_document.elements.indexOf(current), current);
+    final original = _textOriginal;
+    final emptyNew = original == null && _textOf(current.content).isEmpty;
+    if (cancel || emptyNew) {
+      if (original == null ||
+          !_sameTextContent(original.element.content, current.content)) {
+        _document = _apply(_Change([latest], [?original]), forward: true);
+      }
+    } else if (original == null ||
+        !_sameTextContent(original.element.content, current.content)) {
+      _redo.clear();
+      if (historyLimit > 0) {
+        _undo.add(_Change([?original], [latest], font: _textEditFont));
+        if (_undo.length > historyLimit) _undo.removeAt(0);
+      }
+    }
+    _textEditId = null;
+    _textOriginal = null;
+    _textEditFont = null;
+  }
+
+  static void _requireTextContent(ElementContent content) {
+    if (content is! TextElementContent &&
+        content is! StickyNoteElementContent) {
+      throw ArgumentError('Text edits require text or sticky notes.');
+    }
+  }
+
+  static String _textOf(ElementContent content) => switch (content) {
+    TextElementContent(:final text) ||
+    StickyNoteElementContent(:final text) => text,
+    _ => throw ArgumentError('Expected text content.'),
+  };
+
+  static bool _sameTextContent(ElementContent a, ElementContent b) {
+    if (identical(a, b)) return true;
+    if (a.runtimeType != b.runtimeType) return false;
+    Object signature(ElementContent content) => switch (content) {
+      TextElementContent() => [
+        content.text,
+        content.richText?.toJson(),
+        content.bounds.left,
+        content.bounds.top,
+        content.bounds.right,
+        content.bounds.bottom,
+        content.style.fontId,
+        content.style.fontSize,
+        content.style.color,
+        content.direction.name,
+        content.alignment.name,
+        content.sizing.name,
+      ],
+      StickyNoteElementContent() => [
+        content.text,
+        content.richText?.toJson(),
+        content.bounds.left,
+        content.bounds.top,
+        content.bounds.right,
+        content.bounds.bottom,
+        content.style.fontId,
+        content.style.fontSize,
+        content.style.color,
+        content.direction.name,
+        content.alignment.name,
+        content.sizing.name,
+        content.backgroundColor,
+      ],
+      _ => throw ArgumentError('Expected text content.'),
+    };
+    return jsonEncode(signature(a)) == jsonEncode(signature(b));
+  }
 
   void setTitle(String title) {
     if (_document.title == title) return;
@@ -165,6 +314,7 @@ final class BoardSession {
         ),
       TextElementContent(
         :final text,
+        :final richText,
         :final style,
         :final direction,
         :final alignment,
@@ -172,6 +322,7 @@ final class BoardSession {
       ) =>
         TextElementContent(
           text: text,
+          richText: richText,
           bounds: newBounds,
           style: style,
           direction: direction,
@@ -180,6 +331,7 @@ final class BoardSession {
         ),
       StickyNoteElementContent(
         :final text,
+        :final richText,
         :final style,
         :final backgroundColor,
         :final direction,
@@ -188,6 +340,7 @@ final class BoardSession {
       ) =>
         StickyNoteElementContent(
           text: text,
+          richText: richText,
           bounds: newBounds,
           style: style,
           backgroundColor: backgroundColor,
@@ -1049,6 +1202,7 @@ final class BoardSession {
   }
 
   bool undo() {
+    finishTextEdit();
     if (_undo.isEmpty) return false;
     final change = _undo.last;
     final next = _apply(change, forward: false);
@@ -1059,6 +1213,7 @@ final class BoardSession {
   }
 
   bool redo() {
+    finishTextEdit();
     if (_redo.isEmpty) return false;
     final change = _redo.last;
     final next = _apply(change, forward: true);
@@ -1088,6 +1243,7 @@ final class BoardSession {
   }
 
   void _commit(_Change change) {
+    if (hasTextEdit) throw StateError('Finish the current text edit first.');
     final next = _apply(change, forward: true);
     _redo.clear();
     if (historyLimit > 0) {
