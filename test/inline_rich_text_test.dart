@@ -678,4 +678,36 @@ void main() {
     await finishInlineText(tester);
     await tester.pumpWidget(const SizedBox());
   });
+
+  testWidgets(
+    'active sticky keeps its minimum painted height while short text grows naturally',
+    (tester) async {
+      await workspace.open(tester, TestBoardStore());
+      await startInlineText(tester, tool: EditorTool.sticky);
+      final paintedNote = find
+          .ancestor(
+            of: find.byKey(const ValueKey('board-inline-text')),
+            matching: find.byType(DecoratedBox),
+          )
+          .first;
+      expect(tester.getSize(paintedNote).height, closeTo(120, .01));
+      await typeInlineText(tester, 'Short note');
+      await tester.pumpAndSettle();
+      expect(tester.getSize(paintedNote).height, closeTo(120, .01));
+      final longText = List.generate(
+        10,
+        (index) => 'Note line $index',
+      ).join('\n');
+      await typeInlineText(tester, longText);
+      await tester.pumpAndSettle();
+      expect(tester.getSize(paintedNote).height, greaterThan(120));
+      await finishInlineText(tester);
+      final content =
+          workspace.canvas(tester).session.document.elements.single.content
+              as StickyNoteElementContent;
+      expect(content.text, longText);
+      expect(content.bounds.height, greaterThan(120));
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
 }

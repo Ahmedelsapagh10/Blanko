@@ -556,7 +556,10 @@ class _InlineTextLayerState extends State<InlineTextLayer> {
                                 autoFocus: true,
                                 scrollable: false,
                                 padding: EdgeInsets.zero,
-                                minHeight: draft.style.fontSize * 1.3,
+                                minHeight:
+                                    draft.original is StickyNoteElementContent
+                                    ? 120 - padding * 2
+                                    : draft.style.fontSize * 1.3,
                                 onTapOutsideEnabled: false,
                                 onLaunchUrl: (_) {},
                                 customStyles: q.DefaultStyles(

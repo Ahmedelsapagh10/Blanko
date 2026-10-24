@@ -45,9 +45,9 @@
     },
     "chrome_inline": {
       "command": "flutter test --no-pub --platform chrome test/inline_rich_text_test.dart",
-      "passed_distinct": 17,
+      "passed_distinct": 18,
       "skipped": 0,
-      "note": "15 cases in one run, then the two added pointer cases after the final double-click fix. Explicit Mac Command and Windows Control selection/paste routing both execute on Chrome."
+      "note": "15 cases in one run, two pointer cases after the double-click fix, and the active sticky minimum-height case; zero skips. Both Command and Control routing execute on Chrome."
     },
     "chrome_storage_layout_export": {
       "command": "flutter test --no-pub --platform chrome test/web_board_store_test.dart test/editor_text_test.dart test/rich_text_document_test.dart test/rich_text_layout_test.dart test/png_export_test.dart --reporter compact",
@@ -69,6 +69,10 @@
       {
         "command": "flutter build ios --simulator --debug --no-pub",
         "result": "passed; no new iOS runtime claim"
+      },
+      {
+        "command": "flutter build web --release --no-pub",
+        "result": "passed, including successful Wasm dry run; no deployed production URL verification"
       }
     ],
     "automated_coverage": [
@@ -106,8 +110,15 @@
       "Quill web default ancestor shortcuts did not receive Command/Control A/V reliably; explicit public-controller routing fixes and passes both configurations. Hidden unsupported format shortcuts are consumed; Ctrl/Cmd-K uses the validated link dialog.",
       "Missing Select double-click editing added after a failing actual-mouse regression, now passes host/Chrome.",
       "Caret could remain behind a simulated keyboard at the canvas bottom; constraints-aware camera-only reveal passes both phone cases.",
-      "Native CUA repeated focus/shortcut automation remains inconclusive for Command-A highlighting, while explicit host/Chrome shortcut tests pass. Native focus loss intentionally commits the session. No physical shortcut certification claimed."
-    ]
+      "Native CUA repeated focus/shortcut automation remains inconclusive for Command-A highlighting, while explicit host/Chrome shortcut tests pass. Native focus loss intentionally commits the session. No physical shortcut certification claimed.",
+      "Active short sticky editing initially painted a smaller surface than committed notes; minimum editor height now retains120px including padding, with focused host/Chrome growth checks."
+    ],
+    "final_sticky_regression": {
+      "command": "flutter test --no-pub [--platform chrome] test/inline_rich_text_test.dart --plain-name 'active sticky keeps'",
+      "host_passed": 1,
+      "chrome_passed": 1,
+      "note": "Last UI correction keeps active empty/short sticky surface at120px and grows longer content. Directly relevant checks only; overlaps no earlier new case."
+    }
   },
   "artifacts": [
     {
@@ -201,5 +212,11 @@
       "docs/screenshots/rich-text/* — real app screenshots"
     ]
   },
-  "next": "Stop for review. Next recommended work: rich-text physical mobile and Windows/browser qualification under WB-0725; no new feature library."
+  "next": "Stop for review. Next recommended work: rich-text physical mobile and Windows/browser qualification under WB-0725; no new feature library.",
+  "ci": {
+    "first_source": "755a6c5b6872a3eacbae33d05f77834660340741",
+    "native_run": "https://github.com/Ahmedelsapagh10/Blanko/actions/runs/40101244115",
+    "analysis_run": "https://github.com/Ahmedelsapagh10/Blanko/actions/runs/40101244108",
+    "status_at_recording": "Native macOS job passed; remaining native jobs running. Final sticky-height correction has its own focused host/Chrome checks and will trigger the final commit checks."
+  }
 }
