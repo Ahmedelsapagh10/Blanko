@@ -2,7 +2,7 @@
 
 Canonical backlog and acceptance: [execution directive](EXECUTION_DIRECTIVE.md). Updated 2026-10-23. Every task inherits its named milestone acceptance and verification contracts. P0 = correctness/critical path; P1 = required V1; P2 = finishing/release. Dependencies are prerequisites; integration additionally requires relevant feature gates. Check only verified work.
 
-Windows correction priority2026-10-24: user reports inactive Files/export arrow and template branding. Exact downloaded tag unconfirmed; beta.1 excluded Windows, beta.3 enabled it. Code4 corrects branding/build identification and adds actual Release menu/PNG controls plus two-process default-store reopening before distribution. Real Windows candidate40042010681 passes19focused checks, two Release process save/reopen phases, normal-entry rebuild, actual EXE icon and startup/package; new beta.4 publication pending. See `docs/releases/windows-correction-verification.json`. Keep manual native chooser/device qualification separate.
+Windows correction priority2026-10-24: user reports inactive Files/export arrow and template branding. Exact downloaded tag unconfirmed; beta.1 excluded Windows, beta.3 enabled it. Code4 corrects branding/build identification and adds actual Release menu/PNG controls plus two-process default-store reopening before distribution. Real Windows candidate40042010681 passes19focused checks, two Release process save/reopen phases, normal-entry rebuild, actual EXE icon and startup/package; beta.4 published from29ca51a; all7 release jobs40042476050 including repeated Windows Release and public-download verification passed. See `docs/releases/windows-correction-verification.json`. Keep manual native chooser/device qualification separate.
 
 Platform verification priority2026-10-23 (169/276 checked): user requests working native platforms; Web deployment deferred until user supplies its URL. Close Windows/Linux native image/project/PNG file gaps using existing channels. Run actual OS-engine tests, separate Debug integration from Release startup, preserve user Boards, and never rewrite beta.1 artifacts/tag. Keep full device/signing/performance gates unchecked until evidenced.
 
@@ -1169,7 +1169,7 @@ Verification contract: CI matrix, installation/recovery/offline and authorized s
 
 - [x] WB-1505 Prepare Windows distribution.
   - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.
-  - Acceptance: **Prepare Windows distribution**, integrated where applicable under M15 contract; tests: M15 verification scoped to this deliverable; evidence (beta distribution scope): Full ZIP packaged; real Windows host/native engine tests and Release native-window startup passed in run39981289738. Unsigned beta scope; full device qualification remains WB-1301. `docs/releases/native-platform-verification.json`.
+  - Acceptance: **Prepare Windows distribution**, beta scope: Published beta.4/code4 full ZIP; real Windows Release default-store/menu/PNG controls and separate-process exact drawing/camera/original-image reopening passed in candidate40042010681 and tagged job120717030027; normal lib/main rebuilt, actual Blanko EXE icon pixels/startup verified. All7 release jobs40042476050/public downloads/checksums passed. Manual native chooser/hardware qualification remains WB-1301. Evidence: `docs/releases/windows-correction-verification.json`.
 
 - [x] WB-1506 Prepare macOS distribution.
   - Status: VERIFIED; priority: P2; dependencies: WB-1418 for release; CI may start after WB-0012.

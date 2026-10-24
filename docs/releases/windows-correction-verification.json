@@ -54,5 +54,125 @@
     "normalEntryRebuildAndWindowStartup": "passed",
     "package": "verified-windows-release artifact"
   },
-  "publication": "pending new immutable beta.4 release"
+  "publication": "published; all seven jobs passed, including actual public downloads/checksums/archive checks",
+  "release": {
+    "tag": "v0.1.0-beta.4",
+    "source": "29ca51ac382d3c17f2cc10daa99507a1f36e7ab3",
+    "run": 40042476050,
+    "status": "success",
+    "releaseId": 422410140,
+    "url": "https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.4",
+    "assets": [
+      {
+        "name": "Blanko-Android.apk",
+        "size": 53286723,
+        "digest": "sha256:f7dba470191a58f855a04c6d4dbda7870a6a455d9ea0d480e0786273ce7a2eaa",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-Android.apk"
+      },
+      {
+        "name": "Blanko-Linux-x64.tar.gz",
+        "size": 20428572,
+        "digest": "sha256:1a15962b16257f87fba7f32848eb83bca6aa3cc33e8e70c13b69722441a062e4",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-Linux-x64.tar.gz"
+      },
+      {
+        "name": "Blanko-macOS.zip",
+        "size": 19204438,
+        "digest": "sha256:f27a84d0f70e5de43d10fc8572622eb4dc6d356c375b18f7114481d51bc5ca09",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-macOS.zip"
+      },
+      {
+        "name": "Blanko-Windows-x64.zip",
+        "size": 14224583,
+        "digest": "sha256:07df89d7e49dd8fa620859bfc7b2d192d3b38ee5b6b09324f99d2dfbfc5f2b71",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-Windows-x64.zip"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "size": 347,
+        "digest": "sha256:ccbb0af9c4b4f4a298105c3458ccab9c52044a058edba7de219d2bec9f884667",
+        "browser_download_url": "https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/SHA256SUMS.txt"
+      }
+    ],
+    "checksums": "f7dba470191a58f855a04c6d4dbda7870a6a455d9ea0d480e0786273ce7a2eaa  Blanko-Android.apk\n1a15962b16257f87fba7f32848eb83bca6aa3cc33e8e70c13b69722441a062e4  Blanko-Linux-x64.tar.gz\n07df89d7e49dd8fa620859bfc7b2d192d3b38ee5b6b09324f99d2dfbfc5f2b71  Blanko-Windows-x64.zip\nf27a84d0f70e5de43d10fc8572622eb4dc6d356c375b18f7114481d51bc5ca09  Blanko-macOS.zip\n"
+  },
+  "filesChangedExact": [
+    ".github/workflows/platform-verification.yml",
+    ".github/workflows/release.yml",
+    "CHANGELOG.md",
+    "README.md",
+    "docs/HANDOFF.md",
+    "docs/MASTER_PLAN.md",
+    "docs/PROJECT_STATUS.md",
+    "docs/RELEASE.md",
+    "docs/TEST_MATRIX.md",
+    "docs/releases/v0.1.0-beta.1.md",
+    "docs/releases/v0.1.0-beta.3.md",
+    "docs/releases/v0.1.0-beta.4.md",
+    "docs/releases/windows-correction-verification.json",
+    "integration_test/windows_release_test.dart",
+    "pubspec.yaml",
+    "tool/generate_brand_icons.py",
+    "tool/verify_windows_release.ps1",
+    "windows/runner/main.cpp",
+    "windows/runner/resources/app_icon.ico"
+  ],
+  "filesChanged": {
+    "windows/runner/resources/app_icon.ico": "Existing Blanko artwork encoded at nine Windows icon resolutions; no generated replacement artwork.",
+    "windows/runner/main.cpp": "Visible version/build number; no change to persisted application identity.",
+    "tool/generate_brand_icons.py": "Reproducible Windows-only ICO generation using existing tooling; portable repository-root lookup.",
+    "integration_test/windows_release_test.dart": "Dedicated CI-only Release executable using normal app/default storage; real Files and PNG controls and two-process drawing/image reopen; actionable Release exception capture.",
+    "tool/verify_windows_release.ps1": "Fresh-CI guard, bounded write/read process tests, normal entry rebuild and real embedded-icon pixel verification.",
+    ".github/workflows/platform-verification.yml": "Focused Windows-only manual run and retained small Release verdicts/logs.",
+    ".github/workflows/release.yml": "Windows publication requires actual Release behavior and icon checks.",
+    "pubspec.yaml": "Build number3→4 only; no SDK/dependency upgrade.",
+    "CHANGELOG.md, docs/releases/v0.1.0-beta.4.md": "Accurate Windows correction notes and installation/data-preservation instructions.",
+    "docs/MASTER_PLAN.md, docs/PROJECT_STATUS.md, docs/HANDOFF.md, docs/TEST_MATRIX.md": "Incident, actual checks, earlier harness failure and remaining manual qualification.",
+    "README.md, docs/RELEASE.md, docs/releases/v0.1.0-beta.1.md, docs/releases/v0.1.0-beta.3.md": "Correct current download links and direct historical users to beta.4 without replacing old assets."
+  },
+  "taggedWindowsRelease": {
+    "job": 120717030027,
+    "write": true,
+    "read": true,
+    "normalEntryIconPixelComparison": true,
+    "normalEntryWindowStartup": true,
+    "result": "success"
+  },
+  "releaseJobs": [
+    {
+      "name": "Analyze & Test",
+      "job": 120716502592,
+      "conclusion": "success"
+    },
+    {
+      "name": "Real SDK signature compatibility",
+      "job": 120716502823,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build Linux",
+      "job": 120717029901,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build Android APK",
+      "job": 120717029958,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build macOS",
+      "job": 120717029989,
+      "conclusion": "success"
+    },
+    {
+      "name": "Build Windows",
+      "job": 120717030027,
+      "conclusion": "success"
+    },
+    {
+      "name": "Publish Release",
+      "job": 120718736262,
+      "conclusion": "success"
+    }
+  ]
 }

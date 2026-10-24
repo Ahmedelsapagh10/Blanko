@@ -1,6 +1,6 @@
 # Blanko — التثبيت وحدود النسخة التجريبية
 
-الإصدار المنشور: [v0.1.0-beta.3](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.3)، من الكود `630e5b2`. حزم Release مبنية في [GitHub Actions](https://github.com/Ahmedelsapagh10/Blanko/actions/runs/40019361470). الإصدار التجريبي لا يعني اعتماد جميع المنصات للإنتاج.
+الإصدار المنشور: [v0.1.0-beta.4](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.4)، من الكود `29ca51a`. حزم Release مبنية في [GitHub Actions](https://github.com/Ahmedelsapagh10/Blanko/actions/runs/40042476050). الإصدار التجريبي لا يعني اعتماد جميع المنصات للإنتاج.
 
 ## التحميل والتثبيت
 
@@ -18,11 +18,13 @@ sha256sum Blanko-Linux-x64.tar.gz
 - **macOS:** فك الضغط وانقل `Blanko.app` إلى Applications. التوقيع Ad-hoc؛ لا يوجد Developer ID أو توثيق Apple. قد يمنع النظام فتحها. راجع مصدر الملف وإعدادات Privacy & Security بنفسك؛ لا تحتاج لتعطيل Gatekeeper على الجهاز.
 - **Windows x64:** فك ZIP كاملًا ثم شغّل `whiteboard.exe`. احتفظ بمجلد `data` وكل DLLs بجانبه. قد يلزم Microsoft Visual C++ Redistributable 2015–2022 x64؛ لا تحمّل DLLs منفردة من مواقع مجهولة.
 - **Linux x64:** فك الضغط وشغّل `./bundle/whiteboard` من بيئة سطح مكتب تدعم GTK3. احتفظ بـ `lib` و`data`. CI يستخدم `ubuntu-latest`؛ توزيعات أقدم أو مكتبات نظام مختلفة غير مؤهلة. يعتمد التشغيل على GTK3 وGLib وC++ runtime وبيئة عرض/OpenGL متوافقة. البناء من المصدر يحتاج CMake وNinja وClang وpkg-config و`libgtk-3-dev`.
-- **Android:** APK واحد لـ arm64-v8a وarmeabi-v7a وx86_64، Android 7.0/API24 أو أحدث. موقّع بمفتاح إصدار المالك الثابت، وبصمته العامة في `android/release-certificate.sha256`. اسم الحزمة `ahmedelsapagh.com.whiteboard`، الإصدار `0.1.0`، رقم البناء `3`. اسمح بالتثبيت من مصدر التحميل فقط إذا قررت الوثوق بالحزمة.
+- **Android:** APK واحد لـ arm64-v8a وarmeabi-v7a وx86_64، Android 7.0/API24 أو أحدث. موقّع بمفتاح إصدار المالك الثابت، وبصمته العامة في `android/release-certificate.sha256`. اسم الحزمة `ahmedelsapagh.com.whiteboard`، الإصدار `0.1.0`، رقم البناء `4`. اسمح بالتثبيت من مصدر التحميل فقط إذا قررت الوثوق بالحزمة.
 - **Web:** التشغيل من المصدر باستخدام `flutter run -d chrome`. لا يوجد موقع مستضاف أو حزمة Web منشورة ضمن هذا الإصدار. استضافة بناء `flutter build web --release` تحتاج HTTPS، أصلًا ثابتًا، وخدمة ملفات Flutter كاملة. ملفات Web تحتاج التحميل أول مرة؛ لا ندّعي أن إعادة التحميل دون إنترنت مؤهلة.
 - **iOS:** لا توجد IPA عامة؛ الاستخدام الحالي من المصدر/المحاكي. التوزيع على جهاز يحتاج هوية Apple وتوقيعًا مناسبًا.
 
 ## ما الذي تحقق فعليًا؟
+
+- Windows beta.4: الشعار المضمّن داخل EXE طابق أيقونة Blanko، والعنوان يوضح build4. نجح فتح سهم الملفات ونافذة PNG وزر التصدير داخل Release، وحفظ رسم وصورة ثم إعادة فتح نفس المحتوى والإحداثيات والبايتات الأصلية في عملية Windows جديدة.19اختبارًا مركزًا نجحت؛ تكرر فحص Release ضمن مسار نشر beta.4، ثم أُعيد بناء مدخل التطبيق العادي. [دليل التصحيح](releases/windows-correction-verification.json).
 
 - نجحت وظائف الإصدار السبع، بما فيها اختبارات التحليل والمحرك، تشغيل Release على Windows/Linux/macOS وAndroid، وتوقيع APK. وظيفة النشر حمّلت الملفات العامة الأربعة وفحصت SHA256SUMS وسلامة الأرشيفات؛ طابقت بصمات GitHub أيضًا.
 - أربع حالات داخل المحرك على Windows/Linux/macOS/Android وiOS: مزود التخزين الحقيقي، الرسم والتراجع والحفظ وإعادة فتح المتجر والصور الأصلية، ملفات مشاريع مستقلة وPNG مع فحص النسب، والتحقق من قناة الملفات الأصلية. إعادة فتح المتجر ليست إعادة تشغيل عملية النظام.

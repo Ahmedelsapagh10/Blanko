@@ -10,7 +10,7 @@
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.41-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Public%20Beta-orange)](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.3)
+[![Status](https://img.shields.io/badge/Status-Public%20Beta-orange)](https://github.com/Ahmedelsapagh10/Blanko/releases/tag/v0.1.0-beta.4)
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20Android%20%7C%20Web-blue)]()
 
 [**⬇️ تحميل**](#-التحميل) · [**✨ المميزات**](#-المميزات) · [**🔧 البناء من المصدر**](#-البناء-من-المصدر) · [**🤝 المساهمة**](#-المساهمة)
@@ -118,23 +118,23 @@
 
 ## ⬇️ التحميل
 
-> **Windows:** أُصلح خطأ إعادة فتح اللوحات في beta.3؛ لا تحذف بيانات اللوحات القديمة. [تفاصيل التحقق](docs/RELEASE.md).
+> **Windows:** حمّل beta.4 بالشعار الصحيح وعنوان `Blanko 0.1.0 (build 4)`. نجح فحص قائمة التصدير والحفظ وإعادة الفتح داخل Release. دعم الملفات وإصلاح إعادة الفتح موجودان من beta.3؛ لا تحذف بيانات اللوحات القديمة. [تفاصيل التحقق](docs/RELEASE.md).
 
 > [!NOTE]
-> هذه **نسخة تجريبية عامة** `v0.1.0-beta.3`، وليست إصدارًا مستقرًا. نجحت اختبارات المحرك وتشغيل Release على منصات سطح المكتب الثلاث وAndroid؛ هذا لا يثبت التوافق مع كل جهاز. راجع [حالة التحقق والتثبيت](docs/RELEASE.md).
+> هذه **نسخة تجريبية عامة** `v0.1.0-beta.4`، وليست إصدارًا مستقرًا. نجحت اختبارات المحرك وتشغيل Release على منصات سطح المكتب الثلاث وAndroid؛ هذا لا يثبت التوافق مع كل جهاز. راجع [حالة التحقق والتثبيت](docs/RELEASE.md).
 
 | المنصة | التحميل | ملاحظات |
 |--------|---------|---------|
-| 🪟 **Windows** | [Blanko-Windows-x64.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-Windows-x64.zip) | فك الضغط وشغّل `whiteboard.exe` |
-| 🐧 **Linux** | [Blanko-Linux-x64.tar.gz](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-Linux-x64.tar.gz) | فك الضغط وشغّل `bundle/whiteboard` |
-| 🍎 **macOS** | [Blanko-macOS.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-macOS.zip) | فك الضغط واسحب إلى Applications |
-| 📱 **Android** | [Blanko-Android.apk](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/Blanko-Android.apk) | فعّل التثبيت من مصادر خارجية |
+| 🪟 **Windows** | [Blanko-Windows-x64.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-Windows-x64.zip) | فك الضغط وشغّل `whiteboard.exe` |
+| 🐧 **Linux** | [Blanko-Linux-x64.tar.gz](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-Linux-x64.tar.gz) | فك الضغط وشغّل `bundle/whiteboard` |
+| 🍎 **macOS** | [Blanko-macOS.zip](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-macOS.zip) | فك الضغط واسحب إلى Applications |
+| 📱 **Android** | [Blanko-Android.apk](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/Blanko-Android.apk) | فعّل التثبيت من مصادر خارجية |
 | 🌐 **Web** | بناء من المصدر | `flutter run -d chrome` |
 
 > [!IMPORTANT]
 > - تطبيق macOS **غير موثّق من Apple** — قد تحتاج للسماح بفتحه من إعدادات النظام
 > - APK الأندرويد موقّع بمفتاح إصدار المالك الثابت. توقيع beta.1 مختلف؛ صدّر `.wboard` قبل أي إزالة للتطبيق
-> - تحقق من سلامة الملفات عبر [SHA256SUMS.txt](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.3/SHA256SUMS.txt) في صفحة الإصدار
+> - تحقق من سلامة الملفات عبر [SHA256SUMS.txt](https://github.com/Ahmedelsapagh10/Blanko/releases/download/v0.1.0-beta.4/SHA256SUMS.txt) في صفحة الإصدار
 
 ---
 
